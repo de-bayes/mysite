@@ -723,22 +723,21 @@
         const mascot = document.querySelector('.mascot-corner');
         const mascotImg = document.querySelector('.mascot-img');
         let isDragging = false;
-        let offsetX, offsetY;
 
         mascotImg.addEventListener('mousedown', (e) => {
             isDragging = true;
             mascot.classList.add('dragging', 'peeled');
 
-            const rect = mascot.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
-
-            // Remove the initial positioning
+            // Set to fixed positioning immediately
             mascot.style.position = 'fixed';
-            mascot.style.left = rect.left + 'px';
-            mascot.style.top = rect.top + 'px';
             mascot.style.right = 'auto';
             mascot.style.bottom = 'auto';
+
+            // Center on cursor
+            const imgWidth = mascotImg.offsetWidth;
+            const imgHeight = mascotImg.offsetHeight;
+            mascot.style.left = (e.clientX - imgWidth / 2) + 'px';
+            mascot.style.top = (e.clientY - imgHeight / 2) + 'px';
 
             e.preventDefault();
             e.stopPropagation();
@@ -747,11 +746,11 @@
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
 
-            const newX = e.clientX - offsetX;
-            const newY = e.clientY - offsetY;
-
-            mascot.style.left = newX + 'px';
-            mascot.style.top = newY + 'px';
+            // Follow cursor - centered
+            const imgWidth = mascotImg.offsetWidth;
+            const imgHeight = mascotImg.offsetHeight;
+            mascot.style.left = (e.clientX - imgWidth / 2) + 'px';
+            mascot.style.top = (e.clientY - imgHeight / 2) + 'px';
         });
 
         document.addEventListener('mouseup', () => {
