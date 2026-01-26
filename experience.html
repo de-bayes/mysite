@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ryan McComb - Experience">
+    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <title>Experience - Ryan McComb</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* NAV TABS */
+        nav {
+            position: fixed;
+            top: 1.5rem;
+            right: 2rem;
+            z-index: 100;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-tabs a {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #888888;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-tabs a:hover,
+        .nav-tabs a.active {
+            color: #000000;
+        }
+
+        /* PAGE CONTENT */
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+
+        .page-title {
+            font-family: 'VT323', monospace;
+            font-size: 5rem;
+            color: #e67e22;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .experience-list {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .experience-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .experience-item:first-child {
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .experience-item h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .experience-meta {
+            font-size: 0.9rem;
+            color: #555555;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .nav-tabs {
+                gap: 1rem;
+            }
+
+            .nav-tabs a {
+                font-size: 0.65rem;
+            }
+
+            .page-title {
+                font-size: 3.5rem;
+            }
+
+            .page-container {
+                padding: 3rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="nav-tabs">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="experience.html" class="active">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="passions.html">Passions</a></li>
+            <li><a href="photos.html">Photos</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-container">
+        <h1 class="page-title">Experiences</h1>
+
+        <div class="experience-list">
+            <div class="experience-item">
+                <h3>Software Engineering Intern</h3>
+                <p class="experience-meta">Tech Company • Summer 2025</p>
+            </div>
+
+            <div class="experience-item">
+                <h3>Research Assistant</h3>
+                <p class="experience-meta">University Lab • 2024-2025</p>
+            </div>
+
+            <div class="experience-item">
+                <h3>Volunteer Coordinator</h3>
+                <p class="experience-meta">Local Organization • 2023-2024</p>
+            </div>
+
+            <div class="experience-item">
+                <h3>Teaching Assistant</h3>
+                <p class="experience-meta">ETHS • 2023</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

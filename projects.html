@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ryan McComb - Projects">
+    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <title>Projects - Ryan McComb</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* NAV TABS */
+        nav {
+            position: fixed;
+            top: 1.5rem;
+            right: 2rem;
+            z-index: 100;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-tabs a {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #888888;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-tabs a:hover,
+        .nav-tabs a.active {
+            color: #000000;
+        }
+
+        /* PAGE CONTENT */
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .page-title {
+            font-family: 'VT323', monospace;
+            font-size: 5rem;
+            color: #e67e22;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* PROJECT GRID */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            padding: 2rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .project-card:hover {
+            border-color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0 #000000;
+        }
+
+        .project-card h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card p {
+            font-size: 0.9rem;
+            color: #555555;
+            margin-bottom: 1rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background: #f5f5f5;
+            color: #666666;
+            border: 1px solid #e5e5e5;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .nav-tabs {
+                gap: 1rem;
+            }
+
+            .nav-tabs a {
+                font-size: 0.65rem;
+            }
+
+            .page-title {
+                font-size: 3.5rem;
+            }
+
+            .page-container {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="nav-tabs">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+            <li><a href="passions.html">Passions</a></li>
+            <li><a href="photos.html">Photos</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-container">
+        <h1 class="page-title">Projects</h1>
+
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Prediction Markets Bot</h3>
+                <p>Automated trading system for political prediction markets.</p>
+                <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">API</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Election Forecasting Model</h3>
+                <p>Statistical model for predicting election outcomes.</p>
+                <div class="project-tags">
+                    <span class="tag">Data Science</span>
+                    <span class="tag">Python</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Portfolio Website</h3>
+                <p>Personal site with interactive elements and custom animations.</p>
+                <div class="project-tags">
+                    <span class="tag">HTML/CSS</span>
+                    <span class="tag">JavaScript</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Research Project</h3>
+                <p>Academic research on behavioral economics.</p>
+                <div class="project-tags">
+                    <span class="tag">Research</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Data Visualization Tool</h3>
+                <p>Interactive charts for election data analysis.</p>
+                <div class="project-tags">
+                    <span class="tag">D3.js</span>
+                    <span class="tag">Visualization</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Open Source Contribution</h3>
+                <p>Contributing to political data aggregation project.</p>
+                <div class="project-tags">
+                    <span class="tag">Open Source</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

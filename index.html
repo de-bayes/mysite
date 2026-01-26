@@ -321,6 +321,7 @@
         .mascot-corner:hover:not(.dragging) .mascot-tooltip {
             opacity: 1;
             transform: translateX(0);
+            pointer-events: auto;
         }
 
         .mascot-corner.dragging {
@@ -373,7 +374,8 @@
             letter-spacing: 0.02em;
         }
 
-        .nav-tabs a:hover {
+        .nav-tabs a:hover,
+        .nav-tabs a.active {
             color: #000000;
         }
 
@@ -542,6 +544,7 @@
 
         <nav>
             <ul class="nav-tabs">
+                <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="experience.html">Experience</a></li>
                 <li><a href="projects.html">Projects</a></li>
                 <li><a href="passions.html">Passions</a></li>
@@ -602,7 +605,20 @@
             }
         }
 
-        updateLoader();
+        // Check if page was refreshed or is a new visit
+        const perfData = performance.getEntriesByType('navigation')[0];
+        const isRefresh = perfData && perfData.type === 'reload';
+        const hasLoaded = sessionStorage.getItem('hasLoaded');
+
+        if (hasLoaded && !isRefresh) {
+            // Skip loading animation (navigated from another page)
+            loader.classList.add('hidden');
+            siteContent.classList.add('visible');
+        } else {
+            // Show loading animation (first visit or refresh)
+            updateLoader();
+            sessionStorage.setItem('hasLoaded', 'true');
+        }
 
         // GRID BACKGROUND
         const canvas = document.getElementById('grid-canvas');
