@@ -82,12 +82,27 @@
             transition: all 0.2s ease;
             cursor: pointer;
             position: relative;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .project-card:hover {
             border-color: #000000;
             transform: translateY(-2px);
             box-shadow: 4px 4px 0 #000000;
+        }
+
+        .project-link {
+            color: #e67e22;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
         }
 
         .project-card h3 {
@@ -162,55 +177,40 @@
         <h1 class="page-title">Projects</h1>
 
         <div class="projects-grid">
-            <div class="project-card">
-                <h3>Prediction Markets Bot</h3>
-                <p>Automated trading system for political prediction markets.</p>
-                <div class="project-tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">API</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>Election Forecasting Model</h3>
-                <p>Statistical model for predicting election outcomes.</p>
+            <a href="https://il9.org" target="_blank" class="project-card">
+                <h3>IL9CAST</h3>
+                <p>Open-source political forecasting project modeling the Illinois 9th Congressional District. Features data analytics, polling aggregation, and election predictions.</p>
                 <div class="project-tags">
                     <span class="tag">Data Science</span>
                     <span class="tag">Python</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>Portfolio Website</h3>
-                <p>Personal site with interactive elements and custom animations.</p>
-                <div class="project-tags">
-                    <span class="tag">HTML/CSS</span>
-                    <span class="tag">JavaScript</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>Research Project</h3>
-                <p>Academic research on behavioral economics.</p>
-                <div class="project-tags">
-                    <span class="tag">Research</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>Data Visualization Tool</h3>
-                <p>Interactive charts for election data analysis.</p>
-                <div class="project-tags">
-                    <span class="tag">D3.js</span>
-                    <span class="tag">Visualization</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>Open Source Contribution</h3>
-                <p>Contributing to political data aggregation project.</p>
-                <div class="project-tags">
                     <span class="tag">Open Source</span>
+                </div>
+            </a>
+
+            <div class="project-card">
+                <h3>Podcast Project 2028</h3>
+                <p>A podcast exploring politics, prediction markets, and the road to 2028.</p>
+                <div class="project-tags">
+                    <span class="tag">Podcast</span>
+                    <span class="tag">Politics</span>
+                </div>
+            </div>
+
+            <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="project-card">
+                <h3>The Evanstonian Writer Profile</h3>
+                <p>Collection of my journalism work covering local politics, ETHS, D65, and community social issues.</p>
+                <div class="project-tags">
+                    <span class="tag">Journalism</span>
+                    <span class="tag">Writing</span>
+                </div>
+            </a>
+
+            <div class="project-card">
+                <h3>Manifold Markets P2P Lending</h3>
+                <p>Peer-to-peer lending platform built for Manifold Markets community.</p>
+                <div class="project-tags">
+                    <span class="tag">Web Development</span>
+                    <span class="tag">Finance</span>
                 </div>
             </div>
         </div>
