@@ -1040,9 +1040,9 @@
         let targetMouseX = -1000;
         let targetMouseY = -1000;
         const gridSize = 40;
-        const influence = 150;
-        const maxDisplacement = 30;
-        const smoothing = 0.15;
+        const influence = 280;
+        const maxDisplacement = 15;
+        const smoothing = 0.06;
 
         // Store current point positions for smooth animation
         let pointsState = null;
@@ -1115,16 +1115,18 @@
                     const dist = Math.sqrt(dx * dx + dy * dy);
 
                     if (dist < influence && dist > 0) {
-                        const force = Math.pow(1 - dist / influence, 2) * maxDisplacement * 0.6;
+                        // Smoother falloff for more fabric-like feel
+                        const falloff = 1 - dist / influence;
+                        const force = falloff * falloff * falloff * maxDisplacement;
                         const angle = Math.atan2(dy, dx);
                         // Push away from mouse
                         targetX = baseX + Math.cos(angle) * force;
                         targetY = baseY + Math.sin(angle) * force;
                     }
 
-                    // Smooth interpolation
-                    pointsState[row][col].x += (targetX - pointsState[row][col].x) * 0.2;
-                    pointsState[row][col].y += (targetY - pointsState[row][col].y) * 0.2;
+                    // Slower interpolation for dampened feel
+                    pointsState[row][col].x += (targetX - pointsState[row][col].x) * 0.06;
+                    pointsState[row][col].y += (targetY - pointsState[row][col].y) * 0.06;
                 }
             }
 
@@ -1377,7 +1379,7 @@
         const terminalCtx = terminalCanvas.getContext('2d');
         let termMouseX = -1000, termMouseY = -1000, termTargetX = -1000, termTargetY = -1000;
         let termPointsState = null;
-        const termGridSize = 40, termInfluence = 150, termMaxDisp = 25;
+        const termGridSize = 40, termInfluence = 280, termMaxDisp = 15;
 
         function resizeTerminalCanvas() {
             terminalCanvas.width = window.innerWidth;
@@ -1391,8 +1393,8 @@
         document.getElementById('terminal-overlay').addEventListener('mouseleave', () => { termTargetX = termTargetY = -1000; });
 
         function drawTerminalGrid() {
-            termMouseX += (termTargetX - termMouseX) * 0.15;
-            termMouseY += (termTargetY - termMouseY) * 0.15;
+            termMouseX += (termTargetX - termMouseX) * 0.06;
+            termMouseY += (termTargetY - termMouseY) * 0.06;
             terminalCtx.clearRect(0, 0, terminalCanvas.width, terminalCanvas.height);
             terminalCtx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
             terminalCtx.lineWidth = 1;
@@ -1414,13 +1416,14 @@
                     const dx = baseX - termMouseX, dy = baseY - termMouseY;
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     if (dist < termInfluence && dist > 0) {
-                        const force = Math.pow(1 - dist / termInfluence, 2) * termMaxDisp;
+                        const falloff = 1 - dist / termInfluence;
+                        const force = falloff * falloff * falloff * termMaxDisp;
                         const angle = Math.atan2(dy, dx);
                         targetX = baseX + Math.cos(angle) * force;
                         targetY = baseY + Math.sin(angle) * force;
                     }
-                    termPointsState[row][col].x += (targetX - termPointsState[row][col].x) * 0.2;
-                    termPointsState[row][col].y += (targetY - termPointsState[row][col].y) * 0.2;
+                    termPointsState[row][col].x += (targetX - termPointsState[row][col].x) * 0.06;
+                    termPointsState[row][col].y += (targetY - termPointsState[row][col].y) * 0.06;
                 }
             }
             for (let row = 0; row <= rows; row++) {

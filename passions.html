@@ -300,7 +300,7 @@
         const canvas = document.getElementById('grid-canvas');
         const ctx = canvas.getContext('2d');
         let mouseX = -1000, mouseY = -1000, targetMouseX = -1000, targetMouseY = -1000;
-        const gridSize = 40, influence = 150, maxDisplacement = 30, smoothing = 0.15;
+        const gridSize = 40, influence = 280, maxDisplacement = 15, smoothing = 0.06;
         let pointsState = null;
 
         function resizeCanvas() {
@@ -340,13 +340,14 @@
                     const dx = baseX - mouseX, dy = baseY - mouseY;
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     if (dist < influence && dist > 0) {
-                        const force = Math.pow(1 - dist / influence, 2) * maxDisplacement * 0.6;
+                        const falloff = 1 - dist / influence;
+                        const force = falloff * falloff * falloff * maxDisplacement;
                         const angle = Math.atan2(dy, dx);
                         targetX = baseX + Math.cos(angle) * force;
                         targetY = baseY + Math.sin(angle) * force;
                     }
-                    pointsState[row][col].x += (targetX - pointsState[row][col].x) * 0.2;
-                    pointsState[row][col].y += (targetY - pointsState[row][col].y) * 0.2;
+                    pointsState[row][col].x += (targetX - pointsState[row][col].x) * 0.06;
+                    pointsState[row][col].y += (targetY - pointsState[row][col].y) * 0.06;
                 }
             }
             for (let row = 0; row <= rows; row++) {
