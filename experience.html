@@ -85,6 +85,21 @@
             border-top: 1px solid #e5e5e5;
         }
 
+        .experience-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .experience-item:hover {
+            background: #fafafa;
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
         .experience-item h3 {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-size: 1.5rem;
@@ -95,6 +110,40 @@
         .experience-meta {
             font-size: 0.9rem;
             color: #555555;
+        }
+
+        .expand-icon {
+            font-size: 1.2rem;
+            color: #e67e22;
+            transition: transform 0.2s ease;
+        }
+
+        .experience-item.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .experience-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .experience-item.expanded .experience-details {
+            max-height: 500px;
+        }
+
+        .experience-content {
+            padding-top: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #333333;
+        }
+
+        .time-period {
+            font-size: 0.85rem;
+            color: #e67e22;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
         }
 
         @media (max-width: 600px) {
@@ -138,36 +187,108 @@
         <h1 class="page-title">Experiences</h1>
 
         <div class="experience-list">
-            <div class="experience-item">
-                <h3>Data Analyst</h3>
-                <p class="experience-meta">IL9CAST • Self-employed • Dec 2025 - Present</p>
+            <div class="experience-item" onclick="toggleExperience(this)">
+                <div class="experience-header">
+                    <div>
+                        <h3>Data Analyst</h3>
+                        <p class="experience-meta">IL9CAST • Self-employed</p>
+                    </div>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="experience-details">
+                    <div class="experience-content">
+                        <p class="time-period">December 2025 - Present</p>
+                        <p>Analyzing political polling data and election forecasts for IL9CAST.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="experience-item">
-                <h3>Volunteer Finance Lead</h3>
-                <p class="experience-meta">Biss for Congress • Part-time • Aug 2025 - Present</p>
+            <div class="experience-item" onclick="toggleExperience(this)">
+                <div class="experience-header">
+                    <div>
+                        <h3>Volunteer Finance Lead</h3>
+                        <p class="experience-meta">Biss for Congress • Part-time</p>
+                    </div>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="experience-details">
+                    <div class="experience-content">
+                        <p class="time-period">August 2025 - Present</p>
+                        <p>Managing campaign finances and fundraising operations for congressional campaign.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="experience-item">
-                <h3>Freelance Photographer</h3>
-                <p class="experience-meta">Chicago Union • Jun 2025 - Present</p>
+            <div class="experience-item" onclick="toggleExperience(this)">
+                <div class="experience-header">
+                    <div>
+                        <h3>Freelance Photographer</h3>
+                        <p class="experience-meta">Chicago Union</p>
+                    </div>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="experience-details">
+                    <div class="experience-content">
+                        <p class="time-period">June 2025 - Present</p>
+                        <p>Capturing professional sports photography for Chicago Union ultimate frisbee team.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="experience-item">
-                <h3>Swim Instructor</h3>
-                <p class="experience-meta">YWCA USA • Part-time • Jun 2025 - Present</p>
+            <div class="experience-item" onclick="toggleExperience(this)">
+                <div class="experience-header">
+                    <div>
+                        <h3>Swim Instructor</h3>
+                        <p class="experience-meta">YWCA USA • Part-time</p>
+                    </div>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="experience-details">
+                    <div class="experience-content">
+                        <p class="time-period">June 2025 - Present</p>
+                        <p>Teaching swimming lessons to children and adults at YWCA facilities.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="experience-item">
-                <h3>Staff Writer</h3>
-                <p class="experience-meta">The Evanstonian • Part-time • Aug 2024 - Present</p>
+            <div class="experience-item" onclick="toggleExperience(this)">
+                <div class="experience-header">
+                    <div>
+                        <h3>Staff Writer</h3>
+                        <p class="experience-meta">The Evanstonian • Part-time</p>
+                    </div>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="experience-details">
+                    <div class="experience-content">
+                        <p class="time-period">August 2024 - Present</p>
+                        <p>Writing articles and covering local news for school newspaper.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="experience-item">
-                <h3>Volunteer Collections Coordinator</h3>
-                <p class="experience-meta">Collections for the Homeless</p>
+            <div class="experience-item" onclick="toggleExperience(this)">
+                <div class="experience-header">
+                    <div>
+                        <h3>Volunteer Collections Coordinator</h3>
+                        <p class="experience-meta">Collections for the Homeless</p>
+                    </div>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="experience-details">
+                    <div class="experience-content">
+                        <p class="time-period">Volunteer Position</p>
+                        <p>Coordinating collection drives and organizing donations for homeless community.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleExperience(element) {
+            element.classList.toggle('expanded');
+        }
+    </script>
 </body>
 </html>
