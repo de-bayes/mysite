@@ -268,8 +268,6 @@
         /* MASCOT CORNER */
         .mascot-corner {
             position: fixed;
-            top: 1.5rem;
-            left: 2rem;
             z-index: 100;
             display: flex;
             align-items: flex-start;
@@ -277,6 +275,24 @@
             opacity: 0;
             transform: scale(0) rotate(-20deg);
             animation: stickerSlap 0.5s ease-out 9s forwards;
+        }
+
+        /* Small windows: corner position */
+        @media (max-width: 1100px) {
+            .mascot-corner {
+                top: 1.5rem;
+                left: 2rem;
+            }
+        }
+
+        /* Large windows: upper left of content */
+        @media (min-width: 1101px) {
+            .mascot-corner {
+                top: 50%;
+                left: 50%;
+                margin-left: -650px;
+                margin-top: -150px;
+            }
         }
 
         @keyframes stickerSlap {
@@ -486,6 +502,11 @@
         @media (max-width: 600px) {
             .loader-signature {
                 width: 320px;
+            }
+
+            .mascot-corner {
+                top: 1rem;
+                left: 1rem;
             }
 
             nav {

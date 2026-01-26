@@ -83,19 +83,10 @@
             margin-bottom: 1rem;
         }
 
-        .film-placeholder {
+        .film-video {
             width: 100%;
-            aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             margin-bottom: 1rem;
             border: 1px solid #e5e5e5;
-        }
-
-        .film-placeholder span {
-            font-size: 3rem;
         }
 
         .featured-film p {
@@ -188,10 +179,11 @@
 
         <div class="featured-film">
             <h2>Featured Film</h2>
-            <div class="film-placeholder">
-                <span>🎬</span>
-            </div>
-            <p>Short film or video project - placeholder for featured content.</p>
+            <video controls class="film-video">
+                <source src="featured-film.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p>Short film or video project.</p>
         </div>
 
         <h2 class="section-subtitle">Gallery</h2>
