@@ -295,9 +295,11 @@
         .mascot-img {
             width: 140px;
             height: auto;
-            cursor: pointer;
+            cursor: grab;
             filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
             transition: transform 0.2s ease;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         .mascot-corner:hover .mascot-img {
@@ -315,24 +317,19 @@
             pointer-events: none;
         }
 
-        .mascot-corner:hover .mascot-tooltip {
+        .mascot-corner:hover:not(.dragging) .mascot-tooltip {
             opacity: 1;
             transform: translateX(0);
         }
 
         .mascot-corner.dragging {
-            cursor: grabbing;
-            transition: none;
+            cursor: grabbing !important;
         }
 
         .mascot-corner.dragging .mascot-img {
-            transform: scale(1.1) rotate(-5deg);
-            filter: drop-shadow(4px 8px 12px rgba(0,0,0,0.3));
-        }
-
-        .mascot-corner.dragging .mascot-tooltip {
-            opacity: 0;
-            pointer-events: none;
+            cursor: grabbing !important;
+            transform: scale(1.15) rotate(-8deg);
+            filter: drop-shadow(8px 12px 20px rgba(0,0,0,0.4));
         }
 
         .mascot-corner.peeled {
@@ -724,11 +721,11 @@
 
         // FIVEY FOX DRAG
         const mascot = document.querySelector('.mascot-corner');
+        const mascotImg = document.querySelector('.mascot-img');
         let isDragging = false;
         let offsetX, offsetY;
 
-        mascot.addEventListener('mousedown', (e) => {
-            if (e.target.tagName === 'A') return;
+        mascotImg.addEventListener('mousedown', (e) => {
             isDragging = true;
             mascot.classList.add('dragging', 'peeled');
 
@@ -736,19 +733,25 @@
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
 
+            // Remove the initial positioning
             mascot.style.position = 'fixed';
             mascot.style.left = rect.left + 'px';
             mascot.style.top = rect.top + 'px';
             mascot.style.right = 'auto';
+            mascot.style.bottom = 'auto';
 
             e.preventDefault();
+            e.stopPropagation();
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
 
-            mascot.style.left = (e.clientX - offsetX) + 'px';
-            mascot.style.top = (e.clientY - offsetY) + 'px';
+            const newX = e.clientX - offsetX;
+            const newY = e.clientY - offsetY;
+
+            mascot.style.left = newX + 'px';
+            mascot.style.top = newY + 'px';
         });
 
         document.addEventListener('mouseup', () => {
@@ -756,6 +759,9 @@
             isDragging = false;
             mascot.classList.remove('dragging');
         });
+
+        // Prevent default drag behavior on the image
+        mascotImg.addEventListener('dragstart', (e) => e.preventDefault());
     </script>
 </body>
 </html>
