@@ -415,7 +415,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #7a7a7a 0%, #9a9a9a 100%);
+            background: linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%);
             z-index: 9999;
             display: none;
             opacity: 0;
@@ -1206,21 +1206,7 @@
             overlay.classList.remove('active');
         }
 
-        // Click outside terminal to close
-        document.getElementById('terminal-overlay')?.addEventListener('click', (e) => {
-            if (e.target.id === 'terminal-overlay') {
-                closeTerminal();
-            }
-        });
-
-        // Keep terminal focused
-        document.getElementById('terminal-body')?.addEventListener('click', () => {
-            document.getElementById('terminal-input')?.focus();
-        });
-
         // Terminal commands
-        const terminalInput = document.getElementById('terminal-input');
-        const terminalBody = document.getElementById('terminal-body');
 
         const asciiPages = {
             home: `
@@ -1300,6 +1286,9 @@
         };
 
         function addTerminalLine(content, className = '') {
+            const terminalBody = document.getElementById('terminal-body');
+            if (!terminalBody) return;
+
             const line = document.createElement('div');
             line.className = 'terminal-line ' + className;
             if (content.includes('\\n')) {
@@ -1354,14 +1343,44 @@
             }
         }
 
-        if (terminalInput) {
-            terminalInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const cmd = terminalInput.value;
-                    executeCommand(cmd);
-                    terminalInput.value = '';
-                }
-            });
+        // Set up terminal event listeners
+        function setupTerminal() {
+            const terminalInput = document.getElementById('terminal-input');
+            const terminalBody = document.getElementById('terminal-body');
+            const terminalOverlay = document.getElementById('terminal-overlay');
+
+            if (terminalInput) {
+                terminalInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const cmd = terminalInput.value;
+                        executeCommand(cmd);
+                        terminalInput.value = '';
+                    }
+                });
+            }
+
+            // Click outside terminal to close
+            if (terminalOverlay) {
+                terminalOverlay.addEventListener('click', (e) => {
+                    if (e.target.id === 'terminal-overlay') {
+                        closeTerminal();
+                    }
+                });
+            }
+
+            // Keep terminal focused
+            if (terminalBody) {
+                terminalBody.addEventListener('click', () => {
+                    terminalInput?.focus();
+                });
+            }
+        }
+
+        // Initialize terminal when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupTerminal);
+        } else {
+            setupTerminal();
         }
 
         // Terminal dragging
