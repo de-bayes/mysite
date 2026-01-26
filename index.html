@@ -290,8 +290,8 @@
             .mascot-corner {
                 top: 50%;
                 left: 50%;
-                margin-left: -650px;
-                margin-top: -220px;
+                margin-left: -550px;
+                margin-top: -280px;
             }
         }
 
@@ -352,6 +352,8 @@
 
         .mascot-corner.peeled {
             animation: none;
+            opacity: 1 !important;
+            transform: none !important;
         }
 
         .mascot-tooltip p {
@@ -763,17 +765,24 @@
         const mascotImg = document.querySelector('.mascot-img');
         let isDragging = false;
         let offsetX, offsetY;
-        let hasMoved = false;
 
         mascotImg.addEventListener('mousedown', (e) => {
             if (e.target.tagName === 'A') return;
+
+            isDragging = true;
+            mascot.classList.add('dragging', 'peeled');
 
             const rect = mascot.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
 
-            isDragging = true;
-            hasMoved = false;
+            // Convert to fixed positioning smoothly
+            mascot.style.position = 'fixed';
+            mascot.style.left = rect.left + 'px';
+            mascot.style.top = rect.top + 'px';
+            mascot.style.margin = '0';
+            mascot.style.right = 'auto';
+            mascot.style.bottom = 'auto';
 
             e.preventDefault();
             e.stopPropagation();
@@ -781,20 +790,6 @@
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-
-            if (!hasMoved) {
-                // First move - set up for dragging
-                mascot.classList.add('dragging', 'peeled');
-                const rect = mascot.getBoundingClientRect();
-
-                mascot.style.position = 'fixed';
-                mascot.style.left = rect.left + 'px';
-                mascot.style.top = rect.top + 'px';
-                mascot.style.margin = '0';
-                mascot.style.transform = 'none';
-
-                hasMoved = true;
-            }
 
             const newX = e.clientX - offsetX;
             const newY = e.clientY - offsetY;
