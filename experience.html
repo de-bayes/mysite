@@ -431,7 +431,7 @@
         const canvas = document.getElementById('polar-grid');
         const ctx = canvas.getContext('2d');
         let mouseX = -1000, mouseY = -1000, targetMouseX = -1000, targetMouseY = -1000;
-        const influence = 150, maxDisplacement = 25, smoothing = 0.15;
+        const influence = 280, maxDisplacement = 15, smoothing = 0.06;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -445,15 +445,30 @@
         document.addEventListener('touchmove', e => { if (e.touches.length) { targetMouseX = e.touches[0].clientX; targetMouseY = e.touches[0].clientY; } }, { passive: true });
         document.addEventListener('touchend', () => { targetMouseX = targetMouseY = -1000; });
 
+        // Store displacement state for smooth animation
+        let dispState = {};
+
         function getDisplacement(x, y) {
+            const key = `${Math.round(x)},${Math.round(y)}`;
+            if (!dispState[key]) dispState[key] = { x: 0, y: 0 };
+
             const dx = x - mouseX, dy = y - mouseY;
             const dist = Math.sqrt(dx * dx + dy * dy);
+            let targetX = 0, targetY = 0;
+
             if (dist < influence && dist > 0) {
-                const force = Math.pow(1 - dist / influence, 2) * maxDisplacement;
+                const falloff = 1 - dist / influence;
+                const force = falloff * falloff * falloff * maxDisplacement;
                 const angle = Math.atan2(dy, dx);
-                return { x: Math.cos(angle) * force, y: Math.sin(angle) * force };
+                targetX = Math.cos(angle) * force;
+                targetY = Math.sin(angle) * force;
             }
-            return { x: 0, y: 0 };
+
+            // Smooth interpolation for dampened feel
+            dispState[key].x += (targetX - dispState[key].x) * 0.06;
+            dispState[key].y += (targetY - dispState[key].y) * 0.06;
+
+            return dispState[key];
         }
 
         function drawPolarGrid() {
