@@ -1413,36 +1413,36 @@
                 addTerminalLine('');
                 addTerminalLine('<span style="color: #e67e22; font-weight: bold;">Available Commands</span>');
                 addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                addTerminalLine('  <span class="terminal-command">/home</span>       → View home page');
-                addTerminalLine('  <span class="terminal-command">/experience</span> → View work experience');
-                addTerminalLine('  <span class="terminal-command">/projects</span>   → View projects');
-                addTerminalLine('  <span class="terminal-command">/passions</span>   → View passions');
-                addTerminalLine('  <span class="terminal-command">/photos</span>     → View photos');
-                addTerminalLine('  <span class="terminal-command">/education</span>  → View education');
-                addTerminalLine('  <span class="terminal-command">/contact</span>    → View contact info');
-                addTerminalLine('  <span class="terminal-command">/clear</span>      → Clear terminal');
+                addTerminalLine('  <span class="terminal-command">/home</span>    → View home page');
+                addTerminalLine('  <span class="terminal-command">/exp</span>     → View work experience');
+                addTerminalLine('  <span class="terminal-command">/proj</span>    → View projects');
+                addTerminalLine('  <span class="terminal-command">/pass</span>    → View passions');
+                addTerminalLine('  <span class="terminal-command">/pics</span>    → View photos');
+                addTerminalLine('  <span class="terminal-command">/edu</span>     → View education');
+                addTerminalLine('  <span class="terminal-command">/contact</span> → View contact info');
+                addTerminalLine('  <span class="terminal-command">/clear</span>   → Clear terminal');
                 addTerminalLine('');
             } else if (command === '/home') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.home);
                 addTerminalLine('');
-            } else if (command === '/experience') {
+            } else if (command === '/exp' || command === '/experience') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.experience);
                 addTerminalLine('');
-            } else if (command === '/projects') {
+            } else if (command === '/proj' || command === '/projects') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.projects);
                 addTerminalLine('');
-            } else if (command === '/passions') {
+            } else if (command === '/pass' || command === '/passions') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.passions);
                 addTerminalLine('');
-            } else if (command === '/photos') {
+            } else if (command === '/pics' || command === '/photos') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.photos);
                 addTerminalLine('');
-            } else if (command === '/education') {
+            } else if (command === '/edu' || command === '/education') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.education);
                 addTerminalLine('');
