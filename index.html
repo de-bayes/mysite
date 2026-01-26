@@ -404,8 +404,32 @@
             color: #000000;
         }
 
-        .nav-tabs .terminal-trigger {
+        /* TERMINAL BUTTON */
+        .terminal-button {
+            position: fixed;
+            top: 1.5rem;
+            left: 2rem;
+            z-index: 100;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #e67e22;
+            text-decoration: none;
             cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: opacity 0.2s ease;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .terminal-button:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 600px) {
+            .terminal-button {
+                top: 1rem;
+                left: 1rem;
+                font-size: 0.65rem;
+            }
         }
 
         /* TERMINAL MODE */
@@ -786,6 +810,8 @@
             </div>
         </div>
 
+        <div class="terminal-button" onclick="openTerminal()">TERMINAL</div>
+
         <nav>
             <ul class="nav-tabs">
                 <li><a href="index.html" class="active">Home</a></li>
@@ -795,7 +821,6 @@
                 <li><a href="photos.html">Photos</a></li>
                 <li><a href="education.html">Education</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a class="terminal-trigger" onclick="openTerminal()">Terminal</a></li>
             </ul>
         </nav>
 
