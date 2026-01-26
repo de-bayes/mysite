@@ -727,6 +727,8 @@
         let offsetX, offsetY;
 
         mascotImg.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'A') return; // Don't drag if clicking link
+
             isDragging = true;
             mascot.classList.add('dragging', 'peeled');
 
@@ -734,8 +736,10 @@
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
 
-            // Set to fixed positioning
+            // Ensure visible and positioned
             mascot.style.position = 'fixed';
+            mascot.style.opacity = '1';
+            mascot.style.transform = 'none';
             mascot.style.left = rect.left + 'px';
             mascot.style.top = rect.top + 'px';
             mascot.style.right = 'auto';
@@ -748,8 +752,11 @@
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
 
-            mascot.style.left = (e.clientX - offsetX) + 'px';
-            mascot.style.top = (e.clientY - offsetY) + 'px';
+            const newX = e.clientX - offsetX;
+            const newY = e.clientY - offsetY;
+
+            mascot.style.left = newX + 'px';
+            mascot.style.top = newY + 'px';
         });
 
         document.addEventListener('mouseup', () => {
