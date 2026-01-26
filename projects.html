@@ -23,6 +23,22 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
+            position: relative;
+        }
+
+        #slanted-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .page-container {
+            position: relative;
+            z-index: 1;
         }
 
         /* NAV TABS */
@@ -163,6 +179,8 @@
     </style>
 </head>
 <body>
+    <canvas id="slanted-grid"></canvas>
+
     <nav>
         <ul class="nav-tabs">
             <li><a href="index.html">Home</a></li>
@@ -223,6 +241,44 @@
         if (perfData && perfData.type === 'reload') {
             window.location.href = 'index.html';
         }
+
+        // Slanted grid background
+        const canvas = document.getElementById('slanted-grid');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawSlantedGrid();
+        }
+
+        function drawSlantedGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.035)';
+            ctx.lineWidth = 1;
+
+            const gridSize = 40;
+            const angle = 15 * (Math.PI / 180); // 15 degree slant
+
+            // Draw slanted horizontal lines
+            for (let y = -canvas.width; y < canvas.height + canvas.width; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y + canvas.width * Math.tan(angle));
+                ctx.stroke();
+            }
+
+            // Draw slanted vertical lines
+            for (let x = -canvas.height; x < canvas.width + canvas.height; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x + canvas.height * Math.tan(angle), canvas.height);
+                ctx.stroke();
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
     </script>
 </body>
 </html>
