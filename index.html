@@ -828,7 +828,6 @@
                 <li><a href="projects.html">Projects</a></li>
                 <li><a href="passions.html">Passions</a></li>
                 <li><a href="photos.html">Photos</a></li>
-                <li><a href="education.html">Education</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
@@ -1414,11 +1413,10 @@
                 addTerminalLine('<span style="color: #e67e22; font-weight: bold;">Available Commands</span>');
                 addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                 addTerminalLine('  <span class="terminal-command">/home</span>    → View home page');
-                addTerminalLine('  <span class="terminal-command">/exp</span>     → View work experience');
+                addTerminalLine('  <span class="terminal-command">/exp</span>     → View experience & education');
                 addTerminalLine('  <span class="terminal-command">/proj</span>    → View projects');
                 addTerminalLine('  <span class="terminal-command">/pass</span>    → View passions');
                 addTerminalLine('  <span class="terminal-command">/pics</span>    → View photos');
-                addTerminalLine('  <span class="terminal-command">/edu</span>     → View education');
                 addTerminalLine('  <span class="terminal-command">/contact</span> → View contact info');
                 addTerminalLine('  <span class="terminal-command">/clear</span>   → Clear terminal');
                 addTerminalLine('');
@@ -1429,6 +1427,8 @@
             } else if (command === '/exp' || command === '/experience') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.experience);
+                addTerminalLine('');
+                addTerminalLine(asciiPages.education);
                 addTerminalLine('');
             } else if (command === '/proj' || command === '/projects') {
                 addTerminalLine('');
@@ -1441,10 +1441,6 @@
             } else if (command === '/pics' || command === '/photos') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.photos);
-                addTerminalLine('');
-            } else if (command === '/edu' || command === '/education') {
-                addTerminalLine('');
-                addTerminalLine(asciiPages.education);
                 addTerminalLine('');
             } else if (command === '/contact') {
                 addTerminalLine('');
