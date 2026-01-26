@@ -69,6 +69,69 @@
             color: #000000;
         }
 
+        /* HAMBURGER MENU */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 101;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #888888;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover span {
+            background: #000000;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        @media (max-width: 600px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-tabs {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 200px;
+                height: 100vh;
+                background: #ffffff;
+                flex-direction: column;
+                padding: 5rem 2rem 2rem;
+                gap: 1.5rem;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+
+            .nav-tabs.open {
+                transform: translateX(0);
+            }
+
+            .nav-tabs a {
+                font-size: 1rem;
+            }
+        }
+
         /* PAGE CONTENT */
         .page-container {
             min-height: 100vh;
@@ -200,6 +263,11 @@
     <canvas id="polar-grid"></canvas>
 
     <nav>
+        <div class="hamburger" onclick="toggleNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <ul class="nav-tabs">
             <li><a href="index.html">Home</a></li>
             <li><a href="experience.html" class="active">Experience</a></li>
@@ -336,6 +404,19 @@
     </div>
 
     <script>
+        // HAMBURGER MENU
+        function toggleNav() {
+            document.querySelector('.hamburger').classList.toggle('active');
+            document.querySelector('.nav-tabs').classList.toggle('open');
+        }
+
+        document.querySelectorAll('.nav-tabs a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.hamburger').classList.remove('active');
+                document.querySelector('.nav-tabs').classList.remove('open');
+            });
+        });
+
         // Redirect to home on refresh
         const perfData = performance.getEntriesByType('navigation')[0];
         if (perfData && perfData.type === 'reload') {
@@ -358,7 +439,7 @@
 
         function drawPolarGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.035)';
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.055)';
             ctx.lineWidth = 1;
 
             const centerX = canvas.width / 2;
