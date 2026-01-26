@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ryan McComb">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <title>Ryan McComb</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* GRID BACKGROUND */
+        #grid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .site-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* LOADER */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-signature {
+            width: 550px;
+            height: auto;
+            animation: pulse 1.5s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        .loader-text {
+            font-family: 'VT323', monospace;
+            font-size: 2.5rem;
+            color: #e67e22;
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.2em;
+            padding: 0.5rem 1rem;
+        }
+
+        @keyframes invertFlash {
+            0%, 70%, 100% {
+                color: #e67e22;
+                background: transparent;
+            }
+            80%, 90% {
+                color: #ffffff;
+                background: #e67e22;
+            }
+        }
+
+        .loader-url {
+            font-family: 'VT323', monospace;
+            font-size: 5rem;
+            margin-bottom: 0;
+            display: flex;
+        }
+
+        .loader-url span {
+            color: #e67e22;
+            padding: 0.1rem 0.15rem;
+            animation: invertFlash 1.5s ease-in-out infinite;
+        }
+
+        .loader-url span:nth-child(1) { animation-delay: 0.3s; }
+        .loader-url span:nth-child(2) { animation-delay: 1.1s; }
+        .loader-url span:nth-child(3) { animation-delay: 0.5s; }
+        .loader-url span:nth-child(4) { animation-delay: 0.8s; }
+        .loader-url span:nth-child(5) { animation-delay: 0.2s; }
+        .loader-url span:nth-child(6) { animation-delay: 1.3s; }
+        .loader-url span:nth-child(7) { animation-delay: 0.1s; }
+        .loader-url span:nth-child(8) { animation-delay: 0.7s; }
+        .loader-url span:nth-child(9) { animation-delay: 0.4s; }
+        .loader-url span:nth-child(10) { animation-delay: 0.9s; }
+        .loader-url span:nth-child(11) { animation-delay: 0.2s; }
+        .loader-url span:nth-child(12) { animation-delay: 0.6s; }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .loader-counter {
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            height: 3rem;
+        }
+
+        .loader-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(100% + 2.5rem);
+            height: 4px;
+            background: #e67e22;
+        }
+
+        .loader-number {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: #e67e22;
+            position: absolute;
+        }
+
+        /* SITE CONTENT - hidden until loaded */
+        .site-content {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .site-content.visible {
+            opacity: 1;
+        }
+
+        /* HEADER */
+        header {
+            padding: 4rem 2rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .signature {
+            width: 200px;
+            height: auto;
+            opacity: 0.9;
+        }
+
+        .header-text h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-text .subtitle {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #555555;
+            letter-spacing: 0.02em;
+        }
+
+        /* MAIN */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* PHOTO CONTAINER */
+        .photo-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            overflow: hidden;
+            margin: 0 auto 3rem;
+        }
+
+        .photo-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+
+        .photo-sketch {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .photo-original {
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .photo-container:hover .photo-sketch {
+            opacity: 0;
+        }
+
+        .photo-container:hover .photo-original {
+            opacity: 1;
+        }
+
+        /* CONTENT */
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #333333;
+            margin-bottom: 1.5rem;
+        }
+
+        .content a {
+            color: #000000;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .content a:hover {
+            text-decoration: none;
+        }
+
+        /* MASCOT CORNER */
+        .mascot-corner {
+            position: fixed;
+            top: 1.5rem;
+            left: 2rem;
+            z-index: 100;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            opacity: 0;
+            transform: scale(0) rotate(-20deg);
+            animation: stickerSlap 0.5s ease-out 9s forwards;
+        }
+
+        @keyframes stickerSlap {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-20deg);
+            }
+            70% {
+                transform: scale(1.15) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .mascot-img {
+            width: 140px;
+            height: auto;
+            cursor: pointer;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
+            transition: transform 0.2s ease;
+        }
+
+        .mascot-corner:hover .mascot-img {
+            transform: scale(1.05);
+        }
+
+        .mascot-tooltip {
+            background: #e67e22;
+            padding: 1rem 1.25rem;
+            max-width: 280px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 3px 3px 0 #000000;
+            pointer-events: none;
+        }
+
+        .mascot-corner:hover .mascot-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mascot-tooltip p {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            color: #ffffff;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .mascot-tooltip a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* NAV TABS */
+        nav {
+            position: fixed;
+            top: 1.5rem;
+            right: 2rem;
+            z-index: 100;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-tabs a {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #888888;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-tabs a:hover {
+            color: #000000;
+        }
+
+        /* HOMEPAGE */
+        .homepage {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .homepage-name {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .homepage-name h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 4rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .homepage-name .name-text {
+            transition: opacity 0.4s ease;
+        }
+
+        .homepage-name .name-sig {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: auto;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .homepage-name h1:hover .name-text {
+            opacity: 0;
+        }
+
+        .homepage-name h1:hover .name-sig {
+            opacity: 1;
+        }
+
+        .homepage-name .subtitle {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #555555;
+            letter-spacing: 0.02em;
+        }
+
+        /* SECTIONS */
+        .section {
+            padding: 3rem 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.75rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .section p {
+            color: #333333;
+            line-height: 1.8;
+        }
+
+        /* FOOTER */
+        footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: #555555;
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #000000;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .loader-signature {
+                width: 320px;
+            }
+
+            nav {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .nav-tabs {
+                gap: 1rem;
+            }
+
+            .nav-tabs a {
+                font-size: 0.65rem;
+            }
+
+            .homepage {
+                padding: 1.5rem;
+            }
+
+            .homepage-name h1 {
+                font-size: 2.75rem;
+            }
+
+            .homepage-name .name-sig {
+                width: 200px;
+            }
+
+            .photo-container {
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
+        <p class="loader-text" id="loader-text">loading</p>
+        <div class="loader-counter">
+            <div class="loader-line"></div>
+            <span class="loader-number" id="loader-number">1</span>
+        </div>
+    </div>
+
+    <canvas id="grid-canvas"></canvas>
+
+    <!-- SITE CONTENT -->
+    <div class="site-content" id="site-content">
+        <div class="mascot-corner">
+            <img src="538mascot.webp" alt="538 Mascot" class="mascot-img">
+            <div class="mascot-tooltip">
+                <p>I was the mascot before Disney killed me. My name was Fivey Fox. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="projects.html">projects</a>!</p>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="nav-tabs">
+                <li><a href="experience.html">Experience</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="passions.html">Passions</a></li>
+                <li><a href="education.html">Education</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <main class="homepage">
+            <div class="homepage-name">
+                <h1>
+                    <span class="name-text">Ryan McComb</span>
+                    <img src="sig.webp" alt="Signature" class="name-sig">
+                </h1>
+                <p class="subtitle">Student at ETHS</p>
+            </div>
+
+            <div class="photo-container">
+                <img src="photo-sketch.png" alt="Ryan McComb" class="photo-sketch">
+                <img src="photo-original.jpg" alt="Ryan McComb" class="photo-original">
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const loader = document.getElementById('loader');
+        const siteContent = document.getElementById('site-content');
+        const loaderNumber = document.getElementById('loader-number');
+        const loaderText = document.getElementById('loader-text');
+
+        const steps = [1, 13, 27, 41, 54, 68, 79, 88, 94, 100];
+        let currentStep = 0;
+        const stepDelay = 800;
+
+        let dotCount = 0;
+        setInterval(() => {
+            dotCount = (dotCount + 1) % 4;
+            loaderText.textContent = 'loading' + '.'.repeat(dotCount);
+        }, 500);
+
+        function updateLoader() {
+            const value = steps[currentStep];
+            const progress = value / 100;
+
+            loaderNumber.textContent = value;
+            loaderNumber.style.left = progress * 100 + '%';
+
+            currentStep++;
+
+            if (currentStep < steps.length) {
+                setTimeout(updateLoader, stepDelay);
+            } else {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    siteContent.classList.add('visible');
+                }, 400);
+            }
+        }
+
+        updateLoader();
+
+        // GRID BACKGROUND
+        const canvas = document.getElementById('grid-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let mouseX = -1000;
+        let mouseY = -1000;
+        let targetMouseX = -1000;
+        let targetMouseY = -1000;
+        const gridSize = 40;
+        const influence = 150;
+        const maxDisplacement = 30;
+        const smoothing = 0.15;
+
+        // Store current point positions for smooth animation
+        let pointsState = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            pointsState = null;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        document.addEventListener('mousemove', (e) => {
+            targetMouseX = e.clientX;
+            targetMouseY = e.clientY;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            targetMouseX = -1000;
+            targetMouseY = -1000;
+        });
+
+        function drawGrid() {
+            // Smooth mouse position
+            mouseX += (targetMouseX - mouseX) * smoothing;
+            mouseY += (targetMouseY - mouseY) * smoothing;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.035)';
+            ctx.lineWidth = 1;
+
+            const cols = Math.ceil(canvas.width / gridSize) + 1;
+            const rows = Math.ceil(canvas.height / gridSize) + 1;
+
+            // Initialize points state if needed
+            if (!pointsState || pointsState.length !== rows + 1) {
+                pointsState = [];
+                for (let row = 0; row <= rows; row++) {
+                    pointsState[row] = [];
+                    for (let col = 0; col <= cols; col++) {
+                        pointsState[row][col] = { x: col * gridSize, y: row * gridSize };
+                    }
+                }
+            }
+
+            // Calculate target positions and smoothly animate
+            for (let row = 0; row <= rows; row++) {
+                for (let col = 0; col <= cols; col++) {
+                    const baseX = col * gridSize;
+                    const baseY = row * gridSize;
+                    let targetX = baseX;
+                    let targetY = baseY;
+
+                    const dx = baseX - mouseX;
+                    const dy = baseY - mouseY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < influence && dist > 0) {
+                        const force = Math.pow(1 - dist / influence, 2) * maxDisplacement * 0.6;
+                        const angle = Math.atan2(dy, dx);
+                        // Push away from mouse
+                        targetX = baseX + Math.cos(angle) * force;
+                        targetY = baseY + Math.sin(angle) * force;
+                    }
+
+                    // Smooth interpolation
+                    pointsState[row][col].x += (targetX - pointsState[row][col].x) * 0.2;
+                    pointsState[row][col].y += (targetY - pointsState[row][col].y) * 0.2;
+                }
+            }
+
+            // Draw horizontal lines with curves
+            for (let row = 0; row <= rows; row++) {
+                ctx.beginPath();
+                ctx.moveTo(pointsState[row][0].x, pointsState[row][0].y);
+                for (let col = 1; col <= cols; col++) {
+                    const prev = pointsState[row][col - 1];
+                    const curr = pointsState[row][col];
+                    const midX = (prev.x + curr.x) / 2;
+                    const midY = (prev.y + curr.y) / 2;
+                    ctx.quadraticCurveTo(prev.x, prev.y, midX, midY);
+                }
+                ctx.stroke();
+            }
+
+            // Draw vertical lines with curves
+            for (let col = 0; col <= cols; col++) {
+                ctx.beginPath();
+                ctx.moveTo(pointsState[0][col].x, pointsState[0][col].y);
+                for (let row = 1; row <= rows; row++) {
+                    const prev = pointsState[row - 1][col];
+                    const curr = pointsState[row][col];
+                    const midX = (prev.x + curr.x) / 2;
+                    const midY = (prev.y + curr.y) / 2;
+                    ctx.quadraticCurveTo(prev.x, prev.y, midX, midY);
+                }
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(drawGrid);
+        }
+
+        drawGrid();
+    </script>
+</body>
+</html>
