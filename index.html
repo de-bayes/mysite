@@ -27,6 +27,10 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         /* GRID BACKGROUND */
@@ -43,6 +47,8 @@
         .site-content {
             position: relative;
             z-index: 1;
+            user-select: text;
+            -webkit-user-select: text;
         }
 
         /* LOADER */
@@ -317,6 +323,7 @@
             transition: transform 0.2s ease;
             user-select: none;
             -webkit-user-drag: none;
+            touch-action: none;
         }
 
         .mascot-corner:hover .mascot-img {
@@ -678,6 +685,19 @@
             targetMouseY = -1000;
         });
 
+        // Touch support for grid
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                targetMouseX = e.touches[0].clientX;
+                targetMouseY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+            targetMouseX = -1000;
+            targetMouseY = -1000;
+        });
+
         function drawGrid() {
             // Smooth mouse position
             mouseX += (targetMouseX - mouseX) * smoothing;
@@ -788,8 +808,8 @@
             mascot.style.animation = 'none';
         }
 
-        mascotImg.addEventListener('mousedown', (e) => {
-            if (e.target.tagName === 'A') return;
+        function handleDragStart(clientX, clientY, target) {
+            if (target.tagName === 'A') return false;
 
             // Stop any ongoing animation
             if (animationId) {
@@ -801,12 +821,12 @@
             mascot.classList.add('dragging', 'peeled');
 
             const rect = mascot.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
+            offsetX = clientX - rect.left;
+            offsetY = clientY - rect.top;
 
             // Track for velocity calculation
-            lastX = e.clientX - offsetX;
-            lastY = e.clientY - offsetY;
+            lastX = clientX - offsetX;
+            lastY = clientY - offsetY;
             lastTime = Date.now();
 
             // Convert to fixed positioning smoothly
@@ -817,15 +837,30 @@
             mascot.style.right = 'auto';
             mascot.style.bottom = 'auto';
 
-            e.preventDefault();
-            e.stopPropagation();
+            return true;
+        }
+
+        mascotImg.addEventListener('mousedown', (e) => {
+            if (handleDragStart(e.clientX, e.clientY, e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
         });
 
-        document.addEventListener('mousemove', (e) => {
+        mascotImg.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                if (handleDragStart(e.touches[0].clientX, e.touches[0].clientY, e.target)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }
+        }, { passive: false });
+
+        function handleDragMove(clientX, clientY) {
             if (!isDragging) return;
 
-            const newX = e.clientX - offsetX;
-            const newY = e.clientY - offsetY;
+            const newX = clientX - offsetX;
+            const newY = clientY - offsetY;
             const currentTime = Date.now();
             const deltaTime = currentTime - lastTime;
 
@@ -844,15 +879,34 @@
 
             // Save position while dragging
             localStorage.setItem('fiveyPosition', JSON.stringify({ x: newX, y: newY }));
-        });
+        }
 
-        document.addEventListener('mouseup', () => {
+        function handleDragEnd() {
             if (!isDragging) return;
             isDragging = false;
             mascot.classList.remove('dragging');
 
             // Start physics simulation
             animatePhysics();
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            handleDragMove(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mouseup', () => {
+            handleDragEnd();
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging && e.touches.length > 0) {
+                e.preventDefault();
+                handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchend', () => {
+            handleDragEnd();
         });
 
         function animatePhysics() {
