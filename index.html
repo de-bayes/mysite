@@ -241,12 +241,40 @@
             z-index: 1;
         }
 
-        .photo-container:hover .photo-sketch {
+        .photo-container:hover .photo-sketch,
+        .photo-container.touched .photo-sketch {
             opacity: 0;
         }
 
-        .photo-container:hover .photo-original {
+        .photo-container:hover .photo-original,
+        .photo-container.touched .photo-original {
             opacity: 1;
+        }
+
+        .photo-hint {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: #888888;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .photo-hint {
+                opacity: 1;
+            }
+
+            .photo-container.touched .photo-hint {
+                opacity: 0;
+            }
         }
 
         /* CONTENT */
@@ -403,6 +431,69 @@
         .nav-tabs a:hover,
         .nav-tabs a.active {
             color: #000000;
+        }
+
+        /* HAMBURGER MENU */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 101;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #888888;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover span {
+            background: #000000;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        @media (max-width: 600px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-tabs {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 200px;
+                height: 100vh;
+                background: #ffffff;
+                flex-direction: column;
+                padding: 5rem 2rem 2rem;
+                gap: 1.5rem;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+
+            .nav-tabs.open {
+                transform: translateX(0);
+            }
+
+            .nav-tabs a {
+                font-size: 1rem;
+            }
         }
 
         /* TERMINAL BUTTON */
@@ -823,6 +914,11 @@
         <div class="terminal-button" onclick="openTerminal()">TERMINAL</div>
 
         <nav>
+            <div class="hamburger" onclick="toggleNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-tabs">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="experience.html">Experience</a></li>
@@ -842,14 +938,40 @@
                 <p class="subtitle">Student at ETHS</p>
             </div>
 
-            <div class="photo-container">
+            <div class="photo-container" id="photo-container">
                 <img src="photo-sketch.png" alt="Ryan McComb" class="photo-sketch">
                 <img src="photo-original.jpg" alt="Ryan McComb" class="photo-original">
+                <span class="photo-hint">Tap to reveal</span>
             </div>
         </main>
     </div>
 
     <script>
+        // HAMBURGER MENU
+        function toggleNav() {
+            document.querySelector('.hamburger').classList.toggle('active');
+            document.querySelector('.nav-tabs').classList.toggle('open');
+        }
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-tabs a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.hamburger').classList.remove('active');
+                document.querySelector('.nav-tabs').classList.remove('open');
+            });
+        });
+
+        // PHOTO TOUCH TOGGLE
+        const photoContainer = document.getElementById('photo-container');
+        if (photoContainer) {
+            photoContainer.addEventListener('click', function() {
+                // Only toggle on touch devices
+                if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+                    this.classList.toggle('touched');
+                }
+            });
+        }
+
         const loader = document.getElementById('loader');
         const siteContent = document.getElementById('site-content');
         const loaderNumber = document.getElementById('loader-number');
@@ -953,7 +1075,7 @@
             mouseY += (targetMouseY - mouseY) * smoothing;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.035)';
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.055)';
             ctx.lineWidth = 1;
 
             const cols = Math.ceil(canvas.width / gridSize) + 1;
@@ -1241,6 +1363,8 @@
         }
 
         // Terminal commands
+        const commandHistory = [];
+        let historyIndex = -1;
 
         const asciiPages = {
             home: `
@@ -1407,6 +1531,12 @@
         function executeCommand(cmd) {
             const command = cmd.trim().toLowerCase();
 
+            // Save to history if not empty
+            if (cmd.trim()) {
+                commandHistory.push(cmd);
+                historyIndex = commandHistory.length;
+            }
+
             addTerminalLine(`<span class="terminal-prompt">ryan@mccomb:~$</span> ${cmd}`);
 
             if (command === '/info') {
@@ -1502,6 +1632,21 @@
                         const cmd = terminalInput.value;
                         executeCommand(cmd);
                         terminalInput.value = '';
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (commandHistory.length > 0 && historyIndex > 0) {
+                            historyIndex--;
+                            terminalInput.value = commandHistory[historyIndex];
+                        }
+                    } else if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (historyIndex < commandHistory.length - 1) {
+                            historyIndex++;
+                            terminalInput.value = commandHistory[historyIndex];
+                        } else {
+                            historyIndex = commandHistory.length;
+                            terminalInput.value = '';
+                        }
                     }
                 });
             }
