@@ -320,6 +320,25 @@
             transform: translateX(0);
         }
 
+        .mascot-corner.dragging {
+            cursor: grabbing;
+            transition: none;
+        }
+
+        .mascot-corner.dragging .mascot-img {
+            transform: scale(1.1) rotate(-5deg);
+            filter: drop-shadow(4px 8px 12px rgba(0,0,0,0.3));
+        }
+
+        .mascot-corner.dragging .mascot-tooltip {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .mascot-corner.peeled {
+            animation: none;
+        }
+
         .mascot-tooltip p {
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
@@ -519,6 +538,7 @@
             <img src="538mascot.webp" alt="538 Mascot" class="mascot-img">
             <div class="mascot-tooltip">
                 <p>I was the mascot before Disney killed me. My name was Fivey Fox. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="projects.html">projects</a>!</p>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.8;">Click on me to peel me like a sticker!</p>
             </div>
         </div>
 
@@ -701,6 +721,41 @@
         }
 
         drawGrid();
+
+        // FIVEY FOX DRAG
+        const mascot = document.querySelector('.mascot-corner');
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        mascot.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'A') return;
+            isDragging = true;
+            mascot.classList.add('dragging', 'peeled');
+
+            const rect = mascot.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+
+            mascot.style.position = 'fixed';
+            mascot.style.left = rect.left + 'px';
+            mascot.style.top = rect.top + 'px';
+            mascot.style.right = 'auto';
+
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            mascot.style.left = (e.clientX - offsetX) + 'px';
+            mascot.style.top = (e.clientY - offsetY) + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            mascot.classList.remove('dragging');
+        });
     </script>
 </body>
 </html>
