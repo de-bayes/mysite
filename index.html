@@ -535,7 +535,7 @@
             <img src="538mascot.webp" alt="538 Mascot" class="mascot-img">
             <div class="mascot-tooltip">
                 <p>I was the mascot before Disney killed me. My name was Fivey Fox. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="projects.html">projects</a>!</p>
-                <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.8;">Click on me to peel me like a sticker!</p>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.8;">Click and hold to drag me around!</p>
             </div>
         </div>
 
@@ -724,21 +724,22 @@
         const mascot = document.querySelector('.mascot-corner');
         const mascotImg = document.querySelector('.mascot-img');
         let isDragging = false;
+        let offsetX, offsetY;
 
         mascotImg.addEventListener('mousedown', (e) => {
             isDragging = true;
             mascot.classList.add('dragging', 'peeled');
 
-            // Set to fixed positioning immediately
+            const rect = mascot.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+
+            // Set to fixed positioning
             mascot.style.position = 'fixed';
+            mascot.style.left = rect.left + 'px';
+            mascot.style.top = rect.top + 'px';
             mascot.style.right = 'auto';
             mascot.style.bottom = 'auto';
-
-            // Center on cursor
-            const imgWidth = mascotImg.offsetWidth;
-            const imgHeight = mascotImg.offsetHeight;
-            mascot.style.left = (e.clientX - imgWidth / 2) + 'px';
-            mascot.style.top = (e.clientY - imgHeight / 2) + 'px';
 
             e.preventDefault();
             e.stopPropagation();
@@ -747,11 +748,8 @@
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
 
-            // Follow cursor - centered
-            const imgWidth = mascotImg.offsetWidth;
-            const imgHeight = mascotImg.offsetHeight;
-            mascot.style.left = (e.clientX - imgWidth / 2) + 'px';
-            mascot.style.top = (e.clientY - imgHeight / 2) + 'px';
+            mascot.style.left = (e.clientX - offsetX) + 'px';
+            mascot.style.top = (e.clientY - offsetY) + 'px';
         });
 
         document.addEventListener('mouseup', () => {
