@@ -351,15 +351,16 @@
             ctx.strokeStyle = 'rgba(0, 0, 0, 0.055)';
             ctx.lineWidth = 1;
 
-            const cols = Math.ceil((canvas.width + canvas.height) / gridSize) + 10;
-            const rows = Math.ceil((canvas.height + canvas.width) / gridSize) + 10;
+            const cols = Math.ceil((canvas.width + canvas.height) / gridSize) + 20;
+            const rows = Math.ceil((canvas.height + canvas.width) / gridSize) + 20;
 
             if (!pointsState || pointsState.length !== rows) {
                 pointsState = [];
                 for (let row = 0; row < rows; row++) {
                     pointsState[row] = [];
                     for (let col = 0; col < cols; col++) {
-                        const baseX = (col - cols/2) * gridSize;
+                        // Extra left offset to compensate for slant pushing lines right
+                        const baseX = (col - cols * 0.6) * gridSize;
                         const baseY = (row - rows/2) * gridSize;
                         const slantedX = baseX + baseY * Math.tan(angle);
                         const slantedY = baseY + baseX * Math.tan(angle);
