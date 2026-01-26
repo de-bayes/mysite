@@ -323,43 +323,93 @@
             window.location.href = 'index.html';
         }
 
-        // Slanted grid background
+        // Interactive slanted grid background
         const canvas = document.getElementById('slanted-grid');
         const ctx = canvas.getContext('2d');
+        let mouseX = -1000, mouseY = -1000, targetMouseX = -1000, targetMouseY = -1000;
+        const gridSize = 40, influence = 150, maxDisplacement = 25, smoothing = 0.15;
+        const angle = 15 * (Math.PI / 180);
+        let pointsState = null;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            drawSlantedGrid();
+            pointsState = null;
         }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        document.addEventListener('mousemove', e => { targetMouseX = e.clientX; targetMouseY = e.clientY; });
+        document.addEventListener('mouseleave', () => { targetMouseX = targetMouseY = -1000; });
+        document.addEventListener('touchmove', e => { if (e.touches.length) { targetMouseX = e.touches[0].clientX; targetMouseY = e.touches[0].clientY; } }, { passive: true });
+        document.addEventListener('touchend', () => { targetMouseX = targetMouseY = -1000; });
 
         function drawSlantedGrid() {
+            mouseX += (targetMouseX - mouseX) * smoothing;
+            mouseY += (targetMouseY - mouseY) * smoothing;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.strokeStyle = 'rgba(0, 0, 0, 0.055)';
             ctx.lineWidth = 1;
 
-            const gridSize = 40;
-            const angle = 15 * (Math.PI / 180); // 15 degree slant
+            const cols = Math.ceil((canvas.width + canvas.height) / gridSize) + 2;
+            const rows = Math.ceil((canvas.height + canvas.width) / gridSize) + 2;
 
-            // Draw slanted horizontal lines
-            for (let y = -canvas.width; y < canvas.height + canvas.width; y += gridSize) {
+            if (!pointsState || pointsState.length !== rows) {
+                pointsState = [];
+                for (let row = 0; row < rows; row++) {
+                    pointsState[row] = [];
+                    for (let col = 0; col < cols; col++) {
+                        const baseX = (col - rows/2) * gridSize;
+                        const baseY = (row - cols/4) * gridSize;
+                        const slantedX = baseX + baseY * Math.tan(angle);
+                        const slantedY = baseY + baseX * Math.tan(angle);
+                        pointsState[row][col] = { x: slantedX, y: slantedY, bx: slantedX, by: slantedY };
+                    }
+                }
+            }
+
+            // Update positions with cursor influence
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const p = pointsState[row][col];
+                    let targetX = p.bx, targetY = p.by;
+                    const dx = p.bx - mouseX, dy = p.by - mouseY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < influence && dist > 0) {
+                        const force = Math.pow(1 - dist / influence, 2) * maxDisplacement;
+                        const a = Math.atan2(dy, dx);
+                        targetX = p.bx + Math.cos(a) * force;
+                        targetY = p.by + Math.sin(a) * force;
+                    }
+                    p.x += (targetX - p.x) * 0.2;
+                    p.y += (targetY - p.y) * 0.2;
+                }
+            }
+
+            // Draw horizontal-ish lines
+            for (let row = 0; row < rows; row++) {
                 ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y + canvas.width * Math.tan(angle));
+                ctx.moveTo(pointsState[row][0].x, pointsState[row][0].y);
+                for (let col = 1; col < cols; col++) {
+                    const prev = pointsState[row][col - 1], curr = pointsState[row][col];
+                    ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + curr.x) / 2, (prev.y + curr.y) / 2);
+                }
                 ctx.stroke();
             }
 
-            // Draw slanted vertical lines
-            for (let x = -canvas.height; x < canvas.width + canvas.height; x += gridSize) {
+            // Draw vertical-ish lines
+            for (let col = 0; col < cols; col++) {
                 ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x + canvas.height * Math.tan(angle), canvas.height);
+                ctx.moveTo(pointsState[0][col].x, pointsState[0][col].y);
+                for (let row = 1; row < rows; row++) {
+                    const prev = pointsState[row - 1][col], curr = pointsState[row][col];
+                    ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + curr.x) / 2, (prev.y + curr.y) / 2);
+                }
                 ctx.stroke();
             }
+            requestAnimationFrame(drawSlantedGrid);
         }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        drawSlantedGrid();
     </script>
 </body>
 </html>
