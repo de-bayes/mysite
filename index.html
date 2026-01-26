@@ -410,14 +410,14 @@
             top: 1.5rem;
             left: 2rem;
             z-index: 100;
-            font-size: 0.75rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 400;
             color: #e67e22;
             text-decoration: none;
             cursor: pointer;
             letter-spacing: 0.02em;
             transition: opacity 0.2s ease;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'VT323', monospace;
         }
 
         .terminal-button:hover {
@@ -428,7 +428,7 @@
             .terminal-button {
                 top: 1rem;
                 left: 1rem;
-                font-size: 0.65rem;
+                font-size: 1rem;
             }
         }
 
@@ -508,6 +508,10 @@
         }
 
         .terminal-btn.close {
+            background: linear-gradient(135deg, #cc4c44 0%, #b33a33 100%);
+        }
+
+        .terminal-btn.close:hover {
             background: linear-gradient(135deg, #ff6057 0%, #ff4d47 100%);
         }
 
@@ -1448,10 +1452,37 @@
                 addTerminalLine('');
             } else if (command === '/clear') {
                 const terminalBody = document.getElementById('terminal-body');
-                const lines = terminalBody.querySelectorAll('.terminal-line, pre');
-                lines.forEach(line => line.remove());
-                addTerminalLine('Terminal cleared. Type <span class="terminal-command">/info</span> to see available commands.');
-                addTerminalLine('');
+                // Remove all content except the input line
+                const inputLine = terminalBody.querySelector('.terminal-input-line');
+                terminalBody.innerHTML = '';
+
+                // Restore welcome screen
+                const welcomeBanner = document.createElement('pre');
+                welcomeBanner.className = 'ascii-art';
+                welcomeBanner.style.marginBottom = '1rem';
+                welcomeBanner.textContent = `
+  ██████  ██    ██  █████  ███    ██     ███    ███  ██████  ██████  ██████  ███    ███ ██████
+  ██   ██  ██  ██  ██   ██ ████   ██     ████  ████ ██      ██      ██    ██ ████  ████ ██   ██
+  ██████    ████   ███████ ██ ██  ██     ██ ████ ██ ██      ██      ██    ██ ██ ████ ██ ██████
+  ██   ██    ██    ██   ██ ██  ██ ██     ██  ██  ██ ██      ██      ██    ██ ██  ██  ██ ██   ██
+  ██   ██    ██    ██   ██ ██   ████     ██      ██  ██████  ██████  ██████  ██      ██ ██████
+                `;
+                terminalBody.appendChild(welcomeBanner);
+
+                const separator = document.createElement('div');
+                separator.className = 'terminal-line';
+                separator.style.marginBottom = '0.5rem';
+                separator.textContent = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+                terminalBody.appendChild(separator);
+
+                const welcomeMsg = document.createElement('div');
+                welcomeMsg.className = 'terminal-line';
+                welcomeMsg.style.marginBottom = '1rem';
+                welcomeMsg.innerHTML = 'Welcome to Ryan McComb\'s interactive terminal. Type <span class="terminal-command">/info</span> to see available commands.';
+                terminalBody.appendChild(welcomeMsg);
+
+                // Re-add input line
+                terminalBody.appendChild(inputLine);
             } else if (command === '') {
                 // Do nothing on empty command
             } else {
