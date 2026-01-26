@@ -404,6 +404,132 @@
             color: #000000;
         }
 
+        .nav-tabs .terminal-trigger {
+            cursor: pointer;
+        }
+
+        /* TERMINAL MODE */
+        .terminal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #808080;
+            z-index: 9999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .terminal-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .terminal-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 500px;
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            min-width: 400px;
+            min-height: 300px;
+            resize: both;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: #2d2d2d;
+            padding: 0.75rem 1rem;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: move;
+            user-select: none;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .terminal-btn.close {
+            background: #ff5f56;
+        }
+
+        .terminal-btn.minimize {
+            background: #ffbd2e;
+        }
+
+        .terminal-btn.maximize {
+            background: #27c93f;
+        }
+
+        .terminal-title {
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            color: #888888;
+            margin-left: 0.5rem;
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 1rem;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            color: #00ff00;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+
+        .terminal-prompt {
+            color: #00ff00;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background: #00ff00;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .terminal-resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            cursor: nwse-resize;
+            z-index: 10;
+        }
+
+        .terminal-window.resizing {
+            resize: none;
+        }
+
         /* HOMEPAGE */
         .homepage {
             min-height: 100vh;
@@ -581,6 +707,7 @@
                 <li><a href="photos.html">Photos</a></li>
                 <li><a href="education.html">Education</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a class="terminal-trigger" onclick="openTerminal()">Terminal</a></li>
             </ul>
         </nav>
 
@@ -973,6 +1100,160 @@
 
         // Prevent default drag behavior
         mascotImg.addEventListener('dragstart', (e) => e.preventDefault());
+
+        // TERMINAL MODE
+        let terminalDragging = false;
+        let terminalOffsetX = 0;
+        let terminalOffsetY = 0;
+
+        function openTerminal() {
+            const overlay = document.getElementById('terminal-overlay');
+            overlay.classList.add('active');
+        }
+
+        function closeTerminal() {
+            const overlay = document.getElementById('terminal-overlay');
+            overlay.classList.remove('active');
+        }
+
+        // Terminal dragging
+        const terminalHeader = document.querySelector('.terminal-header');
+        const terminalWindow = document.querySelector('.terminal-window');
+
+        if (terminalHeader && terminalWindow) {
+            terminalHeader.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('terminal-btn')) return;
+                terminalDragging = true;
+                const rect = terminalWindow.getBoundingClientRect();
+                terminalOffsetX = e.clientX - rect.left;
+                terminalOffsetY = e.clientY - rect.top;
+                terminalWindow.style.transform = 'none';
+                terminalWindow.style.left = rect.left + 'px';
+                terminalWindow.style.top = rect.top + 'px';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!terminalDragging) return;
+                const x = e.clientX - terminalOffsetX;
+                const y = e.clientY - terminalOffsetY;
+                terminalWindow.style.left = x + 'px';
+                terminalWindow.style.top = y + 'px';
+            });
+
+            document.addEventListener('mouseup', () => {
+                terminalDragging = false;
+            });
+
+            // Terminal touch support
+            terminalHeader.addEventListener('touchstart', (e) => {
+                if (e.target.classList.contains('terminal-btn')) return;
+                terminalDragging = true;
+                const rect = terminalWindow.getBoundingClientRect();
+                terminalOffsetX = e.touches[0].clientX - rect.left;
+                terminalOffsetY = e.touches[0].clientY - rect.top;
+                terminalWindow.style.transform = 'none';
+                terminalWindow.style.left = rect.left + 'px';
+                terminalWindow.style.top = rect.top + 'px';
+            }, { passive: false });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!terminalDragging) return;
+                e.preventDefault();
+                const x = e.touches[0].clientX - terminalOffsetX;
+                const y = e.touches[0].clientY - terminalOffsetY;
+                terminalWindow.style.left = x + 'px';
+                terminalWindow.style.top = y + 'px';
+            }, { passive: false });
+
+            document.addEventListener('touchend', () => {
+                terminalDragging = false;
+            });
+        }
+
+        // Terminal resizing
+        const resizeHandle = document.querySelector('.terminal-resize-handle');
+        let terminalResizing = false;
+        let resizeStartX = 0;
+        let resizeStartY = 0;
+        let resizeStartWidth = 0;
+        let resizeStartHeight = 0;
+
+        if (resizeHandle && terminalWindow) {
+            resizeHandle.addEventListener('mousedown', (e) => {
+                terminalResizing = true;
+                resizeStartX = e.clientX;
+                resizeStartY = e.clientY;
+                const rect = terminalWindow.getBoundingClientRect();
+                resizeStartWidth = rect.width;
+                resizeStartHeight = rect.height;
+                terminalWindow.classList.add('resizing');
+                e.stopPropagation();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!terminalResizing) return;
+                const deltaX = e.clientX - resizeStartX;
+                const deltaY = e.clientY - resizeStartY;
+                const newWidth = Math.max(400, resizeStartWidth + deltaX);
+                const newHeight = Math.max(300, resizeStartHeight + deltaY);
+                terminalWindow.style.width = newWidth + 'px';
+                terminalWindow.style.height = newHeight + 'px';
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (terminalResizing) {
+                    terminalResizing = false;
+                    terminalWindow.classList.remove('resizing');
+                }
+            });
+
+            // Touch support for resizing
+            resizeHandle.addEventListener('touchstart', (e) => {
+                terminalResizing = true;
+                resizeStartX = e.touches[0].clientX;
+                resizeStartY = e.touches[0].clientY;
+                const rect = terminalWindow.getBoundingClientRect();
+                resizeStartWidth = rect.width;
+                resizeStartHeight = rect.height;
+                terminalWindow.classList.add('resizing');
+                e.stopPropagation();
+            }, { passive: false });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!terminalResizing) return;
+                const deltaX = e.touches[0].clientX - resizeStartX;
+                const deltaY = e.touches[0].clientY - resizeStartY;
+                const newWidth = Math.max(400, resizeStartWidth + deltaX);
+                const newHeight = Math.max(300, resizeStartHeight + deltaY);
+                terminalWindow.style.width = newWidth + 'px';
+                terminalWindow.style.height = newHeight + 'px';
+            }, { passive: false });
+
+            document.addEventListener('touchend', () => {
+                if (terminalResizing) {
+                    terminalResizing = false;
+                    terminalWindow.classList.remove('resizing');
+                }
+            });
+        }
     </script>
+
+    <!-- TERMINAL OVERLAY -->
+    <div class="terminal-overlay" id="terminal-overlay">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-controls">
+                    <button class="terminal-btn close" onclick="closeTerminal()"></button>
+                    <button class="terminal-btn minimize"></button>
+                    <button class="terminal-btn maximize"></button>
+                </div>
+                <span class="terminal-title">terminal</span>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+                <div class="terminal-prompt">ryan@mccomb:~$ <span class="terminal-cursor"></span></div>
+            </div>
+            <div class="terminal-resize-handle"></div>
+        </div>
+    </div>
 </body>
 </html>
