@@ -760,14 +760,42 @@
 
         drawGrid();
 
-        // FIVEY FOX DRAG
+        // FIVEY FOX DRAG WITH PHYSICS
         const mascot = document.querySelector('.mascot-corner');
         const mascotImg = document.querySelector('.mascot-img');
         let isDragging = false;
         let offsetX, offsetY;
 
+        // Physics variables
+        let velocityX = 0;
+        let velocityY = 0;
+        let lastX = 0;
+        let lastY = 0;
+        let lastTime = 0;
+        let animationId = null;
+
+        // Check if Fivey has been moved before
+        const savedPosition = localStorage.getItem('fiveyPosition');
+        if (savedPosition) {
+            const pos = JSON.parse(savedPosition);
+            mascot.classList.add('peeled');
+            mascot.style.position = 'fixed';
+            mascot.style.left = pos.x + 'px';
+            mascot.style.top = pos.y + 'px';
+            mascot.style.margin = '0';
+            mascot.style.opacity = '1';
+            mascot.style.transform = 'none';
+            mascot.style.animation = 'none';
+        }
+
         mascotImg.addEventListener('mousedown', (e) => {
             if (e.target.tagName === 'A') return;
+
+            // Stop any ongoing animation
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
 
             isDragging = true;
             mascot.classList.add('dragging', 'peeled');
@@ -775,6 +803,11 @@
             const rect = mascot.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
+
+            // Track for velocity calculation
+            lastX = e.clientX - offsetX;
+            lastY = e.clientY - offsetY;
+            lastTime = Date.now();
 
             // Convert to fixed positioning smoothly
             mascot.style.position = 'fixed';
@@ -793,16 +826,96 @@
 
             const newX = e.clientX - offsetX;
             const newY = e.clientY - offsetY;
+            const currentTime = Date.now();
+            const deltaTime = currentTime - lastTime;
+
+            if (deltaTime > 0) {
+                // Calculate velocity (reduced multiplier for less acceleration)
+                velocityX = (newX - lastX) / deltaTime * 10;
+                velocityY = (newY - lastY) / deltaTime * 10;
+            }
+
+            lastX = newX;
+            lastY = newY;
+            lastTime = currentTime;
 
             mascot.style.left = newX + 'px';
             mascot.style.top = newY + 'px';
+
+            // Save position while dragging
+            localStorage.setItem('fiveyPosition', JSON.stringify({ x: newX, y: newY }));
         });
 
         document.addEventListener('mouseup', () => {
             if (!isDragging) return;
             isDragging = false;
             mascot.classList.remove('dragging');
+
+            // Start physics simulation
+            animatePhysics();
         });
+
+        function animatePhysics() {
+            const friction = 0.88; // Damping factor (more friction)
+            const bounceFactor = 0.6; // Energy retained on bounce
+            const minVelocity = 0.5; // Stop threshold
+
+            function animate() {
+                let x = parseFloat(mascot.style.left);
+                let y = parseFloat(mascot.style.top);
+
+                // Apply velocity
+                x += velocityX;
+                y += velocityY;
+
+                // Apply friction
+                velocityX *= friction;
+                velocityY *= friction;
+
+                // Get mascot dimensions
+                const rect = mascot.getBoundingClientRect();
+                const width = rect.width;
+                const height = rect.height;
+
+                // Bounce off edges
+                if (x < 0) {
+                    x = 0;
+                    velocityX = Math.abs(velocityX) * bounceFactor;
+                } else if (x + width > window.innerWidth) {
+                    x = window.innerWidth - width;
+                    velocityX = -Math.abs(velocityX) * bounceFactor;
+                }
+
+                if (y < 0) {
+                    y = 0;
+                    velocityY = Math.abs(velocityY) * bounceFactor;
+                } else if (y + height > window.innerHeight) {
+                    y = window.innerHeight - height;
+                    velocityY = -Math.abs(velocityY) * bounceFactor;
+                }
+
+                // Update position
+                mascot.style.left = x + 'px';
+                mascot.style.top = y + 'px';
+
+                // Save position
+                localStorage.setItem('fiveyPosition', JSON.stringify({ x, y }));
+
+                // Continue animation if still moving
+                const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+                if (speed > minVelocity) {
+                    animationId = requestAnimationFrame(animate);
+                } else {
+                    animationId = null;
+                }
+            }
+
+            // Only start if there's significant velocity
+            const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+            if (speed > minVelocity) {
+                animate();
+            }
+        }
 
         // Prevent default drag behavior
         mascotImg.addEventListener('dragstart', (e) => e.preventDefault());
