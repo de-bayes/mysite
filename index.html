@@ -291,7 +291,7 @@
                 top: 50%;
                 left: 50%;
                 margin-left: -650px;
-                margin-top: -150px;
+                margin-top: -220px;
             }
         }
 
@@ -763,25 +763,17 @@
         const mascotImg = document.querySelector('.mascot-img');
         let isDragging = false;
         let offsetX, offsetY;
+        let hasMoved = false;
 
         mascotImg.addEventListener('mousedown', (e) => {
-            if (e.target.tagName === 'A') return; // Don't drag if clicking link
-
-            isDragging = true;
-            mascot.classList.add('dragging', 'peeled');
+            if (e.target.tagName === 'A') return;
 
             const rect = mascot.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
 
-            // Ensure visible and positioned
-            mascot.style.position = 'fixed';
-            mascot.style.opacity = '1';
-            mascot.style.transform = 'none';
-            mascot.style.left = rect.left + 'px';
-            mascot.style.top = rect.top + 'px';
-            mascot.style.right = 'auto';
-            mascot.style.bottom = 'auto';
+            isDragging = true;
+            hasMoved = false;
 
             e.preventDefault();
             e.stopPropagation();
@@ -789,6 +781,20 @@
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
+
+            if (!hasMoved) {
+                // First move - set up for dragging
+                mascot.classList.add('dragging', 'peeled');
+                const rect = mascot.getBoundingClientRect();
+
+                mascot.style.position = 'fixed';
+                mascot.style.left = rect.left + 'px';
+                mascot.style.top = rect.top + 'px';
+                mascot.style.margin = '0';
+                mascot.style.transform = 'none';
+
+                hasMoved = true;
+            }
 
             const newX = e.clientX - offsetX;
             const newY = e.clientY - offsetY;
@@ -803,7 +809,7 @@
             mascot.classList.remove('dragging');
         });
 
-        // Prevent default drag behavior on the image
+        // Prevent default drag behavior
         mascotImg.addEventListener('dragstart', (e) => e.preventDefault());
     </script>
 </body>
