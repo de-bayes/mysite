@@ -191,5 +191,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Redirect to home on refresh
+        const perfData = performance.getEntriesByType('navigation')[0];
+        if (perfData && perfData.type === 'reload') {
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
