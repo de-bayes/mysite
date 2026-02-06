@@ -1490,7 +1490,13 @@
             const overlay = document.getElementById('terminal-overlay');
             overlay.classList.add('active');
             const input = document.getElementById('terminal-input');
-            setTimeout(() => input.focus(), 100);
+            console.log('Opening terminal, input element:', input);
+            if (input) {
+                setTimeout(() => {
+                    input.focus();
+                    console.log('Input focused');
+                }, 100);
+            }
         }
 
         function closeTerminal() {
@@ -1836,29 +1842,47 @@
             const terminalBody = document.getElementById('terminal-body');
             const terminalOverlay = document.getElementById('terminal-overlay');
 
+            console.log('Setting up terminal...', { terminalInput, terminalBody, terminalOverlay });
+
             if (terminalInput) {
-                terminalInput.addEventListener('keydown', (e) => {
+                // Remove any existing listeners by cloning the element
+                const newInput = terminalInput.cloneNode(true);
+                terminalInput.parentNode.replaceChild(newInput, terminalInput);
+
+                newInput.addEventListener('keydown', (e) => {
+                    console.log('Key pressed:', e.key);
                     if (e.key === 'Enter') {
-                        const cmd = terminalInput.value;
+                        e.preventDefault();
+                        const cmd = newInput.value;
+                        console.log('Executing command:', cmd);
                         executeCommand(cmd);
-                        terminalInput.value = '';
+                        newInput.value = '';
                     } else if (e.key === 'ArrowUp') {
                         e.preventDefault();
                         if (commandHistory.length > 0 && historyIndex > 0) {
                             historyIndex--;
-                            terminalInput.value = commandHistory[historyIndex];
+                            newInput.value = commandHistory[historyIndex];
                         }
                     } else if (e.key === 'ArrowDown') {
                         e.preventDefault();
                         if (historyIndex < commandHistory.length - 1) {
                             historyIndex++;
-                            terminalInput.value = commandHistory[historyIndex];
+                            newInput.value = commandHistory[historyIndex];
                         } else {
                             historyIndex = commandHistory.length;
-                            terminalInput.value = '';
+                            newInput.value = '';
                         }
                     }
                 });
+
+                // Keep terminal focused
+                if (terminalBody) {
+                    terminalBody.addEventListener('click', () => {
+                        newInput.focus();
+                    });
+                }
+            } else {
+                console.error('Terminal input not found!');
             }
 
             // Click outside terminal to close
@@ -1867,13 +1891,6 @@
                     if (e.target.id === 'terminal-overlay') {
                         closeTerminal();
                     }
-                });
-            }
-
-            // Keep terminal focused
-            if (terminalBody) {
-                terminalBody.addEventListener('click', () => {
-                    terminalInput?.focus();
                 });
             }
         }
