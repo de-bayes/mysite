@@ -338,7 +338,7 @@
             gap: 1rem;
             opacity: 0;
             transform: scale(0) rotate(-20deg);
-            animation: stickerSlap 0.5s ease-out 9s forwards;
+            animation: stickerSlap 0.5s ease-out 7s forwards;
         }
 
         /* Small windows: corner position */
@@ -1505,24 +1505,44 @@
         }
 
         // Terminal background grid
-        const terminalCanvas = document.getElementById('terminal-grid');
-        const terminalCtx = terminalCanvas.getContext('2d');
+        let terminalCanvas = null;
+        let terminalCtx = null;
         let termMouseX = -1000, termMouseY = -1000, termTargetX = -1000, termTargetY = -1000;
         let termPointsState = null;
         const termGridSize = 40, termInfluence = 280, termMaxDisp = 15;
 
         function resizeTerminalCanvas() {
+            if (!terminalCanvas) return;
             terminalCanvas.width = window.innerWidth;
             terminalCanvas.height = window.innerHeight;
             termPointsState = null;
         }
-        window.addEventListener('resize', resizeTerminalCanvas);
-        resizeTerminalCanvas();
 
-        document.getElementById('terminal-overlay').addEventListener('mousemove', e => { termTargetX = e.clientX; termTargetY = e.clientY; });
-        document.getElementById('terminal-overlay').addEventListener('mouseleave', () => { termTargetX = termTargetY = -1000; });
+        function initTerminalGrid() {
+            terminalCanvas = document.getElementById('terminal-grid');
+            const terminalOverlay = document.getElementById('terminal-overlay');
+
+            if (!terminalCanvas || !terminalOverlay) {
+                setTimeout(initTerminalGrid, 50);
+                return;
+            }
+
+            terminalCtx = terminalCanvas.getContext('2d');
+            window.addEventListener('resize', resizeTerminalCanvas);
+            resizeTerminalCanvas();
+
+            terminalOverlay.addEventListener('mousemove', e => { termTargetX = e.clientX; termTargetY = e.clientY; });
+            terminalOverlay.addEventListener('mouseleave', () => { termTargetX = termTargetY = -1000; });
+        }
+
+        initTerminalGrid();
 
         function drawTerminalGrid() {
+            if (!terminalCtx || !terminalCanvas) {
+                requestAnimationFrame(drawTerminalGrid);
+                return;
+            }
+
             termMouseX += (termTargetX - termMouseX) * 0.06;
             termMouseY += (termTargetY - termMouseY) * 0.06;
             terminalCtx.clearRect(0, 0, terminalCanvas.width, terminalCanvas.height);
