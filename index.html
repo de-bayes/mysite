@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
     <title>Ryan McComb</title>
+    <link rel="preload" href="photo-sketch.png" as="image" fetchpriority="high">
+    <link rel="preload" href="photo-original.jpg" as="image" fetchpriority="high">
+
     <style>
         * {
             margin: 0;
@@ -1109,6 +1112,13 @@
         const siteContent = document.getElementById('site-content');
         const loaderNumber = document.getElementById('loader-number');
         const loaderText = document.getElementById('loader-text');
+
+        // Preload the hero photo pair while the loader is visible.
+        ['photo-sketch.png', 'photo-original.jpg'].forEach(src => {
+            const img = new Image();
+            img.decoding = 'async';
+            img.src = src;
+        });
 
         const steps = [1, 13, 27, 41, 54, 68, 79, 88, 94, 100];
         let currentStep = 0;
