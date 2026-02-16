@@ -38,7 +38,7 @@
         .page-container {
             position: relative;
             z-index: 1;
-            max-width: 700px;
+            max-width: 750px;
             margin: 0 auto;
             padding: 8rem 2rem 4rem;
         }
@@ -167,7 +167,7 @@
             text-decoration: none;
             color: inherit;
             margin-bottom: 2rem;
-            max-width: 550px;
+            max-width: 750px;
             margin-left: auto;
             margin-right: auto;
             transition: all 0.2s ease;
@@ -202,10 +202,23 @@
             gap: 1.5rem;
         }
 
-        .tweets-grid .twitter-tweet {
+        /* Hide raw blockquotes until Twitter renders them */
+        .tweets-grid blockquote.twitter-tweet {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
             margin: 0 !important;
-            max-width: 550px;
-            width: 100%;
+            padding: 0;
+            border: 0;
+        }
+
+        /* Show the rendered iframe widgets */
+        .tweets-grid .twitter-tweet-rendered,
+        .tweets-grid iframe {
+            max-width: 750px !important;
+            width: 100% !important;
+            visibility: visible !important;
+            height: auto !important;
         }
 
 
