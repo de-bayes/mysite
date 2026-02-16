@@ -158,11 +158,48 @@
             text-decoration: underline;
         }
 
-        .timeline-container {
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
             border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #faf8f5;
+            text-decoration: none;
+            color: inherit;
+            margin-bottom: 2rem;
+            transition: all 0.2s ease;
+        }
+
+        .profile-card:hover {
+            border-color: #e67e22;
+            transform: translateX(4px);
+        }
+
+        .profile-card .profile-info h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .profile-card .profile-info p {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .profile-card .profile-arrow {
+            margin-left: auto;
+            color: #e67e22;
+            font-size: 1.2rem;
+        }
+
+        .tweets-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .tweets-grid .twitter-tweet {
+            margin: 0 !important;
         }
 
         @media (max-width: 600px) {
@@ -213,15 +250,26 @@
         <h1 class="page-title">Posts</h1>
         <p class="page-subtitle">Latest from <a href="https://x.com/bayes_pr" target="_blank">@bayes_pr</a></p>
 
-        <div class="timeline-container">
-            <iframe
-                src="https://syndication.twitter.com/srv/timeline-profile/screen-name/bayes_pr?dnt=true&embedId=twitter-widget-0&frame=false&hideBorder=true&hideFooter=true&hideHeader=true&hideScrollBar=false&lang=en&transparent=true&theme=light"
-                style="width: 100%; min-height: 800px; border: none; display: block;"
-                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                loading="lazy">
-            </iframe>
+        <a href="https://x.com/bayes_pr" target="_blank" class="profile-card">
+            <div class="profile-info">
+                <h3>Ryan McComb</h3>
+                <p>@bayes_pr on X</p>
+            </div>
+            <span class="profile-arrow">&rarr;</span>
+        </a>
+
+        <div class="tweets-grid">
+            <blockquote class="twitter-tweet"><p lang="en" dir="ltr">The type of lead that <a href="https://twitter.com/DecisionDeskHQ?ref_src=twsrc%5Etfw">@DecisionDeskHQ</a> will call a race with….night of election <a href="https://t.co/lNzHi9Wxyi">https://t.co/lNzHi9Wxyi</a></p>&mdash; Ryan McComb (@bayes_pr) <a href="https://twitter.com/bayes_pr/status/2023145463915123052?ref_src=twsrc%5Etfw">February 15, 2026</a></blockquote>
+
+            <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Roses are red<br>Violets are blue<br>I love you as much<br>As I love inflation at 2<a href="https://twitter.com/hashtag/ValentinesDay?src=hash&amp;ref_src=twsrc%5Etfw">#ValentinesDay</a> &#10084;&#65039;&#129392; <a href="https://t.co/tQoO7Y5Jh4">pic.twitter.com/tQoO7Y5Jh4</a></p>&mdash; European Central Bank (@ecb) <a href="https://twitter.com/ecb/status/2022612118084927871?ref_src=twsrc%5Etfw">February 14, 2026</a></blockquote>
+
+            <blockquote class="twitter-tweet"><p lang="zxx" dir="ltr"><a href="https://t.co/PPDWpe9hem">https://t.co/PPDWpe9hem</a> <a href="https://t.co/EVUnKZHMrT">pic.twitter.com/EVUnKZHMrT</a></p>&mdash; Ryan McComb (@bayes_pr) <a href="https://twitter.com/bayes_pr/status/2021699543566266729?ref_src=twsrc%5Etfw">February 11, 2026</a></blockquote>
+
+            <blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/mattheweadie22?ref_src=twsrc%5Etfw">@mattheweadie22</a> thanks man, almost 70,000 data points in with hundreds of thousands to go until the 17th! <a href="https://t.co/ptZOpos3XH">https://t.co/ptZOpos3XH</a></p>&mdash; Ryan McComb (@bayes_pr) <a href="https://twitter.com/bayes_pr/status/2019973139141390506?ref_src=twsrc%5Etfw">February 7, 2026</a></blockquote>
         </div>
     </div>
+
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script>
         // HAMBURGER MENU
         function toggleNav() {
