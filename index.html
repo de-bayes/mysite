@@ -24,16 +24,16 @@
         }
 
         :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f8f8;
+            --bg-primary: #faf8f5;
+            --bg-secondary: #f5f2ee;
             --text-primary: #000000;
             --text-secondary: #333333;
             --text-muted: #555555;
             --text-light: #888888;
             --border-color: #e5e5e5;
             --grid-color: rgba(0, 0, 0, 0.055);
-            --photo-hint-bg: rgba(255, 255, 255, 0.9);
-            --nav-menu-bg: #ffffff;
+            --photo-hint-bg: rgba(250, 248, 245, 0.9);
+            --nav-menu-bg: #faf8f5;
             --nav-menu-shadow: rgba(0, 0, 0, 0.1);
         }
 
@@ -62,7 +62,7 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
-            transition: background 0.3s ease, color 0.3s ease;
+            /* transition handled by liquid effect */
         }
 
         /* GRID BACKGROUND */
@@ -341,7 +341,7 @@
             gap: 1rem;
             opacity: 0;
             transform: scale(0) rotate(-20deg);
-            animation: stickerSlap 0.5s ease-out 7s forwards;
+            animation: stickerSlap 0.5s ease-out 2s forwards;
         }
 
         /* Small windows: corner position */
@@ -422,6 +422,12 @@
             animation: none;
             opacity: 1 !important;
             transform: none !important;
+        }
+
+        .mascot-corner.instant {
+            animation: none;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
         }
 
         .mascot-tooltip p {
@@ -621,6 +627,84 @@
             }
         }
 
+        /* LIQUID DARK MODE TRANSITION */
+        .dark-mode-liquid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9998;
+            pointer-events: none;
+            clip-path: circle(0% at var(--liquid-x, 50%) var(--liquid-y, 50%));
+            transition: clip-path 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark-mode-liquid.expanding {
+            clip-path: circle(150% at var(--liquid-x, 50%) var(--liquid-y, 50%));
+        }
+
+        /* STAGGERED ENTRANCE */
+        .stagger-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .stagger-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* INK BLEED SCROLL DIVIDERS */
+        .ink-bleed {
+            position: relative;
+        }
+
+        .ink-bleed::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--text-light);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.4;
+        }
+
+        .ink-bleed.bled::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* TERMINAL GAME CANVAS */
+        .terminal-game-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        .terminal-game-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(30, 30, 30, 0.85);
+            z-index: 5;
+        }
+
+        .terminal-game-overlay span {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: #4ec9b0;
+        }
+
         /* TERMINAL MODE */
         .terminal-overlay {
             position: fixed;
@@ -773,6 +857,13 @@
             display: flex;
             align-items: center;
             margin-top: 0.5rem;
+            position: relative;
+        }
+
+        .terminal-input-wrap {
+            position: relative;
+            flex: 1;
+            margin-left: 0.5rem;
         }
 
         .terminal-input {
@@ -782,8 +873,40 @@
             color: #e0e0e0;
             font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 0.95rem;
-            flex: 1;
-            margin-left: 0.5rem;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .terminal-autocomplete {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #555;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.95rem;
+            pointer-events: none;
+            white-space: pre;
+        }
+
+        .terminal-suggestions {
+            position: absolute;
+            bottom: 100%;
+            left: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .terminal-suggestion {
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #4ec9b0;
+            background: rgba(78, 201, 176, 0.1);
+            padding: 0.15rem 0.5rem;
+            border: 1px solid rgba(78, 201, 176, 0.3);
+            border-radius: 3px;
         }
 
         .terminal-cursor {
@@ -996,6 +1119,9 @@
     </style>
 </head>
 <body>
+    <!-- LIQUID DARK MODE OVERLAY -->
+    <div class="dark-mode-liquid" id="dark-mode-liquid"></div>
+
     <!-- LOADER -->
     <div class="loader" id="loader">
         <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
@@ -1054,15 +1180,15 @@
         </nav>
 
         <main class="homepage">
-            <div class="homepage-name">
+            <div class="homepage-name stagger-in" style="transition-delay: 0.1s;">
                 <h1>
                     <span class="name-text">Ryan McComb</span>
                     <img src="sig.webp" alt="Signature" class="name-sig">
                 </h1>
-                <p class="subtitle">Student at ETHS</p>
+                <p class="subtitle stagger-in" style="transition-delay: 0.3s;">Student at ETHS</p>
             </div>
 
-            <div class="photo-container" id="photo-container">
+            <div class="photo-container stagger-in" id="photo-container" style="transition-delay: 0.5s;">
                 <img src="photo-sketch.png" alt="Ryan McComb" class="photo-sketch">
                 <img src="photo-original.jpg" alt="Ryan McComb" class="photo-original">
                 <span class="photo-hint">Tap to reveal</span>
@@ -1070,12 +1196,83 @@
         </main>
     </div>
 
+    <!-- TERMINAL OVERLAY -->
+    <div class="terminal-overlay" id="terminal-overlay">
+        <canvas id="terminal-grid"></canvas>
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-controls">
+                    <button class="terminal-btn close" onclick="closeTerminal()"></button>
+                    <button class="terminal-btn minimize"></button>
+                    <button class="terminal-btn maximize"></button>
+                </div>
+                <span class="terminal-title">terminal — ryan@mccomb</span>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+                <pre class="ascii-art" style="margin-bottom: 1rem;">
+  ██████  ██    ██  █████  ███    ██     ███    ███  ██████  ██████  ██████  ███    ███ ██████
+  ██   ██  ██  ██  ██   ██ ████   ██     ████  ████ ██      ██      ██    ██ ████  ████ ██   ██
+  ██████    ████   ███████ ██ ██  ██     ██ ████ ██ ██      ██      ██    ██ ██ ████ ██ ██████
+  ██   ██    ██    ██   ██ ██  ██ ██     ██  ██  ██ ██      ██      ██    ██ ██  ██  ██ ██   ██
+  ██   ██    ██    ██   ██ ██   ████     ██      ██  ██████  ██████  ██████  ██      ██ ██████
+                </pre>
+                <div class="terminal-line" style="margin-bottom: 0.5rem;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+                <div class="terminal-line" style="margin-bottom: 1rem;">Welcome to Ryan McComb's interactive terminal. Type <span class="terminal-command">/info</span> to see available commands.</div>
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt">ryan@mccomb:~$</span>
+                    <div class="terminal-input-wrap">
+                        <span class="terminal-autocomplete" id="terminal-autocomplete"></span>
+                        <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false">
+                    </div>
+                    <div class="terminal-suggestions" id="terminal-suggestions"></div>
+                </div>
+            </div>
+            <div class="terminal-resize-handle"></div>
+        </div>
+    </div>
+
     <script>
-        // DARK MODE TOGGLE
+        // DARK MODE TOGGLE — liquid ink effect
+        let liquidAnimating = false;
         function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+            if (liquidAnimating) return;
+            liquidAnimating = true;
+
+            const toggle = document.querySelector('.dark-mode-toggle');
+            const liquid = document.getElementById('dark-mode-liquid');
+            const rect = toggle.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            // Set origin point
+            liquid.style.setProperty('--liquid-x', x + 'px');
+            liquid.style.setProperty('--liquid-y', y + 'px');
+
+            const goingDark = !document.body.classList.contains('dark-mode');
+
+            // Set overlay to the TARGET theme color
+            liquid.style.background = goingDark ? '#1a1a1a' : '#faf8f5';
+
+            // Force layout before adding class
+            liquid.offsetHeight;
+            liquid.classList.add('expanding');
+
+            // Once circle covers the screen, swap the actual theme underneath
+            setTimeout(() => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+
+                // Remove overlay instantly (theme is now applied underneath)
+                liquid.classList.remove('expanding');
+                liquid.style.clipPath = 'circle(0% at ' + x + 'px ' + y + 'px)';
+
+                // Reset for next use
+                requestAnimationFrame(() => {
+                    liquid.style.clipPath = '';
+                    liquidAnimating = false;
+                });
+            }, 800);
         }
 
         // Check for saved dark mode preference
@@ -1313,6 +1510,7 @@
 
         // Check if Fivey has been moved before
         const savedPosition = localStorage.getItem('fiveyPosition');
+        const fiveyHasAppeared = sessionStorage.getItem('fiveyAppeared');
         if (savedPosition) {
             const pos = JSON.parse(savedPosition);
             mascot.classList.add('peeled');
@@ -1323,7 +1521,14 @@
             mascot.style.opacity = '1';
             mascot.style.transform = 'none';
             mascot.style.animation = 'none';
+        } else if (fiveyHasAppeared) {
+            // Returning to page — show Fivey instantly (no animation delay)
+            mascot.classList.add('instant');
         }
+        // Mark Fivey as appeared after animation completes
+        mascot.addEventListener('animationend', () => {
+            sessionStorage.setItem('fiveyAppeared', 'true');
+        });
 
         function handleDragStart(clientX, clientY, target) {
             if (target.tagName === 'A') return false;
@@ -1611,6 +1816,7 @@
         // Terminal commands
         const commandHistory = [];
         let historyIndex = -1;
+        const allCommands = ['/info', '/home', '/exp', '/experience', '/proj', '/projects', '/pass', '/passions', '/pics', '/photos', '/contact', '/clear', '/matrix', '/snake', '/dino'];
 
         const asciiPages = {
             home: `
@@ -1798,6 +2004,11 @@
                 addTerminalLine('  <span class="terminal-command">/contact</span> → View contact info');
                 addTerminalLine('  <span class="terminal-command">/clear</span>   → Clear terminal');
                 addTerminalLine('');
+                addTerminalLine('  <span style="color: #e67e22; font-weight: bold;">Games</span>');
+                addTerminalLine('  <span class="terminal-command">/matrix</span>  → Matrix rain');
+                addTerminalLine('  <span class="terminal-command">/snake</span>   → Play Snake');
+                addTerminalLine('  <span class="terminal-command">/dino</span>    → Play Dino Run');
+                addTerminalLine('');
             } else if (command === '/home') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.home);
@@ -1824,6 +2035,18 @@
                 addTerminalLine('');
                 addTerminalLine(asciiPages.contact);
                 addTerminalLine('');
+            } else if (command === '/matrix') {
+                addTerminalLine('');
+                addTerminalLine('<span class="terminal-success">Entering the Matrix... Press Escape to exit.</span>');
+                setTimeout(() => startMatrixRain(), 300);
+            } else if (command === '/snake') {
+                addTerminalLine('');
+                addTerminalLine('<span class="terminal-success">Starting Snake... Arrow keys to move. Press Escape to quit.</span>');
+                setTimeout(() => startSnakeGame(), 300);
+            } else if (command === '/dino') {
+                addTerminalLine('');
+                addTerminalLine('<span class="terminal-success">Starting Dino Run... Press Space to jump. Press Escape to quit.</span>');
+                setTimeout(() => startDinoGame(), 300);
             } else if (command === '/clear') {
                 const terminalBody = document.getElementById('terminal-body');
                 // Remove all content except the input line
@@ -1880,19 +2103,54 @@
                 const newInput = terminalInput.cloneNode(true);
                 terminalInput.parentNode.replaceChild(newInput, terminalInput);
 
+                const autocompleteHint = document.getElementById('terminal-autocomplete');
+                const suggestionsEl = document.getElementById('terminal-suggestions');
+
+                function getMatches(val) {
+                    if (!val || !val.startsWith('/')) return [];
+                    return allCommands.filter(c => c.startsWith(val.toLowerCase()) && c !== val.toLowerCase());
+                }
+
+                function updateHint() {
+                    const val = newInput.value;
+                    const matches = getMatches(val);
+                    if (matches.length > 0 && val.length > 0) {
+                        autocompleteHint.textContent = matches[0];
+                    } else {
+                        autocompleteHint.textContent = '';
+                    }
+                    // Show suggestion pills when multiple matches
+                    if (matches.length > 1 && val.length > 1) {
+                        suggestionsEl.innerHTML = matches.map(m =>
+                            '<span class="terminal-suggestion">' + m + '</span>'
+                        ).join('');
+                    } else {
+                        suggestionsEl.innerHTML = '';
+                    }
+                }
+
+                newInput.addEventListener('input', updateHint);
+
                 newInput.addEventListener('keydown', (e) => {
-                    console.log('Key pressed:', e.key);
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const matches = getMatches(newInput.value);
+                        if (matches.length > 0) {
+                            newInput.value = matches[0];
+                            updateHint();
+                        }
+                    } else if (e.key === 'Enter') {
                         e.preventDefault();
                         const cmd = newInput.value;
-                        console.log('Executing command:', cmd);
                         executeCommand(cmd);
                         newInput.value = '';
+                        updateHint();
                     } else if (e.key === 'ArrowUp') {
                         e.preventDefault();
                         if (commandHistory.length > 0 && historyIndex > 0) {
                             historyIndex--;
                             newInput.value = commandHistory[historyIndex];
+                            updateHint();
                         }
                     } else if (e.key === 'ArrowDown') {
                         e.preventDefault();
@@ -1903,6 +2161,7 @@
                             historyIndex = commandHistory.length;
                             newInput.value = '';
                         }
+                        updateHint();
                     }
                 });
 
@@ -1926,20 +2185,8 @@
             }
         }
 
-        // Initialize terminal when DOM is ready
-        function initTerminal() {
-            if (document.getElementById('terminal-overlay')) {
-                setupTerminal();
-            } else {
-                setTimeout(initTerminal, 50);
-            }
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initTerminal);
-        } else {
-            initTerminal();
-        }
+        // Initialize terminal (HTML is above script, so elements exist)
+        setupTerminal();
 
         // Terminal dragging
         const terminalHeader = document.querySelector('.terminal-header');
@@ -2061,37 +2308,541 @@
                 }
             });
         }
-    </script>
 
-    <!-- TERMINAL OVERLAY -->
-    <div class="terminal-overlay" id="terminal-overlay">
-        <canvas id="terminal-grid"></canvas>
-        <div class="terminal-window">
-            <div class="terminal-header">
-                <div class="terminal-controls">
-                    <button class="terminal-btn close" onclick="closeTerminal()"></button>
-                    <button class="terminal-btn minimize"></button>
-                    <button class="terminal-btn maximize"></button>
-                </div>
-                <span class="terminal-title">terminal — ryan@mccomb</span>
-            </div>
-            <div class="terminal-body" id="terminal-body">
-                <pre class="ascii-art" style="margin-bottom: 1rem;">
-  ██████  ██    ██  █████  ███    ██     ███    ███  ██████  ██████  ██████  ███    ███ ██████
-  ██   ██  ██  ██  ██   ██ ████   ██     ████  ████ ██      ██      ██    ██ ████  ████ ██   ██
-  ██████    ████   ███████ ██ ██  ██     ██ ████ ██ ██      ██      ██    ██ ██ ████ ██ ██████
-  ██   ██    ██    ██   ██ ██  ██ ██     ██  ██  ██ ██      ██      ██    ██ ██  ██  ██ ██   ██
-  ██   ██    ██    ██   ██ ██   ████     ██      ██  ██████  ██████  ██████  ██      ██ ██████
-                </pre>
-                <div class="terminal-line" style="margin-bottom: 0.5rem;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
-                <div class="terminal-line" style="margin-bottom: 1rem;">Welcome to Ryan McComb's interactive terminal. Type <span class="terminal-command">/info</span> to see available commands.</div>
-                <div class="terminal-input-line">
-                    <span class="terminal-prompt">ryan@mccomb:~$</span>
-                    <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false">
-                </div>
-            </div>
-            <div class="terminal-resize-handle"></div>
-        </div>
-    </div>
+        // =============================================
+        // TERMINAL GAMES
+        // =============================================
+
+        let activeGame = null;
+
+        function stopActiveGame() {
+            if (activeGame) {
+                activeGame.stop();
+                activeGame = null;
+            }
+        }
+
+        function createGameCanvas() {
+            const termBody = document.getElementById('terminal-body');
+            const inputLine = termBody.querySelector('.terminal-input-line');
+            // Hide all terminal content
+            Array.from(termBody.children).forEach(child => {
+                if (child !== inputLine) child.style.display = 'none';
+            });
+            inputLine.style.display = 'none';
+
+            const canvas = document.createElement('canvas');
+            canvas.className = 'terminal-game-canvas';
+            canvas.id = 'game-canvas';
+            termBody.appendChild(canvas);
+
+            // Size canvas to terminal body
+            const rect = termBody.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            return canvas;
+        }
+
+        function removeGameCanvas() {
+            const termBody = document.getElementById('terminal-body');
+            const canvas = document.getElementById('game-canvas');
+            if (canvas) canvas.remove();
+
+            // Restore terminal content
+            Array.from(termBody.children).forEach(child => {
+                child.style.display = '';
+            });
+
+            // Refocus input
+            const input = termBody.querySelector('.terminal-input');
+            if (input) input.focus();
+        }
+
+        // --- MATRIX RAIN ---
+        function startMatrixRain() {
+            stopActiveGame();
+            const canvas = createGameCanvas();
+            const ctx = canvas.getContext('2d');
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+            const fontSize = 14;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+            let running = true;
+            let animId;
+
+            function draw() {
+                ctx.fillStyle = 'rgba(30, 30, 30, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0f0';
+                ctx.font = fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+
+                    // Bright green for the head, dimmer for trail
+                    if (Math.random() > 0.5) {
+                        ctx.fillStyle = '#fff';
+                    } else {
+                        ctx.fillStyle = '#0f0';
+                    }
+                    ctx.fillText(char, x, y);
+                    ctx.fillStyle = '#0f0';
+
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+
+                if (running) animId = requestAnimationFrame(draw);
+            }
+
+            draw();
+
+            function onKey(e) {
+                if (e.key === 'Escape') {
+                    stopActiveGame();
+                }
+            }
+            document.addEventListener('keydown', onKey);
+
+            activeGame = {
+                stop: () => {
+                    running = false;
+                    cancelAnimationFrame(animId);
+                    document.removeEventListener('keydown', onKey);
+                    removeGameCanvas();
+                    addTerminalLine('<span class="terminal-success">Exited the Matrix.</span>');
+                }
+            };
+        }
+
+        // --- SNAKE GAME ---
+        function startSnakeGame() {
+            stopActiveGame();
+            const canvas = createGameCanvas();
+            const ctx = canvas.getContext('2d');
+            const gridSize = 16;
+            const cols = Math.floor(canvas.width / gridSize);
+            const rows = Math.floor(canvas.height / gridSize);
+            let running = true;
+            let animId;
+            let score = 0;
+            let gameOver = false;
+
+            let snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
+            let dir = { x: 1, y: 0 };
+            let nextDir = { x: 1, y: 0 };
+            let food = spawnFood();
+            let lastTick = 0;
+            const tickRate = 100;
+
+            function spawnFood() {
+                let pos;
+                do {
+                    pos = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+                } while (snake.some(s => s.x === pos.x && s.y === pos.y));
+                return pos;
+            }
+
+            function draw(timestamp) {
+                if (!running) return;
+
+                if (timestamp - lastTick > tickRate && !gameOver) {
+                    lastTick = timestamp;
+                    dir = { ...nextDir };
+
+                    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+                    // Wall wrap
+                    if (head.x < 0) head.x = cols - 1;
+                    if (head.x >= cols) head.x = 0;
+                    if (head.y < 0) head.y = rows - 1;
+                    if (head.y >= rows) head.y = 0;
+
+                    // Self collision
+                    if (snake.some(s => s.x === head.x && s.y === head.y)) {
+                        gameOver = true;
+                    } else {
+                        snake.unshift(head);
+                        if (head.x === food.x && head.y === food.y) {
+                            score++;
+                            food = spawnFood();
+                        } else {
+                            snake.pop();
+                        }
+                    }
+                }
+
+                // Render
+                ctx.fillStyle = '#1e1e1e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Food
+                ctx.fillStyle = '#e67e22';
+                ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
+
+                // Snake
+                snake.forEach((seg, i) => {
+                    ctx.fillStyle = i === 0 ? '#4ec9b0' : '#0f0';
+                    ctx.fillRect(seg.x * gridSize, seg.y * gridSize, gridSize - 1, gridSize - 1);
+                });
+
+                // Score
+                ctx.fillStyle = '#888';
+                ctx.font = '14px "VT323", monospace';
+                ctx.fillText('Score: ' + score, 10, 20);
+
+                if (gameOver) {
+                    ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#e67e22';
+                    ctx.font = '32px "VT323", monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+                    ctx.fillStyle = '#4ec9b0';
+                    ctx.font = '20px "VT323", monospace';
+                    ctx.fillText('Score: ' + score + '  |  Press R to restart, Esc to quit', canvas.width / 2, canvas.height / 2 + 20);
+                    ctx.textAlign = 'start';
+                }
+
+                animId = requestAnimationFrame(draw);
+            }
+
+            function onKey(e) {
+                if (e.key === 'Escape') { stopActiveGame(); return; }
+                if (gameOver && (e.key === 'r' || e.key === 'R')) {
+                    snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
+                    dir = { x: 1, y: 0 };
+                    nextDir = { x: 1, y: 0 };
+                    food = spawnFood();
+                    score = 0;
+                    gameOver = false;
+                    return;
+                }
+                if (e.key === 'ArrowUp' && dir.y !== 1) nextDir = { x: 0, y: -1 };
+                if (e.key === 'ArrowDown' && dir.y !== -1) nextDir = { x: 0, y: 1 };
+                if (e.key === 'ArrowLeft' && dir.x !== 1) nextDir = { x: -1, y: 0 };
+                if (e.key === 'ArrowRight' && dir.x !== -1) nextDir = { x: 1, y: 0 };
+                e.preventDefault();
+            }
+            document.addEventListener('keydown', onKey);
+
+            animId = requestAnimationFrame(draw);
+
+            activeGame = {
+                stop: () => {
+                    running = false;
+                    cancelAnimationFrame(animId);
+                    document.removeEventListener('keydown', onKey);
+                    removeGameCanvas();
+                    addTerminalLine('<span class="terminal-success">Snake ended. Score: ' + score + '</span>');
+                }
+            };
+        }
+
+        // --- DINO GAME ---
+        function startDinoGame() {
+            stopActiveGame();
+            const canvas = createGameCanvas();
+            const ctx = canvas.getContext('2d');
+            let running = true;
+            let animId;
+            let score = 0;
+            let gameOver = false;
+            let started = false;
+
+            const groundY = canvas.height - 40;
+            const dino = { x: 60, y: groundY, w: 24, h: 30, vy: 0, jumping: false };
+            const gravity = 0.8;
+            const jumpForce = -13;
+            let obstacles = [];
+            let spawnTimer = 0;
+            let spawnInterval = 80;
+            let speed = 4;
+            let cloudX = canvas.width;
+            let clouds = [
+                { x: 200, y: 40 + Math.random() * 40 },
+                { x: 500, y: 30 + Math.random() * 50 },
+                { x: 750, y: 45 + Math.random() * 35 }
+            ];
+
+            function drawDino() {
+                ctx.fillStyle = '#4ec9b0';
+                // Body
+                ctx.fillRect(dino.x, dino.y - dino.h, dino.w, dino.h);
+                // Eye
+                ctx.fillStyle = '#1e1e1e';
+                ctx.fillRect(dino.x + 16, dino.y - dino.h + 5, 4, 4);
+                // Legs (simple animation)
+                ctx.fillStyle = '#4ec9b0';
+                const legPhase = Math.floor(Date.now() / 100) % 2;
+                if (!dino.jumping) {
+                    ctx.fillRect(dino.x + 4, dino.y, 5, legPhase === 0 ? 6 : 3);
+                    ctx.fillRect(dino.x + 14, dino.y, 5, legPhase === 0 ? 3 : 6);
+                } else {
+                    ctx.fillRect(dino.x + 4, dino.y, 5, 4);
+                    ctx.fillRect(dino.x + 14, dino.y, 5, 4);
+                }
+                // Arm
+                ctx.fillRect(dino.x - 3, dino.y - dino.h + 14, 6, 3);
+            }
+
+            function drawCactus(obs) {
+                ctx.fillStyle = '#e67e22';
+                // Main trunk
+                ctx.fillRect(obs.x + 4, obs.y - obs.h, obs.w - 8, obs.h);
+                // Left arm
+                if (obs.h > 25) {
+                    ctx.fillRect(obs.x, obs.y - obs.h + 8, 6, 14);
+                    ctx.fillRect(obs.x, obs.y - obs.h + 8, 10, 4);
+                }
+                // Right arm
+                if (obs.h > 20) {
+                    ctx.fillRect(obs.x + obs.w - 6, obs.y - obs.h + 14, 6, 10);
+                    ctx.fillRect(obs.x + obs.w - 10, obs.y - obs.h + 14, 10, 4);
+                }
+            }
+
+            function update() {
+                if (gameOver || !started) return;
+
+                // Dino physics
+                if (dino.jumping) {
+                    dino.vy += gravity;
+                    dino.y += dino.vy;
+                    if (dino.y >= groundY) {
+                        dino.y = groundY;
+                        dino.vy = 0;
+                        dino.jumping = false;
+                    }
+                }
+
+                // Spawn obstacles
+                spawnTimer++;
+                if (spawnTimer >= spawnInterval) {
+                    spawnTimer = 0;
+                    spawnInterval = 50 + Math.random() * 60;
+                    const h = 18 + Math.random() * 22;
+                    obstacles.push({ x: canvas.width + 20, y: groundY, w: 16 + Math.random() * 8, h: h });
+                }
+
+                // Move obstacles
+                obstacles.forEach(obs => obs.x -= speed);
+                obstacles = obstacles.filter(obs => obs.x + obs.w > -20);
+
+                // Move clouds
+                clouds.forEach(c => {
+                    c.x -= speed * 0.3;
+                    if (c.x < -60) c.x = canvas.width + 20;
+                });
+
+                // Collision
+                obstacles.forEach(obs => {
+                    if (dino.x + dino.w > obs.x + 4 && dino.x < obs.x + obs.w - 4 &&
+                        dino.y > obs.y - obs.h + 4) {
+                        gameOver = true;
+                    }
+                });
+
+                // Score & speed up
+                score++;
+                if (score % 500 === 0) speed += 0.5;
+            }
+
+            function render() {
+                ctx.fillStyle = '#1e1e1e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Clouds
+                ctx.fillStyle = '#333';
+                clouds.forEach(c => {
+                    ctx.fillRect(c.x, c.y, 40, 8);
+                    ctx.fillRect(c.x + 8, c.y - 6, 24, 6);
+                    ctx.fillRect(c.x + 4, c.y + 8, 32, 4);
+                });
+
+                // Ground
+                ctx.fillStyle = '#555';
+                ctx.fillRect(0, groundY + 8, canvas.width, 2);
+                // Ground texture
+                for (let i = 0; i < canvas.width; i += 20) {
+                    if (Math.random() > 0.7) {
+                        ctx.fillRect(i + (score * speed * 0.5) % 20, groundY + 12, 3, 1);
+                    }
+                }
+
+                // Obstacles
+                obstacles.forEach(obs => drawCactus(obs));
+
+                // Dino
+                drawDino();
+
+                // Score
+                ctx.fillStyle = '#888';
+                ctx.font = '18px "VT323", monospace';
+                ctx.textAlign = 'right';
+                ctx.fillText(String(Math.floor(score / 5)).padStart(5, '0'), canvas.width - 10, 25);
+                ctx.textAlign = 'start';
+
+                if (!started) {
+                    ctx.fillStyle = '#4ec9b0';
+                    ctx.font = '24px "VT323", monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Press SPACE to start', canvas.width / 2, canvas.height / 2);
+                    ctx.textAlign = 'start';
+                }
+
+                if (gameOver) {
+                    ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#e67e22';
+                    ctx.font = '32px "VT323", monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+                    ctx.fillStyle = '#4ec9b0';
+                    ctx.font = '20px "VT323", monospace';
+                    ctx.fillText('Score: ' + Math.floor(score / 5) + '  |  Space to restart, Esc to quit', canvas.width / 2, canvas.height / 2 + 20);
+                    ctx.textAlign = 'start';
+                }
+            }
+
+            function gameLoop(ts) {
+                if (!running) return;
+                update();
+                render();
+                animId = requestAnimationFrame(gameLoop);
+            }
+
+            function onKey(e) {
+                if (e.key === 'Escape') { stopActiveGame(); return; }
+                if (e.key === ' ' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (gameOver) {
+                        // Restart
+                        obstacles = [];
+                        score = 0;
+                        speed = 4;
+                        spawnTimer = 0;
+                        dino.y = groundY;
+                        dino.vy = 0;
+                        dino.jumping = false;
+                        gameOver = false;
+                        started = true;
+                        return;
+                    }
+                    if (!started) { started = true; }
+                    if (!dino.jumping) {
+                        dino.jumping = true;
+                        dino.vy = jumpForce;
+                    }
+                }
+            }
+            document.addEventListener('keydown', onKey);
+
+            animId = requestAnimationFrame(gameLoop);
+
+            activeGame = {
+                stop: () => {
+                    running = false;
+                    cancelAnimationFrame(animId);
+                    document.removeEventListener('keydown', onKey);
+                    removeGameCanvas();
+                    addTerminalLine('<span class="terminal-success">Dino Run ended. Score: ' + Math.floor(score / 5) + '</span>');
+                }
+            };
+        }
+
+        // =============================================
+        // VISUAL EFFECTS
+        // =============================================
+
+        // --- MAGNETIC BUTTONS ---
+        function initMagneticButtons() {
+            const magneticEls = document.querySelectorAll('.nav-tabs a, .footer-links a, .terminal-button');
+            const magnetStrength = 0.3;
+            const magnetRange = 80;
+
+            magneticEls.forEach(el => {
+                el.style.transition = 'transform 0.2s ease-out';
+
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const dx = e.clientX - centerX;
+                    const dy = e.clientY - centerY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < magnetRange) {
+                        el.style.transform = `translate(${dx * magnetStrength}px, ${dy * magnetStrength}px)`;
+                    }
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+        initMagneticButtons();
+
+        // --- STAGGERED TEXT ENTRANCE ---
+        function initStaggeredEntrance() {
+            const staggerEls = document.querySelectorAll('.stagger-in');
+            if (!staggerEls.length) return;
+
+            // Use IntersectionObserver or trigger after loader finishes
+            function revealElements() {
+                staggerEls.forEach(el => {
+                    el.classList.add('visible');
+                });
+            }
+
+            // If loader is already hidden, reveal immediately
+            const loader = document.getElementById('loader');
+            if (loader && loader.classList.contains('hidden')) {
+                revealElements();
+            } else {
+                // Wait for loader to finish, then stagger in
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((m) => {
+                        if (loader.classList.contains('hidden')) {
+                            setTimeout(revealElements, 200);
+                            observer.disconnect();
+                        }
+                    });
+                });
+                if (loader) {
+                    observer.observe(loader, { attributes: true, attributeFilter: ['class'] });
+                }
+            }
+        }
+        initStaggeredEntrance();
+
+        // --- INK BLEED ON SCROLL ---
+        function initInkBleed() {
+            // Add ink-bleed class to section dividers
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('ink-bleed');
+            });
+
+            const inkEls = document.querySelectorAll('.ink-bleed');
+            if (!inkEls.length) return;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('bled');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            inkEls.forEach(el => observer.observe(el));
+        }
+        initInkBleed();
+    </script>
 </body>
 </html>

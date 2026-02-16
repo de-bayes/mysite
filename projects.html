@@ -18,7 +18,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #ffffff;
+            background: #faf8f5;
             color: #000000;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
@@ -114,7 +114,7 @@
                 right: 0;
                 width: 200px;
                 height: 100vh;
-                background: #ffffff;
+                background: #faf8f5;
                 flex-direction: column;
                 padding: 5rem 2rem 2rem;
                 gap: 1.5rem;
@@ -150,28 +150,46 @@
         /* PROJECT GRID */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 280px;
+            gap: 2rem;
         }
 
         .project-card {
-            background: #ffffff;
-            border: 1px solid #e5e5e5;
-            padding: 2rem;
-            transition: all 0.2s ease;
+            /* tan(7°) ≈ 0.1228 — matches the slanted grid shear */
+            background: rgba(250, 248, 245, 0.95);
+            border: 1px solid rgba(229, 229, 229, 0.6);
+            padding: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             text-decoration: none;
             color: inherit;
             display: flex;
+            overflow: hidden;
+            height: 100%;
+            transform: skewX(7deg);
+            transform-origin: center center;
+            -webkit-font-smoothing: antialiased;
+            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-card-inner {
+            padding: 2rem;
+            display: flex;
             flex-direction: column;
-            min-height: 220px;
+            flex: 1;
+        }
+
+        .project-card-inner p {
+            flex: 1;
         }
 
         .project-card:hover {
             border-color: #e67e22;
-            transform: translateY(-2px);
-            box-shadow: 4px 4px 0 #e67e22;
+            transform: skewX(7deg) translateY(-8px);
+            box-shadow: 8px 12px 24px rgba(230, 126, 34, 0.18),
+                        4px 4px 0 #e67e22;
         }
 
         .project-link {
@@ -208,7 +226,7 @@
         .tag {
             font-size: 0.75rem;
             padding: 0.25rem 0.75rem;
-            background: #f5f5f5;
+            background: #f5f2ee;
             color: #666666;
             border: 1px solid #e5e5e5;
         }
@@ -238,6 +256,14 @@
             .projects-grid {
                 grid-template-columns: 1fr;
             }
+
+            .project-card {
+                transform: skewX(4deg);
+            }
+
+            .project-card:hover {
+                transform: skewX(4deg) translateY(-6px);
+            }
         }
     </style>
 </head>
@@ -265,39 +291,47 @@
 
         <div class="projects-grid">
             <a href="https://il9.org" target="_blank" class="project-card">
-                <h3>IL9CAST</h3>
-                <p>Open-source political forecasting project modeling the Illinois 9th Congressional District. Features data analytics, polling aggregation, and election predictions; featured in Capitol Fax and the Evanston RoundTable.</p>
-                <div class="project-tags">
-                    <span class="tag">Data Science</span>
-                    <span class="tag">Python</span>
-                    <span class="tag">Open Source</span>
+                <div class="project-card-inner">
+                    <h3>IL9CAST</h3>
+                    <p>Open-source political forecasting project modeling the Illinois 9th Congressional District. Features data analytics, polling aggregation, and election predictions; featured in Capitol Fax and the Evanston RoundTable.</p>
+                    <div class="project-tags">
+                        <span class="tag">Data Science</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">Open Source</span>
+                    </div>
                 </div>
             </a>
 
             <a href="https://podcasts.apple.com/us/podcast/project-2028/id1753137875" target="_blank" class="project-card">
-                <h3>Project 2028 Podcast</h3>
-                <p>A podcast exploring political science and politics.</p>
-                <div class="project-tags">
-                    <span class="tag">Podcast</span>
-                    <span class="tag">Political Science</span>
+                <div class="project-card-inner">
+                    <h3>Project 2028 Podcast</h3>
+                    <p>A podcast exploring political science and politics.</p>
+                    <div class="project-tags">
+                        <span class="tag">Podcast</span>
+                        <span class="tag">Political Science</span>
+                    </div>
                 </div>
             </a>
 
             <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="project-card">
-                <h3>The Evanstonian Writer Profile</h3>
-                <p>Collection of my journalism work covering local politics, ETHS, D65, and community social issues.</p>
-                <div class="project-tags">
-                    <span class="tag">Journalism</span>
-                    <span class="tag">Writing</span>
+                <div class="project-card-inner">
+                    <h3>The Evanstonian Writer Profile</h3>
+                    <p>Collection of my journalism work covering local politics, ETHS, D65, and community social issues.</p>
+                    <div class="project-tags">
+                        <span class="tag">Journalism</span>
+                        <span class="tag">Writing</span>
+                    </div>
                 </div>
             </a>
 
             <a href="https://manifed.markets" target="_blank" class="project-card">
-                <h3>ManiFed</h3>
-                <p>Peer-to-peer lending platform built for Manifold Markets community.</p>
-                <div class="project-tags">
-                    <span class="tag">Web Development</span>
-                    <span class="tag">Finance</span>
+                <div class="project-card-inner">
+                    <h3>ManiFed</h3>
+                    <p>Peer-to-peer lending platform built for Manifold Markets community.</p>
+                    <div class="project-tags">
+                        <span class="tag">Web Development</span>
+                        <span class="tag">Finance</span>
+                    </div>
                 </div>
             </a>
         </div>
@@ -328,7 +362,7 @@
         const ctx = canvas.getContext('2d');
         let mouseX = -1000, mouseY = -1000, targetMouseX = -1000, targetMouseY = -1000;
         const gridSize = 40, influence = 280, maxDisplacement = 15, smoothing = 0.06;
-        const angle = 15 * (Math.PI / 180);
+        const angle = 7 * (Math.PI / 180);
         let pointsState = null;
 
         function resizeCanvas() {
@@ -363,7 +397,7 @@
                         const baseX = (col - cols * 0.6) * gridSize;
                         const baseY = (row - rows/2) * gridSize;
                         const slantedX = baseX + baseY * Math.tan(angle);
-                        const slantedY = baseY + baseX * Math.tan(angle);
+                        const slantedY = baseY;
                         pointsState[row][col] = { x: slantedX, y: slantedY, bx: slantedX, by: slantedY };
                     }
                 }
