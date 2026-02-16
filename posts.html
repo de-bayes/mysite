@@ -198,7 +198,7 @@
         .tweets-grid {
             display: flex;
             flex-direction: column;
-            align-items: stretch;
+            align-items: center;
             gap: 1.5rem;
             position: relative;
         }
@@ -210,14 +210,11 @@
             pointer-events: none;
         }
 
-        /* Rendered tweet widgets - match profile card width */
+        /* Rendered tweet widgets - centered and matching profile card width */
         .tweets-grid .twitter-tweet-rendered {
-            max-width: none !important;
+            max-width: 750px !important;
             width: 100% !important;
-        }
-
-        .tweets-grid .twitter-tweet-rendered iframe {
-            width: 100% !important;
+            margin: 0 auto !important;
         }
 
 
