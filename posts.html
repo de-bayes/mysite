@@ -200,25 +200,20 @@
             flex-direction: column;
             align-items: center;
             gap: 1.5rem;
+            position: relative;
         }
 
         /* Hide raw blockquotes until Twitter renders them */
-        .tweets-grid blockquote.twitter-tweet {
+        .tweets-grid > blockquote.twitter-tweet:not(.twitter-tweet-rendered) {
             visibility: hidden;
-            height: 0;
-            overflow: hidden;
-            margin: 0 !important;
-            padding: 0;
-            border: 0;
+            position: absolute;
+            pointer-events: none;
         }
 
-        /* Show the rendered iframe widgets */
-        .tweets-grid .twitter-tweet-rendered,
-        .tweets-grid iframe {
+        /* Rendered tweet widgets */
+        .tweets-grid .twitter-tweet-rendered {
             max-width: 750px !important;
             width: 100% !important;
-            visibility: visible !important;
-            height: auto !important;
         }
 
 
