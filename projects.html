@@ -449,7 +449,12 @@
         drawSlantedGrid();
     </script>
 
-    <!-- CRT + CMD PALETTE + KONAMI + PAGE TRANSITIONS -->
+    <div class="power-toolbar">
+        <button class="power-btn" onclick="document.body.classList.toggle('dark-mode');localStorage.setItem('darkMode',document.body.classList.contains('dark-mode')?'enabled':'disabled');" aria-label="Toggle dark mode"><svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="power-btn" id="crt-btn" onclick="document.body.classList.toggle('crt-mode');localStorage.setItem('crtMode',document.body.classList.contains('crt-mode')?'enabled':'disabled');this.classList.toggle('active',document.body.classList.contains('crt-mode'));"><span class="btn-label">CRT</span></button>
+        <button class="power-btn" onclick="openCmd()"><span class="btn-label"><kbd class="shortcut-key"></kbd> Search</span></button>
+    </div>
+    <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
     <div class="crt-scanline"></div>
     <div class="crt-badge" onclick="document.body.classList.toggle('crt-mode')">CRT ON</div>
     <div class="cmd-palette-overlay" id="cmd-palette-overlay">
@@ -462,7 +467,7 @@
         </div>
     </div>
     <script>
-        if (localStorage.getItem('crtMode') === 'enabled') document.body.classList.add('crt-mode');
+        if (localStorage.getItem('crtMode') === 'enabled'){document.body.classList.add('crt-mode');const cb=document.getElementById('crt-btn');if(cb)cb.classList.add('active');}
         const cmdItems=[{section:'Pages',icon:'\uD83C\uDFE0',label:'Home',action:()=>window.location.href='index.html'},{section:'Pages',icon:'\uD83D\uDCBC',label:'Experience',action:()=>window.location.href='experience.html'},{section:'Pages',icon:'\uD83D\uDCC1',label:'Projects',action:()=>window.location.href='projects.html'},{section:'Pages',icon:'\uD83D\uDCF7',label:'Photos',action:()=>window.location.href='photos.html'},{section:'Pages',icon:'\uD83D\uDCDD',label:'Posts',action:()=>window.location.href='posts.html'},{section:'Pages',icon:'\uD83D\uDCE7',label:'Contact',action:()=>window.location.href='contact.html'},{section:'Tools',icon:'\uD83C\uDF19',label:'Toggle Dark Mode',action:()=>{document.body.classList.toggle('dark-mode');localStorage.setItem('darkMode',document.body.classList.contains('dark-mode')?'enabled':'disabled');}}];
         let cmdIdx=0,cmdFiltered=[...cmdItems];
         function openCmd(){const o=document.getElementById('cmd-palette-overlay');o.classList.add('active');const i=document.getElementById('cmd-palette-input');i.value='';cmdIdx=0;cmdFiltered=[...cmdItems];renderCmd();setTimeout(()=>i.focus(),50);}
