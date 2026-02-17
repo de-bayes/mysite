@@ -2252,7 +2252,9 @@
                         }
                     } else if (e.key === 'Enter') {
                         e.preventDefault();
-                        const cmd = newInput.value;
+                        const trimmedValue = newInput.value.trim();
+                        const matches = getMatches(trimmedValue);
+                        const cmd = matches.length > 0 ? matches[0] : newInput.value;
                         executeCommand(cmd);
                         newInput.value = '';
                         updateHint();
