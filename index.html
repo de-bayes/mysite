@@ -563,68 +563,89 @@
             }
         }
 
-        /* DARK MODE TOGGLE */
-        .dark-mode-toggle {
+        /* POWER USER TOOLBAR (replaces standalone dark mode toggle) */
+        .power-toolbar {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
             z-index: 100;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            gap: 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            font-family: 'VT323', monospace;
         }
 
-        .dark-mode-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        .power-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.55rem 0.7rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            border-right: 1px solid var(--border-color);
+            font-family: 'VT323', monospace;
+            line-height: 1;
         }
 
-        .dark-mode-toggle svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--text-primary);
-            stroke: var(--text-primary);
+        .power-btn:last-child {
+            border-right: none;
+        }
+
+        .power-btn:hover {
+            background: rgba(230, 126, 34, 0.1);
+            color: var(--text-primary);
+        }
+
+        .power-btn.active {
+            color: #e67e22;
+        }
+
+        .power-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            stroke: currentColor;
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
-            transition: all 0.3s ease;
         }
 
-        .dark-mode-toggle .sun-icon {
-            display: none;
+        .power-btn .btn-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.02em;
         }
 
-        .dark-mode-toggle .moon-icon {
-            display: block;
+        .power-btn kbd {
+            font-size: 0.6rem;
+            background: rgba(128, 128, 128, 0.15);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            color: var(--text-light);
+            font-family: 'Monaco', 'Menlo', monospace;
         }
 
-        body.dark-mode .dark-mode-toggle .sun-icon {
-            display: block;
-        }
-
-        body.dark-mode .dark-mode-toggle .moon-icon {
-            display: none;
-        }
+        #dark-mode-btn .sun-icon { display: none; }
+        #dark-mode-btn .moon-icon { display: block; }
+        body.dark-mode #dark-mode-btn .sun-icon { display: block; }
+        body.dark-mode #dark-mode-btn .moon-icon { display: none; }
 
         @media (max-width: 600px) {
-            .dark-mode-toggle {
-                bottom: 1.5rem;
-                right: 1.5rem;
-                width: 45px;
-                height: 45px;
+            .power-toolbar {
+                bottom: 1rem;
+                right: 1rem;
             }
-
-            .dark-mode-toggle svg {
-                width: 20px;
-                height: 20px;
+            .power-btn .btn-label,
+            .power-btn kbd {
+                display: none;
             }
         }
 
@@ -1147,22 +1168,19 @@
 
         <div class="terminal-button" onclick="openTerminal()">TERMINAL</div>
 
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/>
-                <line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/>
-                <line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-        </button>
+        <!-- POWER USER TOOLBAR -->
+        <div class="power-toolbar">
+            <button class="power-btn" id="dark-mode-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <button class="power-btn" id="crt-btn" onclick="toggleCRT(); updateToolbarState();">
+                <span class="btn-label">CRT</span>
+            </button>
+            <button class="power-btn" onclick="openCmdPalette()">
+                <span class="btn-label"><kbd>Ctrl+K</kbd></span>
+            </button>
+        </div>
 
         <nav>
             <div class="hamburger" onclick="toggleNav()">
@@ -1272,7 +1290,7 @@
             if (liquidAnimating) return;
             liquidAnimating = true;
 
-            const toggle = document.querySelector('.dark-mode-toggle');
+            const toggle = document.getElementById('dark-mode-btn');
             const liquid = document.getElementById('dark-mode-liquid');
             const rect = toggle.getBoundingClientRect();
             const x = rect.left + rect.width / 2;
@@ -2943,11 +2961,24 @@
             document.body.classList.toggle('crt-mode');
             const isOn = document.body.classList.contains('crt-mode');
             localStorage.setItem('crtMode', isOn ? 'enabled' : 'disabled');
+            updateToolbarState();
+        }
+        function updateToolbarState() {
+            const crtBtn = document.getElementById('crt-btn');
+            if (crtBtn) {
+                if (document.body.classList.contains('crt-mode')) {
+                    crtBtn.classList.add('active');
+                } else {
+                    crtBtn.classList.remove('active');
+                }
+            }
         }
         // Restore CRT mode if previously enabled
         if (localStorage.getItem('crtMode') === 'enabled') {
             document.body.classList.add('crt-mode');
         }
+        // Set initial toolbar state
+        updateToolbarState();
 
         // =============================================
         // ASCII ART GENERATOR
