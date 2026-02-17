@@ -1178,9 +1178,10 @@
                 <span class="btn-label">CRT</span>
             </button>
             <button class="power-btn" onclick="openCmdPalette()">
-                <span class="btn-label"><kbd>Ctrl+K</kbd></span>
+                <span class="btn-label"><kbd class="shortcut-key"></kbd> Search</span>
             </button>
         </div>
+        <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
 
         <nav>
             <div class="hamburger" onclick="toggleNav()">
