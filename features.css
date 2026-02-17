@@ -258,6 +258,22 @@ body.crt-mode .crt-badge {
     flex: 1;
 }
 
+
+.cmd-palette-item .cmd-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.cmd-palette-item .cmd-description {
+    font-size: 0.72rem;
+    color: #999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .cmd-palette-item .cmd-shortcut {
     font-size: 0.7rem;
     opacity: 0.35;
