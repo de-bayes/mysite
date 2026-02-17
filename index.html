@@ -3767,8 +3767,80 @@
             { section: 'Tools', icon: '\uD83C\uDF19', label: 'Toggle Dark Mode', action: () => toggleDarkMode() },
         ];
 
+        const siteSearchPages = [
+            { url: 'index.html', title: 'Home' },
+            { url: 'experience.html', title: 'Experience' },
+            { url: 'projects.html', title: 'Projects' },
+            { url: 'photos.html', title: 'Photos' },
+            { url: 'passions.html', title: 'Passions' },
+            { url: 'contact.html', title: 'Contact' },
+            { url: 'posts.html', title: 'Posts' }
+        ];
+        let siteSearchIndex = [];
         let cmdSelectedIdx = 0;
         let cmdFilteredItems = [...cmdPaletteItems];
+
+        function escapeHtml(value) {
+            return value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        async function buildSiteSearchIndex() {
+            if (siteSearchIndex.length) return;
+            const parser = new DOMParser();
+
+            const pages = await Promise.all(siteSearchPages.map(async (page) => {
+                try {
+                    const response = await fetch(page.url);
+                    if (!response.ok) return null;
+                    const html = await response.text();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const bodyText = (doc.body ? doc.body.textContent : doc.documentElement.textContent) || '';
+                    const normalizedText = bodyText.replace(/\s+/g, ' ').trim();
+                    return { ...page, text: normalizedText.toLowerCase(), rawText: normalizedText };
+                } catch {
+                    return null;
+                }
+            }));
+
+            siteSearchIndex = pages.filter(Boolean);
+        }
+
+        async function getSiteSearchResults(query) {
+            if (query.length < 2) return [];
+            await buildSiteSearchIndex();
+
+            const lowerQuery = query.toLowerCase();
+            const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const results = [];
+
+            siteSearchIndex.forEach(page => {
+                const matchIndex = page.text.indexOf(lowerQuery);
+                if (matchIndex === -1) return;
+
+                const start = Math.max(0, matchIndex - 40);
+                const end = Math.min(page.rawText.length, matchIndex + query.length + 70);
+                const snippet = escapeHtml(page.rawText.slice(start, end).trim());
+                const highlightedSnippet = snippet.replace(new RegExp(`(${safeQuery})`, 'ig'), '<mark>$1</mark>');
+
+                results.push({
+                    section: 'Site Search',
+                    icon: '🔎',
+                    label: `${page.title}: "${query}"`,
+                    description: `...${highlightedSnippet}...`,
+                    shortcut: page.url,
+                    action: () => {
+                        window.location.href = `${page.url}#:~:text=${encodeURIComponent(query)}`;
+                    }
+                });
+            });
+
+            return results.slice(0, 5);
+        }
 
         function openCmdPalette() {
             const overlay = document.getElementById('cmd-palette-overlay');
@@ -3797,8 +3869,11 @@
                 }
                 html += '<div class="cmd-palette-item' + (idx === cmdSelectedIdx ? ' selected' : '') + '" data-idx="' + idx + '">' +
                     '<span class="cmd-icon">' + item.icon + '</span>' +
-                    '<span class="cmd-label">' + item.label + '</span>' +
-                    (item.shortcut ? '<span class="cmd-shortcut">' + item.shortcut + '</span>' : '') +
+                    '<span class="cmd-text">' +
+                        '<span class="cmd-label">' + escapeHtml(item.label) + '</span>' +
+                        (item.description ? '<span class="cmd-description">' + item.description + '</span>' : '') +
+                    '</span>' +
+                    (item.shortcut ? '<span class="cmd-shortcut">' + escapeHtml(item.shortcut) + '</span>' : '') +
                     '</div>';
             });
 
@@ -3837,13 +3912,18 @@
         });
 
         // Command palette input handling
-        document.getElementById('cmd-palette-input').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            cmdFilteredItems = cmdPaletteItems.filter(item =>
-                item.label.toLowerCase().includes(query) ||
-                (item.shortcut && item.shortcut.toLowerCase().includes(query)) ||
-                item.section.toLowerCase().includes(query)
+        document.getElementById('cmd-palette-input').addEventListener('input', async (e) => {
+            const query = e.target.value.trim();
+            const lowerQuery = query.toLowerCase();
+
+            const commandResults = cmdPaletteItems.filter(item =>
+                item.label.toLowerCase().includes(lowerQuery) ||
+                (item.shortcut && item.shortcut.toLowerCase().includes(lowerQuery)) ||
+                item.section.toLowerCase().includes(lowerQuery)
             );
+
+            const siteResults = query ? await getSiteSearchResults(query) : [];
+            cmdFilteredItems = [...commandResults, ...siteResults];
             cmdSelectedIdx = 0;
             renderCmdPalette();
         });
