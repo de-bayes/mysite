@@ -1,3 +1,33 @@
+## 2026 Suggested Feature Roadmap (Prioritized)
+
+If you want the highest "wow" for effort, build in this order:
+
+1. **Command Palette (`Cmd/Ctrl+K`)**
+   - Fast jump between pages, commands, and toggles.
+   - Reuses your terminal command model and makes the whole site feel app-like.
+
+2. **Terminal Expansion Pack**
+   - Add 2-3 playful commands (`/theme`, `/play`, `/about me`) + one mini-game.
+   - Keep score in localStorage so visitors can compete with themselves.
+
+3. **Offline-first PWA**
+   - Installable portfolio + offline terminal and pages.
+   - Signals strong product thinking and frontend engineering depth.
+
+4. **Interactive Project Case Studies**
+   - Turn project cards into expandable "build logs" with architecture diagrams and before/after metrics.
+   - Great for recruiters who scan quickly.
+
+5. **Cloud Page Upgrades**
+   - Drag-and-drop uploads, zip download, and share links with expiration.
+   - Converts the cloud page from demo to genuinely useful utility.
+
+### Bonus "Delight" Ideas
+- **Konami code Easter egg** that unlocks a secret theme.
+- **Visitor guestbook** with retro styling + `/sign` terminal command.
+- **Print-to-resume mode** for one-click PDF-friendly export.
+
+
 # Feature Brainstorm
 
 Ideas for cool web features, organized by category. Everything below assumes the current vanilla JS/HTML/CSS stack (no frameworks needed).
