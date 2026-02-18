@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Ryan McComb - Experience">
+    <meta name="description" content="Ryan McComb - Cloud Storage">
     <link rel="icon" type="image/webp" href="538mascot.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
-    <title>Experience - Ryan McComb</title>
+    <title>Cloud - Ryan McComb</title>
     <link rel="stylesheet" href="features.css">
     <style>
         * {
@@ -151,90 +151,186 @@
             text-align: center;
         }
 
-        .section-subtitle {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.8rem;
-            font-weight: 500;
-            margin: 2rem 0 1.5rem;
-            text-align: center;
-            color: #333333;
+        /* LOGIN */
+        .login-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            max-width: 320px;
+            width: 100%;
         }
 
-        .experience-list {
+        .login-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .login-box input:focus {
+            border-color: #e67e22;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #e67e22;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-box button:hover {
+            background: #cf6d17;
+        }
+
+        .login-error {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            min-height: 1.2em;
+        }
+
+        /* CLOUD UI */
+        .cloud-ui {
             max-width: 600px;
             width: 100%;
-            margin-bottom: 3rem;
         }
 
-        .experience-item {
-            padding: 1.5rem 1.5rem;
+        .drop-zone {
+            border: 2px dashed #e5e5e5;
+            border-radius: 8px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: #e67e22;
+            background: rgba(230, 126, 34, 0.04);
+        }
+
+        .drop-zone-text {
+            font-size: 0.95rem;
+            color: #888;
+        }
+
+        .drop-zone-text strong {
+            color: #e67e22;
+        }
+
+        .drop-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-progress {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.5rem;
+            min-height: 1.2em;
+        }
+
+        /* FILE LIST */
+        .file-list {
+            list-style: none;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 0;
             border-bottom: 1px solid #e5e5e5;
         }
 
-        .experience-item:first-child {
+        .file-item:first-child {
             border-top: 1px solid #e5e5e5;
         }
 
-        .experience-item {
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .file-info {
+            min-width: 0;
+            flex: 1;
         }
 
-        .experience-item:hover {
-            background: #fafafa;
-        }
-
-        .experience-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .experience-item h3 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .experience-meta {
-            font-size: 0.9rem;
-            color: #555555;
-        }
-
-        .expand-icon {
-            font-size: 1.2rem;
-            color: #e67e22;
-            transition: transform 0.2s ease;
-        }
-
-        .experience-item.expanded .expand-icon {
-            transform: rotate(180deg);
-        }
-
-        .experience-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .experience-item.expanded .experience-details {
-            max-height: 500px;
-        }
-
-        .experience-content {
-            padding-top: 1rem;
-            padding-left: 0;
+        .file-name {
             font-size: 0.95rem;
-            line-height: 1.7;
-            color: #333333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .time-period {
-            font-size: 0.85rem;
+        .file-meta {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 1rem;
+            flex-shrink: 0;
+        }
+
+        .file-actions button {
+            background: none;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 0.35rem 0.65rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #555;
+        }
+
+        .file-actions button:hover {
+            border-color: #e67e22;
             color: #e67e22;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+        }
+
+        .file-actions button.delete-btn:hover {
+            border-color: #d32f2f;
+            color: #d32f2f;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn {
+            margin-top: 2rem;
+            background: none;
+            border: none;
+            color: #888;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .logout-btn:hover {
+            color: #555;
         }
 
         @media (max-width: 600px) {
@@ -272,224 +368,64 @@
         </div>
         <ul class="nav-tabs">
             <li><a href="index.html">Home</a></li>
-            <li><a href="experience.html" class="active">Experience</a></li>
+            <li><a href="experience.html">Experience</a></li>
             <li><a href="projects.html">Projects</a></li>
             <li><a href="photos.html">Photos</a></li>
             <li><a href="posts.html">Posts</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="cloud.html">Cloud</a></li>
+            <li><a href="cloud.html" class="active">Cloud</a></li>
         </ul>
     </nav>
 
     <div class="page-container">
-        <h1 class="page-title">Experiences</h1>
+        <h1 class="page-title">Cloud</h1>
 
-        <h2 class="section-subtitle">Experience</h2>
-        <div class="experience-list">
-            <div class="experience-item" onclick="toggleExperience(this)">
-                <div class="experience-header">
-                    <div>
-                        <h3>Data Analyst</h3>
-                        <p class="experience-meta">IL9CAST • Self-employed</p>
-                    </div>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="experience-details">
-                    <div class="experience-content">
-                        <p class="time-period">December 2025 - Present</p>
-                        <p>I built <a href="https://il9.org" target="_blank" style="color: #e67e22;">IL9.org</a>, an open-source political forecasting project focused on modeling the Illinois 9th Congressional District. Through the project, I've been learning a lot about data analytics, modeling, and how to work with real political data over time. Everything is transparent and open-source, and the aggregate is publicly available here: <a href="https://github.com/de-bayes/IL9_PRIMARY_MODEL_PROP" target="_blank" style="color: #e67e22;">github.com/de-bayes/IL9_PRIMARY_MODEL_PROP</a></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="experience-item" onclick="toggleExperience(this)">
-                <div class="experience-header">
-                    <div>
-                        <h3>Volunteer Finance Lead</h3>
-                        <p class="experience-meta">Biss for Congress • Part-time</p>
-                    </div>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="experience-details">
-                    <div class="experience-content">
-                        <p class="time-period">August 2025 - Present</p>
-                        <p>Volunteer finance Lead for the Biss congressional campaign, helping donor outreach, pulling data needed for fundraising, and community connections while also contributing part-time data analysis.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="experience-item" onclick="toggleExperience(this)">
-                <div class="experience-header">
-                    <div>
-                        <h3>Freelance Photographer</h3>
-                        <p class="experience-meta">Chicago Union • Freelance</p>
-                    </div>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="experience-details">
-                    <div class="experience-content">
-                        <p class="time-period">June 2025 - Present</p>
-                        <p>Helped out the Union a bit with some killer pics! Check out my work at <a href="https://www.instagram.com/mccomb.photo/" target="_blank" style="color: #e67e22;">@mccomb.photo</a></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="experience-item" onclick="toggleExperience(this)">
-                <div class="experience-header">
-                    <div>
-                        <h3>Swim Instructor</h3>
-                        <p class="experience-meta">YWCA USA • Part-time</p>
-                    </div>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="experience-details">
-                    <div class="experience-content">
-                        <p class="time-period">June 2025 - Present</p>
-                        <p>Taught swimming.....need I say more</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="experience-item" onclick="toggleExperience(this)">
-                <div class="experience-header">
-                    <div>
-                        <h3>Staff Writer</h3>
-                        <p class="experience-meta">The Evanstonian • Part-time</p>
-                    </div>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="experience-details">
-                    <div class="experience-content">
-                        <p class="time-period">August 2024 - Present</p>
-                        <p>Wrote about a variety of issues in Evanstonian for the news section including informative articles about local politics, ETHS, D65, and community social issues!</p>
-                    </div>
-                </div>
-            </div>
+        <!-- LOGIN STATE -->
+        <div class="login-box" id="login-box">
+            <input type="password" id="password-input" placeholder="Password" autocomplete="off">
+            <button onclick="login()">Unlock</button>
+            <div class="login-error" id="login-error"></div>
         </div>
 
-        <h2 class="section-subtitle">Education</h2>
-        <div class="experience-list">
-            <div class="experience-item" onclick="toggleExperience(this)">
-                <div class="experience-header">
-                    <div>
-                        <h3>Evanston Township High School</h3>
-                        <p class="experience-meta">Class of 2026 • Evanston, IL</p>
-                    </div>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="experience-details">
-                    <div class="experience-content">
-                        <p class="time-period">GPA: 3.98 Unweighted / 4.41 Weighted</p>
-                        <p>Currently taking Chem/Phys among other courses.</p>
-                    </div>
-                </div>
+        <!-- AUTHENTICATED STATE -->
+        <div class="cloud-ui" id="cloud-ui" style="display:none;">
+            <div class="drop-zone" id="drop-zone">
+                <input type="file" id="file-input" multiple>
+                <div class="drop-zone-text">Drop files here or <strong>browse</strong></div>
+                <div class="upload-progress" id="upload-progress"></div>
+            </div>
+            <ul class="file-list" id="file-list"></ul>
+            <div style="text-align:center;">
+                <button class="logout-btn" onclick="logout()">Sign out</button>
             </div>
         </div>
     </div>
 
     <script>
-        // HAMBURGER MENU
-        function toggleNav() {
+        // NAV
+        function toggleNav(){
             document.querySelector('.hamburger').classList.toggle('active');
             document.querySelector('.nav-tabs').classList.toggle('open');
         }
+        document.querySelectorAll('.nav-tabs a').forEach(l=>{l.addEventListener('click',()=>{document.querySelector('.hamburger').classList.remove('active');document.querySelector('.nav-tabs').classList.remove('open');});});
 
-        document.querySelectorAll('.nav-tabs a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.querySelector('.hamburger').classList.remove('active');
-                document.querySelector('.nav-tabs').classList.remove('open');
-            });
-        });
-
-        // Redirect to home on refresh
-        const perfData = performance.getEntriesByType('navigation')[0];
-        if (perfData && perfData.type === 'reload') {
-            window.location.href = 'index.html';
-        }
-
-        function toggleExperience(element) {
-            element.classList.toggle('expanded');
-        }
-
-        // Interactive polar grid background
-        const canvas = document.getElementById('polar-grid');
-        const ctx = canvas.getContext('2d');
-        let mouseX = -1000, mouseY = -1000, targetMouseX = -1000, targetMouseY = -1000;
-        const influence = 280, maxDisplacement = 15, smoothing = 0.06;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        document.addEventListener('mousemove', e => { targetMouseX = e.clientX; targetMouseY = e.clientY; });
-        document.addEventListener('mouseleave', () => { targetMouseX = targetMouseY = -1000; });
-        document.addEventListener('touchmove', e => { if (e.touches.length) { targetMouseX = e.touches[0].clientX; targetMouseY = e.touches[0].clientY; } }, { passive: true });
-        document.addEventListener('touchend', () => { targetMouseX = targetMouseY = -1000; });
-
-        // Store displacement state for smooth animation
-        let dispState = {};
-
-        function getDisplacement(x, y) {
-            const key = `${Math.round(x)},${Math.round(y)}`;
-            if (!dispState[key]) dispState[key] = { x: 0, y: 0 };
-
-            const dx = x - mouseX, dy = y - mouseY;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            let targetX = 0, targetY = 0;
-
-            if (dist < influence && dist > 0) {
-                const falloff = 1 - dist / influence;
-                const force = falloff * falloff * falloff * maxDisplacement;
-                const angle = Math.atan2(dy, dx);
-                targetX = Math.cos(angle) * force;
-                targetY = Math.sin(angle) * force;
-            }
-
-            // Smooth interpolation for dampened feel
-            dispState[key].x += (targetX - dispState[key].x) * 0.06;
-            dispState[key].y += (targetY - dispState[key].y) * 0.06;
-
-            return dispState[key];
-        }
-
-        function drawPolarGrid() {
-            mouseX += (targetMouseX - mouseX) * smoothing;
-            mouseY += (targetMouseY - mouseY) * smoothing;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.055)';
-            ctx.lineWidth = 1;
-
-            const centerX = canvas.width / 2, centerY = canvas.height / 2;
-            const maxRadius = Math.sqrt(centerX * centerX + centerY * centerY);
-            const numLines = 24, ringSpacing = 40;
-
-            // Draw concentric circles with displacement
-            for (let r = ringSpacing; r <= maxRadius; r += ringSpacing) {
+        // POLAR GRID
+        const cv=document.getElementById('polar-grid'),ctx=cv.getContext('2d');
+        function drawPolarGrid(){
+            cv.width=window.innerWidth;cv.height=window.innerHeight;
+            const cx=cv.width/2,cy=cv.height/2,max=Math.hypot(cx,cy);
+            ctx.strokeStyle='rgba(0,0,0,0.045)';ctx.lineWidth=0.5;
+            for(let r=40;r<max;r+=40){ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();}
+            for(let a=0;a<360;a+=15){const rad=a*Math.PI/180;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(rad)*max,cy+Math.sin(rad)*max);ctx.stroke();}
+            const drift=[{x:Math.sin(Date.now()*0.0003)*8,y:Math.cos(Date.now()*0.0004)*6},{x:Math.cos(Date.now()*0.0005)*10,y:Math.sin(Date.now()*0.0003)*8},{x:Math.sin(Date.now()*0.0004)*6,y:Math.cos(Date.now()*0.0006)*10}];
+            ctx.strokeStyle='rgba(230,126,34,0.12)';ctx.lineWidth=1.2;
+            for(let i=0;i<3;i++){
+                const x=cx+drift[i].x,y=cy+drift[i].y;
                 ctx.beginPath();
-                for (let a = 0; a <= Math.PI * 2; a += 0.05) {
-                    const x = centerX + Math.cos(a) * r;
-                    const y = centerY + Math.sin(a) * r;
-                    const d = getDisplacement(x, y);
-                    if (a === 0) ctx.moveTo(x + d.x, y + d.y);
-                    else ctx.lineTo(x + d.x, y + d.y);
-                }
-                ctx.closePath();
-                ctx.stroke();
-            }
-
-            // Draw radial lines with displacement
-            for (let i = 0; i < numLines; i++) {
-                const angle = (Math.PI * 2 * i) / numLines;
-                ctx.beginPath();
-                for (let r = 0; r <= maxRadius; r += 20) {
-                    const x = centerX + Math.cos(angle) * r;
-                    const y = centerY + Math.sin(angle) * r;
-                    const d = getDisplacement(x, y);
-                    if (r === 0) ctx.moveTo(x + d.x, y + d.y);
-                    else ctx.lineTo(x + d.x, y + d.y);
+                for(let r=0;r<max;r+=40){
+                    const d=drift[r%3]||drift[0];
+                    if(r===0)ctx.moveTo(x+d.x,y+d.y);
+                    else ctx.lineTo(x+d.x,y+d.y);
                 }
                 ctx.stroke();
             }
@@ -529,6 +465,9 @@
         // Restore CRT
         if (localStorage.getItem('crtMode') === 'enabled'){document.body.classList.add('crt-mode');const cb=document.getElementById('crt-btn');if(cb)cb.classList.add('active');}
 
+        // Restore dark mode
+        if (localStorage.getItem('darkMode') === 'enabled') document.body.classList.add('dark-mode');
+
         // Command palette
         const cmdItems = [
             { section:'Pages', icon:'\uD83C\uDFE0', label:'Home', action:()=>window.location.href='index.html' },
@@ -559,9 +498,174 @@
         // Scroll reveals
         const sro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('revealed');});},{threshold:0.1});
         document.querySelectorAll('.scroll-reveal,.scroll-stagger').forEach(el=>sro.observe(el));
+    </script>
 
-        // Tilt cards
-        document.querySelectorAll('.tilt-card').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;c.style.transform='perspective(800px) rotateX('+((y-r.height/2)/r.height*-8)+'deg) rotateY('+((x-r.width/2)/r.width*8)+'deg)';c.style.setProperty('--shine-x',(x/r.width*100)+'%');c.style.setProperty('--shine-y',(y/r.height*100)+'%');});c.addEventListener('mouseleave',()=>{c.style.transform='perspective(800px) rotateX(0) rotateY(0)';});});
+    <!-- CLOUD STORAGE LOGIC -->
+    <script>
+        const passwordInput = document.getElementById('password-input');
+        const loginBox = document.getElementById('login-box');
+        const cloudUi = document.getElementById('cloud-ui');
+        const loginError = document.getElementById('login-error');
+        const fileList = document.getElementById('file-list');
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const uploadProgress = document.getElementById('upload-progress');
+
+        function getToken() { return sessionStorage.getItem('cloudToken'); }
+
+        function authHeaders() {
+            return { 'Authorization': 'Bearer ' + getToken() };
+        }
+
+        // Auto-login if token exists
+        if (getToken()) showCloud();
+
+        passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+        async function login() {
+            loginError.textContent = '';
+            const pw = passwordInput.value;
+            if (!pw) return;
+            try {
+                const res = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pw })
+                });
+                if (!res.ok) {
+                    loginError.textContent = 'Wrong password';
+                    return;
+                }
+                sessionStorage.setItem('cloudToken', pw);
+                showCloud();
+            } catch {
+                loginError.textContent = 'Connection error';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('cloudToken');
+            loginBox.style.display = '';
+            cloudUi.style.display = 'none';
+            passwordInput.value = '';
+        }
+
+        function showCloud() {
+            loginBox.style.display = 'none';
+            cloudUi.style.display = '';
+            loadFiles();
+        }
+
+        async function loadFiles() {
+            try {
+                const res = await fetch('/api/files', { headers: authHeaders() });
+                if (res.status === 401) { logout(); return; }
+                const files = await res.json();
+                renderFiles(files);
+            } catch {
+                fileList.innerHTML = '<li class="empty-state">Could not load files</li>';
+            }
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
+            return (bytes / 1073741824).toFixed(1) + ' GB';
+        }
+
+        function renderFiles(files) {
+            if (!files.length) {
+                fileList.innerHTML = '<li class="empty-state">No files yet</li>';
+                return;
+            }
+            fileList.innerHTML = files.map(f => `
+                <li class="file-item">
+                    <div class="file-info">
+                        <div class="file-name">${escapeHtml(f.name)}</div>
+                        <div class="file-meta">${formatSize(f.size)}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button onclick="downloadFile('${escapeAttr(f.name)}')">Download</button>
+                        <button class="delete-btn" onclick="deleteFile('${escapeAttr(f.name)}')">Delete</button>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        function escapeHtml(s) {
+            return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function escapeAttr(s) {
+            return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+        }
+
+        function downloadFile(name) {
+            const a = document.createElement('a');
+            a.href = '/api/files/' + encodeURIComponent(name);
+            // Use XMLHttpRequest to include auth header
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/files/' + encodeURIComponent(name), true);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + getToken());
+            xhr.responseType = 'blob';
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const url = URL.createObjectURL(xhr.response);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = name;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                } else if (xhr.status === 401) {
+                    logout();
+                }
+            };
+            xhr.send();
+        }
+
+        async function deleteFile(name) {
+            if (!confirm('Delete ' + name + '?')) return;
+            const res = await fetch('/api/files/' + encodeURIComponent(name), {
+                method: 'DELETE',
+                headers: authHeaders()
+            });
+            if (res.status === 401) { logout(); return; }
+            loadFiles();
+        }
+
+        // Upload via input or drag-and-drop
+        fileInput.addEventListener('change', () => uploadFiles(fileInput.files));
+
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            uploadFiles(e.dataTransfer.files);
+        });
+
+        async function uploadFiles(files) {
+            for (const file of files) {
+                uploadProgress.textContent = 'Uploading ' + file.name + '...';
+                const form = new FormData();
+                form.append('file', file);
+                try {
+                    const res = await fetch('/api/upload', {
+                        method: 'POST',
+                        headers: authHeaders(),
+                        body: form
+                    });
+                    if (res.status === 401) { logout(); return; }
+                } catch {
+                    uploadProgress.textContent = 'Upload failed: ' + file.name;
+                    return;
+                }
+            }
+            uploadProgress.textContent = '';
+            fileInput.value = '';
+            loadFiles();
+        }
     </script>
 </body>
 </html>
