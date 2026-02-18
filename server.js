@@ -87,7 +87,7 @@ app.delete('/api/files/:name', requireAuth, (req, res) => {
 });
 
 // Serve static files (identical to `serve .`)
-app.use(express.static(__dirname));
+app.use(express.static(__dirname, { extensions: ['html'] }));
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
