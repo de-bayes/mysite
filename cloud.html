@@ -7,76 +7,52 @@
     <link rel="icon" type="image/webp" href="538mascot.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
     <title>Cloud - Ryan McComb</title>
     <link rel="stylesheet" href="features.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #faf8f5;
-            color: #000000;
+            color: #000;
+            min-height: 100vh;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-            position: relative;
         }
 
         #polar-grid {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            inset: 0;
             pointer-events: none;
+            z-index: 0;
         }
 
-        .page-container {
-            position: relative;
-            z-index: 1;
-        }
+        .page-container { position: relative; z-index: 1; }
 
-        /* NAV TABS */
-        nav {
-            position: fixed;
-            top: 1.5rem;
-            right: 2rem;
-            z-index: 100;
-        }
+        nav { position: fixed; top: 1.5rem; right: 2rem; z-index: 100; }
 
-        .nav-tabs {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-        }
+        .nav-tabs { display: flex; gap: 1.5rem; list-style: none; }
 
         .nav-tabs a {
             font-size: 0.75rem;
             font-weight: 400;
-            color: #888888;
+            color: #888;
             text-decoration: none;
-            transition: color 0.2s ease;
+            transition: color .2s ease;
             letter-spacing: 0.02em;
         }
 
         .nav-tabs a:hover,
-        .nav-tabs a.active {
-            color: #000000;
-        }
+        .nav-tabs a.active { color: #000; }
 
-        /* HAMBURGER MENU */
         .hamburger {
             display: none;
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
-            padding: 0.5rem;
+            padding: .5rem;
             z-index: 101;
         }
 
@@ -84,62 +60,21 @@
             display: block;
             width: 24px;
             height: 2px;
-            background: #888888;
-            transition: all 0.3s ease;
+            background: #888;
+            transition: all .3s ease;
         }
 
-        .hamburger:hover span {
-            background: #000000;
-        }
+        .hamburger:hover span { background: #000; }
 
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        @media (max-width: 600px) {
-            .hamburger {
-                display: flex;
-            }
-
-            .nav-tabs {
-                position: fixed;
-                top: 0;
-                right: 0;
-                width: 200px;
-                height: 100vh;
-                background: #faf8f5;
-                flex-direction: column;
-                padding: 5rem 2rem 2rem;
-                gap: 1.5rem;
-                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-            }
-
-            .nav-tabs.open {
-                transform: translateX(0);
-            }
-
-            .nav-tabs a {
-                font-size: 1rem;
-            }
-        }
-
-        /* PAGE CONTENT */
         .page-container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             padding: 4rem 2rem;
         }
 
@@ -147,525 +82,688 @@
             font-family: 'VT323', monospace;
             font-size: 5rem;
             color: #e67e22;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
-        /* LOGIN */
         .login-box {
+            width: min(380px, 100%);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            max-width: 320px;
-            width: 100%;
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e5e5e5;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.95rem;
+            gap: .85rem;
             background: #fff;
-            outline: none;
-            transition: border-color 0.2s;
+            border: 1px solid #ece7e0;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .05);
         }
 
-        .login-box input:focus {
-            border-color: #e67e22;
-        }
+        input, button { font: inherit; }
 
-        .login-box button {
+        .field {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: .72rem .86rem;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .field:focus {
+            outline: none;
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, .14);
+        }
+
+        .btn {
+            border: none;
+            border-radius: 8px;
             background: #e67e22;
             color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            padding: .72rem .86rem;
         }
 
-        .login-box button:hover {
-            background: #cf6d17;
-        }
+        .btn:hover { background: #cf6d17; }
 
-        .login-error {
-            color: #d32f2f;
-            font-size: 0.85rem;
-            min-height: 1.2em;
-        }
+        .login-error { color: #b62121; min-height: 1.1rem; font-size: .9rem; }
 
-        /* CLOUD UI */
         .cloud-ui {
-            max-width: 600px;
-            width: 100%;
+            display: none;
+            width: min(1100px, 100%);
+            background: #fff;
+            border: 1px solid #ece7e0;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .06);
+            overflow: hidden;
         }
+
+        .cloud-layout { display: flex; min-height: 560px; }
+
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid #f0ece6;
+            background: #fdfaf6;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: .9rem;
+        }
+
+        .panel {
+            border: 1px solid #ece7e0;
+            border-radius: 10px;
+            background: #fff;
+            padding: .8rem;
+        }
+
+        .panel h3 {
+            font-size: .78rem;
+            letter-spacing: .05em;
+            color: #777;
+            margin-bottom: .5rem;
+            text-transform: uppercase;
+        }
+
+        .small { color: #777; font-size: .84rem; }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .toolbar {
+            padding: 1rem 1.1rem;
+            border-bottom: 1px solid #f0ece6;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toolbar-title { font-size: 1.05rem; font-weight: 600; }
+        .breadcrumbs { color: #777; font-size: .9rem; }
+        .breadcrumbs a { color: #e67e22; text-decoration: none; }
+        .breadcrumbs a:hover { text-decoration: underline; }
+
+        .toolbar-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+        .btn-lite {
+            border: 1px solid #e5e5e5;
+            background: #fff;
+            color: #333;
+            padding: .5rem .72rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: .9rem;
+        }
+
+        .btn-lite:hover { background: #f8f8f8; }
 
         .drop-zone {
-            border: 2px dashed #e5e5e5;
-            border-radius: 8px;
-            padding: 2.5rem 1.5rem;
+            margin: 1rem 1.1rem;
+            border: 2px dashed #ecd6c2;
+            border-radius: 10px;
+            background: rgba(230, 126, 34, 0.04);
+            color: #8b5f39;
             text-align: center;
-            cursor: pointer;
-            transition: border-color 0.2s, background 0.2s;
-            margin-bottom: 2rem;
+            padding: .95rem;
             position: relative;
+            cursor: pointer;
         }
 
-        .drop-zone:hover,
         .drop-zone.dragover {
             border-color: #e67e22;
-            background: rgba(230, 126, 34, 0.04);
+            background: rgba(230, 126, 34, 0.09);
         }
 
-        .drop-zone-text {
-            font-size: 0.95rem;
-            color: #888;
-        }
+        .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
-        .drop-zone-text strong {
-            color: #e67e22;
-        }
+        .table-wrap { padding: 0 1.1rem .8rem; overflow: auto; }
 
-        .drop-zone input[type="file"] {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .upload-progress {
-            font-size: 0.85rem;
-            color: #888;
-            margin-top: 0.5rem;
-            min-height: 1.2em;
-        }
-
-        /* FILE LIST */
-        .file-list {
-            list-style: none;
-        }
-
-        .file-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.85rem 0;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .file-item:first-child {
-            border-top: 1px solid #e5e5e5;
-        }
-
-        .file-info {
-            min-width: 0;
-            flex: 1;
-        }
-
-        .file-name {
-            font-size: 0.95rem;
+        table { width: 100%; border-collapse: collapse; }
+        th, td {
+            text-align: left;
+            padding: .72rem .45rem;
+            border-bottom: 1px solid #f4efe9;
+            font-size: .92rem;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        .file-meta {
-            font-size: 0.8rem;
-            color: #888;
-        }
+        th { color: #777; font-weight: 500; }
 
-        .file-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-left: 1rem;
-            flex-shrink: 0;
-        }
-
-        .file-actions button {
-            background: none;
-            border: 1px solid #e5e5e5;
-            border-radius: 4px;
-            padding: 0.35rem 0.65rem;
-            font-family: inherit;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #555;
-        }
-
-        .file-actions button:hover {
-            border-color: #e67e22;
-            color: #e67e22;
-        }
-
-        .file-actions button.delete-btn:hover {
-            border-color: #d32f2f;
-            color: #d32f2f;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: #888;
-            font-size: 0.95rem;
-        }
-
-        .logout-btn {
-            margin-top: 2rem;
-            background: none;
+        .entry-name { display: flex; align-items: center; gap: .45rem; }
+        .name-btn {
             border: none;
-            color: #888;
-            font-family: inherit;
-            font-size: 0.85rem;
+            background: none;
+            color: #222;
             cursor: pointer;
-            text-decoration: underline;
-            text-underline-offset: 2px;
+            font: inherit;
+            padding: 0;
+            text-align: left;
         }
 
-        .logout-btn:hover {
-            color: #555;
+        .name-btn.folder { color: #c06214; font-weight: 600; }
+        .name-btn:hover { text-decoration: underline; }
+
+        .actions { display: flex; gap: .45rem; }
+        .actions button {
+            border: 1px solid #e5e5e5;
+            border-radius: 7px;
+            background: #fff;
+            padding: .32rem .5rem;
+            cursor: pointer;
+            font-size: .82rem;
+        }
+
+        .actions .danger { color: #b62121; border-color: #efc7c7; }
+        .status { padding: .2rem 1.1rem 1rem; min-height: 1.2rem; color: #777; font-size: .88rem; }
+
+        .backup-form { display: flex; flex-direction: column; gap: .45rem; }
+        .backup-form .field { margin: 0; font-size: .88rem; padding: .54rem .62rem; }
+
+        @media (max-width: 900px) {
+            .cloud-layout { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #f0ece6; }
         }
 
         @media (max-width: 600px) {
-            nav {
-                top: 1rem;
-                right: 1rem;
-            }
-
+            .hamburger { display: flex; }
             .nav-tabs {
-                gap: 1rem;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 210px;
+                height: 100vh;
+                background: #faf8f5;
+                flex-direction: column;
+                padding: 5rem 2rem 2rem;
+                gap: 1.3rem;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, .1);
+                transform: translateX(100%);
+                transition: transform .3s ease;
             }
+            .nav-tabs.open { transform: translateX(0); }
+            .nav-tabs a { font-size: 1rem; }
 
-            .nav-tabs a {
-                font-size: 0.65rem;
-            }
-
-            .page-title {
-                font-size: 3.5rem;
-            }
-
-            .page-container {
-                padding: 3rem 1.5rem;
-            }
+            .page-title { font-size: 3.6rem; }
+            .page-container { padding: 4rem 1rem; }
         }
     </style>
 </head>
 <body>
-    <canvas id="polar-grid"></canvas>
+<canvas id="polar-grid"></canvas>
 
+<div class="page-container">
     <nav>
-        <div class="hamburger" onclick="toggleNav()">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+            <span></span><span></span><span></span>
         </div>
-        <ul class="nav-tabs">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="experience.html">Experience</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="photos.html">Photos</a></li>
-            <li><a href="posts.html">Posts</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="cloud.html" class="active">Cloud</a></li>
+        <ul class="nav-tabs" id="navTabs">
+            <li><a href="/">HOME</a></li>
+            <li><a href="projects">PROJECTS</a></li>
+            <li><a href="experience">EXPERIENCE</a></li>
+            <li><a href="cloud" class="active">CLOUD</a></li>
+            <li><a href="contact">CONTACT</a></li>
         </ul>
     </nav>
 
-    <div class="page-container">
-        <h1 class="page-title">My Personal Cloud</h1>
+    <h1 class="page-title">CLOUD</h1>
 
-        <!-- LOGIN STATE -->
-        <div class="login-box" id="login-box">
-            <input type="password" id="password-input" placeholder="Password" autocomplete="off">
-            <button onclick="login()">Unlock</button>
-            <div class="login-error" id="login-error"></div>
+    <section id="loginBox" class="login-box">
+        <input id="passwordInput" class="field" type="password" autocomplete="current-password" placeholder="Cloud password">
+        <button id="loginBtn" class="btn">Log in</button>
+        <div id="loginError" class="login-error"></div>
+    </section>
+
+    <section id="cloudUi" class="cloud-ui">
+        <div class="cloud-layout">
+            <aside class="sidebar">
+                <div class="panel">
+                    <h3>Navigation</h3>
+                    <button id="homeBtn" class="btn-lite" style="width:100%;">📁 All files</button>
+                    <div id="pathText" class="small" style="margin-top:.45rem;">Current: /</div>
+                </div>
+
+                <div class="panel">
+                    <h3>GitHub backup</h3>
+                    <form id="backupForm" class="backup-form">
+                        <input id="repoInput" class="field" placeholder="owner/repo" required>
+                        <input id="branchInput" class="field" placeholder="branch (optional)">
+                        <input id="tokenInput" class="field" type="password" placeholder="token (optional)">
+                        <button class="btn-lite" type="submit">Backup into current folder</button>
+                    </form>
+                    <p class="small" style="margin-top:.5rem;">Creates a ZIP snapshot via GitHub API.</p>
+                </div>
+
+                <div class="panel">
+                    <h3>Session</h3>
+                    <button id="logoutBtn" class="btn-lite" style="width:100%;">Log out</button>
+                </div>
+            </aside>
+
+            <main class="main">
+                <div class="toolbar">
+                    <div>
+                        <div class="toolbar-title">My Storage</div>
+                        <div id="breadcrumbs" class="breadcrumbs"></div>
+                    </div>
+                    <div class="toolbar-actions">
+                        <button id="newFolderBtn" class="btn-lite">New folder</button>
+                        <button id="refreshBtn" class="btn-lite">Refresh</button>
+                    </div>
+                </div>
+
+                <label id="dropZone" class="drop-zone">
+                    Drag and drop files here, or click to upload to this folder.
+                    <input id="fileInput" type="file" multiple>
+                </label>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Modified</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="fileTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="status" class="status"></div>
+            </main>
         </div>
+    </section>
+</div>
 
-        <!-- AUTHENTICATED STATE -->
-        <div class="cloud-ui" id="cloud-ui" style="display:none;">
-            <div class="drop-zone" id="drop-zone">
-                <input type="file" id="file-input" multiple>
-                <div class="drop-zone-text">Drop files here or <strong>browse</strong></div>
-                <div class="upload-progress" id="upload-progress"></div>
-            </div>
-            <ul class="file-list" id="file-list"></ul>
-            <div style="text-align:center;">
-                <button class="logout-btn" onclick="logout()">Sign out</button>
-            </div>
-        </div>
-    </div>
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const navTabs = document.getElementById('navTabs');
 
-    <script>
-        // NAV
-        function toggleNav(){
-            document.querySelector('.hamburger').classList.toggle('active');
-            document.querySelector('.nav-tabs').classList.toggle('open');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navTabs.classList.toggle('open');
+    });
+    hamburger.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            hamburger.click();
         }
-        document.querySelectorAll('.nav-tabs a').forEach(l=>{l.addEventListener('click',()=>{document.querySelector('.hamburger').classList.remove('active');document.querySelector('.nav-tabs').classList.remove('open');});});
+    });
 
-        // POLAR GRID
-        const cv=document.getElementById('polar-grid'),ctx=cv.getContext('2d');
-        function drawPolarGrid(){
-            cv.width=window.innerWidth;cv.height=window.innerHeight;
-            const cx=cv.width/2,cy=cv.height/2,max=Math.hypot(cx,cy);
-            ctx.strokeStyle='rgba(0,0,0,0.045)';ctx.lineWidth=0.5;
-            for(let r=40;r<max;r+=40){ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();}
-            for(let a=0;a<360;a+=15){const rad=a*Math.PI/180;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(rad)*max,cy+Math.sin(rad)*max);ctx.stroke();}
-            const drift=[{x:Math.sin(Date.now()*0.0003)*8,y:Math.cos(Date.now()*0.0004)*6},{x:Math.cos(Date.now()*0.0005)*10,y:Math.sin(Date.now()*0.0003)*8},{x:Math.sin(Date.now()*0.0004)*6,y:Math.cos(Date.now()*0.0006)*10}];
-            ctx.strokeStyle='rgba(230,126,34,0.12)';ctx.lineWidth=1.2;
-            for(let i=0;i<3;i++){
-                const x=cx+drift[i].x,y=cy+drift[i].y;
-                ctx.beginPath();
-                for(let r=0;r<max;r+=40){
-                    const d=drift[r%3]||drift[0];
-                    if(r===0)ctx.moveTo(x+d.x,y+d.y);
-                    else ctx.lineTo(x+d.x,y+d.y);
-                }
-                ctx.stroke();
-            }
-            requestAnimationFrame(drawPolarGrid);
-        }
-        drawPolarGrid();
-    </script>
+    const canvas = document.getElementById('polar-grid');
+    const ctx = canvas.getContext('2d');
 
-    <!-- POWER TOOLBAR -->
-    <div class="power-toolbar">
-        <button class="power-btn" onclick="document.body.classList.toggle('dark-mode');localStorage.setItem('darkMode',document.body.classList.contains('dark-mode')?'enabled':'disabled');" aria-label="Toggle dark mode">
-            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
-        <button class="power-btn" id="crt-btn" onclick="document.body.classList.toggle('crt-mode');localStorage.setItem('crtMode',document.body.classList.contains('crt-mode')?'enabled':'disabled');this.classList.toggle('active',document.body.classList.contains('crt-mode'));">
-            <span class="btn-label">CRT</span>
-        </button>
-        <button class="power-btn" onclick="openCmd()">
-            <span class="btn-label"><kbd class="shortcut-key"></kbd> Search</span>
-        </button>
-    </div>
-    <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
+    function drawGrid() {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(window.innerWidth * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    <!-- CRT + CMD PALETTE + KONAMI + PAGE TRANSITIONS -->
-    <div class="crt-scanline"></div>
-    <div class="crt-badge" onclick="document.body.classList.toggle('crt-mode')">CRT ON</div>
-    <div class="cmd-palette-overlay" id="cmd-palette-overlay">
-        <div class="cmd-palette">
-            <div class="cmd-palette-input-wrap">
-                <input type="text" class="cmd-palette-input" id="cmd-palette-input" placeholder="Type a command..." autocomplete="off" spellcheck="false">
-            </div>
-            <div class="cmd-palette-results" id="cmd-palette-results"></div>
-            <div class="cmd-palette-footer"><span><kbd>↑↓</kbd> navigate</span><span><kbd>↵</kbd> select</span><span><kbd>esc</kbd> close</span></div>
-        </div>
-    </div>
-    <script>
-        // Restore CRT
-        if (localStorage.getItem('crtMode') === 'enabled'){document.body.classList.add('crt-mode');const cb=document.getElementById('crt-btn');if(cb)cb.classList.add('active');}
+        const width = window.innerWidth;
+        const height = window.innerHeight;
 
-        // Restore dark mode
-        if (localStorage.getItem('darkMode') === 'enabled') document.body.classList.add('dark-mode');
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = 'rgba(230, 126, 34, 0.09)';
+        ctx.lineWidth = 1;
 
-        // Command palette
-        const cmdItems = [
-            { section:'Pages', icon:'\uD83C\uDFE0', label:'Home', action:()=>window.location.href='index.html' },
-            { section:'Pages', icon:'\uD83D\uDCBC', label:'Experience', action:()=>window.location.href='experience.html' },
-            { section:'Pages', icon:'\uD83D\uDCC1', label:'Projects', action:()=>window.location.href='projects.html' },
-            { section:'Pages', icon:'\uD83D\uDCF7', label:'Photos', action:()=>window.location.href='photos.html' },
-            { section:'Pages', icon:'\uD83D\uDCDD', label:'Posts', action:()=>window.location.href='posts.html' },
-            { section:'Pages', icon:'\uD83D\uDCE7', label:'Contact', action:()=>window.location.href='contact.html' },
-            { section:'Pages', icon:'\u2601\uFE0F', label:'Cloud', action:()=>window.location.href='cloud.html' },
-            { section:'Tools', icon:'\uD83C\uDF19', label:'Toggle Dark Mode', action:()=>{ document.body.classList.toggle('dark-mode'); localStorage.setItem('darkMode', document.body.classList.contains('dark-mode')?'enabled':'disabled'); } },
-        ];
-        let cmdIdx=0, cmdFiltered=[...cmdItems];
-        function openCmd(){const o=document.getElementById('cmd-palette-overlay');o.classList.add('active');const i=document.getElementById('cmd-palette-input');i.value='';cmdIdx=0;cmdFiltered=[...cmdItems];renderCmd();setTimeout(()=>i.focus(),50);}
-        function closeCmd(){document.getElementById('cmd-palette-overlay').classList.remove('active');}
-        function renderCmd(){const r=document.getElementById('cmd-palette-results');let h='',ls='';cmdFiltered.forEach((it,i)=>{if(it.section!==ls){h+='<div class="cmd-palette-section">'+it.section+'</div>';ls=it.section;}h+='<div class="cmd-palette-item'+(i===cmdIdx?' selected':'')+'" data-i="'+i+'"><span class="cmd-icon">'+it.icon+'</span><span class="cmd-label">'+it.label+'</span></div>';});if(!cmdFiltered.length)h='<div class="cmd-palette-empty">No results</div>';r.innerHTML=h;r.querySelectorAll('.cmd-palette-item').forEach(el=>{el.addEventListener('click',()=>{closeCmd();cmdFiltered[+el.dataset.i].action();});el.addEventListener('mouseenter',()=>{cmdIdx=+el.dataset.i;r.querySelectorAll('.cmd-palette-item').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');});});}
-        document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('cmd-palette-overlay').classList.contains('active')?closeCmd():openCmd();}});
-        document.getElementById('cmd-palette-input').addEventListener('input',e=>{const q=e.target.value.toLowerCase();cmdFiltered=cmdItems.filter(i=>i.label.toLowerCase().includes(q)||i.section.toLowerCase().includes(q));cmdIdx=0;renderCmd();});
-        document.getElementById('cmd-palette-input').addEventListener('keydown',e=>{if(e.key==='Escape'){closeCmd();e.preventDefault();}else if(e.key==='ArrowDown'){e.preventDefault();cmdIdx=Math.min(cmdIdx+1,cmdFiltered.length-1);renderCmd();}else if(e.key==='ArrowUp'){e.preventDefault();cmdIdx=Math.max(cmdIdx-1,0);renderCmd();}else if(e.key==='Enter'){e.preventDefault();if(cmdFiltered[cmdIdx]){closeCmd();cmdFiltered[cmdIdx].action();}}});
-        document.getElementById('cmd-palette-overlay').addEventListener('click',e=>{if(e.target.id==='cmd-palette-overlay')closeCmd();});
+        const centerX = width * 0.5;
+        const centerY = height * 0.5;
 
-        // Konami code
-        const ks=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let ki=0;
-        document.addEventListener('keydown',e=>{if(e.key===ks[ki]){ki++;if(ki===ks.length){ki=0;document.body.classList.add('konami-active');const cols=['#e67e22','#4ec9b0','#569cd6','#f48771','#ffbd2e','#cc66cc','#0f0'];for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.animationDelay=Math.random()*1.5+'s';p.style.animationDuration=(2+Math.random()*2)+'s';p.style.width=(6+Math.random()*8)+'px';p.style.height=(6+Math.random()*8)+'px';document.body.appendChild(p);setTimeout(()=>p.remove(),5000);}setTimeout(()=>document.body.classList.remove('konami-active'),5000);}}else ki=0;});
-
-        // Page transitions
-        document.querySelectorAll('a[href$=".html"]').forEach(l=>{l.addEventListener('click',e=>{const h=l.getAttribute('href');if(h&&!l.target&&!e.metaKey&&!e.ctrlKey){e.preventDefault();document.body.classList.add('page-leaving');setTimeout(()=>window.location.href=h,300);}});});
-
-        // Scroll reveals
-        const sro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('revealed');});},{threshold:0.1});
-        document.querySelectorAll('.scroll-reveal,.scroll-stagger').forEach(el=>sro.observe(el));
-    </script>
-
-    <!-- CLOUD STORAGE LOGIC -->
-    <script>
-        const passwordInput = document.getElementById('password-input');
-        const loginBox = document.getElementById('login-box');
-        const cloudUi = document.getElementById('cloud-ui');
-        const loginError = document.getElementById('login-error');
-        const fileList = document.getElementById('file-list');
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-input');
-        const uploadProgress = document.getElementById('upload-progress');
-
-        function getToken() { return sessionStorage.getItem('cloudToken'); }
-
-        function authHeaders() {
-            return { 'Authorization': 'Bearer ' + getToken() };
+        for (let r = 60; r < Math.max(width, height); r += 60) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+            ctx.stroke();
         }
 
-        // Auto-login if token exists
-        if (getToken()) showCloud();
-
-        passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
-
-        async function login() {
-            loginError.textContent = '';
-            const pw = passwordInput.value;
-            if (!pw) return;
-            try {
-                const res = await fetch('/api/auth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: pw })
-                });
-                if (!res.ok) {
-                    loginError.textContent = 'Wrong password';
-                    return;
-                }
-                sessionStorage.setItem('cloudToken', pw);
-                showCloud();
-            } catch {
-                loginError.textContent = 'Connection error';
-            }
+        for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
+            const x = centerX + Math.cos(a) * Math.max(width, height);
+            const y = centerY + Math.sin(a) * Math.max(width, height);
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
         }
+    }
 
-        function logout() {
-            sessionStorage.removeItem('cloudToken');
-            loginBox.style.display = '';
-            cloudUi.style.display = 'none';
-            passwordInput.value = '';
-        }
+    window.addEventListener('resize', drawGrid);
+    drawGrid();
 
-        function showCloud() {
-            loginBox.style.display = 'none';
-            cloudUi.style.display = '';
-            loadFiles();
-        }
+    const loginBox = document.getElementById('loginBox');
+    const cloudUi = document.getElementById('cloudUi');
+    const passwordInput = document.getElementById('passwordInput');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-        async function loadFiles() {
-            try {
-                const res = await fetch('/api/files', { headers: authHeaders() });
-                if (res.status === 401) { logout(); return; }
-                const files = await res.json();
-                renderFiles(files);
-            } catch {
-                fileList.innerHTML = '<li class="empty-state">Could not load files</li>';
-            }
-        }
+    const homeBtn = document.getElementById('homeBtn');
+    const newFolderBtn = document.getElementById('newFolderBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
 
-        function formatSize(bytes) {
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-            if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
-            return (bytes / 1073741824).toFixed(1) + ' GB';
-        }
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileTableBody = document.getElementById('fileTableBody');
+    const status = document.getElementById('status');
+    const breadcrumbs = document.getElementById('breadcrumbs');
+    const pathText = document.getElementById('pathText');
 
-        function renderFiles(files) {
-            if (!files.length) {
-                fileList.innerHTML = '<li class="empty-state">No files yet</li>';
+    const backupForm = document.getElementById('backupForm');
+    const repoInput = document.getElementById('repoInput');
+    const branchInput = document.getElementById('branchInput');
+    const tokenInput = document.getElementById('tokenInput');
+
+    let currentPath = '';
+
+    const getToken = () => sessionStorage.getItem('cloudToken');
+    const authHeaders = (json = false) => {
+        const headers = { Authorization: 'Bearer ' + getToken() };
+        if (json) headers['Content-Type'] = 'application/json';
+        return headers;
+    };
+
+    function showLogin() {
+        cloudUi.style.display = 'none';
+        loginBox.style.display = 'flex';
+        passwordInput.focus();
+    }
+
+    function showCloud() {
+        loginBox.style.display = 'none';
+        cloudUi.style.display = 'block';
+        loadFiles();
+    }
+
+    function escapeHtml(s) {
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function joinPath(base, name) { return base ? `${base}/${name}` : name; }
+
+    function formatSize(bytes) {
+        if (bytes === null || bytes === undefined) return '--';
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(1)} KB`;
+        if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
+        return `${(bytes / 1024 ** 3).toFixed(1)} GB`;
+    }
+
+    function formatDate(value) {
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? '--' : date.toLocaleString();
+    }
+
+    function setStatus(message, isError = false) {
+        status.textContent = message;
+        status.style.color = isError ? '#b62121' : '#777';
+    }
+
+    async function login() {
+        loginError.textContent = '';
+        const password = passwordInput.value;
+        if (!password) return;
+
+        try {
+            const response = await fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+
+            if (!response.ok) {
+                loginError.textContent = 'Wrong password.';
                 return;
             }
-            fileList.innerHTML = files.map(f => `
-                <li class="file-item">
-                    <div class="file-info">
-                        <div class="file-name">${escapeHtml(f.name)}</div>
-                        <div class="file-meta">${formatSize(f.size)}</div>
-                    </div>
-                    <div class="file-actions">
-                        <button onclick="downloadFile('${escapeAttr(f.name)}')">Download</button>
-                        <button class="delete-btn" onclick="deleteFile('${escapeAttr(f.name)}')">Delete</button>
-                    </div>
-                </li>
-            `).join('');
+
+            sessionStorage.setItem('cloudToken', password);
+            showCloud();
+        } catch {
+            loginError.textContent = 'Connection error.';
+        }
+    }
+
+    function logout() {
+        sessionStorage.removeItem('cloudToken');
+        currentPath = '';
+        showLogin();
+    }
+
+    function renderBreadcrumbs(path) {
+        const parts = path ? path.split('/') : [];
+        const nodes = ['<a data-path="">Home</a>'];
+        let walker = '';
+        for (const part of parts) {
+            walker = walker ? `${walker}/${part}` : part;
+            nodes.push(` / <a data-path="${escapeHtml(walker)}">${escapeHtml(part)}</a>`);
+        }
+        breadcrumbs.innerHTML = nodes.join('');
+    }
+
+    async function loadFiles(targetPath = currentPath) {
+        try {
+            const query = targetPath ? '?path=' + encodeURIComponent(targetPath) : '';
+            const response = await fetch('/api/files' + query, { headers: authHeaders() });
+            if (response.status === 401) return logout();
+
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.error || 'Could not load files');
+
+            currentPath = payload.path || '';
+            pathText.textContent = 'Current: /' + currentPath;
+            renderBreadcrumbs(currentPath);
+            renderEntries(payload.entries || []);
+            setStatus('');
+        } catch (error) {
+            fileTableBody.innerHTML = '<tr><td colspan="4" style="color:#777;">Could not load files.</td></tr>';
+            setStatus(error.message || 'Could not load files', true);
+        }
+    }
+
+    function renderEntries(entries) {
+        if (!entries.length) {
+            fileTableBody.innerHTML = '<tr><td colspan="4" style="color:#777;">This folder is empty.</td></tr>';
+            return;
         }
 
-        function escapeHtml(s) {
-            return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-        }
+        fileTableBody.innerHTML = entries.map((entry) => {
+            const fullPath = joinPath(currentPath, entry.name);
+            const isFolder = entry.type === 'folder';
+            return `
+                <tr>
+                    <td>
+                        <div class="entry-name">
+                            <span>${isFolder ? '📁' : '📄'}</span>
+                            <button class="name-btn ${isFolder ? 'folder' : ''}" data-action="${isFolder ? 'open' : 'download'}" data-path="${escapeHtml(fullPath)}">${escapeHtml(entry.name)}</button>
+                        </div>
+                    </td>
+                    <td>${isFolder ? '--' : formatSize(entry.size)}</td>
+                    <td>${formatDate(entry.modified)}</td>
+                    <td>
+                        <div class="actions">
+                            ${isFolder
+                                ? `<button data-action="open" data-path="${escapeHtml(fullPath)}">Open</button>`
+                                : `<button data-action="download" data-path="${escapeHtml(fullPath)}">Download</button>`}
+                            <button class="danger" data-action="delete" data-path="${escapeHtml(fullPath)}">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
 
-        function escapeAttr(s) {
-            return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-        }
+    async function uploadFiles(files) {
+        if (!files.length) return;
 
-        function downloadFile(name) {
-            const a = document.createElement('a');
-            a.href = '/api/files/' + encodeURIComponent(name);
-            // Use XMLHttpRequest to include auth header
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', '/api/files/' + encodeURIComponent(name), true);
-            xhr.setRequestHeader('Authorization', 'Bearer ' + getToken());
-            xhr.responseType = 'blob';
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const url = URL.createObjectURL(xhr.response);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = name;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                } else if (xhr.status === 401) {
-                    logout();
+        for (const file of files) {
+            setStatus(`Uploading ${file.name}...`);
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const query = currentPath ? '?path=' + encodeURIComponent(currentPath) : '';
+                const response = await fetch('/api/upload' + query, {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: formData
+                });
+                if (response.status === 401) return logout();
+
+                if (!response.ok) {
+                    const payload = await response.json();
+                    throw new Error(payload.error || `Upload failed for ${file.name}`);
                 }
-            };
-            xhr.send();
+            } catch (error) {
+                setStatus(error.message || 'Upload failed', true);
+                return;
+            }
         }
 
-        async function deleteFile(name) {
-            if (!confirm('Delete ' + name + '?')) return;
-            const res = await fetch('/api/files/' + encodeURIComponent(name), {
+        fileInput.value = '';
+        setStatus('Upload complete.');
+        loadFiles();
+    }
+
+    function downloadFile(path) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/api/files/' + encodeURIComponent(path).replace(/%2F/g, '/'), true);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + getToken());
+        xhr.responseType = 'blob';
+
+        xhr.onload = function () {
+            if (xhr.status === 401) return logout();
+            if (xhr.status !== 200) return setStatus('Download failed', true);
+
+            const filename = path.split('/').pop();
+            const url = URL.createObjectURL(xhr.response);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        xhr.send();
+    }
+
+    async function deleteEntry(path) {
+        if (!confirm(`Delete "${path}"?`)) return;
+
+        try {
+            const response = await fetch('/api/files/' + encodeURIComponent(path).replace(/%2F/g, '/'), {
                 method: 'DELETE',
                 headers: authHeaders()
             });
-            if (res.status === 401) { logout(); return; }
+            if (response.status === 401) return logout();
+
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.error || 'Delete failed');
+
+            setStatus('Deleted.');
             loadFiles();
+        } catch (error) {
+            setStatus(error.message || 'Delete failed', true);
         }
+    }
 
-        // Upload via input or drag-and-drop
-        fileInput.addEventListener('change', () => uploadFiles(fileInput.files));
+    async function createFolder() {
+        const name = prompt('Folder name:');
+        if (!name) return;
 
-        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-        dropZone.addEventListener('drop', e => {
-            e.preventDefault();
-            dropZone.classList.remove('dragover');
-            uploadFiles(e.dataTransfer.files);
-        });
+        try {
+            const response = await fetch('/api/folders', {
+                method: 'POST',
+                headers: authHeaders(true),
+                body: JSON.stringify({ path: currentPath, name })
+            });
+            if (response.status === 401) return logout();
 
-        async function uploadFiles(files) {
-            for (const file of files) {
-                uploadProgress.textContent = 'Uploading ' + file.name + '...';
-                const form = new FormData();
-                form.append('file', file);
-                try {
-                    const res = await fetch('/api/upload', {
-                        method: 'POST',
-                        headers: authHeaders(),
-                        body: form
-                    });
-                    if (res.status === 401) { logout(); return; }
-                } catch {
-                    uploadProgress.textContent = 'Upload failed: ' + file.name;
-                    return;
-                }
-            }
-            uploadProgress.textContent = '';
-            fileInput.value = '';
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.error || 'Could not create folder');
+
+            setStatus(`Created folder ${name}`);
             loadFiles();
+        } catch (error) {
+            setStatus(error.message || 'Could not create folder', true);
         }
-    </script>
+    }
+
+    async function backupGithubRepo(event) {
+        event.preventDefault();
+        const repo = repoInput.value.trim();
+        const branch = branchInput.value.trim();
+        const token = tokenInput.value.trim();
+        if (!repo) return;
+
+        setStatus(`Backing up ${repo}...`);
+
+        try {
+            const response = await fetch('/api/github-backup', {
+                method: 'POST',
+                headers: authHeaders(true),
+                body: JSON.stringify({ repo, branch, token, path: currentPath })
+            });
+            if (response.status === 401) return logout();
+
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.error || 'Backup failed');
+
+            setStatus(`Backup saved: ${payload.name}`);
+            backupForm.reset();
+            loadFiles();
+        } catch (error) {
+            setStatus(error.message || 'Backup failed', true);
+        }
+    }
+
+    loginBtn.addEventListener('click', login);
+    passwordInput.addEventListener('keydown', (event) => event.key === 'Enter' && login());
+    logoutBtn.addEventListener('click', logout);
+
+    homeBtn.addEventListener('click', () => loadFiles(''));
+    newFolderBtn.addEventListener('click', createFolder);
+    refreshBtn.addEventListener('click', () => loadFiles());
+
+    fileInput.addEventListener('change', () => uploadFiles(fileInput.files));
+    dropZone.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropZone.classList.remove('dragover');
+        uploadFiles(event.dataTransfer.files);
+    });
+
+    backupForm.addEventListener('submit', backupGithubRepo);
+
+    fileTableBody.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action]');
+        if (!button) return;
+
+        const action = button.dataset.action;
+        const path = button.dataset.path;
+        if (action === 'open') loadFiles(path);
+        if (action === 'download') downloadFile(path);
+        if (action === 'delete') deleteEntry(path);
+    });
+
+    breadcrumbs.addEventListener('click', (event) => {
+        const crumb = event.target.closest('[data-path]');
+        if (!crumb) return;
+        loadFiles(crumb.dataset.path || '');
+    });
+
+    if (getToken()) showCloud();
+</script>
 </body>
 </html>
