@@ -787,6 +787,17 @@ body.dark-mode .power-btn .sun-icon { display: inline; }
     }
 }
 
+/* Scroll-hide: top nav and terminal button fade out when scrolling down */
+nav, .terminal-button {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+body.scrolled nav,
+body.scrolled .terminal-button {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+}
+
 @media (prefers-reduced-motion: reduce) {
     body:not(.no-transition) {
         animation: none;

@@ -105,34 +105,6 @@
             pointer-events: none;
         }
 
-        .loader-signature {
-            width: 550px;
-            height: auto;
-            animation: pulse 1.5s ease-in-out infinite;
-            margin-bottom: 1.5rem;
-        }
-
-        .loader-text {
-            font-family: 'VT323', monospace;
-            font-size: 2.5rem;
-            color: #e67e22;
-            margin-top: 4rem;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.2em;
-            padding: 0.5rem 1rem;
-        }
-
-        @keyframes invertFlash {
-            0%, 70%, 100% {
-                color: #e67e22;
-                background: transparent;
-            }
-            80%, 90% {
-                color: #ffffff;
-                background: #e67e22;
-            }
-        }
-
         .loader-url {
             font-family: 'VT323', monospace;
             font-size: 5rem;
@@ -159,14 +131,25 @@
         .loader-url span:nth-child(11) { animation-delay: 0.2s; }
         .loader-url span:nth-child(12) { animation-delay: 0.6s; }
 
-        @keyframes flash {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
+        @keyframes invertFlash {
+            0%, 70%, 100% {
+                color: #e67e22;
+                background: transparent;
+            }
+            80%, 90% {
+                color: #ffffff;
+                background: #e67e22;
+            }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+        .loader-text {
+            font-family: 'VT323', monospace;
+            font-size: 2.5rem;
+            color: #e67e22;
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.2em;
+            padding: 0.5rem 1rem;
         }
 
         .loader-counter {
@@ -201,6 +184,7 @@
         .site-content.visible {
             opacity: 1;
         }
+
 
         /* HEADER */
         header {
@@ -1100,10 +1084,9 @@
 
         /* RESPONSIVE */
         @media (max-width: 600px) {
-            .loader-signature {
-                width: 320px;
+            .loader-url {
+                font-size: 3rem;
             }
-
             .mascot-corner {
                 top: 1rem;
                 left: 1rem;
@@ -1196,7 +1179,6 @@
                 <li><a href="photos.html">Photos</a></li>
                 <li><a href="posts.html">Posts</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="cloud.html">Cloud</a></li>
             </ul>
         </nav>
 
@@ -1371,9 +1353,11 @@
             img.src = src;
         });
 
+        // Progress: drives loader display and grid line drawing
+        let gridProgress = 0;
         const steps = [1, 13, 27, 41, 54, 68, 79, 88, 94, 100];
         let currentStep = 0;
-        const stepDelay = 510;
+        const stepDelay = 400;
 
         let dotCount = 0;
         setInterval(() => {
@@ -1383,10 +1367,10 @@
 
         function updateLoader() {
             const value = steps[currentStep];
-            const progress = value / 100;
+            gridProgress = value / 100;
 
             loaderNumber.textContent = value;
-            loaderNumber.style.left = progress * 100 + '%';
+            loaderNumber.style.left = (gridProgress * 100) + '%';
 
             currentStep++;
 
@@ -1400,22 +1384,22 @@
             }
         }
 
-        // Check if page was refreshed or is a new visit
-        const perfData = performance.getEntriesByType('navigation')[0];
-        const isRefresh = perfData && perfData.type === 'reload';
+        // Check if page was refreshed or is a new visit (skip loader when navigating from another page)
+        const perfData = performance.getEntriesByType?.('navigation')?.[0];
+        const isRefresh = perfData?.type === 'reload';
         const hasLoaded = sessionStorage.getItem('hasLoaded');
 
         if (hasLoaded && !isRefresh) {
-            // Skip loading animation (navigated from another page)
+            gridProgress = 1;
             loader.classList.add('hidden');
             siteContent.classList.add('visible');
+            document.querySelectorAll('.stagger-in').forEach(el => el.classList.add('visible'));
         } else {
-            // Show loading animation (first visit or refresh)
             updateLoader();
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
-        // GRID BACKGROUND
+        // GRID BACKGROUND - lines draw in progressively as gridProgress increases
         const canvas = document.getElementById('grid-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -1515,8 +1499,9 @@
                 }
             }
 
-            // Draw horizontal lines with curves
-            for (let row = 0; row <= rows; row++) {
+            // Draw horizontal lines with curves (progressive: top to bottom)
+            const maxHoriz = Math.floor((rows + 1) * gridProgress);
+            for (let row = 0; row < maxHoriz; row++) {
                 ctx.beginPath();
                 ctx.moveTo(pointsState[row][0].x, pointsState[row][0].y);
                 for (let col = 1; col <= cols; col++) {
@@ -1529,8 +1514,9 @@
                 ctx.stroke();
             }
 
-            // Draw vertical lines with curves
-            for (let col = 0; col <= cols; col++) {
+            // Draw vertical lines with curves (progressive: left to right)
+            const maxVert = Math.floor((cols + 1) * gridProgress);
+            for (let col = 0; col < maxVert; col++) {
                 ctx.beginPath();
                 ctx.moveTo(pointsState[0][col].x, pointsState[0][col].y);
                 for (let row = 1; row <= rows; row++) {
@@ -3759,7 +3745,6 @@
             { section: 'Pages', icon: '\uD83D\uDCF7', label: 'Photos', action: () => window.location.href = 'photos.html' },
             { section: 'Pages', icon: '\uD83D\uDCDD', label: 'Posts', action: () => window.location.href = 'posts.html' },
             { section: 'Pages', icon: '\uD83D\uDCE7', label: 'Contact', action: () => window.location.href = 'contact.html' },
-            { section: 'Pages', icon: '\u2601\uFE0F', label: 'Cloud', action: () => window.location.href = 'cloud.html' },
             { section: 'Games', icon: '\uD83D\uDC0D', label: 'Snake', shortcut: '/snake', action: () => { openTerminal(); setTimeout(() => executeCommand('/snake'), 300); } },
             { section: 'Games', icon: '\uD83E\uDD96', label: 'Dino Run', shortcut: '/dino', action: () => { openTerminal(); setTimeout(() => executeCommand('/dino'), 300); } },
             { section: 'Games', icon: '\uD83E\uDDE9', label: 'Tetris', shortcut: '/tetris', action: () => { openTerminal(); setTimeout(() => executeCommand('/tetris'), 300); } },
@@ -4071,5 +4056,6 @@
         }
         initPageTransitions();
     </script>
+    <script src="scroll-hide.js"></script>
 </body>
 </html>
