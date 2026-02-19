@@ -277,7 +277,6 @@
             <li><a href="photos.html">Photos</a></li>
             <li><a href="posts.html">Posts</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="cloud.html">Cloud</a></li>
         </ul>
     </nav>
 
@@ -554,7 +553,6 @@
             { section:'Pages', icon:'\uD83D\uDCF7', label:'Photos', action:()=>window.location.href='photos.html' },
             { section:'Pages', icon:'\uD83D\uDCDD', label:'Posts', action:()=>window.location.href='posts.html' },
             { section:'Pages', icon:'\uD83D\uDCE7', label:'Contact', action:()=>window.location.href='contact.html' },
-            { section:'Pages', icon:'\u2601\uFE0F', label:'Cloud', action:()=>window.location.href='cloud.html' },
             { section:'Tools', icon:'\uD83C\uDF19', label:'Toggle Dark Mode', action:()=>{ document.body.classList.toggle('dark-mode'); localStorage.setItem('darkMode', document.body.classList.contains('dark-mode')?'enabled':'disabled'); } },
         ];
         let cmdIdx=0, cmdFiltered=[...cmdItems];
@@ -580,5 +578,6 @@
         // Tilt cards
         document.querySelectorAll('.tilt-card').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;c.style.transform='perspective(800px) rotateX('+((y-r.height/2)/r.height*-8)+'deg) rotateY('+((x-r.width/2)/r.width*8)+'deg)';c.style.setProperty('--shine-x',(x/r.width*100)+'%');c.style.setProperty('--shine-y',(y/r.height*100)+'%');});c.addEventListener('mouseleave',()=>{c.style.transform='perspective(800px) rotateX(0) rotateY(0)';});});
     </script>
+    <script src="scroll-hide.js"></script>
 </body>
 </html>
