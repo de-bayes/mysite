@@ -157,391 +157,138 @@
         /* PROJECT GRID */
         .projects-grid {
             display: grid;
-            grid-template-columns: 1.28fr 1fr 1fr;
-            grid-template-rows: repeat(2, minmax(250px, auto));
-            gap: 1.35rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.25rem;
             align-items: stretch;
-            flex: 1;
-            min-height: min-content;
+            margin-top: 0.5rem;
         }
 
         .project-card {
-            /* tan(7°) ≈ 0.1228 — matches the slanted grid shear */
-            background: linear-gradient(165deg, #f9ecd3, #f6dfb5 35%, #edd2a3 100%);
-            border: 2px solid #8b6c2b;
-            padding: 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid #e4ddd2;
+            border-radius: 12px;
             text-decoration: none;
             color: inherit;
             display: flex;
-            overflow: hidden;
-            height: auto;
-            min-height: 0;
-            transform: skewX(7deg);
-            transform-origin: center center;
-            -webkit-font-smoothing: antialiased;
-            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.14);
+            min-height: 260px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
         }
-
-        .project-card.expanded {
-            box-shadow: 12px 18px 28px rgba(230, 126, 34, 0.24), 6px 6px 0 #e67e22;
-        }
-
 
         .project-card.featured {
-            grid-row: 1 / span 2;
-            border-color: #d26a10;
-            box-shadow: 14px 18px 26px rgba(230, 126, 34, 0.22), 6px 6px 0 rgba(210, 106, 16, 0.85);
+            grid-row: span 2;
+            border-color: rgba(230, 126, 34, 0.35);
+            box-shadow: 0 10px 24px rgba(230, 126, 34, 0.14);
         }
 
-        .project-card.featured .project-art {
-            height: 86px;
-        }
-
-        .project-card.featured h3 {
-            font-size: 1.45rem;
-        }
-
-        .project-card.featured .project-description {
-            max-height: 11.5em;
-            font-size: 0.8rem;
+        .project-card:hover,
+        .project-card:focus-within {
+            transform: translateY(-4px);
+            border-color: #e67e22;
+            box-shadow: 0 14px 26px rgba(230, 126, 34, 0.18);
         }
 
         .project-card-inner {
-            padding: 1rem;
+            padding: 1.1rem;
             display: flex;
             flex-direction: column;
-            flex: 1;
-            gap: 0.15rem;
-            border: 2px solid rgba(255, 247, 230, 0.8);
-            background: linear-gradient(180deg, rgba(255, 244, 220, 0.95), rgba(252, 236, 201, 0.92));
-            position: relative;
-        }
-
-        .project-card-inner p {
-            flex: 1;
-        }
-
-        .project-card:hover {
-            border-color: #e67e22;
-            transform: skewX(7deg) translateY(-6px);
-            box-shadow: 10px 14px 24px rgba(230, 126, 34, 0.24),
-                        5px 5px 0 #e67e22;
-        }
-
-        .project-card::after {
-            content: '';
-            position: absolute;
-            top: 0.6rem;
-            left: 0.8rem;
-            right: 0.8rem;
-            bottom: 0.6rem;
-            border: 1px solid rgba(139, 108, 43, 0.3);
-            pointer-events: none;
+            gap: 0.7rem;
+            width: 100%;
         }
 
         .project-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.75rem;
-            font-family: 'VT323', monospace;
-            color: #5b4112;
-            letter-spacing: 0.03em;
-            font-size: 1.1rem;
-        }
-
-        .project-rarity {
-            font-size: 0.95rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
-        }
-
-
-        .project-meta-right {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
+            color: #6d6355;
         }
 
         .project-live-badge {
-            font-family: 'VT323', monospace;
-            font-size: 0.72rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #fff;
-            background: #c91313;
-            border: 1px solid #7a0a0a;
+            font-size: 0.68rem;
+            border: 1px solid rgba(230, 126, 34, 0.5);
+            color: #9a5511;
+            background: rgba(230, 126, 34, 0.14);
             border-radius: 999px;
-            padding: 0.05rem 0.45rem;
-            animation: livePulse 1.2s steps(2, end) infinite;
-            box-shadow: 0 0 0 rgba(201, 19, 19, 0.35);
-        }
-
-        @keyframes livePulse {
-            0%, 100% {
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(201, 19, 19, 0.35);
-            }
-            50% {
-                opacity: 0.25;
-                box-shadow: 0 0 0 6px rgba(201, 19, 19, 0);
-            }
+            padding: 0.1rem 0.42rem;
         }
 
         .project-art {
-            height: 62px;
-            border: 2px solid #8b6c2b;
-            border-radius: 6px;
-            background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%), linear-gradient(140deg, #f9cf70 15%, #ea8f3f 50%, #9864e4 100%);
+            height: 72px;
+            border-radius: 8px;
+            border: 1px solid rgba(80, 63, 34, 0.22);
             display: flex;
-            align-items: flex-end;
+            align-items: end;
             justify-content: flex-start;
-            margin-bottom: 0.85rem;
-            overflow: hidden;
-            position: relative;
-            padding: 0.5rem;
-        }
-
-        .project-art::before {
-            content: '';
-            position: absolute;
-            width: 110px;
-            height: 110px;
-            right: -10px;
-            bottom: -30px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.05) 70%);
-        }
-
-        .project-art-label {
-            position: relative;
-            z-index: 1;
-            font-family: 'VT323', monospace;
-            font-size: 1rem;
-            letter-spacing: 0.04em;
-            color: #2f1f00;
-            background: rgba(255, 247, 227, 0.8);
-            border: 1px solid rgba(69, 42, 0, 0.26);
-            padding: 0.1rem 0.5rem;
-            border-radius: 999px;
+            padding: 0.45rem 0.55rem;
+            background: linear-gradient(120deg, rgba(230, 126, 34, 0.23), rgba(230, 126, 34, 0.06));
         }
 
         .project-art.aqua {
-            background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%), linear-gradient(145deg, #91d6ff 10%, #4aa0cf 55%, #2b5db4 100%);
+            background: linear-gradient(120deg, rgba(78, 201, 176, 0.24), rgba(78, 201, 176, 0.06));
         }
 
         .project-art.steel {
-            background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%), linear-gradient(140deg, #d8d8e4 15%, #9fa8be 50%, #5b6b90 100%);
+            background: linear-gradient(120deg, rgba(86, 156, 214, 0.24), rgba(86, 156, 214, 0.06));
         }
 
-        .project-art.psychic {
-            background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%), linear-gradient(140deg, #f6b4d9 10%, #d57dc7 55%, #8f50ad 100%);
+        .project-art.night {
+            background: linear-gradient(120deg, rgba(167, 139, 250, 0.24), rgba(167, 139, 250, 0.05));
         }
 
-        .project-art.metal {
-            background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%), linear-gradient(140deg, #f7e28f 10%, #e0b94c 55%, #8f6d2b 100%);
-        }
-
-        .project-link {
-            color: #e67e22;
-            text-decoration: none;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: inline-block;
-        }
-
-        .project-link:hover {
-            text-decoration: underline;
+        .project-art-label {
+            font-size: 0.72rem;
+            color: #5d4a2f;
+            letter-spacing: 0.03em;
         }
 
         .project-card h3 {
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #382300;
+            font-size: 1.45rem;
+            line-height: 1.15;
+            color: #2c2419;
         }
 
-        .project-card p {
-            font-size: 0.73rem;
-            color: #4f422b;
-            margin-bottom: 0.95rem;
+        .project-description {
+            color: #4a3f30;
+            font-size: 0.9rem;
             line-height: 1.55;
+            flex: 1;
         }
 
         .project-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.55rem;
+            gap: 0.5rem;
         }
 
         .tag {
             font-size: 0.7rem;
-            padding: 0.2rem 0.65rem;
-            background: rgba(255, 248, 233, 0.9);
-            color: #5a431c;
-            border: 1px solid rgba(139, 108, 43, 0.35);
+            padding: 0.2rem 0.62rem;
             border-radius: 999px;
-        }
-
-        .project-stats {
-            margin-top: 0.7rem;
-            display: grid;
-            gap: 0.38rem;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.35s ease, opacity 0.25s ease;
-        }
-
-        .project-card.expanded .project-stats {
-            max-height: 120px;
-            opacity: 1;
-        }
-
-        .project-expanded-panel {
-            margin-top: 0.55rem;
-            border: 1px solid rgba(128, 91, 20, 0.42);
-            border-radius: 8px;
-            background: linear-gradient(180deg, rgba(255, 250, 239, 0.96), rgba(245, 228, 193, 0.95));
-            padding: 0.55rem;
-            display: grid;
-            gap: 0.45rem;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.35s ease, opacity 0.28s ease, margin-top 0.28s ease;
-        }
-
-        .project-card.expanded .project-expanded-panel {
-            max-height: 260px;
-            opacity: 1;
-            margin-top: 0.75rem;
-        }
-
-        .expanded-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'VT323', monospace;
-            font-size: 0.92rem;
-            color: #694300;
-        }
-
-        .expanded-stage {
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .expanded-power {
-            color: #ab5f00;
-        }
-
-        .expanded-flavor {
-            font-size: 0.72rem;
-            line-height: 1.35;
-            color: #4d3a1e;
-            margin: 0;
-        }
-
-        .expanded-moves {
-            display: grid;
-            gap: 0.34rem;
-        }
-
-        .expanded-move {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: baseline;
-            gap: 0.45rem;
-            font-family: 'VT323', monospace;
-            font-size: 0.82rem;
-            color: #58390e;
-            padding-top: 0.22rem;
-            border-top: 1px dashed rgba(128, 91, 20, 0.28);
-        }
-
-        .expanded-move:first-child {
-            border-top: none;
-            padding-top: 0;
-        }
-
-        .expanded-move span:last-child {
-            color: #b56906;
-            font-weight: 600;
-        }
-
-        .project-card.expanded {
-            z-index: 3;
-        }
-
-        .project-description {
-            max-height: 4.8em;
-            overflow: hidden;
-            transition: max-height 0.35s ease;
-        }
-
-        .project-card.expanded .project-description {
-            max-height: 16em;
-        }
-
-        .project-hint {
-            margin-top: 0.45rem;
-            font-family: 'VT323', monospace;
-            color: #6d4f16;
-            font-size: 0.95rem;
-            opacity: 0.75;
-        }
-
-        .project-card.expanded .project-hint {
-            opacity: 0;
-            height: 0;
-            margin: 0;
-            overflow: hidden;
+            border: 1px solid #ded7ca;
+            color: #645844;
+            background: rgba(255, 255, 255, 0.82);
         }
 
         .project-visit {
             margin-top: auto;
-            padding-top: 0.95rem;
-            font-family: 'VT323', monospace;
-            font-size: 1rem;
+            font-size: 0.86rem;
             text-decoration: none;
-            color: #8a4d03;
+            color: #9a5511;
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
+            font-weight: 500;
             width: fit-content;
-            border-bottom: 1px solid rgba(138, 77, 3, 0.35);
+            border-bottom: 1px solid rgba(154, 85, 17, 0.35);
         }
 
         .project-visit:hover {
             color: #e67e22;
             border-bottom-color: #e67e22;
-        }
-
-        .project-stat {
-            display: grid;
-            grid-template-columns: 56px 1fr;
-            align-items: center;
-            gap: 0.4rem;
-            font-family: 'VT323', monospace;
-            font-size: 0.95rem;
-            color: #573d0b;
-        }
-
-        .project-stat-bar {
-            height: 7px;
-            border-radius: 999px;
-            background: rgba(139, 108, 43, 0.22);
-            overflow: hidden;
-        }
-
-        .project-stat-fill {
-            height: 100%;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #e67e22, #ffbd2e);
         }
 
         @media (max-width: 600px) {
@@ -570,22 +317,11 @@
 
             .projects-grid {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto;
-                grid-auto-rows: auto;
                 gap: 1rem;
-                flex: none;
             }
 
             .project-card.featured {
                 grid-row: auto;
-            }
-
-            .project-card {
-                transform: skewX(4deg);
-            }
-
-            .project-card:hover {
-                transform: skewX(4deg) translateY(-6px);
             }
 
         }
@@ -615,125 +351,54 @@
         <h1 class="page-title">Projects</h1>
 
         <div class="projects-grid">
-            <article class="project-card featured" tabindex="0" role="button" aria-expanded="false">
+            <article class="project-card featured">
                 <div class="project-card-inner">
                     <div class="project-meta">
-                        <span>POLI-001 · 92 HP</span>
-                        <span class="project-meta-right"><span class="project-rarity">Legendary</span><span class="project-live-badge">LIVE</span></span>
+                        <span>Forecasting Platform</span>
+                        <span class="project-live-badge">Live</span>
                     </div>
-                    <div class="project-art" aria-hidden="true"><span class="project-art-label">Forecast Type</span></div>
+                    <div class="project-art" aria-hidden="true"><span class="project-art-label">Political Data Model</span></div>
                     <h3>IL9CAST</h3>
-                    <p class="project-description">Open-source political forecasting project modeling the Illinois 9th Congressional District. Features data analytics, polling aggregation, and election predictions; featured in Capitol Fax and the Evanston RoundTable.</p>
+                    <p class="project-description">Open-source political forecasting project focused on Illinois' 9th Congressional District, with transparent methodology and continuously updated analysis.</p>
                     <div class="project-tags">
-                        <span class="tag">Data Science</span>
+                        <span class="tag">Data Analytics</span>
                         <span class="tag">Python</span>
                         <span class="tag">Open Source</span>
                     </div>
-                    <div class="project-hint">Tap card to evolve</div>
-                    <div class="project-stats" aria-hidden="true">
-                        <div class="project-stat"><span>Reach</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 89%"></div></div></div>
-                        <div class="project-stat"><span>Depth</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 96%"></div></div></div>
-                    </div>
-                    <div class="project-expanded-panel" aria-hidden="true">
-                        <div class="expanded-head"><span class="expanded-stage">Stage: Active Build</span><span class="expanded-power">Power: +14 momentum</span></div>
-                        <p class="expanded-flavor">IL9CAST tracks the Illinois 9th Congressional District using a transparent, open model with polling aggregation and data-forward analysis. Coverage mentions include Capitol Fax and Evanston RoundTable.</p>
-                        <div class="expanded-moves">
-                            <div class="expanded-move"><span>Polling Aggregate Update</span><span>+40</span></div>
-                            <div class="expanded-move"><span>District Signal Modeling</span><span>+55</span></div>
-                            <div class="expanded-move"><span>Open-Source Transparency</span><span>+33</span></div>
-                        </div>
-                    </div>
-                    <a href="https://il9.org" target="_blank" rel="noopener noreferrer" class="project-visit">Visit Project ↗</a>
+                    <a href="https://il9.org" target="_blank" rel="noopener noreferrer" class="project-visit">Visit project ↗</a>
                 </div>
             </article>
 
-            <article class="project-card" tabindex="0" role="button" aria-expanded="false">
+            <article class="project-card">
                 <div class="project-card-inner">
-                    <div class="project-meta">
-                        <span>AUDIO-028 · 78 HP</span>
-                        <span class="project-rarity">Rare</span>
-                    </div>
-                    <div class="project-art aqua" aria-hidden="true"><span class="project-art-label">Voice Type</span></div>
+                    <div class="project-meta"><span>Podcast</span><span>Ongoing</span></div>
+                    <div class="project-art aqua" aria-hidden="true"><span class="project-art-label">Politics Conversations</span></div>
                     <h3>Project 2028 Podcast</h3>
-                    <p class="project-description">A podcast exploring political science and politics.</p>
-                    <div class="project-tags">
-                        <span class="tag">Podcast</span>
-                        <span class="tag">Political Science</span>
-                    </div>
-                    <div class="project-hint">Tap card to evolve</div>
-                    <div class="project-stats" aria-hidden="true">
-                        <div class="project-stat"><span>Clarity</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 84%"></div></div></div>
-                        <div class="project-stat"><span>Energy</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 77%"></div></div></div>
-                    </div>
-                    <div class="project-expanded-panel" aria-hidden="true">
-                        <div class="expanded-head"><span class="expanded-stage">Stage: Publishing</span><span class="expanded-power">Power: +9 cadence</span></div>
-                        <p class="expanded-flavor">Project 2028 is a conversation-driven show focused on politics and political science, designed to translate complex ideas into accessible episodes.</p>
-                        <div class="expanded-moves">
-                            <div class="expanded-move"><span>Interview Pull</span><span>+32</span></div>
-                            <div class="expanded-move"><span>Topic Breakdown</span><span>+26</span></div>
-                        </div>
-                    </div>
+                    <p class="project-description">A podcast series exploring politics and political science through accessible interviews, explanations, and current-topic breakdowns.</p>
+                    <div class="project-tags"><span class="tag">Audio</span><span class="tag">Political Science</span></div>
                     <a href="https://podcasts.apple.com/us/podcast/project-2028/id1753137875" target="_blank" rel="noopener noreferrer" class="project-visit">Listen ↗</a>
                 </div>
             </article>
 
-            <article class="project-card" tabindex="0" role="button" aria-expanded="false">
+            <article class="project-card">
                 <div class="project-card-inner">
-                    <div class="project-meta">
-                        <span>PRESS-365 · 83 HP</span>
-                        <span class="project-rarity">Epic</span>
-                    </div>
-                    <div class="project-art steel" aria-hidden="true"><span class="project-art-label">Story Type</span></div>
+                    <div class="project-meta"><span>Journalism</span><span>Active</span></div>
+                    <div class="project-art steel" aria-hidden="true"><span class="project-art-label">Local Reporting</span></div>
                     <h3>The Evanstonian Writer Profile</h3>
-                    <p class="project-description">Collection of my journalism work covering local politics, ETHS, D65, and community social issues.</p>
-                    <div class="project-tags">
-                        <span class="tag">Journalism</span>
-                        <span class="tag">Writing</span>
-                    </div>
-                    <div class="project-hint">Tap card to evolve</div>
-                    <div class="project-stats" aria-hidden="true">
-                        <div class="project-stat"><span>Impact</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 86%"></div></div></div>
-                        <div class="project-stat"><span>Story</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 88%"></div></div></div>
-                    </div>
-                    <div class="project-expanded-panel" aria-hidden="true">
-                        <div class="expanded-head"><span class="expanded-stage">Stage: Ongoing Beats</span><span class="expanded-power">Power: +11 narrative</span></div>
-                        <p class="expanded-flavor">Reporter profile covering local politics, education, and community issues with a focus on clear writing and actionable context for readers.</p>
-                        <div class="expanded-moves">
-                            <div class="expanded-move"><span>Source Network</span><span>+28</span></div>
-                            <div class="expanded-move"><span>Long-form Context</span><span>+31</span></div>
-                        </div>
-                    </div>
-                    <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" rel="noopener noreferrer" class="project-visit">Read Articles ↗</a>
+                    <p class="project-description">Collection of reporting on local politics, schools, and community issues, with a focus on clear context and public accountability.</p>
+                    <div class="project-tags"><span class="tag">Writing</span><span class="tag">Community</span></div>
+                    <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" rel="noopener noreferrer" class="project-visit">Read stories ↗</a>
                 </div>
             </article>
 
-            <article class="project-card" tabindex="0" role="button" aria-expanded="false">
+            <article class="project-card">
                 <div class="project-card-inner">
-                    <div class="project-meta">
-                        <span>FIN-777 · 80 HP</span>
-                        <span class="project-rarity">Holo</span>
-                    </div>
-                    <div class="project-art psychic" aria-hidden="true"><span class="project-art-label">Market Type</span></div>
-                    <h3>ManiFed</h3>
-                    <p class="project-description">Peer-to-peer lending platform built for Manifold Markets community.</p>
-                    <div class="project-tags">
-                        <span class="tag">Web Development</span>
-                        <span class="tag">Finance</span>
-                    </div>
-                    <div class="project-hint">Tap card to evolve</div>
-                    <div class="project-stats" aria-hidden="true">
-                        <div class="project-stat"><span>Utility</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 81%"></div></div></div>
-                        <div class="project-stat"><span>Speed</span><div class="project-stat-bar"><div class="project-stat-fill" style="width: 79%"></div></div></div>
-                    </div>
-                    <div class="project-expanded-panel" aria-hidden="true">
-                        <div class="expanded-head"><span class="expanded-stage">Stage: Utility Build</span><span class="expanded-power">Power: +12 product</span></div>
-                        <p class="expanded-flavor">Community-first lending tool for Manifold users, built to streamline peer-to-peer deal flow and improve trust in market-side transactions.</p>
-                        <div class="expanded-moves">
-                            <div class="expanded-move"><span>Matching Engine</span><span>+34</span></div>
-                            <div class="expanded-move"><span>Risk Heuristics</span><span>+30</span></div>
-                        </div>
-                    </div>
-                    <a href="https://manifed.markets" target="_blank" rel="noopener noreferrer" class="project-visit">Launch Product ↗</a>
+                    <div class="project-meta"><span>Product Build</span><span>Prototype</span></div>
+                    <div class="project-art night" aria-hidden="true"><span class="project-art-label">Community Finance Tool</span></div>
+                    <h3>Manifold Lending Platform</h3>
+                    <p class="project-description">A peer-to-peer lending concept built for the Manifold Markets community to simplify matching, transparency, and repayment workflows.</p>
+                    <div class="project-tags"><span class="tag">Product</span><span class="tag">Finance</span></div>
+                    <a href="https://manifold.markets" target="_blank" rel="noopener noreferrer" class="project-visit">Explore Manifold ↗</a>
                 </div>
             </article>
         </div>
@@ -850,37 +515,6 @@
         }
         drawSlantedGrid();
 
-        // Expandable project cards
-        const projectCards = [...document.querySelectorAll('.project-card')];
-
-        function toggleCard(card) {
-            const isExpanded = card.classList.contains('expanded');
-            projectCards.forEach((c) => {
-                c.classList.remove('expanded');
-                c.setAttribute('aria-expanded', 'false');
-            });
-            if (!isExpanded) {
-                card.classList.add('expanded');
-                card.setAttribute('aria-expanded', 'true');
-                card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            }
-        }
-
-        projectCards.forEach((card) => {
-            card.addEventListener('click', (event) => {
-                if (event.target.closest('.project-visit')) {
-                    return;
-                }
-                toggleCard(card);
-            });
-
-            card.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    toggleCard(card);
-                }
-            });
-        });
     </script>
 
     <div class="power-toolbar">

@@ -166,6 +166,137 @@
             margin-bottom: 3rem;
         }
 
+        .timeline-panel {
+            width: min(860px, 100%);
+            margin: 0 auto 2.75rem;
+            padding: 1.25rem 1.2rem;
+            border: 1px solid #e7e0d7;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(2px);
+        }
+
+        .timeline-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.35rem;
+            color: #333333;
+            margin-bottom: 0.35rem;
+        }
+
+        .timeline-caption {
+            font-size: 0.85rem;
+            color: #666666;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-chart {
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 0.25rem;
+        }
+
+        .timeline-row {
+            position: relative;
+            min-height: 36px;
+            margin-bottom: 0.55rem;
+            padding-left: 210px;
+        }
+
+        .timeline-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-label {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 195px;
+            font-size: 0.8rem;
+            color: #4c4c4c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .timeline-lane {
+            position: relative;
+            height: 36px;
+            min-width: 360px;
+        }
+
+        .timeline-lane::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            border-top: 1px dashed #e3d9cb;
+            transform: translateY(-50%);
+        }
+
+        .timeline-segment {
+            position: absolute;
+            top: 50%;
+            height: 8px;
+            transform: translateY(-50%);
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(230, 126, 34, 0.9), rgba(230, 126, 34, 0.7));
+            box-shadow: 0 0 0 1px rgba(230, 126, 34, 0.22);
+        }
+
+        .timeline-segment::before,
+        .timeline-segment::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #faf8f5;
+            border: 2px solid #e67e22;
+            transform: translateY(-50%);
+        }
+
+        .timeline-segment::before {
+            left: -5px;
+        }
+
+        .timeline-segment::after {
+            right: -5px;
+        }
+
+        .timeline-segment.ongoing::after {
+            background: #e67e22;
+            box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.15);
+        }
+
+        .timeline-axis {
+            position: relative;
+            margin-left: 210px;
+            min-width: 360px;
+            height: 24px;
+        }
+
+        .timeline-axis-marker {
+            position: absolute;
+            bottom: 0;
+            transform: translateX(-50%);
+            font-size: 0.72rem;
+            color: #7a7a7a;
+        }
+
+        .timeline-axis-marker::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            width: 1px;
+            height: 7px;
+            transform: translateX(-50%);
+            background: #c7c7c7;
+        }
+
         .experience-item {
             padding: 1.5rem 1.5rem;
             border-bottom: 1px solid #e5e5e5;
@@ -258,6 +389,23 @@
             .page-container {
                 padding: 3rem 1.5rem;
             }
+
+            .timeline-panel {
+                padding: 1rem 0.85rem;
+            }
+
+            .timeline-row {
+                padding-left: 148px;
+            }
+
+            .timeline-label {
+                width: 135px;
+                font-size: 0.72rem;
+            }
+
+            .timeline-axis {
+                margin-left: 148px;
+            }
         }
     </style>
 </head>
@@ -284,8 +432,14 @@
     <div class="page-container">
         <h1 class="page-title">Experiences</h1>
 
+        <section class="timeline-panel">
+            <h2 class="timeline-title">Experience timeline</h2>
+            <p class="timeline-caption">A live timeline from your first listed role to today. Ongoing roles extend automatically each day.</p>
+            <div class="timeline-chart" id="experience-timeline" aria-live="polite"></div>
+        </section>
+
         <h2 class="section-subtitle">Experience</h2>
-        <div class="experience-list">
+        <div class="experience-list" id="experience-entries">
 
             <div class="experience-item" onclick="toggleExperience(this)">
                 <div class="experience-header">
@@ -427,6 +581,79 @@
         function toggleExperience(element) {
             element.classList.toggle('expanded');
         }
+
+        function parseMonthYear(value) {
+            const cleaned = value.replace(',', '').trim();
+            const [monthName, year] = cleaned.split(/\s+/);
+            const monthMap = {
+                january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+                july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
+            };
+            const month = monthMap[monthName.toLowerCase()];
+            const parsedYear = Number(year);
+            if (month === undefined || Number.isNaN(parsedYear)) return null;
+            return new Date(parsedYear, month, 1);
+        }
+
+        function buildExperienceTimeline() {
+            const timelineContainer = document.getElementById('experience-timeline');
+            const entries = document.querySelectorAll('#experience-entries .experience-item');
+            if (!timelineContainer || !entries.length) return;
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const timelineData = [];
+            entries.forEach(entry => {
+                const role = entry.querySelector('h3')?.textContent?.trim();
+                const period = entry.querySelector('.time-period')?.textContent?.trim() || '';
+                const match = period.match(/^([A-Za-z]+\s+\d{4})\s*-\s*([A-Za-z]+\s+\d{4}|Present)$/i);
+                if (!role || !match) return;
+
+                const start = parseMonthYear(match[1]);
+                const end = /present/i.test(match[2]) ? today : parseMonthYear(match[2]);
+                if (!start || !end) return;
+
+                timelineData.push({
+                    role,
+                    start,
+                    end,
+                    ongoing: /present/i.test(match[2]),
+                    rangeLabel: `${match[1]} - ${/present/i.test(match[2]) ? 'Today' : match[2]}`
+                });
+            });
+
+            if (!timelineData.length) return;
+
+            const minDate = new Date(Math.min(...timelineData.map(item => item.start.getTime())));
+            const maxDate = today;
+            const totalRange = Math.max(1, maxDate.getTime() - minDate.getTime());
+
+            const rowsHtml = timelineData.map(item => {
+                const left = ((item.start.getTime() - minDate.getTime()) / totalRange) * 100;
+                const width = Math.max(1.5, ((item.end.getTime() - item.start.getTime()) / totalRange) * 100);
+                return `
+                    <div class="timeline-row">
+                        <div class="timeline-label" title="${item.role} (${item.rangeLabel})">${item.role}</div>
+                        <div class="timeline-lane">
+                            <div class="timeline-segment ${item.ongoing ? 'ongoing' : ''}" style="left:${left}%;width:${width}%;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const markerCount = 5;
+            const axisMarkers = Array.from({ length: markerCount }, (_, index) => {
+                const ratio = index / (markerCount - 1);
+                const markerDate = new Date(minDate.getTime() + (totalRange * ratio));
+                const label = markerDate.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+                return `<span class="timeline-axis-marker" style="left:${ratio * 100}%">${label}</span>`;
+            }).join('');
+
+            timelineContainer.innerHTML = `${rowsHtml}<div class="timeline-axis">${axisMarkers}</div>`;
+        }
+
+        buildExperienceTimeline();
 
         // Interactive polar grid background
         const canvas = document.getElementById('polar-grid');
