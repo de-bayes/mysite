@@ -2151,8 +2151,30 @@
                 }
             } else if (command === '/quiz') {
                 addTerminalLine('');
-                addTerminalLine('<span class="terminal-success">Starting quiz... Press 1-4 to answer. Press Escape to quit.</span>');
-                setTimeout(() => startQuizGame(), 300);
+                if (localStorage.getItem('quiz_taken')) {
+                    const prevScore = localStorage.getItem('quiz_high_score') || '?';
+                    addTerminalLine('<span style="color: #e67e22;">You already took the quiz! Your score: ' + prevScore + '/10</span>');
+                    addTerminalLine('<span style="color: #888;">Each visitor only gets one shot. No do-overs.</span>');
+                    const lb = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
+                    if (lb.length > 0) {
+                        addTerminalLine('');
+                        addTerminalLine('<span style="color: #e67e22; font-weight: bold;">LEADERBOARD</span>');
+                        lb.slice(0, 10).forEach(function(entry, i) {
+                            const medal = i === 0 ? '\uD83E\uDD47' : i === 1 ? '\uD83E\uDD48' : i === 2 ? '\uD83E\uDD49' : '  ';
+                            addTerminalLine(medal + ' ' + entry.name + ' — ' + entry.score + '/10');
+                        });
+                    }
+                    addTerminalLine('');
+                } else {
+                    const name = prompt('Enter your name for the leaderboard.\n\nHeads up: you only get ONE attempt. No retries!');
+                    if (name && name.trim()) {
+                        addTerminalLine('<span class="terminal-success">Good luck, ' + name.trim() + '! Press 1-4 to answer. Escape to quit.</span>');
+                        setTimeout(() => startQuizGame(name.trim()), 300);
+                    } else {
+                        addTerminalLine('<span style="color: #888;">Quiz cancelled. Come back when you\'re ready — you only get one shot!</span>');
+                        addTerminalLine('');
+                    }
+                }
             } else if (command === '/2truths') {
                 addTerminalLine('');
                 addTerminalLine('<span class="terminal-success">Starting Two Truths and a Lie... Press 1-3 to pick the lie. Press Escape to quit.</span>');
@@ -3579,7 +3601,7 @@
         // =============================================
         // QUIZ: HOW WELL DO YOU KNOW RYAN?
         // =============================================
-        function startQuizGame() {
+        function startQuizGame(playerName) {
             stopActiveGame();
             const canvas = createGameCanvas();
             const ctx = canvas.getContext('2d');
@@ -3616,6 +3638,7 @@
             let showingResult = false;
             let finished = false;
             let resultTimer = null;
+            let savedToLeaderboard = false;
 
             function getRating(s) {
                 if (s <= 2) return { text: 'Complete stranger vibes.', color: '#f48771' };
@@ -3624,6 +3647,17 @@
                 if (s <= 8) return { text: 'Close friend energy.', color: '#4ec9b0' };
                 if (s === 9) return { text: 'Basically best friends.', color: '#569cd6' };
                 return { text: 'You ARE Ryan McComb.', color: '#c586c0' };
+            }
+
+            function saveResult() {
+                if (savedToLeaderboard) return;
+                savedToLeaderboard = true;
+                localStorage.setItem('quiz_taken', 'true');
+                localStorage.setItem('quiz_high_score', score.toString());
+                const leaderboard = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
+                leaderboard.push({ name: playerName.substring(0, 20), score: score, date: new Date().toLocaleDateString() });
+                leaderboard.sort((a, b) => b.score - a.score);
+                localStorage.setItem('quiz_leaderboard', JSON.stringify(leaderboard.slice(0, 50)));
             }
 
             function render() {
@@ -3638,49 +3672,41 @@
 
                     ctx.fillStyle = '#e67e22';
                     ctx.font = '32px "VT323", monospace';
-                    ctx.fillText('QUIZ COMPLETE', canvas.width / 2, 60);
+                    ctx.fillText('QUIZ COMPLETE', canvas.width / 2, 50);
 
                     ctx.fillStyle = '#4ec9b0';
                     ctx.font = '56px "VT323", monospace';
-                    ctx.fillText(score + '/10', canvas.width / 2, 130);
+                    ctx.fillText(score + '/10', canvas.width / 2, 115);
 
                     ctx.fillStyle = rating.color;
                     ctx.font = '28px "VT323", monospace';
-                    ctx.fillText(rating.text, canvas.width / 2, 175);
+                    ctx.fillText(rating.text, canvas.width / 2, 155);
 
-                    // High score check
-                    const prevHigh = parseInt(localStorage.getItem('quiz_high_score') || '0');
-                    if (score > prevHigh) {
-                        localStorage.setItem('quiz_high_score', score.toString());
-                        ctx.fillStyle = '#c586c0';
-                        ctx.font = '22px "VT323", monospace';
-                        ctx.fillText('NEW HIGH SCORE!', canvas.width / 2, 215);
-                    } else {
-                        ctx.fillStyle = '#888';
-                        ctx.font = '20px "VT323", monospace';
-                        ctx.fillText('High score: ' + prevHigh, canvas.width / 2, 215);
-                    }
+                    ctx.fillStyle = '#888';
+                    ctx.font = '18px "VT323", monospace';
+                    ctx.fillText('Recorded as: ' + playerName, canvas.width / 2, 180);
 
                     // Leaderboard
                     const leaderboard = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
                     if (leaderboard.length > 0) {
                         ctx.fillStyle = '#e67e22';
                         ctx.font = '22px "VT323", monospace';
-                        ctx.fillText('LEADERBOARD', canvas.width / 2, 260);
-                        ctx.fillStyle = '#888';
+                        ctx.fillText('LEADERBOARD', canvas.width / 2, 220);
+
                         ctx.font = '18px "VT323", monospace';
-                        const top5 = leaderboard.slice(0, 5);
-                        top5.forEach((entry, i) => {
+                        const top10 = leaderboard.slice(0, 10);
+                        top10.forEach((entry, i) => {
                             const medal = i === 0 ? '1st' : i === 1 ? '2nd' : i === 2 ? '3rd' : (i + 1) + 'th';
-                            ctx.fillStyle = i === 0 ? '#ffd700' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : '#888';
-                            ctx.fillText(medal + '  ' + entry.name + '  -  ' + entry.score + '/10', canvas.width / 2, 285 + i * 22);
+                            const isYou = entry.name === playerName.substring(0, 20) && entry.score === score;
+                            ctx.fillStyle = isYou ? '#4ec9b0' : (i === 0 ? '#ffd700' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : '#888');
+                            const youTag = isYou ? ' (you)' : '';
+                            ctx.fillText(medal + '  ' + entry.name + '  —  ' + entry.score + '/10' + youTag, canvas.width / 2, 245 + i * 22);
                         });
                     }
 
                     ctx.fillStyle = '#555';
                     ctx.font = '18px "VT323", monospace';
-                    const bottomY = canvas.height - 30;
-                    ctx.fillText('Press R to retry, L to add to leaderboard, Esc to quit', canvas.width / 2, bottomY);
+                    ctx.fillText('Press Esc to exit  |  One attempt only — no retries!', canvas.width / 2, canvas.height - 30);
 
                     ctx.textAlign = 'start';
                     if (running) animId = requestAnimationFrame(render);
@@ -3705,7 +3731,7 @@
                 // Score + question number
                 ctx.fillStyle = '#888';
                 ctx.font = '18px "VT323", monospace';
-                ctx.fillText('Question ' + (currentQ + 1) + '/10  |  Score: ' + score, canvas.width / 2, 80);
+                ctx.fillText('Question ' + (currentQ + 1) + '/10  |  Score: ' + score + '  |  ' + playerName, canvas.width / 2, 80);
 
                 // Question
                 const q = questions[currentQ];
@@ -3757,8 +3783,8 @@
                     const prefix = (i + 1) + '. ';
                     let suffix = '';
                     if (showingResult) {
-                        if (isCorrect) suffix = '  ✓';
-                        else if (isSelected && !isCorrect) suffix = '  ✗';
+                        if (isCorrect) suffix = '  \u2713';
+                        else if (isSelected && !isCorrect) suffix = '  \u2717';
                     }
                     ctx.fillText(prefix + q.options[i] + suffix, optX, optStartY + i * 32);
                 }
@@ -3775,30 +3801,18 @@
             }
 
             function onKey(e) {
-                if (e.key === 'Escape') { if (resultTimer) clearTimeout(resultTimer); stopActiveGame(); return; }
-
-                if (finished) {
-                    if (e.key === 'r' || e.key === 'R') {
-                        const reshuffled = [...allQuestions].sort(() => Math.random() - 0.5);
-                        questions.length = 0;
-                        questions.push(...reshuffled.slice(0, 10));
-                        currentQ = 0;
-                        score = 0;
-                        answered = false;
-                        selectedAnswer = -1;
-                        showingResult = false;
-                        finished = false;
-                    } else if (e.key === 'l' || e.key === 'L') {
-                        const name = prompt('Enter your name for the leaderboard:');
-                        if (name && name.trim()) {
-                            const leaderboard = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
-                            leaderboard.push({ name: name.trim().substring(0, 20), score: score, date: new Date().toLocaleDateString() });
-                            leaderboard.sort((a, b) => b.score - a.score);
-                            localStorage.setItem('quiz_leaderboard', JSON.stringify(leaderboard.slice(0, 20)));
-                        }
+                if (e.key === 'Escape') {
+                    if (resultTimer) clearTimeout(resultTimer);
+                    // If they quit mid-quiz, still lock them out and save partial score
+                    if (!finished && currentQ > 0) {
+                        finished = true;
+                        saveResult();
                     }
+                    stopActiveGame();
                     return;
                 }
+
+                if (finished) return; // No retry — just Esc to exit
 
                 if (showingResult || answered) return;
 
@@ -3813,9 +3827,7 @@
                         currentQ++;
                         if (currentQ >= 10) {
                             finished = true;
-                            // Save high score
-                            const prevHigh = parseInt(localStorage.getItem('quiz_high_score') || '0');
-                            if (score > prevHigh) localStorage.setItem('quiz_high_score', score.toString());
+                            saveResult();
                         }
                         answered = false;
                         selectedAnswer = -1;
@@ -3836,7 +3848,7 @@
                     if (resultTimer) clearTimeout(resultTimer);
                     removeGameCanvas();
                     if (finished) {
-                        addTerminalLine('<span class="terminal-success">Quiz complete! Score: ' + score + '/10</span>');
+                        addTerminalLine('<span class="terminal-success">Quiz complete! ' + playerName + ' scored ' + score + '/10</span>');
                     } else {
                         addTerminalLine('<span class="terminal-success">Quiz ended.</span>');
                     }
