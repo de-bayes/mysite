@@ -2057,6 +2057,10 @@
                 addTerminalLine('  <span class="terminal-command">/ascii</span>     → Generate ASCII art from text');
                 addTerminalLine('  <span class="terminal-command">/desktop</span>   → Enter Desktop OS mode');
                 addTerminalLine('');
+                addTerminalLine('  <span style="color: #e67e22; font-weight: bold;">Interactive</span>');
+                addTerminalLine('  <span class="terminal-command">/quiz</span>      → How well do you know Ryan?');
+                addTerminalLine('  <span class="terminal-command">/2truths</span>   → Two Truths and a Lie');
+                addTerminalLine('');
             } else if (command === '/home') {
                 addTerminalLine('');
                 addTerminalLine(asciiPages.home);
@@ -2145,6 +2149,14 @@
                     termWin.style.animation = 'sudoGlitch 0.3s ease 3';
                     setTimeout(() => termWin.style.animation = '', 1000);
                 }
+            } else if (command === '/quiz') {
+                addTerminalLine('');
+                addTerminalLine('<span class="terminal-success">Starting quiz... Press 1-4 to answer. Press Escape to quit.</span>');
+                setTimeout(() => startQuizGame(), 300);
+            } else if (command === '/2truths') {
+                addTerminalLine('');
+                addTerminalLine('<span class="terminal-success">Starting Two Truths and a Lie... Press 1-3 to pick the lie. Press Escape to quit.</span>');
+                setTimeout(() => startTwoTruthsGame(), 300);
             } else if (command === '/clear') {
                 const terminalBody = document.getElementById('terminal-body');
                 // Remove all content except the input line
@@ -3565,6 +3577,677 @@
         }
 
         // =============================================
+        // QUIZ: HOW WELL DO YOU KNOW RYAN?
+        // =============================================
+        function startQuizGame() {
+            stopActiveGame();
+            const canvas = createGameCanvas();
+            const ctx = canvas.getContext('2d');
+            let running = true;
+            let animId;
+
+            const questions = [
+                {
+                    q: "What school does Ryan attend?",
+                    options: ["New Trier High School", "Evanston Township High School", "Oak Park River Forest", "Lane Tech"],
+                    answer: 1
+                },
+                {
+                    q: "What is Ryan's unweighted GPA?",
+                    options: ["3.85", "4.00", "3.98", "3.92"],
+                    answer: 2
+                },
+                {
+                    q: "What is Ryan's Manifold Markets username?",
+                    options: ["@RyanMcComb", "@de-bayes", "@JeromeHPowell", "@IL9CAST"],
+                    answer: 2
+                },
+                {
+                    q: "What congressional district does IL9CAST model?",
+                    options: ["Illinois 5th", "Illinois 11th", "Illinois 9th", "Illinois 1st"],
+                    answer: 2
+                },
+                {
+                    q: "What is Ryan's podcast called?",
+                    options: ["The Forecast", "Project 2028", "Political Pulse", "The Evanstonian Pod"],
+                    answer: 1
+                },
+                {
+                    q: "What sport does Ryan photograph for Chicago Union?",
+                    options: ["Soccer", "Basketball", "Ultimate Frisbee", "Lacrosse"],
+                    answer: 2
+                },
+                {
+                    q: "What is the name of Ryan's peer-to-peer lending project?",
+                    options: ["ManiBet", "FoldLend", "ManiFed", "PredictPay"],
+                    answer: 2
+                },
+                {
+                    q: "What is Ryan's GitHub username?",
+                    options: ["@ryanmccomb", "@de-bayes", "@il9cast", "@mccomb-dev"],
+                    answer: 1
+                },
+                {
+                    q: "Which publication featured IL9CAST?",
+                    options: ["Chicago Tribune", "Capitol Fax", "Politico", "The Daily Northwestern"],
+                    answer: 1
+                },
+                {
+                    q: "What short film did Ryan make over Christmas 2025-2026?",
+                    options: ["Winter Days", "Cabin Life", "Snow Globe", "Evanston Nights"],
+                    answer: 1
+                },
+                {
+                    q: "Where does Ryan work as a swim instructor?",
+                    options: ["Evanston YMCA", "YWCA", "LA Fitness", "Northwestern Pool"],
+                    answer: 1
+                },
+                {
+                    q: "What is Ryan's graduation year?",
+                    options: ["2025", "2027", "2028", "2026"],
+                    answer: 3
+                },
+                {
+                    q: "What campaign is Ryan a volunteer finance lead for?",
+                    options: ["Biss for Congress", "Casten for Congress", "Schakowsky for Congress", "Underwood for Congress"],
+                    answer: 0
+                },
+                {
+                    q: "What prediction platform is Ryan on besides Manifold?",
+                    options: ["PredictIt", "Polymarket", "Metaculus", "Kalshi"],
+                    answer: 2
+                },
+                {
+                    q: "What does Ryan read about?",
+                    options: ["Science fiction & fantasy", "Political theory & behavioral economics", "Self-help & productivity", "Computer science textbooks"],
+                    answer: 1
+                }
+            ];
+
+            // Shuffle and pick 10 questions
+            const shuffled = questions.sort(() => Math.random() - 0.5).slice(0, 10);
+            let currentQ = 0;
+            let score = 0;
+            let answered = false;
+            let selectedOption = -1;
+            let showingResult = false;
+
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#1e1e1e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const padX = 30;
+                const padY = 20;
+
+                // Title bar
+                ctx.fillStyle = '#e67e22';
+                ctx.font = 'bold 22px "VT323", monospace';
+                ctx.textAlign = 'left';
+                ctx.fillText('HOW WELL DO YOU KNOW RYAN?', padX, padY + 25);
+
+                // Score and progress
+                ctx.fillStyle = '#888';
+                ctx.font = '18px "VT323", monospace';
+                ctx.textAlign = 'right';
+                ctx.fillText('Question ' + (currentQ + 1) + ' / ' + shuffled.length, canvas.width - padX, padY + 25);
+                ctx.fillText('Score: ' + score + ' / ' + shuffled.length, canvas.width - padX, padY + 50);
+
+                // Progress bar
+                const barY = padY + 60;
+                const barW = canvas.width - padX * 2;
+                const barH = 4;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(padX, barY, barW, barH);
+                ctx.fillStyle = '#e67e22';
+                ctx.fillRect(padX, barY, barW * ((currentQ) / shuffled.length), barH);
+
+                if (currentQ < shuffled.length) {
+                    const q = shuffled[currentQ];
+
+                    // Question text - word wrap
+                    ctx.fillStyle = '#e0e0e0';
+                    ctx.font = '24px "VT323", monospace';
+                    ctx.textAlign = 'left';
+                    const questionY = barY + 45;
+                    const words = q.q.split(' ');
+                    let line = '';
+                    let lineY = questionY;
+                    const maxW = canvas.width - padX * 2;
+                    words.forEach(word => {
+                        const test = line + word + ' ';
+                        if (ctx.measureText(test).width > maxW && line) {
+                            ctx.fillText(line.trim(), padX, lineY);
+                            line = word + ' ';
+                            lineY += 30;
+                        } else {
+                            line = test;
+                        }
+                    });
+                    ctx.fillText(line.trim(), padX, lineY);
+
+                    // Options
+                    const optStartY = lineY + 50;
+                    q.options.forEach((opt, i) => {
+                        const optY = optStartY + i * 50;
+                        const isSelected = selectedOption === i;
+                        const isCorrect = i === q.answer;
+
+                        // Option box
+                        if (showingResult) {
+                            if (isCorrect) {
+                                ctx.fillStyle = 'rgba(83, 141, 78, 0.3)';
+                            } else if (isSelected && !isCorrect) {
+                                ctx.fillStyle = 'rgba(244, 135, 113, 0.3)';
+                            } else {
+                                ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                            }
+                        } else {
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                        }
+                        ctx.fillRect(padX, optY - 20, canvas.width - padX * 2, 40);
+
+                        // Border
+                        ctx.strokeStyle = showingResult && isCorrect ? '#538d4e' : (showingResult && isSelected && !isCorrect ? '#f48771' : '#444');
+                        ctx.lineWidth = showingResult && (isCorrect || (isSelected && !isCorrect)) ? 2 : 1;
+                        ctx.strokeRect(padX, optY - 20, canvas.width - padX * 2, 40);
+
+                        // Number key
+                        ctx.fillStyle = '#e67e22';
+                        ctx.font = 'bold 22px "VT323", monospace';
+                        ctx.fillText('[' + (i + 1) + ']', padX + 12, optY + 6);
+
+                        // Option text
+                        ctx.fillStyle = showingResult && isCorrect ? '#538d4e' : (showingResult && isSelected && !isCorrect ? '#f48771' : '#e0e0e0');
+                        ctx.font = '22px "VT323", monospace';
+                        ctx.fillText(opt, padX + 60, optY + 6);
+
+                        // Checkmark or X
+                        if (showingResult) {
+                            ctx.textAlign = 'right';
+                            if (isCorrect) {
+                                ctx.fillStyle = '#538d4e';
+                                ctx.fillText('✓', canvas.width - padX - 12, optY + 6);
+                            } else if (isSelected && !isCorrect) {
+                                ctx.fillStyle = '#f48771';
+                                ctx.fillText('✗', canvas.width - padX - 12, optY + 6);
+                            }
+                            ctx.textAlign = 'left';
+                        }
+                    });
+
+                    // Hint text
+                    if (!showingResult) {
+                        ctx.fillStyle = '#666';
+                        ctx.font = '16px "VT323", monospace';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('Press 1-4 to answer  •  Esc to quit', canvas.width / 2, optStartY + 4 * 50 + 20);
+                        ctx.textAlign = 'left';
+                    } else {
+                        ctx.fillStyle = '#888';
+                        ctx.font = '18px "VT323", monospace';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('Press any key to continue...', canvas.width / 2, optStartY + 4 * 50 + 20);
+                        ctx.textAlign = 'left';
+                    }
+                } else {
+                    // Final results screen
+                    const centerY = canvas.height / 2 - 60;
+                    ctx.textAlign = 'center';
+
+                    ctx.fillStyle = '#e67e22';
+                    ctx.font = 'bold 32px "VT323", monospace';
+                    ctx.fillText('QUIZ COMPLETE!', canvas.width / 2, centerY);
+
+                    ctx.fillStyle = '#e0e0e0';
+                    ctx.font = '28px "VT323", monospace';
+                    ctx.fillText('You scored ' + score + ' out of ' + shuffled.length, canvas.width / 2, centerY + 45);
+
+                    // Rating
+                    const pct = score / shuffled.length;
+                    let rating, ratingColor;
+                    if (pct === 1) { rating = 'You ARE Ryan McComb.'; ratingColor = '#e67e22'; }
+                    else if (pct >= 0.8) { rating = 'Basically best friends!'; ratingColor = '#538d4e'; }
+                    else if (pct >= 0.6) { rating = 'Pretty solid knowledge!'; ratingColor = '#4ec9b0'; }
+                    else if (pct >= 0.4) { rating = 'You know the basics.'; ratingColor = '#569cd6'; }
+                    else if (pct >= 0.2) { rating = 'Have you two even met?'; ratingColor = '#f48771'; }
+                    else { rating = 'Complete stranger vibes.'; ratingColor = '#ff6b6b'; }
+
+                    ctx.fillStyle = ratingColor;
+                    ctx.font = '24px "VT323", monospace';
+                    ctx.fillText(rating, canvas.width / 2, centerY + 85);
+
+                    // Score bar
+                    const sBarW = 300;
+                    const sBarH = 16;
+                    const sBarX = (canvas.width - sBarW) / 2;
+                    const sBarY = centerY + 110;
+                    ctx.fillStyle = '#333';
+                    ctx.fillRect(sBarX, sBarY, sBarW, sBarH);
+                    ctx.fillStyle = ratingColor;
+                    ctx.fillRect(sBarX, sBarY, sBarW * pct, sBarH);
+                    ctx.strokeStyle = '#555';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(sBarX, sBarY, sBarW, sBarH);
+
+                    ctx.fillStyle = '#888';
+                    ctx.font = '18px "VT323", monospace';
+                    ctx.fillText('Press R to retry  •  Esc to quit', canvas.width / 2, centerY + 160);
+                    ctx.textAlign = 'left';
+                }
+
+                if (running) animId = requestAnimationFrame(render);
+            }
+
+            function onKey(e) {
+                if (e.key === 'Escape') { stopActiveGame(); return; }
+                e.preventDefault();
+
+                if (currentQ >= shuffled.length) {
+                    if (e.key === 'r' || e.key === 'R') {
+                        stopActiveGame();
+                        addTerminalLine('<span class="terminal-success">Restarting quiz...</span>');
+                        setTimeout(() => startQuizGame(), 100);
+                    }
+                    return;
+                }
+
+                if (showingResult) {
+                    // Advance to next question
+                    showingResult = false;
+                    selectedOption = -1;
+                    currentQ++;
+                    return;
+                }
+
+                const num = parseInt(e.key);
+                if (num >= 1 && num <= 4 && !answered) {
+                    selectedOption = num - 1;
+                    answered = true;
+                    showingResult = true;
+                    if (selectedOption === shuffled[currentQ].answer) {
+                        score++;
+                    }
+                    // Auto-advance after brief pause is handled by next keypress
+                    answered = false;
+                }
+            }
+
+            document.addEventListener('keydown', onKey);
+            animId = requestAnimationFrame(render);
+
+            // Save high score
+            const prevBest = parseInt(localStorage.getItem('quiz-highscore') || '0');
+
+            activeGame = {
+                stop: () => {
+                    running = false;
+                    cancelAnimationFrame(animId);
+                    document.removeEventListener('keydown', onKey);
+                    removeGameCanvas();
+                    if (score > prevBest) {
+                        localStorage.setItem('quiz-highscore', score.toString());
+                        addTerminalLine('<span class="terminal-success">Quiz ended. Score: ' + score + '/' + shuffled.length + ' — NEW HIGH SCORE!</span>');
+                    } else {
+                        addTerminalLine('<span class="terminal-success">Quiz ended. Score: ' + score + '/' + shuffled.length + ' (Best: ' + Math.max(prevBest, score) + ')</span>');
+                    }
+                }
+            };
+        }
+
+        // =============================================
+        // TWO TRUTHS AND A LIE
+        // =============================================
+        function startTwoTruthsGame() {
+            stopActiveGame();
+            const canvas = createGameCanvas();
+            const ctx = canvas.getContext('2d');
+            let running = true;
+            let animId;
+
+            const rounds = [
+                {
+                    statements: [
+                        "Ryan has a 3.98 unweighted GPA",
+                        "Ryan is a staff writer at The Evanstonian",
+                        "Ryan plays varsity basketball at ETHS"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan built a peer-to-peer lending platform called ManiFed",
+                        "Ryan's Manifold Markets username is @JeromeHPowell",
+                        "Ryan interned at FiveThirtyEight in 2025"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan made a short film called 'Cabin Life'",
+                        "Ryan's IL9CAST was featured in Capitol Fax",
+                        "Ryan is the editor-in-chief of The Evanstonian"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan works as a freelance photographer for Chicago Union",
+                        "Ryan is a swim instructor at the YWCA",
+                        "Ryan teaches coding classes at Northwestern"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan has a podcast called Project 2028",
+                        "Ryan's GitHub username is @de-bayes",
+                        "Ryan was born and raised in Chicago's South Side"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan reads political theory and behavioral economics",
+                        "Ryan volunteers as a finance lead for Biss for Congress",
+                        "Ryan has been to every US state"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan is a Student Fellow at VoteHub",
+                        "Ryan's photography Instagram is @mccomb.photo",
+                        "Ryan runs a daily political newsletter with 10k subscribers"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "IL9CAST models the Illinois 9th Congressional District",
+                        "Ryan is passionate about prediction markets",
+                        "Ryan placed top 3 at a national hackathon"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan is in the ETHS Class of 2026",
+                        "Ryan's weighted GPA is 4.41",
+                        "Ryan is the student body president of ETHS"
+                    ],
+                    lie: 2
+                },
+                {
+                    statements: [
+                        "Ryan tracks forecasts on Metaculus",
+                        "IL9CAST was featured in the Evanston RoundTable",
+                        "Ryan has published a book on election modeling"
+                    ],
+                    lie: 2
+                }
+            ];
+
+            // Shuffle rounds and shuffle statement order within each round
+            const shuffledRounds = rounds.sort(() => Math.random() - 0.5).slice(0, 7).map(round => {
+                // Shuffle the 3 statements while tracking which is the lie
+                const indices = [0, 1, 2];
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+                return {
+                    statements: indices.map(i => round.statements[i]),
+                    lie: indices.indexOf(round.lie)
+                };
+            });
+
+            let currentR = 0;
+            let score = 0;
+            let selectedOption = -1;
+            let showingResult = false;
+            let streak = 0;
+            let bestStreak = 0;
+
+            function wrapText(text, maxWidth) {
+                const words = text.split(' ');
+                const lines = [];
+                let line = '';
+                words.forEach(word => {
+                    const test = line + word + ' ';
+                    if (ctx.measureText(test).width > maxWidth && line) {
+                        lines.push(line.trim());
+                        line = word + ' ';
+                    } else {
+                        line = test;
+                    }
+                });
+                lines.push(line.trim());
+                return lines;
+            }
+
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#1e1e1e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const padX = 30;
+                const padY = 20;
+
+                // Title
+                ctx.fillStyle = '#cc66cc';
+                ctx.font = 'bold 22px "VT323", monospace';
+                ctx.textAlign = 'left';
+                ctx.fillText('TWO TRUTHS AND A LIE', padX, padY + 25);
+
+                // Score and progress
+                ctx.fillStyle = '#888';
+                ctx.font = '18px "VT323", monospace';
+                ctx.textAlign = 'right';
+                ctx.fillText('Round ' + (currentR + 1) + ' / ' + shuffledRounds.length, canvas.width - padX, padY + 25);
+                ctx.fillText('Score: ' + score + '  Streak: ' + streak, canvas.width - padX, padY + 50);
+
+                // Progress bar
+                const barY = padY + 60;
+                const barW = canvas.width - padX * 2;
+                const barH = 4;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(padX, barY, barW, barH);
+                ctx.fillStyle = '#cc66cc';
+                ctx.fillRect(padX, barY, barW * ((currentR) / shuffledRounds.length), barH);
+
+                if (currentR < shuffledRounds.length) {
+                    const round = shuffledRounds[currentR];
+
+                    // Prompt
+                    ctx.fillStyle = '#e0e0e0';
+                    ctx.font = '24px "VT323", monospace';
+                    ctx.textAlign = 'left';
+                    ctx.fillText('Which one is the LIE?', padX, barY + 45);
+
+                    // Statements
+                    const stmtStartY = barY + 85;
+                    let yOffset = 0;
+
+                    round.statements.forEach((stmt, i) => {
+                        const stmtY = stmtStartY + yOffset;
+                        const isSelected = selectedOption === i;
+                        const isLie = i === round.lie;
+
+                        // Background
+                        ctx.font = '22px "VT323", monospace';
+                        const lines = wrapText(stmt, canvas.width - padX * 2 - 70);
+                        const boxH = Math.max(50, lines.length * 26 + 24);
+
+                        if (showingResult) {
+                            if (isLie) {
+                                ctx.fillStyle = 'rgba(244, 135, 113, 0.25)';
+                            } else if (isSelected && !isLie) {
+                                ctx.fillStyle = 'rgba(86, 156, 214, 0.2)';
+                            } else {
+                                ctx.fillStyle = 'rgba(83, 141, 78, 0.15)';
+                            }
+                        } else {
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                        }
+                        ctx.fillRect(padX, stmtY - 10, canvas.width - padX * 2, boxH);
+
+                        // Border
+                        ctx.strokeStyle = showingResult && isLie ? '#f48771' : (showingResult && !isLie ? '#538d4e' : '#444');
+                        ctx.lineWidth = showingResult && (isLie || isSelected) ? 2 : 1;
+                        ctx.strokeRect(padX, stmtY - 10, canvas.width - padX * 2, boxH);
+
+                        // Number
+                        ctx.fillStyle = '#cc66cc';
+                        ctx.font = 'bold 22px "VT323", monospace';
+                        ctx.textAlign = 'left';
+                        ctx.fillText('[' + (i + 1) + ']', padX + 12, stmtY + 18);
+
+                        // Statement text with wrapping
+                        ctx.font = '22px "VT323", monospace';
+                        ctx.fillStyle = showingResult && isLie ? '#f48771' : (showingResult ? '#538d4e' : '#e0e0e0');
+                        lines.forEach((ln, li) => {
+                            ctx.fillText(ln, padX + 55, stmtY + 18 + li * 26);
+                        });
+
+                        // Labels
+                        if (showingResult) {
+                            ctx.textAlign = 'right';
+                            if (isLie) {
+                                ctx.fillStyle = '#f48771';
+                                ctx.font = 'bold 18px "VT323", monospace';
+                                ctx.fillText('← LIE!', canvas.width - padX - 10, stmtY + 18);
+                            } else {
+                                ctx.fillStyle = '#538d4e';
+                                ctx.font = '18px "VT323", monospace';
+                                ctx.fillText('TRUTH ✓', canvas.width - padX - 10, stmtY + 18);
+                            }
+                            ctx.textAlign = 'left';
+                        }
+
+                        yOffset += boxH + 15;
+                    });
+
+                    // Result feedback
+                    if (showingResult) {
+                        const feedbackY = stmtStartY + yOffset + 15;
+                        ctx.textAlign = 'center';
+                        if (selectedOption === round.lie) {
+                            ctx.fillStyle = '#538d4e';
+                            ctx.font = 'bold 24px "VT323", monospace';
+                            ctx.fillText('CORRECT! You spotted the lie!', canvas.width / 2, feedbackY);
+                        } else {
+                            ctx.fillStyle = '#f48771';
+                            ctx.font = 'bold 24px "VT323", monospace';
+                            ctx.fillText('WRONG! That one was actually true.', canvas.width / 2, feedbackY);
+                        }
+                        ctx.fillStyle = '#888';
+                        ctx.font = '18px "VT323", monospace';
+                        ctx.fillText('Press any key to continue...', canvas.width / 2, feedbackY + 35);
+                        ctx.textAlign = 'left';
+                    } else {
+                        const hintY = stmtStartY + yOffset + 15;
+                        ctx.fillStyle = '#666';
+                        ctx.font = '16px "VT323", monospace';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('Press 1-3 to pick the lie  •  Esc to quit', canvas.width / 2, hintY);
+                        ctx.textAlign = 'left';
+                    }
+                } else {
+                    // Final results
+                    const centerY = canvas.height / 2 - 60;
+                    ctx.textAlign = 'center';
+
+                    ctx.fillStyle = '#cc66cc';
+                    ctx.font = 'bold 32px "VT323", monospace';
+                    ctx.fillText('GAME OVER!', canvas.width / 2, centerY);
+
+                    ctx.fillStyle = '#e0e0e0';
+                    ctx.font = '28px "VT323", monospace';
+                    ctx.fillText('You spotted ' + score + ' out of ' + shuffledRounds.length + ' lies', canvas.width / 2, centerY + 45);
+
+                    const pct = score / shuffledRounds.length;
+                    let rating, ratingColor;
+                    if (pct === 1) { rating = 'Human lie detector!'; ratingColor = '#cc66cc'; }
+                    else if (pct >= 0.7) { rating = 'Ryan can\'t fool you!'; ratingColor = '#538d4e'; }
+                    else if (pct >= 0.4) { rating = 'Pretty gullible, huh?'; ratingColor = '#569cd6'; }
+                    else { rating = 'You believed everything!'; ratingColor = '#f48771'; }
+
+                    ctx.fillStyle = ratingColor;
+                    ctx.font = '24px "VT323", monospace';
+                    ctx.fillText(rating, canvas.width / 2, centerY + 85);
+
+                    if (bestStreak > 1) {
+                        ctx.fillStyle = '#e67e22';
+                        ctx.font = '20px "VT323", monospace';
+                        ctx.fillText('Best streak: ' + bestStreak + ' in a row', canvas.width / 2, centerY + 115);
+                    }
+
+                    ctx.fillStyle = '#888';
+                    ctx.font = '18px "VT323", monospace';
+                    ctx.fillText('Press R to retry  •  Esc to quit', canvas.width / 2, centerY + 155);
+                    ctx.textAlign = 'left';
+                }
+
+                if (running) animId = requestAnimationFrame(render);
+            }
+
+            function onKey(e) {
+                if (e.key === 'Escape') { stopActiveGame(); return; }
+                e.preventDefault();
+
+                if (currentR >= shuffledRounds.length) {
+                    if (e.key === 'r' || e.key === 'R') {
+                        stopActiveGame();
+                        addTerminalLine('<span class="terminal-success">Restarting Two Truths and a Lie...</span>');
+                        setTimeout(() => startTwoTruthsGame(), 100);
+                    }
+                    return;
+                }
+
+                if (showingResult) {
+                    showingResult = false;
+                    selectedOption = -1;
+                    currentR++;
+                    return;
+                }
+
+                const num = parseInt(e.key);
+                if (num >= 1 && num <= 3) {
+                    selectedOption = num - 1;
+                    showingResult = true;
+                    if (selectedOption === shuffledRounds[currentR].lie) {
+                        score++;
+                        streak++;
+                        if (streak > bestStreak) bestStreak = streak;
+                    } else {
+                        streak = 0;
+                    }
+                }
+            }
+
+            document.addEventListener('keydown', onKey);
+            animId = requestAnimationFrame(render);
+
+            const prevBest = parseInt(localStorage.getItem('2truths-highscore') || '0');
+
+            activeGame = {
+                stop: () => {
+                    running = false;
+                    cancelAnimationFrame(animId);
+                    document.removeEventListener('keydown', onKey);
+                    removeGameCanvas();
+                    if (score > prevBest) {
+                        localStorage.setItem('2truths-highscore', score.toString());
+                        addTerminalLine('<span class="terminal-success">Two Truths ended. Score: ' + score + '/' + shuffledRounds.length + ' — NEW HIGH SCORE!</span>');
+                    } else {
+                        addTerminalLine('<span class="terminal-success">Two Truths ended. Score: ' + score + '/' + shuffledRounds.length + ' (Best: ' + Math.max(prevBest, score) + ')</span>');
+                    }
+                }
+            };
+        }
+
+        // =============================================
         // DESKTOP OS MODE
         // =============================================
         let desktopWindows = [];
@@ -3750,6 +4433,8 @@
             { section: 'Games', icon: '\uD83E\uDDE9', label: 'Tetris', shortcut: '/tetris', action: () => { openTerminal(); setTimeout(() => executeCommand('/tetris'), 300); } },
             { section: 'Games', icon: '\uD83D\uDFE9', label: 'Wordle', shortcut: '/wordle', action: () => { openTerminal(); setTimeout(() => executeCommand('/wordle'), 300); } },
             { section: 'Games', icon: '\u2328\uFE0F', label: 'Typing Test', shortcut: '/type', action: () => { openTerminal(); setTimeout(() => executeCommand('/type'), 300); } },
+            { section: 'Interactive', icon: '\u2753', label: 'Quiz: Know Ryan?', shortcut: '/quiz', action: () => { openTerminal(); setTimeout(() => executeCommand('/quiz'), 300); } },
+            { section: 'Interactive', icon: '\uD83E\uDD25', label: 'Two Truths & a Lie', shortcut: '/2truths', action: () => { openTerminal(); setTimeout(() => executeCommand('/2truths'), 300); } },
             { section: 'Tools', icon: '\uD83D\uDDA5\uFE0F', label: 'Terminal', action: () => openTerminal() },
             { section: 'Tools', icon: '\uD83D\uDCFA', label: 'CRT Mode', shortcut: '/crt', action: () => { toggleCRT(); } },
             { section: 'Tools', icon: '\uD83D\uDCBB', label: 'Desktop Mode', shortcut: '/desktop', action: () => startDesktopMode() },
