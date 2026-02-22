@@ -1034,6 +1034,510 @@
             letter-spacing: 0.02em;
         }
 
+        /* GAME LAUNCH BUTTONS */
+        .game-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .game-btn {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            padding: 0.7rem 1.5rem;
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.03em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(230, 126, 34, 0.08);
+            transition: left 0.3s ease;
+        }
+
+        .game-btn:hover::before {
+            left: 0;
+        }
+
+        .game-btn:hover {
+            border-color: #e67e22;
+            color: #e67e22;
+        }
+
+        .game-btn-icon {
+            margin-right: 0.4rem;
+        }
+
+        /* GAME MODAL OVERLAY */
+        .game-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            padding: 1rem;
+        }
+
+        .game-modal-overlay.active {
+            display: flex;
+        }
+
+        .game-modal {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .game-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            z-index: 2;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .game-modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* QUIZ MODAL */
+        .quiz-modal-inner {
+            padding: 2.5rem 2rem;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-header h2 {
+            font-family: 'VT323', monospace;
+            font-size: 1.8rem;
+            color: #e67e22;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .quiz-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border-color);
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: #e67e22;
+            transition: width 0.4s ease;
+        }
+
+        .quiz-progress-text {
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        .quiz-score-display {
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-question {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .quiz-option {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .quiz-option:hover:not(.disabled) {
+            border-color: #e67e22;
+            color: var(--text-primary);
+            background: rgba(230, 126, 34, 0.05);
+        }
+
+        .quiz-option.correct {
+            border-color: #4ec9b0;
+            background: rgba(78, 201, 176, 0.1);
+            color: #4ec9b0;
+        }
+
+        .quiz-option.wrong {
+            border-color: #f48771;
+            background: rgba(244, 135, 113, 0.1);
+            color: #f48771;
+        }
+
+        .quiz-option.dimmed {
+            opacity: 0.4;
+        }
+
+        .quiz-option.disabled {
+            cursor: default;
+        }
+
+        .quiz-option-label {
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-right: 0.5rem;
+        }
+
+        /* QUIZ NAME INPUT */
+        .quiz-name-screen {
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .quiz-name-screen p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .quiz-name-input {
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            max-width: 280px;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary);
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .quiz-name-input:focus {
+            border-color: #e67e22;
+        }
+
+        .quiz-name-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .quiz-start-btn {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            padding: 0.65rem 2.5rem;
+            background: #e67e22;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 1rem;
+            letter-spacing: 0.05em;
+            transition: opacity 0.2s;
+        }
+
+        .quiz-start-btn:hover {
+            opacity: 0.85;
+        }
+
+        .quiz-start-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* QUIZ RESULTS */
+        .quiz-results {
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .quiz-results-score {
+            font-family: 'VT323', monospace;
+            font-size: 4rem;
+            color: #e67e22;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .quiz-results-rating {
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-results-name {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .quiz-leaderboard {
+            text-align: left;
+            margin: 0 auto;
+            max-width: 360px;
+        }
+
+        .quiz-leaderboard h3 {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            color: #e67e22;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .quiz-lb-entry {
+            font-family: 'VT323', monospace;
+            font-size: 0.95rem;
+            padding: 0.35rem 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .quiz-lb-entry.you {
+            color: #4ec9b0;
+        }
+
+        .quiz-lb-rank {
+            width: 2.5rem;
+            color: var(--text-light);
+        }
+
+        .quiz-lb-rank.gold { color: #ffd700; }
+        .quiz-lb-rank.silver { color: #c0c0c0; }
+        .quiz-lb-rank.bronze { color: #cd7f32; }
+
+        .quiz-lb-name {
+            flex: 1;
+        }
+
+        .quiz-lb-score {
+            width: 3rem;
+            text-align: right;
+        }
+
+        .quiz-footer-note {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* TWO TRUTHS MODAL */
+        .truths-modal-inner {
+            padding: 2.5rem 2rem;
+        }
+
+        .truths-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .truths-header h2 {
+            font-family: 'VT323', monospace;
+            font-size: 1.8rem;
+            color: #e67e22;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .truths-instruction {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .truths-statements {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .truth-card {
+            padding: 1.1rem 1.25rem;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .truth-card:hover:not(.disabled) {
+            border-color: #e67e22;
+            color: var(--text-primary);
+        }
+
+        .truth-card.is-truth {
+            border-color: #4ec9b0;
+            background: rgba(78, 201, 176, 0.08);
+            color: #4ec9b0;
+        }
+
+        .truth-card.is-lie {
+            border-color: #f48771;
+            background: rgba(244, 135, 113, 0.08);
+            color: #f48771;
+        }
+
+        .truth-card.dimmed {
+            opacity: 0.4;
+        }
+
+        .truth-card.disabled {
+            cursor: default;
+        }
+
+        .truth-label {
+            font-family: 'VT323', monospace;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .truths-result-line {
+            text-align: center;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            min-height: 1.5rem;
+        }
+
+        /* TRUTHS RESULTS */
+        .truths-results {
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .truths-results-score {
+            font-family: 'VT323', monospace;
+            font-size: 4rem;
+            color: #e67e22;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .truths-results-rating {
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .truths-results-streak {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .truths-high-score {
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .truths-play-again {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            padding: 0.65rem 2.5rem;
+            background: #e67e22;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            transition: opacity 0.2s;
+        }
+
+        .truths-play-again:hover {
+            opacity: 0.85;
+        }
+
+        @media (max-width: 600px) {
+            .game-buttons {
+                gap: 0.75rem;
+            }
+            .game-btn {
+                font-size: 1rem;
+                padding: 0.6rem 1.1rem;
+            }
+            .quiz-modal-inner,
+            .truths-modal-inner {
+                padding: 2rem 1.25rem;
+            }
+            .quiz-question {
+                font-size: 1.15rem;
+            }
+        }
+
         /* SECTIONS */
         .section {
             padding: 3rem 0;
@@ -1195,6 +1699,11 @@
                 <img src="photo-sketch.png" alt="Ryan McComb" class="photo-sketch">
                 <img src="photo-original.jpg" alt="Ryan McComb" class="photo-original">
                 <span class="photo-hint">Tap to reveal</span>
+            </div>
+
+            <div class="game-buttons stagger-in" style="transition-delay: 0.7s;">
+                <button class="game-btn" onclick="openWebQuiz()"><span class="game-btn-icon">?</span> Quiz: How Well Do You Know Ryan?</button>
+                <button class="game-btn" onclick="openWebTruths()"><span class="game-btn-icon">&mdash;</span> Two Truths &amp; a Lie</button>
             </div>
         </main>
     </div>
@@ -2151,34 +2660,12 @@
                 }
             } else if (command === '/quiz') {
                 addTerminalLine('');
-                if (localStorage.getItem('quiz_taken')) {
-                    const prevScore = localStorage.getItem('quiz_high_score') || '?';
-                    addTerminalLine('<span style="color: #e67e22;">You already took the quiz! Your score: ' + prevScore + '/10</span>');
-                    addTerminalLine('<span style="color: #888;">Each visitor only gets one shot. No do-overs.</span>');
-                    const lb = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
-                    if (lb.length > 0) {
-                        addTerminalLine('');
-                        addTerminalLine('<span style="color: #e67e22; font-weight: bold;">LEADERBOARD</span>');
-                        lb.slice(0, 10).forEach(function(entry, i) {
-                            const medal = i === 0 ? '\uD83E\uDD47' : i === 1 ? '\uD83E\uDD48' : i === 2 ? '\uD83E\uDD49' : '  ';
-                            addTerminalLine(medal + ' ' + entry.name + ' — ' + entry.score + '/10');
-                        });
-                    }
-                    addTerminalLine('');
-                } else {
-                    const name = prompt('Enter your name for the leaderboard.\n\nHeads up: you only get ONE attempt. No retries!');
-                    if (name && name.trim()) {
-                        addTerminalLine('<span class="terminal-success">Good luck, ' + name.trim() + '! Press 1-4 to answer. Escape to quit.</span>');
-                        setTimeout(() => startQuizGame(name.trim()), 300);
-                    } else {
-                        addTerminalLine('<span style="color: #888;">Quiz cancelled. Come back when you\'re ready — you only get one shot!</span>');
-                        addTerminalLine('');
-                    }
-                }
+                addTerminalLine('<span class="terminal-success">Opening quiz...</span>');
+                setTimeout(() => { openWebQuiz(); }, 200);
             } else if (command === '/2truths') {
                 addTerminalLine('');
-                addTerminalLine('<span class="terminal-success">Starting Two Truths and a Lie... Press 1-3 to pick the lie. Press Escape to quit.</span>');
-                setTimeout(() => startTwoTruthsGame(), 300);
+                addTerminalLine('<span class="terminal-success">Opening Two Truths and a Lie...</span>');
+                setTimeout(() => { openWebTruths(); }, 200);
             } else if (command === '/clear') {
                 const terminalBody = document.getElementById('terminal-body');
                 // Remove all content except the input line
@@ -3620,7 +4107,7 @@
                 { q: 'Which publications featured IL9CAST?', options: ['Chicago Tribune & Sun-Times', 'Capitol Fax, Evanston Roundtable & Daily Northwestern', 'Crain\'s Chicago & Block Club', 'Politico & The Hill'], answer: 1 },
                 { q: 'What short film did Ryan make?', options: ['Lake Effect', 'Cabin Life', 'North Shore', 'The Forecast'], answer: 1 },
                 { q: 'Where does Ryan work as a swim instructor?', options: ['YMCA', 'YWCA', 'Evanston Aquatics', 'Northwestern Pool'], answer: 1 },
-                { q: "What is Ryan's graduation year?", options: ['2025', '2026', '2027', '2024'], answer: 1 },
+                { q: "What is Ryan's graduation year?", options: ['2025', '2028', '2027', '2024'], answer: 1 },
                 { q: 'What campaign is Ryan a finance lead for?', options: ['Casten for Congress', 'Biss for Congress', 'Schakowsky for Congress', 'Duckworth for Senate'], answer: 1 },
                 { q: 'What prediction platform does Ryan use besides Manifold?', options: ['PredictIt', 'Metaculus', 'Polymarket', 'Kalshi'], answer: 1 },
                 { q: 'What does Ryan read about?', options: ['Quantum physics & AI', 'Political theory & behavioral economics', 'Philosophy & literature', 'Sports analytics & sabermetrics'], answer: 1 },
@@ -4371,8 +4858,8 @@
             { section: 'Games', icon: '\uD83E\uDDE9', label: 'Tetris', shortcut: '/tetris', action: () => { openTerminal(); setTimeout(() => executeCommand('/tetris'), 300); } },
             { section: 'Games', icon: '\uD83D\uDFE9', label: 'Wordle', shortcut: '/wordle', action: () => { openTerminal(); setTimeout(() => executeCommand('/wordle'), 300); } },
             { section: 'Games', icon: '\u2328\uFE0F', label: 'Typing Test', shortcut: '/type', action: () => { openTerminal(); setTimeout(() => executeCommand('/type'), 300); } },
-            { section: 'Games', icon: '\u2753', label: 'Quiz: Know Ryan?', shortcut: '/quiz', action: () => { openTerminal(); setTimeout(() => executeCommand('/quiz'), 300); } },
-            { section: 'Games', icon: '\uD83E\uDD25', label: 'Two Truths & a Lie', shortcut: '/2truths', action: () => { openTerminal(); setTimeout(() => executeCommand('/2truths'), 300); } },
+            { section: 'Games', icon: '\u2753', label: 'Quiz: Know Ryan?', shortcut: '/quiz', action: () => { openWebQuiz(); } },
+            { section: 'Games', icon: '\uD83E\uDD25', label: 'Two Truths & a Lie', shortcut: '/2truths', action: () => { openWebTruths(); } },
             { section: 'Tools', icon: '\uD83D\uDDA5\uFE0F', label: 'Terminal', action: () => openTerminal() },
             { section: 'Tools', icon: '\uD83D\uDCFA', label: 'CRT Mode', shortcut: '/crt', action: () => { toggleCRT(); } },
             { section: 'Tools', icon: '\uD83D\uDCBB', label: 'Desktop Mode', shortcut: '/desktop', action: () => startDesktopMode() },
@@ -4661,6 +5148,448 @@
         initTiltCards();
 
         // =============================================
+        // WEB QUIZ: HOW WELL DO YOU KNOW RYAN?
+        // =============================================
+        (function() {
+            const overlay = document.getElementById('quiz-modal-overlay');
+            const inner = document.getElementById('quiz-modal-inner');
+            const closeBtn = document.getElementById('quiz-close');
+
+            const allQuizQuestions = [
+                { q: "What is Ryan's unweighted GPA?", options: ['3.85', '3.92', '3.98', '4.0'], answer: 2 },
+                { q: "What is Ryan's Manifold Markets username?", options: ['@RyanMcComb', '@JeromeHPowell', '@de_bayes', '@PredictionRyan'], answer: 1 },
+                { q: 'What congressional district does IL9CAST model?', options: ['Illinois 5th', 'Illinois 9th', 'Illinois 11th', 'Illinois 7th'], answer: 1 },
+                { q: "What is Ryan's podcast called?", options: ['The Forecast', 'Project 2028', 'Swing State Pod', 'The Bayes Report'], answer: 1 },
+                { q: 'What sport does Ryan photograph for Chicago Union?', options: ['Soccer', 'Lacrosse', 'Ultimate Frisbee', 'Rugby'], answer: 2 },
+                { q: "What is Ryan's P2P lending project?", options: ['LoanLink', 'ManiFed', 'PeerFund', 'MicroLend'], answer: 1 },
+                { q: "What is Ryan's GitHub username?", options: ['@ryanmccomb', '@bayes-dev', '@de-bayes', '@mccomb-ryan'], answer: 2 },
+                { q: 'Which publications featured IL9CAST?', options: ['Chicago Tribune & Sun-Times', 'Capitol Fax, Evanston Roundtable & Daily Northwestern', "Crain's Chicago & Block Club", 'Politico & The Hill'], answer: 1 },
+                { q: 'What short film did Ryan make?', options: ['Lake Effect', 'Cabin Life', 'North Shore', 'The Forecast'], answer: 1 },
+                { q: "What is Ryan's graduation year?", options: ['2025', '2028', '2027', '2024'], answer: 1 },
+                { q: 'What campaign is Ryan a finance lead for?', options: ['Casten for Congress', 'Biss for Congress', 'Schakowsky for Congress', 'Duckworth for Senate'], answer: 1 },
+                { q: 'What prediction platform does Ryan use besides Manifold?', options: ['PredictIt', 'Metaculus', 'Polymarket', 'Kalshi'], answer: 1 },
+                { q: 'What does Ryan read about?', options: ['Quantum physics & AI', 'Political theory & behavioral economics', 'Philosophy & literature', 'Sports analytics & sabermetrics'], answer: 1 },
+                { q: 'What side of VoteHub is Ryan a Student Fellow on?', options: ['Communications', 'Data Science', 'Policy Research', 'Campaign Strategy'], answer: 1 },
+                { q: 'Where does Ryan work as a swim instructor?', options: ['YMCA', 'YWCA', 'Evanston Aquatics', 'Northwestern Pool'], answer: 1 },
+                { q: "What is the name of Ryan's election model?", options: ['ForecastIL', 'IL9CAST', 'NinthDistrict', 'Prairie Poll'], answer: 1 },
+                { q: "What programming language is Ryan's website primarily built with?", options: ['React', 'Plain HTML/CSS/JS', 'Next.js', 'Svelte'], answer: 1 },
+                { q: "Which Twitter account follows Ryan's @bayes_pr?", options: ['@NateSilver538', '@umichvoter', '@redistrict', '@PollsterHQ'], answer: 1 },
+                { q: "What bone did Ryan break as a kid?", options: ['Arm', 'Femur', 'Collarbone', 'Wrist'], answer: 1 },
+                { q: "What nationality is Ryan besides American?", options: ['British', 'Canadian', 'Australian', 'Irish'], answer: 1 },
+                { q: "What position did Ryan play in hockey?", options: ['Forward', 'Defense', 'Goalie', 'Center'], answer: 2 },
+                { q: "Which social media did Ryan's post go viral on?", options: ['Twitter', 'Instagram', 'Threads', 'TikTok'], answer: 2 },
+                { q: "What did Ryan's backup goalie teammate go on to play for?", options: ['U16 national team', 'U18 national team', 'OHL team', 'NCAA Division I'], answer: 1 },
+            ];
+
+            let quizState = null;
+
+            function getRating(s) {
+                if (s <= 2) return { text: 'Complete stranger vibes.', color: '#f48771' };
+                if (s <= 4) return { text: 'Casual acquaintance.', color: '#e67e22' };
+                if (s <= 6) return { text: 'You know some things!', color: '#dcdcaa' };
+                if (s <= 8) return { text: 'Close friend energy.', color: '#569cd6' };
+                if (s === 9) return { text: 'Basically best friends.', color: '#4ec9b0' };
+                return { text: 'You ARE Ryan McComb.', color: '#c586c0' };
+            }
+
+            function renderNameScreen() {
+                const taken = localStorage.getItem('webquiz_taken');
+                if (taken) {
+                    const prevScore = localStorage.getItem('webquiz_high_score') || '?';
+                    inner.innerHTML = '<div class="quiz-header"><h2>HOW WELL DO YOU KNOW RYAN?</h2></div>' +
+                        '<div class="quiz-name-screen">' +
+                        '<p style="color:#e67e22;font-family:VT323,monospace;font-size:1.2rem;">You already took the quiz!</p>' +
+                        '<p>Your score: <strong>' + prevScore + '/10</strong></p>' +
+                        '<p style="font-size:0.8rem;color:var(--text-light);">One attempt only — no retries.</p>' +
+                        '</div>';
+                    return;
+                }
+                inner.innerHTML = '<div class="quiz-header"><h2>HOW WELL DO YOU KNOW RYAN?</h2></div>' +
+                    '<div class="quiz-name-screen">' +
+                    '<p>10 questions. One attempt. No going back.<br>Think you know Ryan? Prove it.</p>' +
+                    '<input type="text" class="quiz-name-input" id="quiz-name" placeholder="Enter your name" maxlength="20" autocomplete="off">' +
+                    '<br><button class="quiz-start-btn" id="quiz-start-btn" disabled>START</button>' +
+                    '</div>';
+
+                var nameInput = document.getElementById('quiz-name');
+                var startBtn = document.getElementById('quiz-start-btn');
+                nameInput.addEventListener('input', function() {
+                    startBtn.disabled = !nameInput.value.trim();
+                });
+                nameInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && nameInput.value.trim()) startQuiz(nameInput.value.trim());
+                });
+                startBtn.addEventListener('click', function() {
+                    if (nameInput.value.trim()) startQuiz(nameInput.value.trim());
+                });
+                setTimeout(function() { nameInput.focus(); }, 100);
+            }
+
+            function startQuiz(playerName) {
+                var shuffled = allQuizQuestions.slice().sort(function() { return Math.random() - 0.5; });
+                quizState = {
+                    name: playerName,
+                    questions: shuffled.slice(0, 10),
+                    current: 0,
+                    score: 0
+                };
+                renderQuestion();
+            }
+
+            function renderQuestion() {
+                var s = quizState;
+                var q = s.questions[s.current];
+                var labels = ['A', 'B', 'C', 'D'];
+                var optionsHtml = q.options.map(function(opt, i) {
+                    return '<button class="quiz-option" data-idx="' + i + '">' +
+                        '<span class="quiz-option-label">' + labels[i] + '.</span> ' + opt +
+                        '</button>';
+                }).join('');
+
+                inner.innerHTML = '<div class="quiz-header"><h2>HOW WELL DO YOU KNOW RYAN?</h2></div>' +
+                    '<div class="quiz-progress">' +
+                    '<div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:' + (s.current / 10 * 100) + '%"></div></div>' +
+                    '<span class="quiz-progress-text">' + (s.current + 1) + '/10</span>' +
+                    '</div>' +
+                    '<div class="quiz-score-display">Score: ' + s.score + '</div>' +
+                    '<div class="quiz-question">' + q.q + '</div>' +
+                    '<div class="quiz-options">' + optionsHtml + '</div>';
+
+                var btns = inner.querySelectorAll('.quiz-option');
+                btns.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        handleAnswer(parseInt(btn.dataset.idx));
+                    });
+                });
+            }
+
+            function handleAnswer(idx) {
+                var s = quizState;
+                var q = s.questions[s.current];
+                var correct = idx === q.answer;
+                if (correct) s.score++;
+
+                var btns = inner.querySelectorAll('.quiz-option');
+                btns.forEach(function(btn, i) {
+                    btn.classList.add('disabled');
+                    if (i === q.answer) btn.classList.add('correct');
+                    else if (i === idx && !correct) btn.classList.add('wrong');
+                    else btn.classList.add('dimmed');
+                });
+
+                setTimeout(function() {
+                    s.current++;
+                    if (s.current >= 10) {
+                        finishQuiz();
+                    } else {
+                        renderQuestion();
+                    }
+                }, 1000);
+            }
+
+            function finishQuiz() {
+                var s = quizState;
+                localStorage.setItem('webquiz_taken', 'true');
+                localStorage.setItem('webquiz_high_score', s.score.toString());
+                var lb = JSON.parse(localStorage.getItem('webquiz_leaderboard') || '[]');
+                lb.push({ name: s.name.substring(0, 20), score: s.score, date: new Date().toLocaleDateString() });
+                lb.sort(function(a, b) { return b.score - a.score; });
+                lb = lb.slice(0, 50);
+                localStorage.setItem('webquiz_leaderboard', JSON.stringify(lb));
+
+                var rating = getRating(s.score);
+                var lbHtml = '';
+                if (lb.length > 0) {
+                    lbHtml = '<div class="quiz-leaderboard"><h3>LEADERBOARD</h3>';
+                    var top10 = lb.slice(0, 10);
+                    top10.forEach(function(entry, i) {
+                        var rank = i === 0 ? '1st' : i === 1 ? '2nd' : i === 2 ? '3rd' : (i + 1) + 'th';
+                        var rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+                        var isYou = entry.name === s.name.substring(0, 20) && entry.score === s.score;
+                        lbHtml += '<div class="quiz-lb-entry' + (isYou ? ' you' : '') + '">' +
+                            '<span class="quiz-lb-rank ' + rankClass + '">' + rank + '</span>' +
+                            '<span class="quiz-lb-name">' + entry.name + (isYou ? ' (you)' : '') + '</span>' +
+                            '<span class="quiz-lb-score">' + entry.score + '/10</span></div>';
+                    });
+                    lbHtml += '</div>';
+                }
+
+                inner.innerHTML = '<div class="quiz-header"><h2>QUIZ COMPLETE</h2></div>' +
+                    '<div class="quiz-results">' +
+                    '<div class="quiz-results-score">' + s.score + '/10</div>' +
+                    '<div class="quiz-results-rating" style="color:' + rating.color + '">' + rating.text + '</div>' +
+                    '<div class="quiz-results-name">Recorded as: ' + s.name + '</div>' +
+                    lbHtml +
+                    '<p class="quiz-footer-note">One attempt only — no retries!</p>' +
+                    '</div>';
+            }
+
+            window.openWebQuiz = function() {
+                overlay.classList.add('active');
+                renderNameScreen();
+            };
+
+            closeBtn.addEventListener('click', function() {
+                if (quizState && quizState.current > 0 && quizState.current < 10) {
+                    localStorage.setItem('webquiz_taken', 'true');
+                    localStorage.setItem('webquiz_high_score', quizState.score.toString());
+                    var lb = JSON.parse(localStorage.getItem('webquiz_leaderboard') || '[]');
+                    lb.push({ name: quizState.name.substring(0, 20), score: quizState.score, date: new Date().toLocaleDateString() });
+                    lb.sort(function(a, b) { return b.score - a.score; });
+                    localStorage.setItem('webquiz_leaderboard', JSON.stringify(lb.slice(0, 50)));
+                }
+                overlay.classList.remove('active');
+                quizState = null;
+            });
+
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) closeBtn.click();
+            });
+        })();
+
+        // =============================================
+        // WEB TWO TRUTHS AND A LIE
+        // =============================================
+        (function() {
+            var overlay = document.getElementById('truths-modal-overlay');
+            var inner = document.getElementById('truths-modal-inner');
+            var closeBtn = document.getElementById('truths-close');
+
+            var allTruthRounds = [
+                {
+                    statements: [
+                        { text: 'Ryan is a US-Canadian dual citizen', isLie: false },
+                        { text: 'Ryan ran a sub-20-minute 5k', isLie: false },
+                        { text: 'Ryan plays varsity basketball at ETHS', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: '@umichvoter follows Ryan (@bayes_pr) on Twitter', isLie: false },
+                        { text: 'Ryan broke his femur as a kid and had a body cast for 3 months', isLie: false },
+                        { text: 'Ryan interned at FiveThirtyEight in 2025', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan had a tweet go viral on Threads (500k+ views)', isLie: false },
+                        { text: 'This entire website is a huge OSINT liability', isLie: false },
+                        { text: 'Ryan is editor-in-chief of The Evanstonian', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan was backup goalie to the U18 national team goalie', isLie: false },
+                        { text: "Ryan's mom knew Justin Trudeau as a kid", isLie: false },
+                        { text: 'Ryan teaches coding classes at Northwestern', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan built an election forecasting model that got press coverage', isLie: false },
+                        { text: 'Ryan has been to every Canadian province', isLie: false },
+                        { text: "Ryan was born and raised in Chicago's South Side", isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan photographs professional ultimate frisbee games', isLie: false },
+                        { text: 'Ryan ran a sub-20-minute 5k', isLie: false },
+                        { text: 'Ryan has been to every US state', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan had a tweet go viral on Threads (500k+ views)', isLie: false },
+                        { text: 'Ryan works as a swim instructor', isLie: false },
+                        { text: 'Ryan runs a daily political newsletter with 10k subscribers', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan was backup goalie to the U18 national team goalie', isLie: false },
+                        { text: 'Ryan built a P2P lending project called ManiFed', isLie: false },
+                        { text: 'Ryan placed top 3 at a national hackathon', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: "Ryan's mom knew Justin Trudeau as a kid", isLie: false },
+                        { text: 'Ryan is a finance lead for a congressional campaign', isLie: false },
+                        { text: 'Ryan is the student body president of ETHS', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan is a US-Canadian dual citizen', isLie: false },
+                        { text: 'Ryan made a short film called Cabin Life', isLie: false },
+                        { text: 'Ryan has published a book on election modeling', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan broke his femur and wore a body cast for 3 months', isLie: false },
+                        { text: 'Ryan reads about political theory and behavioral economics', isLie: false },
+                        { text: 'Ryan won a state math olympiad', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: "Ryan's podcast is called Project 2028", isLie: false },
+                        { text: 'Ryan is a Student Fellow on the Data Science side of VoteHub', isLie: false },
+                        { text: 'Ryan founded a startup that was accepted into Y Combinator', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan uses Metaculus as a prediction platform', isLie: false },
+                        { text: 'Ryan photographs for the Chicago Union (ultimate frisbee)', isLie: false },
+                        { text: 'Ryan designed the official ETHS school logo', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: 'Ryan built a website that has a working terminal with games', isLie: false },
+                        { text: 'Ryan has a GPA above 3.9', isLie: false },
+                        { text: 'Ryan spent a summer studying abroad in Tokyo', isLie: true },
+                    ]
+                },
+                {
+                    statements: [
+                        { text: "Ryan's IL9CAST model was featured in Capitol Fax", isLie: false },
+                        { text: 'Ryan made a short film called Cabin Life', isLie: false },
+                        { text: 'Ryan was a varsity swimmer who competed at state', isLie: true },
+                    ]
+                },
+            ];
+
+            var truthsState = null;
+
+            function getRating(s, total) {
+                var pct = s / total;
+                if (pct <= 0.15) return { text: 'You believed everything!', color: '#f48771' };
+                if (pct <= 0.4) return { text: 'Getting warmer...', color: '#e67e22' };
+                if (pct <= 0.7) return { text: 'Decent BS detector.', color: '#dcdcaa' };
+                if (pct <= 0.85) return { text: 'Very perceptive!', color: '#4ec9b0' };
+                return { text: 'Human lie detector!', color: '#c586c0' };
+            }
+
+            function startGame() {
+                var shuffled = allTruthRounds.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 7);
+                var rounds = shuffled.map(function(r) {
+                    return { statements: r.statements.slice().sort(function() { return Math.random() - 0.5; }) };
+                });
+                truthsState = { rounds: rounds, current: 0, score: 0, streak: 0, bestStreak: 0 };
+                renderRound();
+            }
+
+            function renderRound() {
+                var s = truthsState;
+                var round = s.rounds[s.current];
+                var cardsHtml = round.statements.map(function(stmt, i) {
+                    return '<div class="truth-card" data-idx="' + i + '">' + stmt.text + '</div>';
+                }).join('');
+
+                inner.innerHTML = '<div class="truths-header"><h2>TWO TRUTHS &amp; A LIE</h2></div>' +
+                    '<div class="quiz-progress">' +
+                    '<div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:' + (s.current / 7 * 100) + '%"></div></div>' +
+                    '<span class="quiz-progress-text">' + (s.current + 1) + '/7</span>' +
+                    '</div>' +
+                    '<div class="quiz-score-display">Score: ' + s.score + '  |  Streak: ' + s.streak + '</div>' +
+                    '<div class="truths-instruction">Pick the lie.</div>' +
+                    '<div class="truths-statements">' + cardsHtml + '</div>' +
+                    '<div class="truths-result-line" id="truths-result-line"></div>';
+
+                var cards = inner.querySelectorAll('.truth-card');
+                cards.forEach(function(card) {
+                    card.addEventListener('click', function() {
+                        handleTruthPick(parseInt(card.dataset.idx));
+                    });
+                });
+            }
+
+            function handleTruthPick(idx) {
+                var s = truthsState;
+                var round = s.rounds[s.current];
+                var picked = round.statements[idx];
+                var correct = picked.isLie;
+                if (correct) {
+                    s.score++;
+                    s.streak++;
+                    if (s.streak > s.bestStreak) s.bestStreak = s.streak;
+                } else {
+                    s.streak = 0;
+                }
+
+                var cards = inner.querySelectorAll('.truth-card');
+                var resultLine = document.getElementById('truths-result-line');
+                cards.forEach(function(card, i) {
+                    card.classList.add('disabled');
+                    var stmt = round.statements[i];
+                    if (stmt.isLie) {
+                        card.classList.add('is-lie');
+                        card.innerHTML += '<span class="truth-label" style="color:#f48771">LIE</span>';
+                    } else {
+                        card.classList.add('is-truth');
+                        card.innerHTML += '<span class="truth-label" style="color:#4ec9b0">TRUTH</span>';
+                    }
+                });
+
+                if (correct) {
+                    resultLine.innerHTML = '<span style="color:#4ec9b0">Correct! You spotted the lie.</span>';
+                } else {
+                    resultLine.innerHTML = '<span style="color:#f48771">Wrong — that one was true!</span>';
+                }
+
+                setTimeout(function() {
+                    s.current++;
+                    if (s.current >= 7) {
+                        finishTruths();
+                    } else {
+                        renderRound();
+                    }
+                }, 1400);
+            }
+
+            function finishTruths() {
+                var s = truthsState;
+                var rating = getRating(s.score, 7);
+                var prevHigh = parseInt(localStorage.getItem('web2truths_high_score') || '0');
+                var isNewHigh = s.score > prevHigh;
+                if (isNewHigh) localStorage.setItem('web2truths_high_score', s.score.toString());
+
+                var highHtml = isNewHigh
+                    ? '<div class="truths-high-score" style="color:#c586c0">NEW HIGH SCORE!</div>'
+                    : '<div class="truths-high-score" style="color:var(--text-light)">High score: ' + prevHigh + '/7</div>';
+
+                inner.innerHTML = '<div class="truths-header"><h2>GAME COMPLETE</h2></div>' +
+                    '<div class="truths-results">' +
+                    '<div class="truths-results-score">' + s.score + '/7</div>' +
+                    '<div class="truths-results-rating" style="color:' + rating.color + '">' + rating.text + '</div>' +
+                    '<div class="truths-results-streak">Best streak: ' + s.bestStreak + '</div>' +
+                    highHtml +
+                    '<button class="truths-play-again" id="truths-retry">PLAY AGAIN</button>' +
+                    '</div>';
+
+                document.getElementById('truths-retry').addEventListener('click', startGame);
+            }
+
+            window.openWebTruths = function() {
+                overlay.classList.add('active');
+                startGame();
+            };
+
+            closeBtn.addEventListener('click', function() {
+                overlay.classList.remove('active');
+                truthsState = null;
+            });
+
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) closeBtn.click();
+            });
+        })();
+
+        // =============================================
         // PAGE TRANSITIONS
         // =============================================
         function initPageTransitions() {
@@ -4679,6 +5608,22 @@
         }
         initPageTransitions();
     </script>
+    <!-- QUIZ MODAL -->
+    <div class="game-modal-overlay" id="quiz-modal-overlay">
+        <div class="game-modal">
+            <button class="game-modal-close" id="quiz-close">&times;</button>
+            <div class="quiz-modal-inner" id="quiz-modal-inner"></div>
+        </div>
+    </div>
+
+    <!-- TWO TRUTHS MODAL -->
+    <div class="game-modal-overlay" id="truths-modal-overlay">
+        <div class="game-modal">
+            <button class="game-modal-close" id="truths-close">&times;</button>
+            <div class="truths-modal-inner" id="truths-modal-inner"></div>
+        </div>
+    </div>
+
     <script src="scroll-hide.js"></script>
 </body>
 </html>
