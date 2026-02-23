@@ -51,16 +51,16 @@
 
         .error-code {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(6rem, 15vw, 12rem);
+            font-size: clamp(8rem, 20vw, 16rem);
             font-weight: 600;
             line-height: 1;
             letter-spacing: -0.04em;
             color: var(--text-primary);
-            opacity: 0.12;
-            position: absolute;
+            opacity: 0.08;
+            position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -65%);
+            transform: translate(-50%, -55%);
             z-index: 0;
             user-select: none;
             pointer-events: none;
@@ -185,15 +185,15 @@
 
     <div class="container">
         <p class="message">
-            Well&hellip; you have now <em>adjusted your priors</em><br>
-            about my programming knowledge.
+            Well&hellip; time to <em>update your prior</em><br>
+            on whether I&rsquo;m a good programmer.
         </p>
 
         <div class="bayes-box">
             <div class="bayes-label">Bayes' Theorem</div>
             <div class="bayes-formula" id="bayes"></div>
             <div class="bayes-footnote">
-                where <span>H</span> = "this page exists" and <span>E</span> = "you clicked that link"
+                where <span>H</span> = "Ryan is a good programmer" and <span>E</span> = "you just got a 404"
             </div>
         </div>
 
