@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ryan McComb - Hot Takes">
+    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <title>Hot Takes - Ryan McComb</title>
+    <link rel="stylesheet" href="features.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #faf8f5;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #555555;
+            --text-light: #888888;
+            --border-color: #e5e5e5;
+            --accent: #e67e22;
+            --nav-menu-bg: #faf8f5;
+            --nav-menu-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --text-primary: #e5e5e5;
+            --text-secondary: #cccccc;
+            --text-muted: #aaaaaa;
+            --text-light: #888888;
+            --border-color: #333333;
+            --accent: #e67e22;
+            --nav-menu-bg: #1a1a1a;
+            --nav-menu-shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        .page-container { position: relative; z-index: 1; }
+
+        nav { position: fixed; top: 1.5rem; right: 2rem; z-index: 100; }
+        .nav-tabs { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-tabs a {
+            font-size: 0.75rem; font-weight: 400; text-decoration: none;
+            color: var(--text-light); letter-spacing: 0.05em;
+            text-transform: uppercase; transition: color .2s;
+        }
+        .nav-tabs a:hover, .nav-tabs a.active { color: var(--text-primary); }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 4px; cursor: pointer;
+            z-index: 200; position: relative; padding: 8px;
+        }
+        .hamburger span { width: 20px; height: 1.5px; background: var(--text-primary); transition: all .3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+        .page-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600; text-align: center;
+            padding: 8rem 2rem 1rem; letter-spacing: -0.03em;
+        }
+        .page-subtitle {
+            text-align: center; font-size: 0.9rem;
+            color: var(--text-muted); margin-bottom: 3rem;
+        }
+
+        /* TAKES WALL */
+        .takes-wall {
+            max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem;
+            columns: 2; column-gap: 1.5rem;
+        }
+
+        .take-card {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem 1.5rem 1rem;
+            border-radius: 2px;
+            position: relative;
+            transition: transform 0.2s ease;
+            cursor: default;
+        }
+
+        .take-card:hover { transform: translateY(-2px) rotate(0deg) !important; }
+
+        .take-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .take-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.7rem; color: var(--text-light);
+        }
+
+        .take-category {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        .take-spice { font-size: 0.8rem; }
+
+        /* Color variations for sticky notes */
+        .take-color-0 { background: #fff8dc; border-left: 3px solid #e67e22; }
+        .take-color-1 { background: #f0f8ff; border-left: 3px solid #3498db; }
+        .take-color-2 { background: #fff0f5; border-left: 3px solid #e74c3c; }
+        .take-color-3 { background: #f0fff0; border-left: 3px solid #2ecc71; }
+        .take-color-4 { background: #faf0e6; border-left: 3px solid #9b59b6; }
+        .take-color-5 { background: #f5f5dc; border-left: 3px solid #f39c12; }
+
+        body.dark-mode .take-color-0 { background: #2a2520; }
+        body.dark-mode .take-color-1 { background: #1e2530; }
+        body.dark-mode .take-color-2 { background: #2a1e22; }
+        body.dark-mode .take-color-3 { background: #1e2a1e; }
+        body.dark-mode .take-color-4 { background: #261e2a; }
+        body.dark-mode .take-color-5 { background: #2a2a1e; }
+
+        .empty-state {
+            text-align: center; padding: 4rem 2rem; color: var(--text-light);
+            font-style: italic; columns: initial;
+        }
+
+        /* Filter pills */
+        .filter-bar {
+            max-width: 900px; margin: 0 auto 2rem;
+            padding: 0 2rem; display: flex; gap: 0.5rem;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .filter-pill {
+            font-size: 0.7rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 0.35rem 0.9rem; border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: transparent; color: var(--text-muted);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .filter-pill:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-pill.active {
+            background: var(--accent); color: #fff;
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .hamburger { display: flex; }
+            .nav-tabs {
+                position: fixed; top: 0; right: 0; width: 240px; height: 100vh;
+                background: var(--nav-menu-bg); flex-direction: column;
+                padding: 5rem 2rem 2rem; gap: 1.5rem;
+                box-shadow: -5px 0 20px var(--nav-menu-shadow);
+                transform: translateX(100%); transition: transform .3s ease;
+            }
+            .nav-tabs.open { transform: translateX(0); }
+            .nav-tabs a { font-size: 1rem; }
+            .takes-wall { columns: 1; }
+            .page-title { font-size: 2.5rem; padding-top: 5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <nav>
+            <div class="hamburger" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+            <ul class="nav-tabs">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="experience.html">Experience</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="photos.html">Photos</a></li>
+                <li><a href="hottakes.html" class="active">Hot Takes</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <h1 class="page-title">Hot Takes</h1>
+        <p class="page-subtitle">Opinions I'm willing to defend. Spiciness rated on a pepper scale.</p>
+
+        <div class="filter-bar" id="filter-bar">
+            <button class="filter-pill active" data-cat="all">All</button>
+        </div>
+
+        <div class="takes-wall" id="takes-wall">
+            <div class="empty-state">Loading takes...</div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode
+        if (localStorage.getItem('darkMode') === 'enabled') document.body.classList.add('dark-mode');
+
+        // Nav
+        function toggleNav() {
+            document.querySelector('.hamburger').classList.toggle('active');
+            document.querySelector('.nav-tabs').classList.toggle('open');
+        }
+        document.querySelectorAll('.nav-tabs a').forEach(l => {
+            l.addEventListener('click', () => {
+                document.querySelector('.hamburger').classList.remove('active');
+                document.querySelector('.nav-tabs').classList.remove('open');
+            });
+        });
+
+        let allTakes = [];
+        let activeFilter = 'all';
+
+        function peppers(n) {
+            return '<span class="take-spice">' + '&#x1F336;'.repeat(n) + '</span>';
+        }
+
+        function renderTakes(takes) {
+            const wall = document.getElementById('takes-wall');
+            if (!takes.length) {
+                wall.innerHTML = '<div class="empty-state">No takes yet. Check back soon.</div>';
+                return;
+            }
+            wall.innerHTML = takes.map((t, i) => `
+                <div class="take-card take-color-${i % 6}" style="transform: rotate(${(Math.random() - 0.5) * 2}deg)">
+                    <div class="take-text">${t.text}</div>
+                    <div class="take-footer">
+                        <span class="take-category">${t.category}</span>
+                        ${peppers(t.spiciness)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buildFilters(takes) {
+            const cats = [...new Set(takes.map(t => t.category))];
+            const bar = document.getElementById('filter-bar');
+            bar.innerHTML = '<button class="filter-pill active" data-cat="all">All</button>';
+            cats.forEach(c => {
+                bar.innerHTML += `<button class="filter-pill" data-cat="${c}">${c}</button>`;
+            });
+            bar.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    bar.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeFilter = btn.dataset.cat;
+                    const filtered = activeFilter === 'all' ? allTakes : allTakes.filter(t => t.category === activeFilter);
+                    renderTakes(filtered);
+                });
+            });
+        }
+
+        fetch('/api/hottakes')
+            .then(r => r.json())
+            .then(takes => {
+                allTakes = takes;
+                buildFilters(takes);
+                renderTakes(takes);
+            })
+            .catch(() => {
+                document.getElementById('takes-wall').innerHTML =
+                    '<div class="empty-state">Could not load takes.</div>';
+            });
+    </script>
+</body>
+</html>
