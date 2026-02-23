@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <title>404 | Ryan McComb</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #faf8f5;
+            --text-primary: #000000;
+            --text-muted: #555555;
+            --text-light: #888888;
+            --accent: #e67e22;
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --text-primary: #e5e5e5;
+            --text-muted: #aaaaaa;
+            --text-light: #888888;
+            --accent: #e67e22;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 680px;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-code {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(6rem, 15vw, 12rem);
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: var(--text-primary);
+            opacity: 0.12;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -65%);
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .message {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .message em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .bayes-box {
+            background: var(--bg-primary);
+            border: 1px solid rgba(128, 128, 128, 0.15);
+            border-radius: 8px;
+            padding: 2rem 2.5rem;
+            margin: 0 auto 2.5rem;
+            display: inline-block;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .bayes-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .bayes-formula .katex { font-size: 1.6rem; }
+
+        .bayes-footnote {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .bayes-footnote span { color: var(--accent); }
+
+        .home-link {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            text-decoration: none;
+            border: 1px solid rgba(128, 128, 128, 0.25);
+            padding: 0.7rem 2rem;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .home-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            font-family: 'VT323', monospace;
+            color: var(--text-primary);
+            opacity: 0.04;
+            font-size: 1rem;
+            pointer-events: none;
+            user-select: none;
+            animation: drift linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-20vh) rotate(360deg); }
+        }
+
+        /* Fade in */
+        .container { animation: fadeUp 0.8s ease both; }
+        .bayes-box { animation: fadeUp 0.8s ease 0.2s both; }
+        .home-link { animation: fadeUp 0.8s ease 0.4s both; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .bayes-box { padding: 1.5rem; }
+            .bayes-formula .katex { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-code">404</div>
+
+    <!-- floating math symbols -->
+    <script>
+        const symbols = ['P', '(', ')', '|', 'H', 'E', '=', '+', '\u222B', '\u03B8', '\u03C0', '\u03A3', '\u221E', '\u2202', '\u00D7'];
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+            p.style.animationDuration = (12 + Math.random() * 20) + 's';
+            p.style.animationDelay = -(Math.random() * 30) + 's';
+            document.body.appendChild(p);
+        }
+    </script>
+
+    <div class="container">
+        <p class="message">
+            Well&hellip; you have now <em>adjusted your priors</em><br>
+            about my programming knowledge.
+        </p>
+
+        <div class="bayes-box">
+            <div class="bayes-label">Bayes' Theorem</div>
+            <div class="bayes-formula" id="bayes"></div>
+            <div class="bayes-footnote">
+                where <span>H</span> = "this page exists" and <span>E</span> = "you clicked that link"
+            </div>
+        </div>
+
+        <a href="/" class="home-link">Update Your Posterior &rarr; Home</a>
+    </div>
+
+    <script>
+        katex.render(
+            String.raw`P(H \mid E) = \frac{P(E \mid H) \, P(H)}{P(E)}`,
+            document.getElementById('bayes'),
+            { displayMode: true, throwOnError: false }
+        );
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>
