@@ -288,6 +288,18 @@ app.post('/api/guestbook', (req, res) => {
     return res.json({ ok: true });
 });
 
+app.delete('/api/guestbook/:index', requireAuth, (req, res) => {
+    const index = parseInt(req.params.index, 10);
+    if (Number.isNaN(index) || index < 0) return res.status(400).json({ error: 'Invalid index' });
+
+    const entries = readJSON(GUESTBOOK_FILE, []);
+    if (index >= entries.length) return res.status(404).json({ error: 'Not found' });
+
+    entries.splice(index, 1);
+    writeJSON(GUESTBOOK_FILE, entries);
+    return res.json({ ok: true });
+});
+
 // =============================================
 // ANALYTICS TRACKING
 // =============================================

@@ -53,6 +53,113 @@
             color: #000000;
         }
 
+
+
+        /* GROUPED NAV DROPDOWNS */
+        .nav-tabs > li {
+            position: relative;
+        }
+
+        .nav-tabs .nav-group {
+            position: relative;
+        }
+
+        .nav-tabs .nav-group > summary {
+            list-style: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            color: #888888;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 400;
+            font-family: inherit;
+            letter-spacing: 0;
+            line-height: 1.2;
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+
+        .nav-tabs .nav-group > summary::marker,
+        .nav-tabs .nav-group > summary::-webkit-details-marker {
+            display: none;
+            content: '';
+        }
+
+        .nav-tabs .nav-group > summary * {
+            font-weight: inherit;
+        }
+
+        .nav-tabs .nav-group > summary::after {
+            content: '▾';
+            font-size: 0.68rem;
+            opacity: 0.65;
+            transform: translateY(1px);
+        }
+
+        .nav-tabs .nav-group:hover > summary,
+        .nav-tabs .nav-group[open] > summary,
+        .nav-tabs .nav-group > summary.active-parent {
+            color: #000000;
+        }
+
+        .nav-tabs .nav-submenu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            display: none;
+            flex-direction: column;
+            gap: 0.45rem;
+            min-width: 11rem;
+            padding: 0.65rem 0.8rem;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+        }
+
+        .nav-tabs .nav-group:hover .nav-submenu,
+        .nav-tabs .nav-group[open] .nav-submenu {
+            display: flex;
+        }
+
+        .nav-tabs .nav-submenu a {
+            white-space: nowrap;
+            font-size: 0.92rem;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs .nav-group > summary::after {
+                display: none;
+            }
+
+            .nav-tabs .nav-group > summary {
+                font-size: 1rem;
+            }
+
+            .nav-tabs .nav-submenu {
+                position: static;
+                display: flex;
+                gap: 0.25rem;
+                padding: 0.35rem 0 0.35rem 0.9rem;
+                margin-left: 0.2rem;
+                border: 0;
+                border-left: 1px solid #e5e5e5;
+                background: transparent;
+                box-shadow: none;
+                min-width: 0;
+            }
+
+            .nav-tabs .nav-submenu a {
+                font-size: 0.95rem;
+                line-height: 1.3;
+            }
+        }
+
+
         /* PAGE CONTENT */
         .page-container {
             min-height: 100vh;
@@ -133,13 +240,38 @@
     <nav>
         <ul class="nav-tabs">
             <li><a href="index.html">Home</a></li>
-            <li><a href="experience.html">Experience</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="photos.html">Photos</a></li>
-            <li><a href="hottakes.html">Hot Takes</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="education.html" class="active">Education</a></li>
+            <li>
+                <details class="nav-group">
+                    <summary class="active-parent">About</summary>
+                    <div class="nav-submenu">
+                        <a href="experience.html">Experience</a>
+                        <a href="education.html" class="active">Education</a>
+                        <a href="passions.html">Passions</a>
+                    </div>
+                </details>
+            </li>
+            <li>
+                <details class="nav-group">
+                    <summary>Work</summary>
+                    <div class="nav-submenu">
+                        <a href="projects.html">Projects</a>
+                        <a href="photos.html">Photos</a>
+                        <a href="cloud.html">Cloud</a>
+                    </div>
+                </details>
+            </li>
+            <li>
+                <details class="nav-group">
+                    <summary>Writing</summary>
+                    <div class="nav-submenu">
+                        <a href="blog.html">Blog</a>
+                        <a href="hottakes.html">Hot Takes</a>
+                    </div>
+                </details>
+            </li>
+            <li><a href="countdowns.html">Countdowns</a></li>
             <li><a href="contact.html">Contact</a></li>
+
         </ul>
     </nav>
 

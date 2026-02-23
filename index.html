@@ -1657,13 +1657,6 @@
 
         <!-- POWER USER TOOLBAR -->
         <div class="power-toolbar">
-            <button class="power-btn" id="dark-mode-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-            </button>
-            <button class="power-btn" id="crt-btn" onclick="toggleCRT(); updateToolbarState();">
-                <span class="btn-label">CRT</span>
-            </button>
             <button class="power-btn" onclick="openCmdPalette()">
                 <span class="btn-label"><kbd class="shortcut-key"></kbd> Search</span>
             </button>
@@ -1677,13 +1670,39 @@
                 <span></span>
             </div>
             <ul class="nav-tabs">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="experience.html">Experience</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="photos.html">Photos</a></li>
-                <li><a href="hottakes.html">Hot Takes</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li>
+                <details class="nav-group">
+                    <summary>About</summary>
+                    <div class="nav-submenu">
+                        <a href="experience.html">Experience</a>
+                        <a href="education.html">Education</a>
+                        <a href="passions.html">Passions</a>
+                    </div>
+                </details>
+            </li>
+            <li>
+                <details class="nav-group">
+                    <summary>Work</summary>
+                    <div class="nav-submenu">
+                        <a href="projects.html">Projects</a>
+                        <a href="photos.html">Photos</a>
+                        <a href="cloud.html">Cloud</a>
+                    </div>
+                </details>
+            </li>
+            <li>
+                <details class="nav-group">
+                    <summary>Writing</summary>
+                    <div class="nav-submenu">
+                        <a href="blog.html">Blog</a>
+                        <a href="hottakes.html">Hot Takes</a>
+                    </div>
+                </details>
+            </li>
+            <li><a href="countdowns.html">Countdowns</a></li>
+            <li><a href="contact.html">Contact</a></li>
+
             </ul>
         </nav>
 
@@ -5123,9 +5142,7 @@
             { section: 'Games', icon: '\u2753', label: 'Quiz: Know Ryan?', shortcut: '/quiz', action: () => { openWebQuiz(); } },
             { section: 'Games', icon: '\uD83E\uDD25', label: 'Two Truths & a Lie', shortcut: '/2truths', action: () => { openWebTruths(); } },
             { section: 'Tools', icon: '\uD83D\uDDA5\uFE0F', label: 'Terminal', action: () => openTerminal() },
-            { section: 'Tools', icon: '\uD83D\uDCFA', label: 'CRT Mode', shortcut: '/crt', action: () => { toggleCRT(); } },
             { section: 'Tools', icon: '\uD83D\uDCBB', label: 'Desktop Mode', shortcut: '/desktop', action: () => startDesktopMode() },
-            { section: 'Tools', icon: '\uD83C\uDF19', label: 'Toggle Dark Mode', action: () => toggleDarkMode() },
             { section: 'Social', icon: '\u2600\uFE0F', label: 'Weather', shortcut: '/weather', action: () => { openTerminal(); setTimeout(() => executeCommand('/weather'), 300); } },
             { section: 'Social', icon: '\uD83D\uDCD6', label: 'Guestbook', shortcut: '/guestbook', action: () => { openTerminal(); setTimeout(() => executeCommand('/guestbook'), 300); } },
             { section: 'Social', icon: '\uD83D\uDCCA', label: 'Analytics', shortcut: '/stats', action: () => { openTerminal(); setTimeout(() => executeCommand('/stats'), 300); } },
