@@ -526,11 +526,28 @@
         </div>
         <ul class="nav-tabs">
             <li><a href="index.html">Home</a></li>
-            <li><a href="experience.html">Experience</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="photos.html">Photos</a></li>
-            <li><a href="hottakes.html">Hot Takes</a></li>
-            <li><a href="blog.html" class="active">Blog</a></li>
+            <li class="nav-dropdown">
+                <span class="nav-dropdown-label">About</span>
+                <ul class="nav-dropdown-menu">
+                    <li><a href="experience.html">Experience</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="passions.html">Passions</a></li>
+                </ul>
+            </li>
+            <li class="nav-dropdown">
+                <span class="nav-dropdown-label">Work</span>
+                <ul class="nav-dropdown-menu">
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="photos.html">Photos</a></li>
+                </ul>
+            </li>
+            <li class="nav-dropdown">
+                <span class="nav-dropdown-label active">Writing</span>
+                <ul class="nav-dropdown-menu">
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <li><a href="hottakes.html">Hot Takes</a></li>
+                </ul>
+            </li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -878,6 +895,21 @@
             draw();
         })();
     </script>
+
+    <!-- POWER TOOLBAR -->
+    <div class="power-toolbar">
+        <button class="power-btn" onclick="openCmd()"><span class="btn-label"><kbd class="shortcut-key"></kbd> Search</span></button>
+    </div>
+    <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
+
+    <!-- COMMAND PALETTE -->
+    <div class="cmd-palette-overlay" id="cmd-palette-overlay"><div class="cmd-palette"><div class="cmd-palette-input-wrap"><input type="text" class="cmd-palette-input" id="cmd-palette-input" placeholder="Type a command..." autocomplete="off" spellcheck="false"></div><div class="cmd-palette-results" id="cmd-palette-results"></div><div class="cmd-palette-footer"><span><kbd>↑↓</kbd> navigate</span><span><kbd>↵</kbd> select</span><span><kbd>esc</kbd> close</span></div></div></div>
+    <script>
+        const cmdItems=[{section:'Pages',icon:'\uD83C\uDFE0',label:'Home',action:()=>window.location.href='index.html'},{section:'Pages',icon:'\uD83D\uDCBC',label:'Experience',action:()=>window.location.href='experience.html'},{section:'Pages',icon:'\uD83D\uDCC1',label:'Projects',action:()=>window.location.href='projects.html'},{section:'Pages',icon:'\uD83D\uDCF7',label:'Photos',action:()=>window.location.href='photos.html'},{section:'Pages',icon:'\uD83C\uDF36\uFE0F',label:'Hot Takes',action:()=>window.location.href='hottakes.html'},{section:'Pages',icon:'\u23F3',label:'Countdowns',action:()=>window.location.href='countdowns.html'},{section:'Pages',icon:'\uD83D\uDCE7',label:'Contact',action:()=>window.location.href='contact.html'},{section:'Pages',icon:'\uD83D\uDCDD',label:'Blog',action:()=>window.location.href='blog.html'}];
+        let cmdIdx=0,cmdFiltered=[...cmdItems];function openCmd(){const o=document.getElementById('cmd-palette-overlay');o.classList.add('active');const i=document.getElementById('cmd-palette-input');i.value='';cmdIdx=0;cmdFiltered=[...cmdItems];renderCmd();setTimeout(()=>i.focus(),50);}function closeCmd(){document.getElementById('cmd-palette-overlay').classList.remove('active');}function renderCmd(){const r=document.getElementById('cmd-palette-results');let h='',ls='';cmdFiltered.forEach((it,i)=>{if(it.section!==ls){h+='<div class="cmd-palette-section">'+it.section+'</div>';ls=it.section;}h+='<div class="cmd-palette-item'+(i===cmdIdx?' selected':'')+'" data-i="'+i+'"><span class="cmd-icon">'+it.icon+'</span><span class="cmd-label">'+it.label+'</span></div>';});if(!cmdFiltered.length)h='<div class="cmd-palette-empty">No results</div>';r.innerHTML=h;r.querySelectorAll('.cmd-palette-item').forEach(el=>{el.addEventListener('click',()=>{closeCmd();cmdFiltered[+el.dataset.i].action();});el.addEventListener('mouseenter',()=>{cmdIdx=+el.dataset.i;r.querySelectorAll('.cmd-palette-item').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');});});}
+        document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('cmd-palette-overlay').classList.contains('active')?closeCmd():openCmd();}});document.getElementById('cmd-palette-input').addEventListener('input',e=>{const q=e.target.value.toLowerCase();cmdFiltered=cmdItems.filter(i=>i.label.toLowerCase().includes(q)||i.section.toLowerCase().includes(q));cmdIdx=0;renderCmd();});document.getElementById('cmd-palette-input').addEventListener('keydown',e=>{if(e.key==='Escape'){closeCmd();e.preventDefault();}else if(e.key==='ArrowDown'){e.preventDefault();cmdIdx=Math.min(cmdIdx+1,cmdFiltered.length-1);renderCmd();}else if(e.key==='ArrowUp'){e.preventDefault();cmdIdx=Math.max(cmdIdx-1,0);renderCmd();}else if(e.key==='Enter'){e.preventDefault();if(cmdFiltered[cmdIdx]){closeCmd();cmdFiltered[cmdIdx].action();}}});document.getElementById('cmd-palette-overlay').addEventListener('click',e=>{if(e.target.id==='cmd-palette-overlay')closeCmd();});
+    </script>
+
     <script src="scroll-hide.js"></script>
 </body>
 </html>

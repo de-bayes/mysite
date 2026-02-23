@@ -288,6 +288,17 @@ app.post('/api/guestbook', (req, res) => {
     return res.json({ ok: true });
 });
 
+app.delete('/api/guestbook/:index', requireAuth, (req, res) => {
+    const idx = parseInt(req.params.index, 10);
+    const entries = readJSON(GUESTBOOK_FILE, []);
+    if (isNaN(idx) || idx < 0 || idx >= entries.length) {
+        return res.status(404).json({ error: 'Not found' });
+    }
+    entries.splice(idx, 1);
+    writeJSON(GUESTBOOK_FILE, entries);
+    return res.json({ ok: true });
+});
+
 // =============================================
 // ANALYTICS TRACKING
 // =============================================

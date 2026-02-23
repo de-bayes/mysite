@@ -787,6 +787,107 @@ body.dark-mode .power-btn .sun-icon { display: inline; }
     }
 }
 
+/* NAV DROPDOWNS */
+.nav-dropdown {
+    position: relative;
+}
+
+.nav-dropdown-label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #888888;
+    cursor: default;
+    transition: color 0.2s ease;
+    letter-spacing: 0.02em;
+    user-select: none;
+}
+
+.nav-dropdown-label:hover,
+.nav-dropdown-label.active {
+    color: #000000;
+}
+
+body.dark-mode .nav-dropdown-label {
+    color: var(--text-light, #888);
+}
+
+body.dark-mode .nav-dropdown-label:hover,
+body.dark-mode .nav-dropdown-label.active {
+    color: var(--text-primary, #e5e5e5);
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    list-style: none;
+    background: #faf8f5;
+    border: 1px solid #e5e5e5;
+    padding: 0.4rem 0;
+    min-width: 130px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: all 0.2s ease;
+    z-index: 110;
+}
+
+body.dark-mode .nav-dropdown-menu {
+    background: var(--bg-primary, #1a1a1a);
+    border-color: var(--border-color, #333);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.nav-dropdown:hover .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-menu li {
+    padding: 0;
+}
+
+.nav-dropdown-menu a {
+    display: block;
+    padding: 0.35rem 1rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .nav-dropdown-label {
+        font-size: 1rem;
+        color: #888;
+        font-weight: 500;
+        pointer-events: none;
+    }
+
+    .nav-dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0 0 0 0.75rem;
+        min-width: 0;
+    }
+
+    body.dark-mode .nav-dropdown-menu {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    .nav-dropdown-menu a {
+        padding: 0.25rem 0;
+        font-size: 1rem;
+    }
+}
+
 /* Scroll-hide: top nav and terminal button fade out when scrolling down */
 nav, .terminal-button {
     transition: opacity 0.3s ease, transform 0.3s ease;
