@@ -169,6 +169,19 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
 
+        .blog-featured-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .blog-featured-image {
+                height: 200px;
+            }
+        }
+
         .blog-featured-badge {
             position: absolute;
             top: 1rem;
@@ -320,6 +333,14 @@
             font-weight: 500;
             margin-bottom: 0.75rem;
             line-height: 1.2;
+        }
+
+        .article-hero-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            margin-bottom: 2rem;
+            display: block;
         }
 
         .article-body {
@@ -521,61 +542,17 @@
 
             <!-- FEATURED -->
             <div class="blog-featured">
-                <div class="blog-featured-card" data-article="il9cast-story">
+                <div class="blog-featured-card" data-article="peoples-edict">
                     <span class="blog-featured-badge">FEATURED</span>
+                    <img src="2500.webp" alt="People's Edict" class="blog-featured-image">
                     <div class="blog-featured-body">
-                        <h2>How I Built an Open-Source Political Forecast From Scratch</h2>
-                        <p>The story behind IL9CAST: scraping polling data, building models, and learning Bayesian statistics as a high school student trying to predict a congressional primary.</p>
+                        <h2>People's Edict</h2>
+                        <p>An on-demand essay on power and strife, exploring when and how authority should be challenged through the lens of literature, personal research, and pragmatism.</p>
                         <div class="blog-meta">
-                            <span class="read-time">8 min read</span>
-                            <span class="blog-tag">Data</span>
-                            <span class="blog-tag">Politics</span>
-                            <span>Feb 2026</span>
+                            <span class="read-time">5 min read</span>
+                            <span class="blog-tag">Essay</span>
+                            <span>May 2025</span>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ARTICLES -->
-            <p class="blog-section-label">ALL POSTS</p>
-            <div class="blog-grid">
-                <div class="blog-card" data-article="prediction-markets">
-                    <h3>Why Prediction Markets Are the Future of Forecasting</h3>
-                    <p>From Polymarket to Manifold, prediction markets are reshaping how we think about probability. Here's why I think they matter.</p>
-                    <div class="blog-meta">
-                        <span class="read-time">6 min</span>
-                        <span class="blog-tag">Markets</span>
-                        <span>Feb 2026</span>
-                    </div>
-                </div>
-
-                <div class="blog-card" data-article="building-this-site">
-                    <h3>Building This Website: Terminal, Games, and Way Too Many Features</h3>
-                    <p>A breakdown of how I built rjmccomb.xyz with vanilla JS, a terminal emulator, built-in games, and a retro CRT mode.</p>
-                    <div class="blog-meta">
-                        <span class="read-time">5 min</span>
-                        <span class="blog-tag">Code</span>
-                        <span>Feb 2026</span>
-                    </div>
-                </div>
-
-                <div class="blog-card" data-article="campaign-data">
-                    <h3>What I Learned Doing Data Work for a Congressional Campaign</h3>
-                    <p>Behind the scenes of volunteer finance work, donor data, and what campaigns actually look like from the inside.</p>
-                    <div class="blog-meta">
-                        <span class="read-time">5 min</span>
-                        <span class="blog-tag">Politics</span>
-                        <span>Jan 2026</span>
-                    </div>
-                </div>
-
-                <div class="blog-card" data-article="photography-journey">
-                    <h3>Shooting Sports: My Photography Journey with Chicago Union</h3>
-                    <p>How I went from casual photographer to freelance sports photography, and what I've learned about capturing movement.</p>
-                    <div class="blog-meta">
-                        <span class="read-time">4 min</span>
-                        <span class="blog-tag">Photo</span>
-                        <span>Jan 2026</span>
                     </div>
                 </div>
             </div>
@@ -617,114 +594,24 @@
 
         // ARTICLES DATA
         const articles = {
-            'il9cast-story': {
-                title: 'How I Built an Open-Source Political Forecast From Scratch',
-                date: 'February 2026',
-                readTime: '8 min read',
-                tags: ['Data', 'Politics'],
-                body: `
-                    <p>In December 2025, I decided to build something I'd never seen before: a fully transparent, open-source forecast for the Illinois 9th Congressional District primary. What started as a side project turned into <a href="https://il9.org" target="_blank">IL9CAST</a>, a model that's been featured in Capitol Fax and Evanston Roundtable.</p>
-
-                    <h2>The Problem</h2>
-                    <p>Most election forecasts are black boxes. You see a number&mdash;say, "65% chance of winning"&mdash;but you have no idea how it was calculated. What data went in? What assumptions were made? I wanted to build something different: a forecast where every single data point, every model assumption, and every line of code is public.</p>
-
-                    <blockquote>If you can't explain your model, you don't really understand your model.</blockquote>
-
-                    <h2>The Data Pipeline</h2>
-                    <p>The first challenge was data. Congressional primaries don't get the same polling attention as presidential races. I had to get creative:</p>
-                    <ul>
-                        <li>Scraped publicly available polling data and endorsement records</li>
-                        <li>Built a fundraising tracker using FEC filing data</li>
-                        <li>Incorporated historical precinct-level results for the district</li>
-                        <li>Processed nearly 70,000 individual data points</li>
-                    </ul>
-
-                    <h2>The Model</h2>
-                    <p>I used a Bayesian approach, treating each candidate's vote share as a probability distribution that gets updated as new information comes in. The model weighs factors like polling, fundraising momentum, endorsements, and historical partisan lean.</p>
-                    <p>Everything is written in Python, with the full codebase available on <a href="https://github.com/de-bayes/IL9_PRIMARY_MODEL_PROP" target="_blank">GitHub</a>. Anyone can clone the repo, run the model, and verify my results.</p>
-
-                    <h2>What I Learned</h2>
-                    <p>Building IL9CAST taught me more about statistics, data engineering, and political science than any class could. But the biggest lesson was about transparency in data science. When your work is open-source, you can't hide behind hand-waving explanations. Every choice gets scrutinized, and that makes the work better.</p>
-                `
-            },
-            'prediction-markets': {
-                title: 'Why Prediction Markets Are the Future of Forecasting',
-                date: 'February 2026',
-                readTime: '6 min read',
-                tags: ['Markets'],
-                body: `
-                    <p>I've been obsessed with prediction markets since I first discovered them. The basic idea is simple: let people bet on outcomes, and the market price becomes a probability estimate. If a contract for "Candidate X wins" trades at 65 cents, the market is saying there's roughly a 65% chance they win.</p>
-
-                    <h2>Why Markets Beat Pundits</h2>
-                    <p>Pundits are great at telling compelling stories. They're less great at actually predicting things. Prediction markets aggregate the knowledge of thousands of participants, each putting their money where their mouth is. The result is a probability that's usually more accurate than any individual expert.</p>
-
-                    <blockquote>The market doesn't care about your narrative. It cares about what's actually going to happen.</blockquote>
-
-                    <h2>My Experience</h2>
-                    <p>I'm active on both <a href="https://manifold.markets" target="_blank">Manifold Markets</a> (play money) and follow real-money markets on Polymarket closely. Trading on Manifold has been an incredible learning experience&mdash;it forces you to think probabilistically and update your beliefs when new information comes in.</p>
-                    <p>I also built <a href="https://manifed.markets" target="_blank">ManiFed</a>, a peer-to-peer lending platform for Manifold Markets, which taught me a lot about how markets work at a mechanical level.</p>
-
-                    <h2>The Future</h2>
-                    <p>I think prediction markets will become as common as opinion polls within the next decade. We're already seeing major news organizations reference Polymarket odds alongside traditional polling averages. The question isn't whether prediction markets will go mainstream&mdash;it's how fast.</p>
-                `
-            },
-            'building-this-site': {
-                title: 'Building This Website: Terminal, Games, and Way Too Many Features',
-                date: 'February 2026',
+            'peoples-edict': {
+                title: "People's Edict",
+                date: 'May 23, 2025',
                 readTime: '5 min read',
-                tags: ['Code'],
+                tags: ['Essay'],
+                image: '2500.webp',
                 body: `
-                    <p>When I set out to build my personal website, I had a clear goal: make something that would actually be memorable. Not another template portfolio with a headshot and a list of skills. Something with personality.</p>
+                    <p>I wrote an interesting on-demand essay in English on power and strife. This is what I came up with in 50 minutes. Not pure gold, but it resonates.</p>
 
-                    <h2>The Terminal</h2>
-                    <p>The centerpiece of the site is a fully functional terminal emulator. You can type commands like <code>/snake</code> to play Snake, <code>/weather</code> to check the weather in Evanston, or <code>/quiz</code> to take a quiz about me. It has autocomplete, command history, and even a draggable/resizable window.</p>
+                    <p>Authority is inherently meant to be challenged. Since the dawn of time, power struggles have transcended not only humans but also the most basic of animals. However, for such a primal topic, it has been fraught with various philosophies and theses on how to govern while allowing the populace to have agency over themselves and their decisions. Authority was created to centralize decision-making. It has existed in many forms as the world has evolved: the leader of the tribe, the king, and now the head of state, all having to balance on a tightrope of power and public approval. Without much of either, the leader tends to, well, not lead. Nevertheless, people have both the right and the will to challenge authority they deem unjust; the question is when to do so. Instead of writing a philosophical and motivational thesis, I believe we must be pragmatic about challenging authority. Authority should be challenged only when it is both a necessity and, more importantly, achievable. While opposition to a force larger than ourselves may seem the moral and right thing to do, one should only challenge authority when they believe change is either imminent or attainable.</p>
 
-                    <h2>The Games</h2>
-                    <p>I built Snake, Tetris, a Dino runner, Wordle, and a typing speed test&mdash;all rendered on an HTML5 canvas inside the terminal. The typing test even has a persistent leaderboard. My favorite part is the quiz game ("How Well Do You Know Ryan?") which asks visitors questions about me and shows a leaderboard of scores.</p>
+                    <p>This claim, a pragmatic approach to opposition, is most exhaustively demonstrated in "Raisin in the Sun." During a time of great strife and burden for Black homeownership, the Youngers could have organized a movement at the federal level to outlaw redlining, a far bigger accomplishment than anything they achieved in the book. The protest would have been noble; however, the Youngers realized that the most effective way to challenge authority was to stay and fight the battle they could win. By fighting this small battle in a tight-knit neighbourhood, they presumably helped the narrative of Black homeownership. In this way, they were successful, while Karl Linder was not nearly the tip of the spear; they understood what was within the scope of their abilities and challenged the preconceived, illogical notions about Black homeownership, albeit in a small but significant way.</p>
 
-                    <h2>Design Philosophy</h2>
-                    <p>The site uses vanilla JavaScript&mdash;no React, no frameworks. Just HTML, CSS, and a lot of JS. I chose this approach because I wanted to understand every line of code and learn web development from the ground up. The retro aesthetic (VT323 font, CRT mode, orange accent color) is inspired by FiveThirtyEight and old terminal interfaces.</p>
+                    <p>This "fight when you can win" strategy is not only effective in literature; it has real applications to real-life authority. My research project, focused on voter turnout in low-propensity Black neighbourhoods, which presents an enormous challenge in the US; however, the resources and infrastructure required to effect change at a state or nationwide level are immense. Consequently, I attempted to change something at a more achievable level, where challenging authority and policy is much more feasible. Throughout the project, I spoke with mayoral candidates and aldermen who appeared receptive, if not interested, in my idea. While challenging authority was not the core of the project, the narrative of "figuring out a winnable fight" and challenging authority only when necessary is central to the research I conducted.</p>
 
-                    <h2>What's Next</h2>
-                    <p>I'm always adding new features. Recent additions include a guestbook, visitor analytics dashboard, a command palette (Cmd+K), and a desktop OS mode. The full source is on <a href="https://github.com/de-bayes" target="_blank">GitHub</a>.</p>
-                `
-            },
-            'campaign-data': {
-                title: 'What I Learned Doing Data Work for a Congressional Campaign',
-                date: 'January 2026',
-                readTime: '5 min read',
-                tags: ['Politics'],
-                body: `
-                    <p>When I started volunteering as Finance Lead for the Biss for Congress campaign, I didn't know what to expect. What I found was a crash course in how politics actually works at the ground level.</p>
+                    <p>Lastly, and in all truthfulness, my least relevant or persuasive piece of evidence comes from "Romeo and Juliet." While they do challenge authority and nearly succeed, the story ends in heartbreak. The challenge to the wealthiest and most influential individuals results in the death of the two lovers, both opposing the omnipotent authority of their parents. Although fictional, the tale illustrates what occurs in real life when individuals blindly attack authority: death and bloodshed, ultimately empowering the leader to persist, the antithesis of the original goal of those who opposed them.</p>
 
-                    <h2>The Reality of Campaign Finance</h2>
-                    <p>Campaign finance is less glamorous than it sounds. It's spreadsheets, call lists, and donor databases. But it's also one of the most important parts of any campaign. Without money, you can't run ads, you can't do outreach, and you can't compete.</p>
-
-                    <h2>Working with Data</h2>
-                    <p>My role involved pulling and analyzing donor data, identifying fundraising targets, and helping with outreach strategy. It was my first real-world experience applying data skills outside of personal projects, and it taught me that messy data is the norm, not the exception.</p>
-
-                    <blockquote>In a classroom, your dataset is clean and your problem is well-defined. In the real world, half the job is figuring out what questions to even ask.</blockquote>
-
-                    <h2>Takeaways</h2>
-                    <p>The biggest thing I learned is that campaigns run on people. Data can help you make better decisions, but at the end of the day, it's volunteers knocking on doors and making phone calls that win elections. Technology is a tool, not a replacement for human connection.</p>
-                `
-            },
-            'photography-journey': {
-                title: 'Shooting Sports: My Photography Journey with Chicago Union',
-                date: 'January 2026',
-                readTime: '4 min read',
-                tags: ['Photo'],
-                body: `
-                    <p>I got into photography mostly by accident. A friend needed photos of an Ultimate Frisbee game, and I had a camera. What started as a favor turned into a freelance gig shooting for the Chicago Union professional team.</p>
-
-                    <h2>Capturing Movement</h2>
-                    <p>Sports photography is all about anticipation. You can't wait for the moment to happen and then press the shutter&mdash;by then it's already over. You have to read the play, predict where the action will be, and be ready before it happens.</p>
-
-                    <h2>The Technical Side</h2>
-                    <p>Shooting outdoor sports means dealing with constantly changing light. I've learned to shoot in manual mode, adjust on the fly, and trust burst mode for critical moments. My favorite shots are the ones where you can feel the intensity&mdash;a player fully extended for a catch, or the split-second of a layout.</p>
-
-                    <h2>Beyond Sports</h2>
-                    <p>Photography has also gotten me into filmmaking. I recently made a short film called "Cabin Life" over the holiday break. There's something about visual storytelling that clicks for me&mdash;whether it's a three-second play or a three-minute film. You can see more of my work on <a href="https://www.instagram.com/mccomb.photo/" target="_blank">Instagram</a>.</p>
+                    <p>These stories both present cautionary tales and ideal models for opposing authority. They suggest that, when necessary and applicable, authority should be questioned. This thesis provides an unparalleled application to modern life; with battles over power raging throughout the world, the question of when to oppose authority is not merely theoretical or meant to be taught in a classroom, but is relevant to the lives and deaths of millions.</p>
                 `
             }
         };
@@ -746,7 +633,8 @@
                 '<span>' + article.date + '</span>' +
                 '</div>';
 
-            document.getElementById('article-body').innerHTML = article.body;
+            const imageHtml = article.image ? '<img src="' + article.image + '" alt="' + article.title + '" class="article-hero-img">' : '';
+            document.getElementById('article-body').innerHTML = imageHtml + article.body;
             window.scrollTo(0, 0);
 
             // Track pageview
