@@ -787,6 +787,95 @@ body.dark-mode .power-btn .sun-icon { display: inline; }
     }
 }
 
+/* NAV DROPDOWNS */
+.nav-dropdown {
+    position: relative;
+}
+
+.nav-dropdown-label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-light, #888);
+    cursor: default;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+}
+
+.nav-dropdown-label.active-parent {
+    color: var(--text-primary, #000);
+}
+
+.nav-dropdown:hover .nav-dropdown-label {
+    color: var(--text-primary, #000);
+}
+
+.nav-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 0.5rem;
+    list-style: none;
+    min-width: 120px;
+    z-index: 102;
+}
+
+.nav-dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-secondary, #f5f2ee);
+    border: 1px solid var(--border-color, #e5e5e5);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    z-index: -1;
+}
+
+body.dark-mode .nav-dropdown-menu::before {
+    background: var(--bg-secondary, #252525);
+    border-color: var(--border-color, #333);
+}
+
+.nav-dropdown:hover .nav-dropdown-menu {
+    display: block;
+}
+
+.nav-dropdown-menu li {
+    padding: 0;
+}
+
+.nav-dropdown-menu a {
+    display: block;
+    padding: 0.45rem 1rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .nav-dropdown-menu {
+        display: block;
+        position: static;
+        transform: none;
+        padding-top: 0;
+        min-width: 0;
+        padding-left: 1rem;
+    }
+    .nav-dropdown-menu::before {
+        display: none;
+    }
+    .nav-dropdown-label {
+        font-size: 1rem;
+    }
+    .nav-dropdown-menu a {
+        font-size: 1rem;
+        padding: 0.3rem 0;
+    }
+}
+
 /* Scroll-hide: top nav and terminal button fade out when scrolling down */
 nav, .terminal-button {
     transition: opacity 0.3s ease, transform 0.3s ease;

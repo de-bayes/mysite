@@ -580,15 +580,25 @@
                 document.getElementById('gb-count').textContent = entries.length;
                 const list = document.getElementById('gb-list');
                 if (!entries.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No entries yet.</div>'; return; }
-                list.innerHTML = entries.map(e => `
+                list.innerHTML = entries.map((e, i) => `
                     <div class="item-card">
                         <div class="item-card-body">
                             <div class="item-card-title">${esc(e.name)}</div>
                             <div class="item-card-meta">${esc(e.message)} &middot; ${fmtDate(e.date)}</div>
                         </div>
+                        <div class="item-card-actions">
+                            <button class="item-btn delete" onclick="deleteGuestbook(${i})">Delete</button>
+                        </div>
                     </div>
                 `).join('');
             });
+        }
+
+        function deleteGuestbook(index) {
+            if (!confirm('Delete this guestbook entry?')) return;
+            fetch('/api/guestbook/' + index, { method: 'DELETE', headers: authHeaders() })
+                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadGuestbook(); })
+                .catch(() => toast('Failed to delete', true));
         }
 
         // Helpers
