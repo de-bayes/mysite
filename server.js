@@ -14,6 +14,7 @@ const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
 const TYPING_SCORES_FILE = path.join(DATA_DIR, 'typing-scores.json');
 const HOTTAKES_FILE = path.join(DATA_DIR, 'hottakes.json');
 const BLOGPOSTS_FILE = path.join(DATA_DIR, 'blogposts.json');
+const COUNTDOWNS_FILE = path.join(DATA_DIR, 'countdowns.json');
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
@@ -438,6 +439,40 @@ app.delete('/api/blogposts/:id', requireAuth, (req, res) => {
     const filtered = posts.filter(p => p.id !== req.params.id);
     if (filtered.length === posts.length) return res.status(404).json({ error: 'Not found' });
     writeJSON(BLOGPOSTS_FILE, filtered);
+    return res.json({ ok: true });
+});
+
+// =============================================
+// COUNTDOWNS
+// =============================================
+app.get('/api/countdowns', (req, res) => {
+    const countdowns = readJSON(COUNTDOWNS_FILE, []);
+    return res.json(countdowns);
+});
+
+app.post('/api/countdowns', requireAuth, (req, res) => {
+    const title = String(req.body.title || '').trim().slice(0, 100);
+    const date = String(req.body.date || '').trim();
+    const emoji = String(req.body.emoji || '').trim().slice(0, 4) || '\u{1F389}';
+    if (!title || !date) return res.status(400).json({ error: 'Title and date required' });
+    if (isNaN(new Date(date).getTime())) return res.status(400).json({ error: 'Invalid date' });
+
+    const countdowns = readJSON(COUNTDOWNS_FILE, []);
+    countdowns.push({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        title, date, emoji,
+        created: new Date().toISOString()
+    });
+    countdowns.sort((a, b) => new Date(a.date) - new Date(b.date));
+    writeJSON(COUNTDOWNS_FILE, countdowns);
+    return res.json({ ok: true });
+});
+
+app.delete('/api/countdowns/:id', requireAuth, (req, res) => {
+    const countdowns = readJSON(COUNTDOWNS_FILE, []);
+    const filtered = countdowns.filter(c => c.id !== req.params.id);
+    if (filtered.length === countdowns.length) return res.status(404).json({ error: 'Not found' });
+    writeJSON(COUNTDOWNS_FILE, filtered);
     return res.json({ ok: true });
 });
 
