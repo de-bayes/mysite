@@ -1681,7 +1681,6 @@
                 <li><a href="experience.html">Experience</a></li>
                 <li><a href="projects.html">Projects</a></li>
                 <li><a href="photos.html">Photos</a></li>
-                <li><a href="posts.html">Posts</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
@@ -2271,11 +2270,9 @@
             const overlay = document.getElementById('terminal-overlay');
             overlay.classList.add('active');
             const input = document.getElementById('terminal-input');
-            console.log('Opening terminal, input element:', input);
             if (input) {
                 setTimeout(() => {
                     input.focus();
-                    console.log('Input focused');
                 }, 100);
             }
         }
@@ -2900,8 +2897,6 @@
             const terminalInput = document.getElementById('terminal-input');
             const terminalBody = document.getElementById('terminal-body');
             const terminalOverlay = document.getElementById('terminal-overlay');
-
-            console.log('Setting up terminal...', { terminalInput, terminalBody, terminalOverlay });
 
             if (terminalInput) {
                 // Remove any existing listeners by cloning the element
@@ -5116,7 +5111,6 @@
             { section: 'Pages', icon: '\uD83D\uDCBC', label: 'Experience', action: () => window.location.href = 'experience.html' },
             { section: 'Pages', icon: '\uD83D\uDCC1', label: 'Projects', action: () => window.location.href = 'projects.html' },
             { section: 'Pages', icon: '\uD83D\uDCF7', label: 'Photos', action: () => window.location.href = 'photos.html' },
-            { section: 'Pages', icon: '\uD83D\uDCDD', label: 'Posts', action: () => window.location.href = 'posts.html' },
             { section: 'Pages', icon: '\uD83D\uDCE7', label: 'Contact', action: () => window.location.href = 'contact.html' },
             { section: 'Games', icon: '\uD83D\uDC0D', label: 'Snake', shortcut: '/snake', action: () => { openTerminal(); setTimeout(() => executeCommand('/snake'), 300); } },
             { section: 'Games', icon: '\uD83E\uDD96', label: 'Dino Run', shortcut: '/dino', action: () => { openTerminal(); setTimeout(() => executeCommand('/dino'), 300); } },
@@ -5143,7 +5137,6 @@
             { url: 'photos.html', title: 'Photos' },
             { url: 'passions.html', title: 'Passions' },
             { url: 'contact.html', title: 'Contact' },
-            { url: 'posts.html', title: 'Posts' },
             { url: 'blog.html', title: 'Blog' }
         ];
         let siteSearchIndex = [];
