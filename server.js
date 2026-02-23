@@ -12,6 +12,8 @@ const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
 const GUESTBOOK_FILE = path.join(DATA_DIR, 'guestbook.json');
 const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
 const TYPING_SCORES_FILE = path.join(DATA_DIR, 'typing-scores.json');
+const HOTTAKES_FILE = path.join(DATA_DIR, 'hottakes.json');
+const BLOGPOSTS_FILE = path.join(DATA_DIR, 'blogposts.json');
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
@@ -342,6 +344,101 @@ app.post('/api/typing-scores', (req, res) => {
     if (scores.length > TYPING_MAX_ENTRIES) scores.length = TYPING_MAX_ENTRIES;
     writeJSON(TYPING_SCORES_FILE, scores);
     return res.json({ ok: true, rank: scores.findIndex(s => s.name === name && s.wpm === wpm) + 1 });
+});
+
+// =============================================
+// HOT TAKES
+// =============================================
+app.get('/api/hottakes', (req, res) => {
+    const takes = readJSON(HOTTAKES_FILE, []);
+    return res.json(takes);
+});
+
+app.post('/api/hottakes', requireAuth, (req, res) => {
+    const text = String(req.body.text || '').trim().slice(0, 300);
+    const category = String(req.body.category || '').trim().slice(0, 30);
+    const spiciness = Math.min(5, Math.max(1, parseInt(req.body.spiciness, 10) || 3));
+    if (!text) return res.status(400).json({ error: 'Text required' });
+
+    const takes = readJSON(HOTTAKES_FILE, []);
+    takes.unshift({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        text,
+        category: category || 'General',
+        spiciness,
+        date: new Date().toISOString()
+    });
+    writeJSON(HOTTAKES_FILE, takes);
+    return res.json({ ok: true });
+});
+
+app.put('/api/hottakes/:id', requireAuth, (req, res) => {
+    const takes = readJSON(HOTTAKES_FILE, []);
+    const idx = takes.findIndex(t => t.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: 'Not found' });
+
+    if (req.body.text) takes[idx].text = String(req.body.text).trim().slice(0, 300);
+    if (req.body.category) takes[idx].category = String(req.body.category).trim().slice(0, 30);
+    if (req.body.spiciness) takes[idx].spiciness = Math.min(5, Math.max(1, parseInt(req.body.spiciness, 10) || 3));
+    writeJSON(HOTTAKES_FILE, takes);
+    return res.json({ ok: true });
+});
+
+app.delete('/api/hottakes/:id', requireAuth, (req, res) => {
+    const takes = readJSON(HOTTAKES_FILE, []);
+    const filtered = takes.filter(t => t.id !== req.params.id);
+    if (filtered.length === takes.length) return res.status(404).json({ error: 'Not found' });
+    writeJSON(HOTTAKES_FILE, filtered);
+    return res.json({ ok: true });
+});
+
+// =============================================
+// BLOG POSTS (Admin-managed)
+// =============================================
+app.get('/api/blogposts', (req, res) => {
+    const posts = readJSON(BLOGPOSTS_FILE, []);
+    return res.json(posts);
+});
+
+app.post('/api/blogposts', requireAuth, (req, res) => {
+    const title = String(req.body.title || '').trim().slice(0, 200);
+    const body = String(req.body.body || '').trim();
+    const tags = Array.isArray(req.body.tags) ? req.body.tags.map(t => String(t).trim().slice(0, 20)).slice(0, 5) : [];
+    const readTime = String(req.body.readTime || '').trim().slice(0, 20) || '5 min read';
+    const featured = !!req.body.featured;
+    if (!title || !body) return res.status(400).json({ error: 'Title and body required' });
+
+    const posts = readJSON(BLOGPOSTS_FILE, []);
+    const post = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        title, body, tags, readTime, featured,
+        date: new Date().toISOString()
+    };
+    posts.unshift(post);
+    writeJSON(BLOGPOSTS_FILE, posts);
+    return res.json({ ok: true, id: post.id });
+});
+
+app.put('/api/blogposts/:id', requireAuth, (req, res) => {
+    const posts = readJSON(BLOGPOSTS_FILE, []);
+    const idx = posts.findIndex(p => p.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: 'Not found' });
+
+    if (req.body.title) posts[idx].title = String(req.body.title).trim().slice(0, 200);
+    if (req.body.body !== undefined) posts[idx].body = String(req.body.body).trim();
+    if (req.body.tags) posts[idx].tags = Array.isArray(req.body.tags) ? req.body.tags.map(t => String(t).trim().slice(0, 20)).slice(0, 5) : posts[idx].tags;
+    if (req.body.readTime) posts[idx].readTime = String(req.body.readTime).trim().slice(0, 20);
+    if (req.body.featured !== undefined) posts[idx].featured = !!req.body.featured;
+    writeJSON(BLOGPOSTS_FILE, posts);
+    return res.json({ ok: true });
+});
+
+app.delete('/api/blogposts/:id', requireAuth, (req, res) => {
+    const posts = readJSON(BLOGPOSTS_FILE, []);
+    const filtered = posts.filter(p => p.id !== req.params.id);
+    if (filtered.length === posts.length) return res.status(404).json({ error: 'Not found' });
+    writeJSON(BLOGPOSTS_FILE, filtered);
+    return res.json({ ok: true });
 });
 
 app.use(express.static(__dirname, { extensions: ['html'] }));

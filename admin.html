@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <title>Admin - Ryan McComb</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #faf8f5; --bg2: #f5f2ee; --fg: #000; --fg2: #333;
+            --muted: #888; --border: #e5e5e5; --accent: #e67e22;
+            --danger: #e74c3c; --success: #2ecc71; --card: #fff;
+        }
+        body.dark-mode {
+            --bg: #1a1a1a; --bg2: #252525; --fg: #e5e5e5; --fg2: #ccc;
+            --muted: #888; --border: #333; --card: #222;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg); color: var(--fg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* LOGIN */
+        .login-overlay {
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; transition: opacity 0.3s;
+        }
+        .login-overlay.hidden { opacity: 0; pointer-events: none; }
+        .login-box { text-align: center; max-width: 360px; padding: 2rem; }
+        .login-box h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .login-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+        .login-input {
+            width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border);
+            border-radius: 4px; font-size: 0.9rem; background: var(--bg2);
+            color: var(--fg); outline: none; margin-bottom: 1rem;
+        }
+        .login-input:focus { border-color: var(--accent); }
+        .login-btn {
+            width: 100%; padding: 0.75rem; background: var(--accent); color: #fff;
+            border: none; border-radius: 4px; font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .login-btn:hover { opacity: 0.9; }
+        .login-error { color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; }
+
+        /* DASHBOARD */
+        .dashboard { display: none; }
+        .dashboard.active { display: block; }
+
+        .dash-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+        }
+        .dash-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 600;
+        }
+        .dash-header-actions { display: flex; gap: 0.75rem; align-items: center; }
+        .dash-header a {
+            font-size: 0.75rem; color: var(--muted); text-decoration: none;
+        }
+        .dash-header a:hover { color: var(--accent); }
+
+        .dash-tabs {
+            display: flex; gap: 0; border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+        }
+        .dash-tab {
+            padding: 1rem 1.5rem; font-size: 0.8rem; font-weight: 500;
+            color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent;
+            text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.2s;
+            background: none; border-top: none; border-left: none; border-right: none;
+        }
+        .dash-tab:hover { color: var(--fg); }
+        .dash-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        .dash-content { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* FORMS */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label {
+            display: block; font-size: 0.7rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--muted); margin-bottom: 0.4rem;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--border);
+            border-radius: 4px; font-size: 0.85rem; background: var(--bg2);
+            color: var(--fg); font-family: inherit; outline: none;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--accent);
+        }
+        .form-textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
+        .form-row { display: flex; gap: 1rem; }
+        .form-row > * { flex: 1; }
+        .form-hint { font-size: 0.7rem; color: var(--muted); margin-top: 0.3rem; }
+
+        .btn {
+            padding: 0.6rem 1.2rem; border: none; border-radius: 4px;
+            font-size: 0.8rem; font-weight: 500; cursor: pointer;
+            letter-spacing: 0.04em; transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-ghost {
+            background: transparent; color: var(--muted);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { color: var(--fg); border-color: var(--fg); }
+
+        .form-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+
+        /* ITEMS LIST */
+        .item-list { margin-top: 1.5rem; }
+        .item-card {
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1rem 1.25rem; border: 1px solid var(--border);
+            border-radius: 4px; margin-bottom: 0.75rem; background: var(--card);
+        }
+        .item-card-body { flex: 1; min-width: 0; }
+        .item-card-title {
+            font-weight: 500; font-size: 0.9rem; margin-bottom: 0.2rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .item-card-meta { font-size: 0.75rem; color: var(--muted); }
+        .item-card-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+        .item-btn {
+            padding: 0.35rem 0.7rem; font-size: 0.7rem; border-radius: 3px;
+            border: 1px solid var(--border); background: transparent;
+            color: var(--muted); cursor: pointer; transition: all 0.2s;
+        }
+        .item-btn:hover { border-color: var(--fg); color: var(--fg); }
+        .item-btn.delete:hover { border-color: var(--danger); color: var(--danger); }
+
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: 0.75rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--muted);
+        }
+        .item-count {
+            font-size: 0.7rem; color: var(--muted);
+            background: var(--bg2); padding: 0.2rem 0.6rem; border-radius: 10px;
+        }
+
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.8rem 1.5rem;
+            background: var(--success); color: #fff; border-radius: 4px;
+            font-size: 0.85rem; opacity: 0; transform: translateY(10px);
+            transition: all 0.3s; z-index: 2000; pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background: var(--danger); }
+
+        /* Spiciness selector */
+        .spice-selector { display: flex; gap: 0.3rem; }
+        .spice-btn {
+            width: 32px; height: 32px; border: 1px solid var(--border);
+            border-radius: 4px; background: var(--bg2); cursor: pointer;
+            font-size: 1rem; display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+        }
+        .spice-btn.active { border-color: var(--accent); background: var(--accent); filter: none; }
+        .spice-btn:not(.active) { filter: grayscale(1); opacity: 0.4; }
+
+        @media (max-width: 600px) {
+            .form-row { flex-direction: column; gap: 0; }
+            .dash-tabs { overflow-x: auto; }
+            .item-card { flex-direction: column; }
+            .item-card-actions { align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-box">
+            <h1>Admin</h1>
+            <p>Enter the site password to continue.</p>
+            <input type="password" class="login-input" id="login-pw" placeholder="Password" autofocus>
+            <button class="login-btn" onclick="attemptLogin()">Unlock</button>
+            <div class="login-error" id="login-error"></div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="dashboard">
+        <div class="dash-header">
+            <h1>Admin Dashboard</h1>
+            <div class="dash-header-actions">
+                <a href="index.html">Back to site</a>
+                <button class="btn btn-ghost" onclick="logout()" style="font-size:0.75rem">Logout</button>
+            </div>
+        </div>
+
+        <div class="dash-tabs">
+            <button class="dash-tab active" data-panel="hottakes">Hot Takes</button>
+            <button class="dash-tab" data-panel="blog">Blog Posts</button>
+            <button class="dash-tab" data-panel="guestbook">Guestbook</button>
+        </div>
+
+        <!-- HOT TAKES PANEL -->
+        <div class="dash-content">
+            <div class="panel active" id="panel-hottakes">
+                <div class="section-header">
+                    <span class="section-title">Add New Hot Take</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Your take</label>
+                    <textarea class="form-textarea" id="ht-text" rows="3" maxlength="300" placeholder="Type your hottest take..." style="min-height:80px"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <input class="form-input" id="ht-category" placeholder="e.g. Politics, Sports, Life" maxlength="30">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Spiciness</label>
+                        <div class="spice-selector" id="spice-selector">
+                            <button class="spice-btn" data-val="1">&#x1F336;</button>
+                            <button class="spice-btn" data-val="2">&#x1F336;</button>
+                            <button class="spice-btn active" data-val="3">&#x1F336;</button>
+                            <button class="spice-btn" data-val="4">&#x1F336;</button>
+                            <button class="spice-btn" data-val="5">&#x1F336;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addHotTake()">Post Take</button>
+                </div>
+
+                <div class="section-header" style="margin-top:2.5rem">
+                    <span class="section-title">All Takes</span>
+                    <span class="item-count" id="ht-count">0</span>
+                </div>
+                <div class="item-list" id="ht-list"></div>
+            </div>
+
+            <!-- BLOG PANEL -->
+            <div class="panel" id="panel-blog">
+                <div class="section-header">
+                    <span class="section-title">New Blog Post</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input class="form-input" id="bp-title" maxlength="200" placeholder="Post title">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Tags (comma-separated)</label>
+                        <input class="form-input" id="bp-tags" placeholder="e.g. Politics, Data">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Read Time</label>
+                        <input class="form-input" id="bp-readtime" placeholder="e.g. 5 min read" value="5 min read">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Body (HTML)</label>
+                    <textarea class="form-textarea" id="bp-body" rows="10" placeholder="<p>Write your post here...</p>&#10;&#10;<h2>Subheading</h2>&#10;<p>More content...</p>"></textarea>
+                    <div class="form-hint">Use HTML tags: &lt;p&gt;, &lt;h2&gt;, &lt;blockquote&gt;, &lt;ul&gt;&lt;li&gt;, &lt;a href&gt;, &lt;code&gt;</div>
+                </div>
+                <div class="form-group">
+                    <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+                        <input type="checkbox" id="bp-featured">
+                        <span class="form-label" style="margin:0">Featured post</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addBlogPost()">Publish Post</button>
+                </div>
+
+                <div class="section-header" style="margin-top:2.5rem">
+                    <span class="section-title">All Posts</span>
+                    <span class="item-count" id="bp-count">0</span>
+                </div>
+                <div class="item-list" id="bp-list"></div>
+            </div>
+
+            <!-- GUESTBOOK PANEL -->
+            <div class="panel" id="panel-guestbook">
+                <div class="section-header">
+                    <span class="section-title">Guestbook Entries</span>
+                    <span class="item-count" id="gb-count">0</span>
+                </div>
+                <div class="item-list" id="gb-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        if (localStorage.getItem('darkMode') === 'enabled') document.body.classList.add('dark-mode');
+
+        let token = sessionStorage.getItem('admin_token') || '';
+        let htSpiciness = 3;
+
+        // Auth
+        function authHeaders() {
+            return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
+        }
+
+        document.getElementById('login-pw').addEventListener('keydown', e => {
+            if (e.key === 'Enter') attemptLogin();
+        });
+
+        function attemptLogin() {
+            const pw = document.getElementById('login-pw').value;
+            fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pw })
+            })
+            .then(r => {
+                if (!r.ok) throw new Error('Wrong password');
+                return r.json();
+            })
+            .then(() => {
+                token = pw;
+                sessionStorage.setItem('admin_token', pw);
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('dashboard').classList.add('active');
+                loadAll();
+            })
+            .catch(() => {
+                document.getElementById('login-error').textContent = 'Wrong password. Try again.';
+            });
+        }
+
+        function logout() {
+            token = '';
+            sessionStorage.removeItem('admin_token');
+            location.reload();
+        }
+
+        // Auto-login if token cached
+        if (token) {
+            fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: token })
+            }).then(r => {
+                if (r.ok) {
+                    document.getElementById('login-overlay').classList.add('hidden');
+                    document.getElementById('dashboard').classList.add('active');
+                    loadAll();
+                } else {
+                    sessionStorage.removeItem('admin_token');
+                    token = '';
+                }
+            });
+        }
+
+        // Tabs
+        document.querySelectorAll('.dash-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+            });
+        });
+
+        // Spice selector
+        document.querySelectorAll('.spice-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                htSpiciness = parseInt(btn.dataset.val);
+                document.querySelectorAll('.spice-btn').forEach((b, i) => {
+                    b.classList.toggle('active', i < htSpiciness);
+                });
+            });
+        });
+        // Init: first 3 active
+        document.querySelectorAll('.spice-btn').forEach((b, i) => {
+            b.classList.toggle('active', i < 3);
+        });
+
+        // Toast
+        function toast(msg, isError) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show' + (isError ? ' error' : '');
+            setTimeout(() => t.className = 'toast', 2500);
+        }
+
+        // Load all
+        function loadAll() { loadHotTakes(); loadBlogPosts(); loadGuestbook(); }
+
+        // HOT TAKES
+        function loadHotTakes() {
+            fetch('/api/hottakes').then(r => r.json()).then(takes => {
+                document.getElementById('ht-count').textContent = takes.length;
+                const list = document.getElementById('ht-list');
+                if (!takes.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No takes yet.</div>'; return; }
+                list.innerHTML = takes.map(t => `
+                    <div class="item-card">
+                        <div class="item-card-body">
+                            <div class="item-card-title">${esc(t.text)}</div>
+                            <div class="item-card-meta">${esc(t.category)} &middot; ${'&#x1F336;'.repeat(t.spiciness)} &middot; ${fmtDate(t.date)}</div>
+                        </div>
+                        <div class="item-card-actions">
+                            <button class="item-btn delete" onclick="deleteHotTake('${t.id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        function addHotTake() {
+            const text = document.getElementById('ht-text').value.trim();
+            const category = document.getElementById('ht-category').value.trim() || 'General';
+            if (!text) { toast('Write a take first!', true); return; }
+            fetch('/api/hottakes', {
+                method: 'POST', headers: authHeaders(),
+                body: JSON.stringify({ text, category, spiciness: htSpiciness })
+            }).then(r => {
+                if (!r.ok) throw new Error();
+                document.getElementById('ht-text').value = '';
+                document.getElementById('ht-category').value = '';
+                toast('Take posted!');
+                loadHotTakes();
+            }).catch(() => toast('Failed to post', true));
+        }
+
+        function deleteHotTake(id) {
+            if (!confirm('Delete this take?')) return;
+            fetch('/api/hottakes/' + id, { method: 'DELETE', headers: authHeaders() })
+                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadHotTakes(); })
+                .catch(() => toast('Failed to delete', true));
+        }
+
+        // BLOG POSTS
+        function loadBlogPosts() {
+            fetch('/api/blogposts').then(r => r.json()).then(posts => {
+                document.getElementById('bp-count').textContent = posts.length;
+                const list = document.getElementById('bp-list');
+                if (!posts.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No posts yet.</div>'; return; }
+                list.innerHTML = posts.map(p => `
+                    <div class="item-card">
+                        <div class="item-card-body">
+                            <div class="item-card-title">${p.featured ? '<span style="color:var(--accent)">&#9733;</span> ' : ''}${esc(p.title)}</div>
+                            <div class="item-card-meta">${(p.tags||[]).join(', ')} &middot; ${p.readTime} &middot; ${fmtDate(p.date)}</div>
+                        </div>
+                        <div class="item-card-actions">
+                            <button class="item-btn delete" onclick="deleteBlogPost('${p.id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        function addBlogPost() {
+            const title = document.getElementById('bp-title').value.trim();
+            const body = document.getElementById('bp-body').value.trim();
+            const tags = document.getElementById('bp-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+            const readTime = document.getElementById('bp-readtime').value.trim() || '5 min read';
+            const featured = document.getElementById('bp-featured').checked;
+            if (!title || !body) { toast('Title and body required', true); return; }
+            fetch('/api/blogposts', {
+                method: 'POST', headers: authHeaders(),
+                body: JSON.stringify({ title, body, tags, readTime, featured })
+            }).then(r => {
+                if (!r.ok) throw new Error();
+                document.getElementById('bp-title').value = '';
+                document.getElementById('bp-body').value = '';
+                document.getElementById('bp-tags').value = '';
+                document.getElementById('bp-featured').checked = false;
+                toast('Post published!');
+                loadBlogPosts();
+            }).catch(() => toast('Failed to publish', true));
+        }
+
+        function deleteBlogPost(id) {
+            if (!confirm('Delete this blog post?')) return;
+            fetch('/api/blogposts/' + id, { method: 'DELETE', headers: authHeaders() })
+                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadBlogPosts(); })
+                .catch(() => toast('Failed to delete', true));
+        }
+
+        // GUESTBOOK
+        function loadGuestbook() {
+            fetch('/api/guestbook').then(r => r.json()).then(entries => {
+                document.getElementById('gb-count').textContent = entries.length;
+                const list = document.getElementById('gb-list');
+                if (!entries.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No entries yet.</div>'; return; }
+                list.innerHTML = entries.map(e => `
+                    <div class="item-card">
+                        <div class="item-card-body">
+                            <div class="item-card-title">${esc(e.name)}</div>
+                            <div class="item-card-meta">${esc(e.message)} &middot; ${fmtDate(e.date)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        // Helpers
+        function esc(s) {
+            const d = document.createElement('div');
+            d.textContent = s || '';
+            return d.innerHTML;
+        }
+        function fmtDate(d) {
+            if (!d) return '';
+            const dt = new Date(d);
+            return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+    </script>
+</body>
+</html>
