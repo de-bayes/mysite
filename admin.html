@@ -214,6 +214,7 @@
         <div class="dash-tabs">
             <button class="dash-tab active" data-panel="hottakes">Hot Takes</button>
             <button class="dash-tab" data-panel="blog">Blog Posts</button>
+            <button class="dash-tab" data-panel="countdowns">Countdowns</button>
             <button class="dash-tab" data-panel="guestbook">Guestbook</button>
         </div>
 
@@ -293,6 +294,36 @@
                     <span class="item-count" id="bp-count">0</span>
                 </div>
                 <div class="item-list" id="bp-list"></div>
+            </div>
+
+            <!-- COUNTDOWNS PANEL -->
+            <div class="panel" id="panel-countdowns">
+                <div class="section-header">
+                    <span class="section-title">Add New Countdown</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Event Name</label>
+                    <input class="form-input" id="cd-title" maxlength="100" placeholder="e.g. Graduation, Election Day, Trip to Japan">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input class="form-input" id="cd-date" type="datetime-local">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Emoji</label>
+                        <input class="form-input" id="cd-emoji" maxlength="4" placeholder="e.g. &#127891;" value="&#127881;" style="font-size:1.2rem;text-align:center;width:80px">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addCountdown()">Add Countdown</button>
+                </div>
+
+                <div class="section-header" style="margin-top:2.5rem">
+                    <span class="section-title">All Countdowns</span>
+                    <span class="item-count" id="cd-count">0</span>
+                </div>
+                <div class="item-list" id="cd-list"></div>
             </div>
 
             <!-- GUESTBOOK PANEL -->
@@ -403,7 +434,7 @@
         }
 
         // Load all
-        function loadAll() { loadHotTakes(); loadBlogPosts(); loadGuestbook(); }
+        function loadAll() { loadHotTakes(); loadBlogPosts(); loadCountdowns(); loadGuestbook(); }
 
         // HOT TAKES
         function loadHotTakes() {
@@ -493,6 +524,53 @@
             if (!confirm('Delete this blog post?')) return;
             fetch('/api/blogposts/' + id, { method: 'DELETE', headers: authHeaders() })
                 .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadBlogPosts(); })
+                .catch(() => toast('Failed to delete', true));
+        }
+
+        // COUNTDOWNS
+        function loadCountdowns() {
+            fetch('/api/countdowns').then(r => r.json()).then(cds => {
+                document.getElementById('cd-count').textContent = cds.length;
+                const list = document.getElementById('cd-list');
+                if (!cds.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No countdowns yet.</div>'; return; }
+                list.innerHTML = cds.map(c => {
+                    const d = new Date(c.date);
+                    const isPast = d.getTime() < Date.now();
+                    return `
+                    <div class="item-card" style="${isPast ? 'opacity:0.5' : ''}">
+                        <div class="item-card-body">
+                            <div class="item-card-title">${c.emoji} ${esc(c.title)}</div>
+                            <div class="item-card-meta">${d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}${isPast ? ' &middot; Passed' : ''}</div>
+                        </div>
+                        <div class="item-card-actions">
+                            <button class="item-btn delete" onclick="deleteCountdown('${c.id}')">Delete</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            });
+        }
+
+        function addCountdown() {
+            const title = document.getElementById('cd-title').value.trim();
+            const date = document.getElementById('cd-date').value;
+            const emoji = document.getElementById('cd-emoji').value.trim() || '\u{1F389}';
+            if (!title || !date) { toast('Title and date required', true); return; }
+            fetch('/api/countdowns', {
+                method: 'POST', headers: authHeaders(),
+                body: JSON.stringify({ title, date: new Date(date).toISOString(), emoji })
+            }).then(r => {
+                if (!r.ok) throw new Error();
+                document.getElementById('cd-title').value = '';
+                document.getElementById('cd-date').value = '';
+                toast('Countdown added!');
+                loadCountdowns();
+            }).catch(() => toast('Failed to add', true));
+        }
+
+        function deleteCountdown(id) {
+            if (!confirm('Delete this countdown?')) return;
+            fetch('/api/countdowns/' + id, { method: 'DELETE', headers: authHeaders() })
+                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadCountdowns(); })
                 .catch(() => toast('Failed to delete', true));
         }
 

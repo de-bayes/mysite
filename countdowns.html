@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ryan McComb - Countdowns">
+    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <title>Countdowns - Ryan McComb</title>
+    <link rel="stylesheet" href="features.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #faf8f5;
+            --bg-secondary: #f5f2ee;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #555555;
+            --text-light: #888888;
+            --border-color: #e5e5e5;
+            --accent: #e67e22;
+            --nav-menu-bg: #faf8f5;
+            --nav-menu-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #252525;
+            --text-primary: #e5e5e5;
+            --text-secondary: #cccccc;
+            --text-muted: #aaaaaa;
+            --text-light: #888888;
+            --border-color: #333333;
+            --accent: #e67e22;
+            --nav-menu-bg: #1a1a1a;
+            --nav-menu-shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        .page-container { position: relative; z-index: 1; }
+
+        nav { position: fixed; top: 1.5rem; right: 2rem; z-index: 100; }
+        .nav-tabs { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-tabs a {
+            font-size: 0.75rem; font-weight: 400; text-decoration: none;
+            color: var(--text-light); letter-spacing: 0.05em;
+            text-transform: uppercase; transition: color .2s;
+        }
+        .nav-tabs a:hover, .nav-tabs a.active { color: var(--text-primary); }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 4px; cursor: pointer;
+            z-index: 200; position: relative; padding: 8px;
+        }
+        .hamburger span { width: 20px; height: 1.5px; background: var(--text-primary); transition: all .3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+        .page-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600; text-align: center;
+            padding: 8rem 2rem 1rem; letter-spacing: -0.03em;
+        }
+        .page-subtitle {
+            text-align: center; font-size: 0.9rem;
+            color: var(--text-muted); margin-bottom: 3rem;
+        }
+
+        /* COUNTDOWN GRID */
+        .countdown-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .countdown-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 2rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .countdown-card:hover { transform: translateY(-2px); }
+
+        .countdown-card.past {
+            opacity: 0.5;
+        }
+
+        .countdown-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .countdown-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.2rem;
+        }
+
+        .countdown-timer {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-family: 'VT323', monospace;
+            font-size: clamp(2rem, 5vw, 3rem);
+            line-height: 1;
+            color: var(--accent);
+            min-width: 2ch;
+        }
+
+        .countdown-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+        }
+
+        .countdown-done {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        /* Progress bar */
+        .countdown-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            opacity: 0.4;
+            transition: width 1s linear;
+        }
+
+        .empty-state {
+            text-align: center; padding: 4rem 2rem; color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* Past events section */
+        .section-divider {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 600px) {
+            .hamburger { display: flex; }
+            .nav-tabs {
+                position: fixed; top: 0; right: 0; width: 240px; height: 100vh;
+                background: var(--nav-menu-bg); flex-direction: column;
+                padding: 5rem 2rem 2rem; gap: 1.5rem;
+                box-shadow: -5px 0 20px var(--nav-menu-shadow);
+                transform: translateX(100%); transition: transform .3s ease;
+            }
+            .nav-tabs.open { transform: translateX(0); }
+            .nav-tabs a { font-size: 1rem; }
+            .page-title { font-size: 2.5rem; padding-top: 5rem; }
+            .countdown-card { padding: 1.5rem; }
+            .countdown-timer { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <nav>
+            <div class="hamburger" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+            <ul class="nav-tabs">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="experience.html">Experience</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="photos.html">Photos</a></li>
+                <li><a href="hottakes.html">Hot Takes</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <h1 class="page-title">Countdowns</h1>
+        <p class="page-subtitle">Things I'm counting down to (and things that already happened).</p>
+
+        <div class="countdown-grid" id="countdown-grid">
+            <div class="empty-state">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        if (localStorage.getItem('darkMode') === 'enabled') document.body.classList.add('dark-mode');
+
+        function toggleNav() {
+            document.querySelector('.hamburger').classList.toggle('active');
+            document.querySelector('.nav-tabs').classList.toggle('open');
+        }
+        document.querySelectorAll('.nav-tabs a').forEach(l => {
+            l.addEventListener('click', () => {
+                document.querySelector('.hamburger').classList.remove('active');
+                document.querySelector('.nav-tabs').classList.remove('open');
+            });
+        });
+
+        let countdowns = [];
+
+        function calcDiff(target) {
+            const now = Date.now();
+            const t = new Date(target).getTime();
+            const diff = t - now;
+            if (diff <= 0) return null;
+            return {
+                days: Math.floor(diff / 86400000),
+                hours: Math.floor((diff % 86400000) / 3600000),
+                minutes: Math.floor((diff % 3600000) / 60000),
+                seconds: Math.floor((diff % 60000) / 1000)
+            };
+        }
+
+        function render() {
+            const grid = document.getElementById('countdown-grid');
+            if (!countdowns.length) {
+                grid.innerHTML = '<div class="empty-state">No countdowns yet. Check back soon.</div>';
+                return;
+            }
+
+            const now = Date.now();
+            const upcoming = countdowns.filter(c => new Date(c.date).getTime() > now);
+            const past = countdowns.filter(c => new Date(c.date).getTime() <= now);
+
+            let html = '';
+
+            upcoming.forEach(c => {
+                const d = calcDiff(c.date);
+                const target = new Date(c.date);
+                const created = new Date(c.created || c.date);
+                const total = target.getTime() - created.getTime();
+                const elapsed = now - created.getTime();
+                const pct = total > 0 ? Math.min(100, (elapsed / total) * 100) : 0;
+
+                html += `
+                    <div class="countdown-card" data-date="${c.date}">
+                        <div class="countdown-emoji">${c.emoji}</div>
+                        <div class="countdown-title">${esc(c.title)}</div>
+                        <div class="countdown-date">${target.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                        <div class="countdown-timer" data-target="${c.date}">
+                            <div class="countdown-unit">
+                                <div class="countdown-number" data-unit="days">${d ? d.days : 0}</div>
+                                <div class="countdown-label">Days</div>
+                            </div>
+                            <div class="countdown-unit">
+                                <div class="countdown-number" data-unit="hours">${d ? String(d.hours).padStart(2, '0') : '00'}</div>
+                                <div class="countdown-label">Hours</div>
+                            </div>
+                            <div class="countdown-unit">
+                                <div class="countdown-number" data-unit="minutes">${d ? String(d.minutes).padStart(2, '0') : '00'}</div>
+                                <div class="countdown-label">Min</div>
+                            </div>
+                            <div class="countdown-unit">
+                                <div class="countdown-number" data-unit="seconds">${d ? String(d.seconds).padStart(2, '0') : '00'}</div>
+                                <div class="countdown-label">Sec</div>
+                            </div>
+                        </div>
+                        <div class="countdown-progress" style="width:${pct}%"></div>
+                    </div>`;
+            });
+
+            if (past.length) {
+                html += '<div class="section-divider">Already Happened</div>';
+                past.reverse().forEach(c => {
+                    const target = new Date(c.date);
+                    html += `
+                        <div class="countdown-card past">
+                            <div class="countdown-emoji">${c.emoji}</div>
+                            <div class="countdown-title">${esc(c.title)}</div>
+                            <div class="countdown-date">${target.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                            <div class="countdown-done">Happened!</div>
+                        </div>`;
+                });
+            }
+
+            grid.innerHTML = html;
+        }
+
+        function tick() {
+            document.querySelectorAll('.countdown-timer').forEach(timer => {
+                const d = calcDiff(timer.dataset.target);
+                if (!d) {
+                    render();
+                    return;
+                }
+                timer.querySelector('[data-unit="days"]').textContent = d.days;
+                timer.querySelector('[data-unit="hours"]').textContent = String(d.hours).padStart(2, '0');
+                timer.querySelector('[data-unit="minutes"]').textContent = String(d.minutes).padStart(2, '0');
+                timer.querySelector('[data-unit="seconds"]').textContent = String(d.seconds).padStart(2, '0');
+            });
+        }
+
+        function esc(s) {
+            const d = document.createElement('div');
+            d.textContent = s || '';
+            return d.innerHTML;
+        }
+
+        fetch('/api/countdowns')
+            .then(r => r.json())
+            .then(data => {
+                countdowns = data;
+                render();
+                setInterval(tick, 1000);
+            })
+            .catch(() => {
+                document.getElementById('countdown-grid').innerHTML =
+                    '<div class="empty-state">Could not load countdowns.</div>';
+            });
+    </script>
+</body>
+</html>
