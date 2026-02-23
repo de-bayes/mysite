@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resume - Ryan McComb</title>
+    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a1a1a;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            background: #f5f5f5;
+        }
+
+        .resume-page {
+            max-width: 8.5in;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .resume-inner {
+            padding: 0.6in 0.7in;
+        }
+
+        /* PRINT BUTTON */
+        .print-bar {
+            background: #1a1a1a;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .print-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .print-bar-label {
+            font-family: 'VT323', monospace;
+            color: #e67e22;
+            font-size: 1rem;
+        }
+
+        .print-bar a {
+            font-size: 0.8rem;
+            color: #888;
+            text-decoration: none;
+        }
+
+        .print-bar a:hover {
+            color: #e67e22;
+        }
+
+        .print-btn {
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            padding: 0.4rem 1.2rem;
+            background: #e67e22;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .print-btn:hover {
+            background: #d35400;
+        }
+
+        /* RESUME HEADER */
+        .resume-header {
+            text-align: center;
+            margin-bottom: 0.3in;
+            padding-bottom: 0.15in;
+            border-bottom: 2px solid #e67e22;
+        }
+
+        .resume-header h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.15rem;
+        }
+
+        .resume-header .subtitle {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 0.35rem;
+        }
+
+        .resume-contact {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.25rem 1rem;
+            font-size: 0.78rem;
+            color: #444;
+        }
+
+        .resume-contact a {
+            color: #444;
+            text-decoration: none;
+        }
+
+        .resume-contact span::before {
+            content: '\00B7';
+            margin-right: 0;
+        }
+
+        .resume-contact span:first-child::before {
+            content: none;
+        }
+
+        /* SECTIONS */
+        .resume-section {
+            margin-bottom: 0.2in;
+        }
+
+        .resume-section h2 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #e67e22;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.08in;
+            margin-bottom: 0.12in;
+        }
+
+        /* EXPERIENCE ITEMS */
+        .resume-item {
+            margin-bottom: 0.12in;
+        }
+
+        .resume-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .resume-item-title {
+            font-weight: 500;
+            font-size: 0.88rem;
+        }
+
+        .resume-item-date {
+            font-size: 0.78rem;
+            color: #777;
+            white-space: nowrap;
+        }
+
+        .resume-item-org {
+            font-size: 0.82rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        .resume-item-desc {
+            font-size: 0.82rem;
+            color: #333;
+            margin-top: 0.04in;
+            line-height: 1.45;
+        }
+
+        .resume-item-desc ul {
+            padding-left: 1.2rem;
+            margin-top: 0.03in;
+        }
+
+        .resume-item-desc li {
+            margin-bottom: 0.02in;
+        }
+
+        /* EDUCATION */
+        .resume-edu-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .resume-edu-gpa {
+            font-size: 0.82rem;
+            color: #555;
+            margin-top: 0.02in;
+        }
+
+        /* SKILLS */
+        .resume-skills {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.04in 0.3in;
+            font-size: 0.82rem;
+        }
+
+        .resume-skills dt {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .resume-skills dd {
+            color: #555;
+        }
+
+        /* PROJECTS */
+        .resume-project {
+            margin-bottom: 0.1in;
+        }
+
+        .resume-project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .resume-project-title {
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .resume-project-link {
+            font-size: 0.75rem;
+            color: #e67e22;
+            text-decoration: none;
+        }
+
+        .resume-project-desc {
+            font-size: 0.82rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .print-bar {
+                display: none;
+            }
+
+            .resume-page {
+                box-shadow: none;
+                margin: 0;
+                max-width: none;
+            }
+
+            .resume-inner {
+                padding: 0.5in 0.6in;
+            }
+
+            .resume-section h2 {
+                color: #c0611a;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .resume-header {
+                border-bottom-color: #c0611a;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            a {
+                color: inherit !important;
+                text-decoration: none !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .resume-inner {
+                padding: 1.5rem;
+            }
+
+            .resume-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .resume-item-header {
+                flex-direction: column;
+            }
+
+            .resume-edu-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-bar">
+        <div class="print-bar-left">
+            <span class="print-bar-label">RESUME</span>
+            <a href="index.html">&larr; Back to site</a>
+        </div>
+        <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+    </div>
+
+    <div class="resume-page">
+        <div class="resume-inner">
+            <!-- HEADER -->
+            <div class="resume-header">
+                <h1>Ryan McComb</h1>
+                <p class="subtitle">Data Analysis &bull; Political Forecasting &bull; Photography &bull; Web Development</p>
+                <div class="resume-contact">
+                    <span>Evanston, IL</span>
+                    <span>rymccmcomb1@icloud.com</span>
+                    <span><a href="https://rjmccomb.xyz">rjmccomb.xyz</a></span>
+                    <span><a href="https://github.com/de-bayes">github.com/de-bayes</a></span>
+                    <span><a href="https://linkedin.com/in/ryan-mccomb-30b029370">LinkedIn</a></span>
+                </div>
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="resume-section">
+                <h2>Education</h2>
+                <div class="resume-item">
+                    <div class="resume-edu-row">
+                        <div class="resume-item-title">Evanston Township High School</div>
+                        <div class="resume-item-date">Class of 2026</div>
+                    </div>
+                    <div class="resume-edu-gpa">GPA: 3.98 Unweighted / 4.41 Weighted &bull; Evanston, IL</div>
+                </div>
+            </div>
+
+            <!-- EXPERIENCE -->
+            <div class="resume-section">
+                <h2>Experience</h2>
+
+                <div class="resume-item">
+                    <div class="resume-item-header">
+                        <div class="resume-item-title">Student Fellow</div>
+                        <div class="resume-item-date">Mar 2026 &ndash; Present</div>
+                    </div>
+                    <div class="resume-item-org">VoteHub</div>
+                    <div class="resume-item-desc">
+                        <ul>
+                            <li>Race-call work and election modeling with a team focused on political data analysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="resume-item-header">
+                        <div class="resume-item-title">Data Analyst &amp; Founder</div>
+                        <div class="resume-item-date">Dec 2025 &ndash; Present</div>
+                    </div>
+                    <div class="resume-item-org">IL9CAST</div>
+                    <div class="resume-item-desc">
+                        <ul>
+                            <li>Built open-source political forecasting model for the IL-9 Congressional District primary</li>
+                            <li>Processed nearly 70,000 data points using Bayesian statistical methods in Python</li>
+                            <li>Featured in Capitol Fax and Evanston Roundtable; all code and data publicly available on GitHub</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="resume-item-header">
+                        <div class="resume-item-title">Volunteer Finance Lead</div>
+                        <div class="resume-item-date">Aug 2025 &ndash; Present</div>
+                    </div>
+                    <div class="resume-item-org">Biss for Congress</div>
+                    <div class="resume-item-desc">
+                        <ul>
+                            <li>Led donor outreach and fundraising data analysis for congressional campaign</li>
+                            <li>Pulled and analyzed FEC filing data to identify fundraising targets and track progress</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="resume-item-header">
+                        <div class="resume-item-title">Freelance Photographer</div>
+                        <div class="resume-item-date">Jun 2025 &ndash; Present</div>
+                    </div>
+                    <div class="resume-item-org">Chicago Union (Professional Ultimate Frisbee)</div>
+                    <div class="resume-item-desc">
+                        <ul>
+                            <li>Sports photography for professional team; capturing game action and promotional content</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="resume-item-header">
+                        <div class="resume-item-title">Staff Writer</div>
+                        <div class="resume-item-date">Aug 2024 &ndash; Present</div>
+                    </div>
+                    <div class="resume-item-org">The Evanstonian (ETHS Student Newspaper)</div>
+                    <div class="resume-item-desc">
+                        <ul>
+                            <li>Wrote news articles covering local politics, ETHS, District 65, and community issues</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="resume-item-header">
+                        <div class="resume-item-title">Swim Instructor</div>
+                        <div class="resume-item-date">Jun 2025 &ndash; Present</div>
+                    </div>
+                    <div class="resume-item-org">YWCA USA</div>
+                    <div class="resume-item-desc">
+                        <ul>
+                            <li>Taught swimming lessons to children and adults at community pool programs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECTS -->
+            <div class="resume-section">
+                <h2>Projects</h2>
+
+                <div class="resume-project">
+                    <div class="resume-project-header">
+                        <div class="resume-project-title">IL9CAST &mdash; Open-Source Political Forecast</div>
+                        <a class="resume-project-link" href="https://il9.org">il9.org</a>
+                    </div>
+                    <div class="resume-project-desc">Bayesian forecasting model for IL-9 congressional primary. Python, data scraping, and statistical modeling. Fully transparent with all code on GitHub.</div>
+                </div>
+
+                <div class="resume-project">
+                    <div class="resume-project-header">
+                        <div class="resume-project-title">Project 2028 Podcast</div>
+                        <a class="resume-project-link" href="#">Apple Podcasts</a>
+                    </div>
+                    <div class="resume-project-desc">Podcast exploring political science, elections, and public policy with in-depth analysis and interviews.</div>
+                </div>
+
+                <div class="resume-project">
+                    <div class="resume-project-header">
+                        <div class="resume-project-title">ManiFed</div>
+                        <a class="resume-project-link" href="https://manifed.markets">manifed.markets</a>
+                    </div>
+                    <div class="resume-project-desc">Peer-to-peer lending platform built for Manifold Markets prediction market ecosystem.</div>
+                </div>
+
+                <div class="resume-project">
+                    <div class="resume-project-header">
+                        <div class="resume-project-title">rjmccomb.xyz &mdash; Personal Portfolio</div>
+                        <a class="resume-project-link" href="https://rjmccomb.xyz">rjmccomb.xyz</a>
+                    </div>
+                    <div class="resume-project-desc">Full-stack portfolio with terminal emulator, built-in games, CRT mode, analytics, and guestbook. Vanilla JS, Node.js/Express.</div>
+                </div>
+            </div>
+
+            <!-- SKILLS -->
+            <div class="resume-section">
+                <h2>Skills &amp; Interests</h2>
+                <dl class="resume-skills">
+                    <dt>Languages</dt>
+                    <dd>Python, JavaScript, HTML/CSS, SQL</dd>
+                    <dt>Tools</dt>
+                    <dd>Git, Node.js, Express, Canvas API, Jupyter, Pandas</dd>
+                    <dt>Data</dt>
+                    <dd>Bayesian statistics, election modeling, data scraping, FEC data analysis</dd>
+                    <dt>Interests</dt>
+                    <dd>Prediction markets, political forecasting, photography, filmmaking, behavioral economics</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

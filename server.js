@@ -7,9 +7,24 @@ const { pipeline } = require('stream/promises');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CLOUD_PASSWORD = process.env.CLOUD_PASSWORD;
-const UPLOAD_DIR = fs.existsSync('/data') ? '/data/uploads' : path.join(__dirname, 'uploads');
+const DATA_DIR = fs.existsSync('/data') ? '/data' : path.join(__dirname, 'data');
+const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
+const GUESTBOOK_FILE = path.join(DATA_DIR, 'guestbook.json');
+const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
+const TYPING_SCORES_FILE = path.join(DATA_DIR, 'typing-scores.json');
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
+function readJSON(filePath, fallback) {
+    try {
+        if (fs.existsSync(filePath)) return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch { /* corrupted file, return fallback */ }
+    return fallback;
+}
+
+function writeJSON(filePath, data) {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
 
 function requireAuth(req, res, next) {
     if (!CLOUD_PASSWORD) {
@@ -230,6 +245,103 @@ app.delete('/api/files/*', requireAuth, (req, res) => {
     } catch (error) {
         return res.status(400).json({ error: error.message || 'Invalid path' });
     }
+});
+
+// =============================================
+// GUESTBOOK
+// =============================================
+const GUESTBOOK_MAX = 200;
+const GUESTBOOK_RATE_MS = 30000; // 30s between entries per IP
+const guestbookRateMap = new Map();
+
+app.get('/api/guestbook', (req, res) => {
+    const entries = readJSON(GUESTBOOK_FILE, []);
+    return res.json(entries);
+});
+
+app.post('/api/guestbook', (req, res) => {
+    const name = String(req.body.name || '').trim().slice(0, 40);
+    const message = String(req.body.message || '').trim().slice(0, 200);
+    if (!name || !message) {
+        return res.status(400).json({ error: 'Name and message required' });
+    }
+
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const lastPost = guestbookRateMap.get(ip) || 0;
+    if (now - lastPost < GUESTBOOK_RATE_MS) {
+        return res.status(429).json({ error: 'Please wait before posting again' });
+    }
+    guestbookRateMap.set(ip, now);
+
+    const entries = readJSON(GUESTBOOK_FILE, []);
+    entries.unshift({
+        name,
+        message,
+        date: new Date().toISOString()
+    });
+    if (entries.length > GUESTBOOK_MAX) entries.length = GUESTBOOK_MAX;
+    writeJSON(GUESTBOOK_FILE, entries);
+    return res.json({ ok: true });
+});
+
+// =============================================
+// ANALYTICS TRACKING
+// =============================================
+app.post('/api/track', (req, res) => {
+    const event = String(req.body.event || '').trim().slice(0, 50);
+    const value = String(req.body.value || '').trim().slice(0, 100);
+    if (!event) return res.status(400).json({ error: 'Event required' });
+
+    const analytics = readJSON(ANALYTICS_FILE, { pageViews: {}, commands: {}, games: {}, totalVisits: 0 });
+
+    if (event === 'pageview') {
+        analytics.pageViews[value] = (analytics.pageViews[value] || 0) + 1;
+        analytics.totalVisits = (analytics.totalVisits || 0) + 1;
+    } else if (event === 'command') {
+        analytics.commands[value] = (analytics.commands[value] || 0) + 1;
+    } else if (event === 'game') {
+        analytics.games[value] = (analytics.games[value] || 0) + 1;
+    }
+
+    writeJSON(ANALYTICS_FILE, analytics);
+    return res.json({ ok: true });
+});
+
+app.get('/api/stats', (req, res) => {
+    const analytics = readJSON(ANALYTICS_FILE, { pageViews: {}, commands: {}, games: {}, totalVisits: 0 });
+    return res.json(analytics);
+});
+
+// =============================================
+// TYPING SPEED LEADERBOARD
+// =============================================
+const TYPING_MAX_ENTRIES = 50;
+
+app.get('/api/typing-scores', (req, res) => {
+    const scores = readJSON(TYPING_SCORES_FILE, []);
+    return res.json(scores);
+});
+
+app.post('/api/typing-scores', (req, res) => {
+    const name = String(req.body.name || '').trim().slice(0, 30);
+    const wpm = parseInt(req.body.wpm, 10);
+    const accuracy = parseInt(req.body.accuracy, 10);
+    if (!name || isNaN(wpm) || wpm < 1 || wpm > 300) {
+        return res.status(400).json({ error: 'Valid name and wpm required' });
+    }
+
+    const scores = readJSON(TYPING_SCORES_FILE, []);
+    scores.push({
+        name,
+        wpm,
+        accuracy: isNaN(accuracy) ? 0 : Math.min(100, Math.max(0, accuracy)),
+        date: new Date().toISOString()
+    });
+    scores.sort((a, b) => b.wpm - a.wpm);
+    if (scores.length > TYPING_MAX_ENTRIES) scores.length = TYPING_MAX_ENTRIES;
+    writeJSON(TYPING_SCORES_FILE, scores);
+    return res.json({ ok: true, rank: scores.findIndex(s => s.name === name && s.wpm === wpm) + 1 });
 });
 
 app.use(express.static(__dirname, { extensions: ['html'] }));
