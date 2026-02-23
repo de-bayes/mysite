@@ -276,6 +276,7 @@
             <li><a href="projects.html">Projects</a></li>
             <li><a href="photos.html">Photos</a></li>
             <li><a href="posts.html">Posts</a></li>
+            <li><a href="blog.html">Blog</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -416,6 +417,9 @@
                 document.querySelector('.nav-tabs').classList.remove('open');
             });
         });
+
+        // Analytics
+        fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'pageview', value: 'experience' }) }).catch(() => {});
 
         // Redirect to home on refresh
         const perfData = performance.getEntriesByType('navigation')[0];
