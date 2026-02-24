@@ -1550,7 +1550,6 @@
             height: 75vh;
             min-height: 500px;
             overflow: hidden;
-            margin-bottom: 2.5rem;
         }
 
         .hero-img {
@@ -1566,51 +1565,146 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 50%;
+            height: 60%;
             background: linear-gradient(to bottom, transparent, #1e1e1e);
             pointer-events: none;
         }
 
         .hero-overlay {
             position: absolute;
-            bottom: 2rem;
-            left: 2rem;
+            bottom: 3.5rem;
+            left: 0;
+            right: 0;
+            text-align: center;
         }
 
         .hero-overlay h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
+            font-size: 5rem;
             font-weight: 600;
             color: #ffffff;
-            line-height: 1.1;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            line-height: 1;
+            letter-spacing: -0.02em;
+            background: linear-gradient(180deg, #ffffff 40%, #6aadcf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .hero-overlay p {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.8);
-            margin-top: 0.25rem;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        .hero-overlay .hero-sub {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 0.5rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
         }
 
         .hero-links {
-            margin-top: 0.75rem;
+            margin-top: 1rem;
             display: flex;
-            gap: 1rem;
+            justify-content: center;
+            gap: 1.25rem;
         }
 
         .hero-links a {
             font-size: 0.75rem;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.5);
             text-decoration: none;
             transition: color 0.2s;
+            letter-spacing: 0.03em;
         }
 
         .hero-links a:hover { color: #ffffff; }
 
+        /* STATEMENT SECTION (inspired by Chain Reaction) */
+        .statement {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3.5rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .statement-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-light);
+            margin-bottom: 1.25rem;
+        }
+
+        .statement-label::before {
+            content: '\25A0';
+            margin-right: 0.5rem;
+            color: #6aadcf;
+        }
+
+        .statement h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 500;
+            line-height: 1.15;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .statement h2 .accent {
+            background: linear-gradient(90deg, #6aadcf, #cf6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .statement-pills {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .statement-pill {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.45rem 1.1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            color: var(--text-secondary);
+            transition: border-color 0.2s;
+        }
+
+        .statement-pill:hover {
+            border-color: #6aadcf;
+        }
+
+        .statement-plus {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* BENTO SECTION LABEL */
+        .bento-label {
+            max-width: 1100px;
+            margin: 0 auto 1rem;
+            padding: 0 2rem;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-light);
+        }
+
+        .bento-label::before {
+            content: '\25A0';
+            margin-right: 0.5rem;
+            color: #cf6b6b;
+        }
+
         @media (max-width: 600px) {
             .hero { height: 60vh; min-height: 350px; }
-            .hero-overlay h1 { font-size: 1.8rem; }
+            .hero-overlay h1 { font-size: 3rem; }
+            .statement h2 { font-size: 1.8rem; }
+            .statement { padding: 2.5rem 1.5rem 1.5rem; }
         }
 
         .bento {
@@ -1707,6 +1801,13 @@
             letter-spacing: 0.12em;
             color: #6aadcf;
             margin-bottom: 0.5rem;
+        }
+
+        .card-label::before {
+            content: '\25A0';
+            margin-right: 0.35rem;
+            font-size: 0.45rem;
+            vertical-align: middle;
         }
 
         .card-title {
@@ -2052,9 +2153,13 @@
         }
 
         .expand-content .page-title {
-            font-family: 'VT323', monospace;
+            font-family: 'Cormorant Garamond', serif;
             font-size: clamp(2.5rem, 5vw, 4rem);
-            color: #6aadcf;
+            font-weight: 600;
+            background: linear-gradient(90deg, #6aadcf, #cf6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 2rem;
             text-align: center;
         }
@@ -2798,7 +2903,7 @@
             <div class="hero-gradient"></div>
             <div class="hero-overlay">
                 <h1>Ryan McComb</h1>
-                <p>Student at ETHS</p>
+                <p class="hero-sub">Evanston, Illinois</p>
                 <div class="hero-links">
                     <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
                     <a href="https://manifold.markets/JeromeHPowell" target="_blank">Manifold</a>
@@ -2807,7 +2912,21 @@
             </div>
         </div>
 
+        <!-- STATEMENT -->
+        <div class="statement">
+            <div class="statement-label">About</div>
+            <h2>Data, politics, and<br><span class="accent">forecasting.</span></h2>
+            <div class="statement-pills">
+                <div class="statement-pill">DATA ANALYSIS</div>
+                <span class="statement-plus">+</span>
+                <div class="statement-pill">POLITICAL FORECASTING</div>
+                <span class="statement-plus">+</span>
+                <div class="statement-pill">PHOTOGRAPHY</div>
+            </div>
+        </div>
+
         <!-- BENTO GRID -->
+        <div class="bento-label">Explore</div>
         <div class="bento" id="bento-grid">
             <!-- ABOUT (2x2) -->
             <div class="card card-about" data-card="about" onclick="expandCard('about')">
