@@ -1510,74 +1510,84 @@
         /* ============================================
            BENTO GRID
            ============================================ */
-        /* HERO SECTION - Full viewport */
+        /* HERO SECTION - Formal, split layout */
         .hero {
             position: relative;
             width: 100%;
             min-height: 100vh;
             display: flex;
-            align-items: stretch;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
+            background: var(--bg-primary);
         }
 
-        .hero-img {
-            width: 55%;
-            height: 100vh;
-            object-fit: cover;
-            object-position: center 30%;
-            display: block;
+        .hero-inner {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+            display: flex;
+            align-items: stretch;
+            gap: 4rem;
+        }
+
+        .hero-photo-col {
             flex-shrink: 0;
         }
 
-        .hero-gradient {
+        .hero-img {
+            width: 340px;
+            height: 440px;
+            object-fit: cover;
+            object-position: center 30%;
             display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to right,
-                transparent 20%,
-                rgba(26, 26, 26, 0.4) 40%,
-                rgba(26, 26, 26, 0.85) 55%,
-                var(--bg-primary) 65%
-            );
-            pointer-events: none;
-            z-index: 1;
+            border: 1px solid var(--border-color);
         }
 
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
+        .hero-gradient {
+            display: none;
+        }
+
+        .hero-text-col {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-left: 4rem;
+        }
+
+        .hero-overlay {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
         }
 
         .hero-overlay h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 5.5rem;
+            font-size: 4rem;
             font-weight: 600;
-            color: #fff;
-            line-height: 0.95;
+            color: var(--text-primary);
+            line-height: 1;
             letter-spacing: -0.03em;
-            text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-rule {
+            width: 60px;
+            height: 1px;
+            background: var(--text-light);
+            margin: 1.25rem 0;
+            opacity: 0.5;
         }
 
         .hero-tagline {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             font-weight: 400;
             color: var(--text-secondary);
-            margin-top: 1rem;
             letter-spacing: 0.01em;
             font-style: italic;
+            line-height: 1.5;
         }
 
         .hero-tagline .accent {
@@ -1585,10 +1595,10 @@
         }
 
         .hero-overlay .hero-sub {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             margin-top: 1.25rem;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
         }
 
@@ -1599,15 +1609,52 @@
         }
 
         .hero-links a {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             text-decoration: none;
             transition: color 0.2s;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 2px;
         }
 
-        .hero-links a:hover { color: var(--text-primary); }
+        .hero-links a:hover {
+            color: var(--text-primary);
+            border-bottom-color: var(--text-light);
+        }
+
+        /* Hero inline stats */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            margin-top: 2.5rem;
+            background: var(--border-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .hero-stat {
+            background: var(--bg-primary);
+            padding: 1rem 1.25rem;
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .hero-stat-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-top: 0.25rem;
+        }
 
         .hero-scroll-hint {
             position: absolute;
@@ -1643,6 +1690,161 @@
             50% { transform: translateX(-50%) translateY(6px); }
         }
 
+        /* PERSONAL STATS DASHBOARD - Kalshi-inspired */
+        .stats-dashboard {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .stats-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-light);
+            margin-bottom: 1.25rem;
+        }
+
+        .stats-label::before {
+            content: '\2014';
+            margin-right: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(33, 33, 33, 0.9);
+        }
+
+        .stat-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-card-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .stat-card-icon {
+            font-size: 0.85rem;
+            opacity: 0.4;
+        }
+
+        .stat-card-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.1;
+            margin-bottom: 0.35rem;
+        }
+
+        .stat-card-detail {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .stat-card-bar {
+            margin-top: 0.75rem;
+            height: 3px;
+            background: rgba(255,255,255,0.04);
+            overflow: hidden;
+        }
+
+        .stat-card-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0;
+        }
+
+        .stat-card-bar-fill.animated {
+            /* width set via data-width attribute */
+        }
+
+        .stat-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.65rem;
+            margin-left: 0.5rem;
+        }
+
+        .stat-trend.up { color: #6aadcf; }
+        .stat-trend.neutral { color: var(--text-light); }
+
+        /* Stats row 2: wider cards */
+        .stats-grid-wide {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border-color);
+            border: 1px solid var(--border-color);
+            border-top: none;
+        }
+
+        .stat-card-wide {
+            background: var(--bg-secondary);
+            padding: 1.25rem 1.5rem;
+            transition: background 0.2s ease;
+        }
+
+        .stat-card-wide:hover {
+            background: rgba(33, 33, 33, 0.9);
+        }
+
+        .stat-wide-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-wide-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .stat-wide-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .stat-wide-item-name {
+            color: var(--text-secondary);
+        }
+
+        .stat-wide-item-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
         /* STATEMENT SECTION - hidden */
         .statement {
             display: none;
@@ -1666,27 +1868,34 @@
         }
 
         @media (max-width: 900px) {
-            .hero-img { width: 100%; }
-            .hero-gradient {
-                background: linear-gradient(
-                    to bottom,
-                    transparent 20%,
-                    rgba(26, 26, 26, 0.5) 50%,
-                    var(--bg-primary) 75%
-                );
+            .hero-inner {
+                flex-direction: column;
+                align-items: center;
+                gap: 2.5rem;
+                padding: 5rem 2rem 3rem;
             }
-            .hero-overlay {
-                justify-content: flex-end;
-                padding: 0 2rem 5rem;
+            .hero-img {
+                width: 280px;
+                height: 360px;
             }
-            .hero-overlay h1 { font-size: 3.5rem; }
+            .hero-text-col { align-items: center; text-align: center; }
+            .hero-overlay { align-items: center; text-align: center; }
+            .hero-overlay h1 { font-size: 3.2rem; }
+            .hero-rule { margin: 1rem auto; }
             .hero-tagline { font-size: 1.15rem; }
+            .hero-links { justify-content: center; }
+            .hero-stats { max-width: 400px; margin-left: auto; margin-right: auto; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid-wide { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 600px) {
-            .hero-overlay { padding: 0 1.5rem 4rem; }
-            .hero-overlay h1 { font-size: 2.8rem; }
+            .hero-inner { padding: 4.5rem 1.5rem 2.5rem; gap: 2rem; }
+            .hero-img { width: 240px; height: 310px; }
+            .hero-overlay h1 { font-size: 2.5rem; }
             .hero-tagline { font-size: 1rem; }
+            .hero-stats { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
         }
 
         .bento {
@@ -2839,21 +3048,134 @@
 
         <!-- HERO -->
         <div class="hero">
-            <img src="ddddd.jpg" alt="Ryan McComb" class="hero-img">
-            <div class="hero-gradient"></div>
-            <div class="hero-overlay">
-                <h1>Ryan<br>McComb</h1>
-                <p class="hero-tagline">Data, politics, and <span class="accent">forecasting.</span></p>
-                <p class="hero-sub">Evanston, Illinois</p>
-                <div class="hero-links">
-                    <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
-                    <a href="https://manifold.markets/JeromeHPowell" target="_blank">Manifold</a>
-                    <a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
+            <div class="hero-inner">
+                <div class="hero-photo-col">
+                    <img src="ddddd.jpg" alt="Ryan McComb" class="hero-img">
+                </div>
+                <div class="hero-text-col">
+                    <div class="hero-overlay">
+                        <h1>Ryan McComb</h1>
+                        <div class="hero-rule"></div>
+                        <p class="hero-tagline">Data, politics, and <span class="accent">forecasting.</span></p>
+                        <p class="hero-sub">Evanston, Illinois</p>
+                        <div class="hero-links">
+                            <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
+                            <a href="https://manifold.markets/JeromeHPowell" target="_blank">Manifold</a>
+                            <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
+                            <a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="hero-stat">
+                                <div class="hero-stat-value" data-count="6">0</div>
+                                <div class="hero-stat-label">Projects</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-value" data-count="3">0</div>
+                                <div class="hero-stat-label">Active Roles</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-value">3.98</div>
+                                <div class="hero-stat-label">GPA (UW)</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="hero-scroll-hint">
                 <span>Scroll</span>
                 <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </div>
+        </div>
+
+        <!-- PERSONAL STATS DASHBOARD -->
+        <div class="stats-dashboard">
+            <div class="stats-label">By the numbers</div>
+            <div class="stats-grid scroll-reveal">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Forecasting</span>
+                    </div>
+                    <div class="stat-card-value">IL-09</div>
+                    <div class="stat-card-detail">Open-source election model<br>for the 9th Congressional District</div>
+                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="85%"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Prediction Markets</span>
+                    </div>
+                    <div class="stat-card-value">500+<span class="stat-trend up">active</span></div>
+                    <div class="stat-card-detail">Markets traded across<br>Manifold &amp; Metaculus</div>
+                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="72%"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Journalism</span>
+                    </div>
+                    <div class="stat-card-value">12+</div>
+                    <div class="stat-card-detail">Published articles in<br>The Evanstonian</div>
+                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="60%"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Academics</span>
+                    </div>
+                    <div class="stat-card-value">4.41</div>
+                    <div class="stat-card-detail">Weighted GPA, Class of 2026<br>Evanston Township HS</div>
+                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="94%"></div></div>
+                </div>
+            </div>
+            <div class="stats-grid-wide scroll-reveal">
+                <div class="stat-card-wide">
+                    <div class="stat-wide-label">Current Positions</div>
+                    <div class="stat-wide-items">
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Student Fellow</span>
+                            <span class="stat-wide-item-value">VoteHub</span>
+                        </div>
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Data Analyst</span>
+                            <span class="stat-wide-item-value">IL9CAST</span>
+                        </div>
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Finance Lead</span>
+                            <span class="stat-wide-item-value">Biss for Congress</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card-wide">
+                    <div class="stat-wide-label">Skills &amp; Tools</div>
+                    <div class="stat-wide-items">
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Python &amp; Data Science</span>
+                            <span class="stat-wide-item-value">Primary</span>
+                        </div>
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Web Development</span>
+                            <span class="stat-wide-item-value">HTML/CSS/JS</span>
+                        </div>
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Political Analysis</span>
+                            <span class="stat-wide-item-value">Modeling</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card-wide">
+                    <div class="stat-wide-label">Interests</div>
+                    <div class="stat-wide-items">
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Prediction Markets</span>
+                            <span class="stat-wide-item-value">Manifold / Kalshi</span>
+                        </div>
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Film Photography</span>
+                            <span class="stat-wide-item-value">35mm</span>
+                        </div>
+                        <div class="stat-wide-item">
+                            <span class="stat-wide-item-name">Political Science</span>
+                            <span class="stat-wide-item-value">Elections</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -7048,6 +7370,39 @@
             revealEls.forEach(el => observer.observe(el));
         }
         initScrollReveals();
+
+        // =============================================
+        // STATS BAR FILL + COUNTER ANIMATIONS
+        // =============================================
+        function initStatAnimations() {
+            // Animated bar fills
+            const bars = document.querySelectorAll('.stat-card-bar-fill[data-width]');
+            if (bars.length) {
+                const barObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.width = entry.target.dataset.width;
+                            entry.target.classList.add('animated');
+                            barObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                bars.forEach(bar => barObserver.observe(bar));
+            }
+            // Counter animations for hero stats
+            const counters = document.querySelectorAll('.hero-stat-value[data-count]');
+            counters.forEach(el => {
+                const target = parseInt(el.dataset.count);
+                let current = 0;
+                const increment = Math.max(1, Math.floor(target / 30));
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) { current = target; clearInterval(timer); }
+                    el.textContent = current;
+                }, 50);
+            });
+        }
+        initStatAnimations();
 
         // =============================================
         // 3D CARD TILT
