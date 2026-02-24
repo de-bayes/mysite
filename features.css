@@ -1,6 +1,6 @@
 /* ============================================
    SHARED FEATURES
-   CRT Mode, Command Palette, Page Transitions,
+   Command Palette, Page Transitions,
    Scroll Reveals, 3D Card Tilt
    ============================================ */
 
@@ -19,115 +19,6 @@ body.page-leaving {
 @keyframes pageEnter {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-/* CRT MODE */
-body.crt-mode {
-    animation: crtFlicker 4s infinite;
-}
-
-body.crt-mode::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.03) 0px,
-        rgba(0, 0, 0, 0.03) 1px,
-        transparent 1px,
-        transparent 3px
-    );
-    pointer-events: none;
-    z-index: 99997;
-}
-
-body.crt-mode::after {
-    content: '';
-    position: fixed;
-    top: -2%;
-    left: -2%;
-    width: 104%;
-    height: 104%;
-    background: radial-gradient(
-        ellipse at center,
-        transparent 60%,
-        rgba(0, 0, 0, 0.2) 85%,
-        rgba(0, 0, 0, 0.5) 100%
-    );
-    pointer-events: none;
-    z-index: 99998;
-    border-radius: 12px;
-}
-
-@keyframes crtFlicker {
-    0% { filter: brightness(1); }
-    3% { filter: brightness(0.97); }
-    6% { filter: brightness(1); }
-    42% { filter: brightness(1); }
-    44% { filter: brightness(0.98); }
-    46% { filter: brightness(1); }
-    100% { filter: brightness(1); }
-}
-
-body.crt-mode .page-title,
-body.crt-mode .terminal-body,
-body.crt-mode h1,
-body.crt-mode h2,
-body.crt-mode h3 {
-    text-shadow: 0 0 3px rgba(230, 126, 34, 0.3), 0 0 8px rgba(230, 126, 34, 0.1);
-}
-
-body.crt-mode .nav-tabs a,
-body.crt-mode p,
-body.crt-mode span {
-    text-shadow: 0 0 2px rgba(0, 255, 0, 0.05);
-}
-
-/* CRT scanline sweep */
-body.crt-mode .crt-scanline {
-    position: fixed;
-    top: -100%;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background: linear-gradient(
-        to bottom,
-        transparent,
-        rgba(255, 255, 255, 0.03),
-        transparent
-    );
-    z-index: 99999;
-    pointer-events: none;
-    animation: crtScanline 8s linear infinite;
-}
-
-@keyframes crtScanline {
-    0% { top: -2%; }
-    100% { top: 102%; }
-}
-
-/* CRT indicator badge */
-.crt-badge {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    font-family: 'VT323', monospace;
-    font-size: 0.9rem;
-    color: #0f0;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 0.3rem 0.6rem;
-    border: 1px solid #0f0;
-    z-index: 100000;
-    cursor: pointer;
-    display: none;
-    text-shadow: 0 0 6px rgba(0, 255, 0, 0.5);
-}
-
-body.crt-mode .crt-badge {
-    display: block;
 }
 
 /* COMMAND PALETTE */
@@ -243,7 +134,7 @@ body.crt-mode .crt-badge {
 
 .cmd-palette-item:hover,
 .cmd-palette-item.selected {
-    background: rgba(230, 126, 34, 0.12);
+    background: rgba(106, 173, 207, 0.12);
     color: #fff;
 }
 
@@ -542,7 +433,7 @@ body.crt-mode .crt-badge {
 .taskbar-start {
     font-family: 'VT323', monospace;
     font-size: 1.1rem;
-    color: #e67e22;
+    color: #6aadcf;
     padding: 0.3rem 0.8rem;
     cursor: pointer;
     border-radius: 4px;
@@ -551,7 +442,7 @@ body.crt-mode .crt-badge {
 }
 
 .taskbar-start:hover {
-    background: rgba(230, 126, 34, 0.15);
+    background: rgba(106, 173, 207, 0.15);
 }
 
 .taskbar-divider {
@@ -586,8 +477,8 @@ body.crt-mode .crt-badge {
 }
 
 .taskbar-window-btn.active {
-    background: rgba(230, 126, 34, 0.15);
-    color: #e67e22;
+    background: rgba(106, 173, 207, 0.15);
+    color: #6aadcf;
 }
 
 .taskbar-clock {
@@ -624,7 +515,7 @@ body.crt-mode .crt-badge {
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     font-family: 'VT323', monospace;
     font-size: 1.2rem;
-    color: #e67e22;
+    color: #6aadcf;
 }
 
 .start-menu-items {
@@ -643,7 +534,7 @@ body.crt-mode .crt-badge {
 }
 
 .start-menu-item:hover {
-    background: rgba(230, 126, 34, 0.12);
+    background: rgba(106, 173, 207, 0.12);
     color: #fff;
 }
 
@@ -701,17 +592,12 @@ body.crt-mode .crt-badge {
     display: flex;
     align-items: center;
     gap: 0;
-    background: var(--bg-secondary, #f5f2ee);
-    border: 1px solid var(--border-color, #e5e5e5);
+    background: var(--bg-secondary, #2a2a2a);
+    border: 1px solid var(--border-color, #3a3a3a);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     font-family: 'VT323', monospace;
-}
-
-body.dark-mode .power-toolbar {
-    background: var(--bg-secondary, #252525);
-    border-color: var(--border-color, #333);
 }
 
 .power-btn {
@@ -725,13 +611,9 @@ body.dark-mode .power-toolbar {
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    border-right: 1px solid var(--border-color, #e5e5e5);
+    border-right: 1px solid var(--border-color, #3a3a3a);
     font-family: 'VT323', monospace;
     line-height: 1;
-}
-
-body.dark-mode .power-btn {
-    border-right-color: var(--border-color, #333);
 }
 
 .power-btn:last-child {
@@ -739,12 +621,12 @@ body.dark-mode .power-btn {
 }
 
 .power-btn:hover {
-    background: rgba(230, 126, 34, 0.1);
-    color: var(--text-primary, #000);
+    background: rgba(106, 173, 207, 0.1);
+    color: var(--text-primary, #e5e5e5);
 }
 
 .power-btn.active {
-    color: #e67e22;
+    color: #6aadcf;
 }
 
 .power-btn svg {
@@ -771,10 +653,6 @@ body.dark-mode .power-btn {
     font-family: 'Monaco', 'Menlo', monospace;
 }
 
-.power-btn .moon-icon { display: inline; }
-.power-btn .sun-icon { display: none; }
-body.dark-mode .power-btn .moon-icon { display: none; }
-body.dark-mode .power-btn .sun-icon { display: inline; }
 
 @media (max-width: 600px) {
     .power-toolbar {
@@ -802,10 +680,7 @@ body.scrolled .terminal-button {
     body:not(.no-transition) {
         animation: none;
     }
-    body.crt-mode {
-        animation: none;
-    }
-    .scroll-reveal {
+.scroll-reveal {
         opacity: 1;
         transform: none;
         transition: none;

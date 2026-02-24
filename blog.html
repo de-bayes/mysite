@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
     <title>Blog - Ryan McComb</title>
+    <script>window.location.replace('index.html#blog');</script>
     <link rel="stylesheet" href="features.css">
     <style>
         * {
@@ -19,26 +20,14 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #faf8f5;
-            color: #000000;
+            background: #1e1e1e;
+            color: #e5e5e5;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
         }
 
-        #grid-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
         .page-container {
-            position: relative;
-            z-index: 1;
             max-width: 800px;
             margin: 0 auto;
             padding: 8rem 2rem 4rem;
@@ -66,7 +55,7 @@
         .nav-dropdown-toggle {
             font-size: 0.75rem;
             font-weight: 400;
-            color: #888888;
+            color: #888;
             text-decoration: none;
             transition: color 0.2s ease;
             letter-spacing: 0.02em;
@@ -77,7 +66,7 @@
         .nav-tabs a.active,
         .nav-dropdown:hover > .nav-dropdown-toggle,
         .nav-dropdown-toggle.has-active {
-            color: #000000;
+            color: #e5e5e5;
         }
 
         /* DROPDOWN */
@@ -106,12 +95,12 @@
             top: calc(100% + 0.5rem);
             right: 0;
             list-style: none;
-            background: #faf8f5;
-            border: 1px solid #e5e5e5;
+            background: #1e1e1e;
+            border: 1px solid #3a3a3a;
             border-radius: 6px;
             padding: 0.4rem 0;
             min-width: 120px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             opacity: 0;
             visibility: hidden;
             transform: translateY(-4px);
@@ -132,7 +121,7 @@
         }
 
         .nav-dropdown-menu li a:hover {
-            background: #f5f2ee;
+            background: #2a2a2a;
         }
 
         /* HAMBURGER MENU */
@@ -154,7 +143,7 @@
         }
 
         .hamburger:hover span {
-            background: #000000;
+            background: #e5e5e5;
         }
 
         .hamburger.active span:nth-child(1) {
@@ -180,11 +169,11 @@
                 right: 0;
                 width: 220px;
                 height: 100vh;
-                background: #faf8f5;
+                background: #1e1e1e;
                 flex-direction: column;
                 padding: 5rem 2rem 2rem;
                 gap: 0.25rem;
-                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
                 transform: translateX(100%);
                 transition: transform 0.3s ease;
             }
@@ -196,7 +185,7 @@
             .nav-dropdown-toggle {
                 font-size: 0.7rem;
                 font-weight: 500;
-                color: #555555;
+                color: #aaaaaa;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
                 display: block;
@@ -234,7 +223,7 @@
         .page-title {
             font-family: 'VT323', monospace;
             font-size: 5rem;
-            color: #e67e22;
+            color: #6aadcf;
             margin-bottom: 0.5rem;
             text-align: center;
         }
@@ -253,16 +242,17 @@
 
         .blog-featured-card {
             position: relative;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #3a3a3a;
+            background: #2a2a2a;
             overflow: hidden;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .blog-featured-card:hover {
-            border-color: #e67e22;
+            border-color: #6aadcf;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
         }
 
         .blog-featured-image {
@@ -285,7 +275,7 @@
             font-family: 'VT323', monospace;
             font-size: 0.8rem;
             color: #fff;
-            background: #e67e22;
+            background: #cf6b6b;
             padding: 0.2rem 0.6rem;
             z-index: 2;
         }
@@ -304,7 +294,7 @@
 
         .blog-featured-body p {
             font-size: 0.95rem;
-            color: #555;
+            color: #aaaaaa;
             line-height: 1.7;
             margin-bottom: 1rem;
         }
@@ -320,14 +310,14 @@
         .blog-tag {
             font-family: 'VT323', monospace;
             font-size: 0.85rem;
-            color: #e67e22;
-            border: 1px solid #e67e22;
+            color: #6aadcf;
+            border: 1px solid #6aadcf;
             padding: 0.1rem 0.5rem;
             transition: all 0.2s;
         }
 
         .blog-tag:hover {
-            background: #e67e22;
+            background: #6aadcf;
             color: #fff;
         }
 
@@ -354,7 +344,8 @@
         }
 
         .blog-card {
-            border: 1px solid #e5e5e5;
+            border: 1px solid #3a3a3a;
+            background: #2a2a2a;
             padding: 1.5rem;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -363,9 +354,9 @@
         }
 
         .blog-card:hover {
-            border-color: #e67e22;
+            border-color: #6aadcf;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
         .blog-card h3 {
@@ -378,7 +369,7 @@
 
         .blog-card p {
             font-size: 0.85rem;
-            color: #666;
+            color: #aaaaaa;
             line-height: 1.6;
             margin-bottom: 1rem;
             flex: 1;
@@ -406,7 +397,7 @@
             align-items: center;
             gap: 0.5rem;
             font-size: 0.85rem;
-            color: #e67e22;
+            color: #6aadcf;
             text-decoration: none;
             margin-bottom: 2rem;
             cursor: pointer;
@@ -420,7 +411,7 @@
         .article-header {
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e5e5e5;
+            border-bottom: 1px solid #3a3a3a;
         }
 
         .article-header h1 {
@@ -442,7 +433,7 @@
         .article-body {
             font-size: 1rem;
             line-height: 1.9;
-            color: #333;
+            color: #cccccc;
         }
 
         .article-body p {
@@ -454,27 +445,27 @@
             font-size: 1.5rem;
             font-weight: 500;
             margin: 2rem 0 1rem;
-            color: #000;
+            color: #e5e5e5;
         }
 
         .article-body blockquote {
-            border-left: 3px solid #e67e22;
+            border-left: 3px solid #6aadcf;
             padding: 1rem 1.5rem;
             margin: 1.5rem 0;
-            background: rgba(230, 126, 34, 0.04);
+            background: rgba(106, 173, 207, 0.04);
             font-style: italic;
-            color: #555;
+            color: #aaaaaa;
         }
 
         .article-body code {
             font-family: 'VT323', monospace;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             padding: 0.15rem 0.4rem;
             font-size: 1.05em;
         }
 
         .article-body a {
-            color: #e67e22;
+            color: #6aadcf;
             text-decoration: underline;
             text-underline-offset: 2px;
         }
@@ -492,31 +483,31 @@
         .read-time {
             font-family: 'VT323', monospace;
             font-size: 0.85rem;
-            color: #e67e22;
+            color: #6aadcf;
         }
 
         /* SECTION DIVIDER */
         .blog-section-label {
             font-family: 'VT323', monospace;
             font-size: 1rem;
-            color: #e67e22;
+            color: #6aadcf;
             letter-spacing: 0.15em;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e5e5e5;
+            border-bottom: 1px solid #3a3a3a;
         }
 
         /* GUESTBOOK SECTION AT BOTTOM */
         .blog-guestbook {
             margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 1px solid #e5e5e5;
+            border-top: 1px solid #3a3a3a;
         }
 
         .blog-guestbook h2 {
             font-family: 'VT323', monospace;
             font-size: 1.5rem;
-            color: #e67e22;
+            color: #6aadcf;
             margin-bottom: 1rem;
         }
 
@@ -531,15 +522,15 @@
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             padding: 0.6rem 0.8rem;
-            border: 1px solid #e5e5e5;
-            background: #fff;
-            color: #333;
+            border: 1px solid #3a3a3a;
+            background: #2a2a2a;
+            color: #cccccc;
             outline: none;
             transition: border-color 0.2s;
         }
 
         .gb-form input:focus, .gb-form textarea:focus {
-            border-color: #e67e22;
+            border-color: #6aadcf;
         }
 
         .gb-form input[name="name"] {
@@ -557,7 +548,7 @@
             font-family: 'VT323', monospace;
             font-size: 1rem;
             padding: 0.5rem 1.2rem;
-            background: #e67e22;
+            background: #6aadcf;
             color: #fff;
             border: none;
             cursor: pointer;
@@ -565,7 +556,7 @@
         }
 
         .gb-submit:hover {
-            background: #d35400;
+            background: #5590ad;
         }
 
         .gb-entries {
@@ -576,8 +567,8 @@
 
         .gb-entry {
             padding: 0.75rem 1rem;
-            border-left: 2px solid #e67e22;
-            background: rgba(230, 126, 34, 0.03);
+            border-left: 2px solid #6aadcf;
+            background: rgba(106, 173, 207, 0.03);
         }
 
         .gb-entry-header {
@@ -599,20 +590,29 @@
 
         .gb-entry-msg {
             font-size: 0.85rem;
-            color: #555;
+            color: #aaaaaa;
         }
 
         .gb-status {
             font-family: 'VT323', monospace;
             font-size: 0.9rem;
-            color: #e67e22;
+            color: #6aadcf;
             margin-top: 0.5rem;
+        }
+
+        .flag-footer {
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .flag-footer img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <canvas id="grid-canvas"></canvas>
-
     <nav>
         <div class="hamburger" onclick="toggleNav()">
             <span></span>
@@ -712,6 +712,8 @@
             <div class="article-body" id="article-body"></div>
         </div>
     </div>
+
+    <div class="flag-footer"><img src="flag-footer.png" alt=""></div>
 
     <script>
         // HAMBURGER
@@ -955,38 +957,6 @@
             body: JSON.stringify({ event: 'pageview', value: 'blog' })
         }).catch(() => {});
 
-        // GRID BACKGROUND
-        (function() {
-            const canvas = document.getElementById('grid-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.04)';
-                ctx.lineWidth = 1;
-                const spacing = 40;
-                for (let x = 0; x <= canvas.width; x += spacing) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, 0);
-                    ctx.lineTo(x, canvas.height);
-                    ctx.stroke();
-                }
-                for (let y = 0; y <= canvas.height; y += spacing) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, y);
-                    ctx.lineTo(canvas.width, y);
-                    ctx.stroke();
-                }
-            }
-            draw();
-        })();
     </script>
     <script src="scroll-hide.js"></script>
 </body>
