@@ -15,18 +15,24 @@
 
         :root {
             --bg-primary: #faf8f5;
+            --bg-secondary: #f5f2ee;
             --text-primary: #000000;
+            --text-secondary: #333333;
             --text-muted: #555555;
             --text-light: #888888;
             --accent: #e67e22;
+            --border-color: rgba(128, 128, 128, 0.15);
         }
 
         body.dark-mode {
             --bg-primary: #1a1a1a;
+            --bg-secondary: #252525;
             --text-primary: #e5e5e5;
+            --text-secondary: #cccccc;
             --text-muted: #aaaaaa;
             --text-light: #888888;
             --accent: #e67e22;
+            --border-color: rgba(128, 128, 128, 0.25);
         }
 
         body {
@@ -38,32 +44,33 @@
             align-items: center;
             justify-content: center;
             -webkit-font-smoothing: antialiased;
-            overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
-            max-width: 680px;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+            overflow-x: hidden;
         }
 
         .error-code {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(8rem, 20vw, 16rem);
+            font-size: clamp(8rem, 22vw, 18rem);
             font-weight: 600;
             line-height: 1;
             letter-spacing: -0.04em;
             color: var(--text-primary);
-            opacity: 0.08;
+            opacity: 0.06;
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -55%);
+            transform: translate(-50%, -50%);
             z-index: 0;
             user-select: none;
             pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
         }
 
         .message {
@@ -71,7 +78,7 @@
             font-size: clamp(1.3rem, 3vw, 1.8rem);
             font-weight: 500;
             line-height: 1.4;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             color: var(--text-primary);
         }
 
@@ -82,12 +89,12 @@
 
         .bayes-box {
             background: var(--bg-primary);
-            border: 1px solid rgba(128, 128, 128, 0.15);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 2rem 2.5rem;
-            margin: 0 auto 2.5rem;
-            display: inline-block;
+            padding: 1.75rem 2rem;
+            margin: 0 auto 1.5rem;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            text-align: center;
         }
 
         .bayes-label {
@@ -97,20 +104,158 @@
             text-transform: uppercase;
             letter-spacing: 0.12em;
             color: var(--text-light);
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
-        .bayes-formula .katex { font-size: 1.6rem; }
+        .bayes-formula .katex { font-size: 1.5rem; }
 
         .bayes-footnote {
             font-family: 'Inter', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-light);
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             font-style: italic;
         }
 
         .bayes-footnote span { color: var(--accent); }
+
+        /* SLIDERS */
+        .sliders-box {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            text-align: left;
+        }
+
+        .slider-group {
+            margin-bottom: 1rem;
+        }
+
+        .slider-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.35rem;
+        }
+
+        .slider-label-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .slider-label-text .katex { font-size: 0.85rem; }
+
+        .slider-value {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            min-width: 3.5rem;
+            text-align: right;
+        }
+
+        .slider-desc {
+            font-size: 0.65rem;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+            font-style: italic;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 3px;
+            background: var(--border-color);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* RESULT */
+        .result-box {
+            background: var(--bg-primary);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.25rem 2rem;
+            margin: 0 auto 2rem;
+            box-shadow: 0 2px 20px rgba(230, 126, 34, 0.08);
+        }
+
+        .result-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-family: 'VT323', monospace;
+            font-size: 2.5rem;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .result-formula {
+            margin-top: 0.5rem;
+        }
+
+        .result-formula .katex { font-size: 1rem; }
+
+        .result-bar-track {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+
+        .result-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .result-verdict {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
 
         .home-link {
             display: inline-block;
@@ -142,6 +287,7 @@
             pointer-events: none;
             user-select: none;
             animation: drift linear infinite;
+            z-index: 0;
         }
 
         @keyframes drift {
@@ -151,8 +297,10 @@
 
         /* Fade in */
         .container { animation: fadeUp 0.8s ease both; }
-        .bayes-box { animation: fadeUp 0.8s ease 0.2s both; }
-        .home-link { animation: fadeUp 0.8s ease 0.4s both; }
+        .bayes-box { animation: fadeUp 0.8s ease 0.15s both; }
+        .sliders-box { animation: fadeUp 0.8s ease 0.3s both; }
+        .result-box { animation: fadeUp 0.8s ease 0.45s both; }
+        .home-link { animation: fadeUp 0.8s ease 0.6s both; }
 
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -160,8 +308,11 @@
         }
 
         @media (max-width: 600px) {
-            .bayes-box { padding: 1.5rem; }
-            .bayes-formula .katex { font-size: 1.2rem; }
+            .bayes-box { padding: 1.25rem; }
+            .sliders-box { padding: 1.25rem; }
+            .result-box { padding: 1rem 1.25rem; }
+            .bayes-formula .katex { font-size: 1.1rem; }
+            .container { padding: 1rem; }
         }
     </style>
 </head>
@@ -197,15 +348,100 @@
             </div>
         </div>
 
+        <div class="sliders-box">
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-label-text" id="ph-label"></span>
+                    <span class="slider-value" id="ph-value">50%</span>
+                </div>
+                <div class="slider-desc">Your prior belief that Ryan is a good programmer</div>
+                <input type="range" id="ph-slider" min="1" max="99" value="50">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-label-text" id="peh-label"></span>
+                    <span class="slider-value" id="peh-value">10%</span>
+                </div>
+                <div class="slider-desc">Chance of a 404 if he IS a good programmer</div>
+                <input type="range" id="peh-slider" min="1" max="99" value="10">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-label-text" id="penh-label"></span>
+                    <span class="slider-value" id="penh-value">60%</span>
+                </div>
+                <div class="slider-desc">Chance of a 404 if he is NOT a good programmer</div>
+                <input type="range" id="penh-slider" min="1" max="99" value="60">
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="result-label">Posterior</div>
+            <div class="result-value" id="posterior-value">14.3%</div>
+            <div class="result-formula" id="posterior-formula"></div>
+            <div class="result-bar-track">
+                <div class="result-bar-fill" id="posterior-bar" style="width: 14.3%"></div>
+            </div>
+            <div class="result-verdict" id="verdict"></div>
+        </div>
+
         <a href="/" class="home-link">Update Your Posterior &rarr; Home</a>
     </div>
 
     <script>
+        // Render main formula
         katex.render(
-            String.raw`P(H \mid E) = \frac{P(E \mid H) \, P(H)}{P(E)}`,
+            String.raw`P(H \mid E) = \frac{P(E \mid H) \, P(H)}{P(E \mid H)\,P(H) + P(E \mid \neg H)\,P(\neg H)}`,
             document.getElementById('bayes'),
             { displayMode: true, throwOnError: false }
         );
+
+        // Render slider labels
+        katex.render('P(H)', document.getElementById('ph-label'), { throwOnError: false });
+        katex.render('P(E \\mid H)', document.getElementById('peh-label'), { throwOnError: false });
+        katex.render('P(E \\mid \\neg H)', document.getElementById('penh-label'), { throwOnError: false });
+
+        const phSlider = document.getElementById('ph-slider');
+        const pehSlider = document.getElementById('peh-slider');
+        const penhSlider = document.getElementById('penh-slider');
+
+        function getVerdict(posterior) {
+            if (posterior >= 0.8) return "Overwhelming evidence of competence. The 404 was clearly... intentional.";
+            if (posterior >= 0.6) return "Still more likely than not. Everyone ships bugs sometimes.";
+            if (posterior >= 0.4) return "Hmm, the evidence is inconclusive. Coin flip territory.";
+            if (posterior >= 0.2) return "Not looking great. But hey, even good programmers have bad days.";
+            return "Yikes. Maybe stick to the liberal arts.";
+        }
+
+        function update() {
+            const pH = phSlider.value / 100;
+            const pEH = pehSlider.value / 100;
+            const pENH = penhSlider.value / 100;
+
+            const pE = pEH * pH + pENH * (1 - pH);
+            const posterior = (pEH * pH) / pE;
+            const pct = (posterior * 100);
+
+            document.getElementById('ph-value').textContent = phSlider.value + '%';
+            document.getElementById('peh-value').textContent = pehSlider.value + '%';
+            document.getElementById('penh-value').textContent = penhSlider.value + '%';
+
+            document.getElementById('posterior-value').textContent = pct.toFixed(1) + '%';
+            document.getElementById('posterior-bar').style.width = pct + '%';
+            document.getElementById('verdict').textContent = getVerdict(posterior);
+
+            // Render the calculation with actual numbers
+            const formula = `P(H \\mid E) = \\frac{${pEH.toFixed(2)} \\times ${pH.toFixed(2)}}{${pEH.toFixed(2)} \\times ${pH.toFixed(2)} + ${pENH.toFixed(2)} \\times ${(1-pH).toFixed(2)}} = ${posterior.toFixed(3)}`;
+            katex.render(formula, document.getElementById('posterior-formula'), { throwOnError: false });
+        }
+
+        phSlider.addEventListener('input', update);
+        pehSlider.addEventListener('input', update);
+        penhSlider.addEventListener('input', update);
+
+        update();
 
         if (localStorage.getItem('darkMode') === 'enabled') {
             document.body.classList.add('dark-mode');
