@@ -48,6 +48,20 @@
             <header class="editorial-hero" id="editorial-hero">
                 <h1 class="editorial-name">RYAN McCOMB</h1>
                 <p class="editorial-tagline" id="editorial-tagline"></p>
+                <div class="hero-data-ticker" id="hero-data-ticker">
+                    <span class="ticker-item"><span class="ticker-label">MANIFOLD</span><span class="ticker-value">#61 / 160K</span></span>
+                    <span class="ticker-item"><span class="ticker-label">IL-09</span><span class="ticker-value">TRACKING</span></span>
+                    <span class="ticker-item"><span class="ticker-label">CALIBRATION</span><span class="ticker-value" id="ticker-cal">--</span></span>
+                </div>
+                <div class="hero-forecast-line">
+                    <svg viewBox="0 0 640 60" preserveAspectRatio="none">
+                        <path class="forecast-area" d="M0,55 L40,50 L80,52 L120,45 L160,42 L200,38 L240,35 L280,30 L320,28 L360,22 L400,20 L440,18 L480,15 L520,12 L560,10 L600,8 L640,5 L640,60 L0,60 Z"/>
+                        <path class="forecast-path" d="M0,55 L40,50 L80,52 L120,45 L160,42 L200,38 L240,35 L280,30 L320,28 L360,22 L400,20 L440,18 L480,15 L520,12 L560,10 L600,8 L640,5"/>
+                        <circle class="forecast-dot" cx="640" cy="5" r="0" style="animation-delay: 4s"/>
+                        <circle class="forecast-dot" cx="320" cy="28" r="0" style="animation-delay: 3.2s"/>
+                        <circle class="forecast-dot" cx="160" cy="42" r="0" style="animation-delay: 2.5s"/>
+                    </svg>
+                </div>
             </header>
 
             <!-- Essay-style about section with inline links -->
@@ -302,7 +316,32 @@
             });
         })();
 
-        // 3. Scroll-triggered reveal animations
+        // 3. Data ticker stagger reveal + calibration counter
+        (function initDataTicker() {
+            const items = document.querySelectorAll('.ticker-item');
+            if (!items.length) return;
+            // Stagger reveal after typewriter finishes (~3s)
+            items.forEach((item, i) => {
+                setTimeout(() => item.classList.add('visible'), 3200 + i * 300);
+            });
+            // Animate calibration number counting up
+            const calEl = document.getElementById('ticker-cal');
+            if (calEl) {
+                setTimeout(() => {
+                    let current = 0;
+                    const target = 82;
+                    const step = () => {
+                        current += Math.ceil((target - current) / 6);
+                        if (current >= target) { calEl.textContent = target + '%'; return; }
+                        calEl.textContent = current + '%';
+                        requestAnimationFrame(step);
+                    };
+                    step();
+                }, 4000);
+            }
+        })();
+
+        // 4. Scroll-triggered reveal animations
         (function initScrollReveal() {
             const reveals = document.querySelectorAll('.scroll-reveal');
             if (!reveals.length) return;
