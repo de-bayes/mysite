@@ -279,12 +279,31 @@ app.post('/api/guestbook', (req, res) => {
 
     const entries = readJSON(GUESTBOOK_FILE, []);
     entries.unshift({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         name,
         message,
         date: new Date().toISOString()
     });
     if (entries.length > GUESTBOOK_MAX) entries.length = GUESTBOOK_MAX;
     writeJSON(GUESTBOOK_FILE, entries);
+    return res.json({ ok: true });
+});
+
+app.put('/api/guestbook/:id', requireAuth, (req, res) => {
+    const entries = readJSON(GUESTBOOK_FILE, []);
+    const idx = entries.findIndex(e => e.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: 'Not found' });
+    if (req.body.name) entries[idx].name = String(req.body.name).trim().slice(0, 40);
+    if (req.body.message) entries[idx].message = String(req.body.message).trim().slice(0, 200);
+    writeJSON(GUESTBOOK_FILE, entries);
+    return res.json({ ok: true });
+});
+
+app.delete('/api/guestbook/:id', requireAuth, (req, res) => {
+    const entries = readJSON(GUESTBOOK_FILE, []);
+    const filtered = entries.filter(e => e.id !== req.params.id);
+    if (filtered.length === entries.length) return res.status(404).json({ error: 'Not found' });
+    writeJSON(GUESTBOOK_FILE, filtered);
     return res.json({ ok: true });
 });
 
