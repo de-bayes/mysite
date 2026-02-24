@@ -85,8 +85,8 @@
     <div id="site-content">
 
         <!-- FIVEY FOX MASCOT -->
-        <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;z-index:900;opacity:0;transform:translateY(20px) scale(0.8);transition:opacity 0.6s ease, transform 0.6s ease;">
-            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:72px;cursor:grab;user-select:none;opacity:0.9;transition:opacity 0.2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));">
+        <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;">
+            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:72px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
             <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Click and hold to drag me around!</p>
@@ -646,12 +646,11 @@
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
-        // Fivey Fox delayed entrance
+        // Fivey Fox delayed entrance (stickerSlap animation)
         function showFivey() {
             const mascot = document.getElementById('mascot-corner');
             if (mascot) {
-                mascot.style.opacity = '1';
-                mascot.style.transform = 'translateY(0) scale(1)';
+                mascot.classList.add('slap-in');
             }
         }
 
