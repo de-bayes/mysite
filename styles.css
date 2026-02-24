@@ -5,22 +5,22 @@
 /* --- Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap');
 
-/* --- CSS Variables — Charcoal-first (dark default) --- */
+/* --- CSS Variables — Light-first (white default) --- */
 :root {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #222222;
-    --bg-card: #242424;
-    --text-primary: #e8e8e8;
-    --text-secondary: #a0a0a0;
-    --text-muted: #666666;
-    --text-light: #444444;
-    --accent: #d0d0d0;
-    --accent-hover: #ffffff;
-    --border-color: #333333;
-    --rule-color: #444444;
-    --nav-bg: rgba(26, 26, 26, 0.92);
-    --nav-menu-bg: #222222;
-    --nav-menu-shadow: rgba(0, 0, 0, 0.4);
+    --bg-primary: #fafafa;
+    --bg-secondary: #f0f0f0;
+    --bg-card: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-muted: #8a8a8a;
+    --text-light: #b0b0b0;
+    --accent: #3c3c3c;
+    --accent-hover: #1a1a1a;
+    --border-color: #e0e0e0;
+    --rule-color: #1a1a1a;
+    --nav-bg: rgba(250, 250, 250, 0.92);
+    --nav-menu-bg: #ffffff;
+    --nav-menu-shadow: rgba(0, 0, 0, 0.1);
     --photo-hint-bg: rgba(0, 0, 0, 0.7);
 
     --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
@@ -40,21 +40,21 @@
     --border-weight: 1px;
 }
 
-[data-theme="light"] {
-    --bg-primary: #fafafa;
-    --bg-secondary: #f0f0f0;
-    --bg-card: #ffffff;
-    --text-primary: #1a1a1a;
-    --text-secondary: #4a4a4a;
-    --text-muted: #8a8a8a;
-    --text-light: #b0b0b0;
-    --accent: #3c3c3c;
-    --accent-hover: #1a1a1a;
-    --border-color: #e0e0e0;
-    --rule-color: #1a1a1a;
-    --nav-bg: rgba(250, 250, 250, 0.92);
-    --nav-menu-bg: #ffffff;
-    --nav-menu-shadow: rgba(0, 0, 0, 0.1);
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #222222;
+    --bg-card: #242424;
+    --text-primary: #e8e8e8;
+    --text-secondary: #a0a0a0;
+    --text-muted: #666666;
+    --text-light: #444444;
+    --accent: #d0d0d0;
+    --accent-hover: #ffffff;
+    --border-color: #333333;
+    --rule-color: #444444;
+    --nav-bg: rgba(26, 26, 26, 0.92);
+    --nav-menu-bg: #222222;
+    --nav-menu-shadow: rgba(0, 0, 0, 0.4);
 }
 
 /* --- Reset & Base --- */
@@ -2106,4 +2106,196 @@ body.scrolled .site-nav { box-shadow: none; }
 }
 .page-enter {
     animation: pageEnter 0.5s ease forwards;
+}
+
+
+/* =============================================
+   MINIMAL REDESIGN — Typography-first layout
+   ============================================= */
+
+/* Hide old layout elements */
+.site-nav { display: none !important; }
+.hero { display: none !important; }
+.editorial { display: none !important; }
+.terminal-section { display: none !important; }
+.bottom-cta { display: none !important; }
+
+/* Loader overrides — hide matrix, keep URL flash */
+.loader-rain { display: none !important; }
+.matmul { display: none !important; }
+.loader-progress { display: none !important; }
+#loader-text { display: none !important; }
+
+.loader-url span {
+    animation: urlFlash 0.6s ease-in-out infinite alternate !important;
+}
+.loader-url span:nth-child(odd) {
+    animation-name: urlFlash !important;
+    animation-delay: 0s;
+    color: #e63946;
+}
+.loader-url span:nth-child(even) {
+    animation-name: urlFlash !important;
+    animation-delay: 0.3s;
+    color: #457b9d;
+}
+@keyframes urlFlash {
+    0% { color: #e63946; text-shadow: 0 0 20px #e63946; }
+    100% { color: #457b9d; text-shadow: 0 0 20px #457b9d; }
+}
+
+/* --- Minimal Page Container --- */
+.minimal-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+    min-height: 100vh;
+}
+
+/* --- Header --- */
+.minimal-header {
+    margin-bottom: 4rem;
+}
+
+.minimal-name {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.minimal-tagline {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* --- Separator --- */
+.minimal-sep {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 0;
+}
+
+/* --- Navigation Links --- */
+.minimal-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.minimal-link {
+    display: block;
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: color 0.12s ease, background-color 0.12s ease;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.minimal-link:hover {
+    color: var(--bg-primary);
+    background-color: var(--text-primary);
+    text-decoration: none;
+}
+
+.minimal-link-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.minimal-link-arrow {
+    font-size: 1.1rem;
+    opacity: 0.4;
+    transition: opacity 0.12s ease;
+}
+
+.minimal-link:hover .minimal-link-arrow {
+    opacity: 1;
+}
+
+.minimal-link-desc {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+    line-height: 1.5;
+    transition: color 0.12s ease;
+}
+
+.minimal-link:hover .minimal-link-desc {
+    color: var(--bg-secondary);
+}
+
+/* --- Footer --- */
+.minimal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 0 1rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.minimal-footer-left {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.minimal-footer-left a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.minimal-footer-left a:hover {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.minimal-theme-toggle {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    line-height: 1;
+}
+
+.minimal-theme-toggle:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+    .minimal-page {
+        padding: 5rem 1.25rem 3rem;
+    }
+    .minimal-name {
+        font-size: 2.2rem;
+    }
+    .minimal-link {
+        padding: 1.25rem 1rem;
+    }
+    .minimal-link-title {
+        font-size: 1.25rem;
+    }
+    .minimal-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
 }
