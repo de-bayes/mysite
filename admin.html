@@ -20,7 +20,9 @@
         .login-box h1 {
             font-family: var(--font-serif);
             font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;
+            color: #0000FF;
         }
+        [data-theme="dark"] .login-box h1 { color: #5c7cfa; }
         .login-box p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem; }
         .login-input {
             width: 100%; padding: 0.75rem 1rem; border: var(--border-weight) solid var(--border-color);
@@ -28,13 +30,14 @@
             color: var(--text-primary); outline: none; margin-bottom: 1rem;
             font-family: var(--font-sans);
         }
-        .login-input:focus { border-color: var(--accent); }
+        .login-input:focus { border-color: #0000FF; }
         .login-btn {
-            width: 100%; padding: 0.75rem; background: var(--accent); color: #fff;
+            width: 100%; padding: 0.75rem; background: #0000FF; color: #fff;
             border: none; font-size: 0.85rem; font-weight: 500;
             cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase;
             font-family: var(--font-sans);
         }
+        [data-theme="dark"] .login-btn { background: #0000DD; }
         .login-btn:hover { opacity: 0.9; }
         .login-error { color: #b07070; font-size: 0.8rem; margin-top: 0.5rem; }
 
@@ -44,17 +47,18 @@
 
         .dash-header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 1.5rem 2rem; border-bottom: var(--border-weight) solid var(--border-color);
+            padding: 1rem 2rem; background: #0000FF;
         }
+        [data-theme="dark"] .dash-header { background: #0000DD; }
         .dash-header h1 {
             font-family: var(--font-serif);
-            font-size: 1.5rem; font-weight: 600;
+            font-size: 1.3rem; font-weight: 700; color: #ffffff;
         }
         .dash-header-actions { display: flex; gap: 0.75rem; align-items: center; }
         .dash-header a {
-            font-size: 0.75rem; color: var(--text-muted); text-decoration: none;
+            font-size: 0.75rem; color: rgba(255,255,255,0.7); text-decoration: none;
         }
-        .dash-header a:hover { color: var(--accent); text-decoration: none; }
+        .dash-header a:hover { color: #ffffff; text-decoration: none; }
 
         .dash-tabs {
             display: flex; gap: 0; border-bottom: var(--border-weight) solid var(--border-color);
@@ -68,7 +72,8 @@
             font-family: var(--font-sans);
         }
         .dash-tab:hover { color: var(--text-primary); }
-        .dash-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .dash-tab.active { color: #0000FF; border-bottom-color: #0000FF; }
+        [data-theme="dark"] .dash-tab.active { color: #5c7cfa; border-bottom-color: #5c7cfa; }
 
         .dash-content { max-width: 900px; margin: 0 auto; padding: 2rem; }
 
@@ -88,7 +93,10 @@
             color: var(--text-primary); font-family: inherit; outline: none;
         }
         .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: var(--accent);
+            border-color: #0000FF;
+        }
+        [data-theme="dark"] .form-input:focus, [data-theme="dark"] .form-select:focus, [data-theme="dark"] .form-textarea:focus {
+            border-color: #5c7cfa;
         }
         .form-textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
         .form-row { display: flex; gap: 1rem; }
@@ -102,7 +110,8 @@
             font-family: var(--font-sans);
         }
         .btn:hover { opacity: 0.85; }
-        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary { background: #0000FF; color: #fff; }
+        [data-theme="dark"] .btn-primary { background: #0000DD; }
         .btn-danger { background: #b07070; color: #fff; }
         .btn-ghost {
             background: transparent; color: var(--text-muted);
@@ -166,7 +175,8 @@
             font-size: 1rem; display: flex; align-items: center; justify-content: center;
             transition: all 0.15s;
         }
-        .spice-btn.active { border-color: var(--accent); background: var(--accent); filter: none; }
+        .spice-btn.active { border-color: #0000FF; background: #0000FF; filter: none; }
+        [data-theme="dark"] .spice-btn.active { border-color: #0000DD; background: #0000DD; }
         .spice-btn:not(.active) { filter: grayscale(1); opacity: 0.4; }
 
         @media (max-width: 600px) {
@@ -204,7 +214,7 @@
             <h1>Admin Dashboard</h1>
             <div class="dash-header-actions">
                 <a href="index.html">Back to site</a>
-                <button class="btn btn-ghost" onclick="logout()" style="font-size:0.75rem">Logout</button>
+                <button class="btn btn-ghost" onclick="logout()" style="font-size:0.75rem;color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.4)">Logout</button>
             </div>
         </div>
 

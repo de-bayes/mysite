@@ -14,9 +14,49 @@
         body {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Blue top bar --- */
+        .error-top-bar {
+            background: #0000FF;
+            padding: 0.7rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+        [data-theme="dark"] .error-top-bar { background: #0000DD; }
+
+        .error-top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+        .error-top-bar h1 {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.04em;
+            margin: 0;
+        }
+        .error-top-bar a {
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .error-top-bar a:hover { color: #ffffff; text-decoration: none; }
+
+        .error-main {
+            flex: 1;
+            display: flex;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
         }
 
         .error-code {
@@ -25,7 +65,7 @@
             font-weight: 600;
             line-height: 1;
             letter-spacing: -0.04em;
-            color: var(--text-primary);
+            color: #0000FF;
             opacity: 0.06;
             position: fixed;
             top: 50%;
@@ -35,6 +75,7 @@
             user-select: none;
             pointer-events: none;
         }
+        [data-theme="dark"] .error-code { color: #5c7cfa; }
 
         .container {
             text-align: center;
@@ -55,9 +96,10 @@
         }
 
         .message em {
-            color: var(--accent);
+            color: #0000FF;
             font-style: italic;
         }
+        [data-theme="dark"] .message em { color: #5c7cfa; }
 
         .bayes-box {
             background: var(--bg-card);
@@ -87,7 +129,8 @@
             font-style: italic;
         }
 
-        .bayes-footnote span { color: var(--accent); }
+        .bayes-footnote span { color: #0000FF; }
+        [data-theme="dark"] .bayes-footnote span { color: #5c7cfa; }
 
         .sliders-box {
             background: var(--bg-card);
@@ -113,10 +156,11 @@
         .slider-value {
             font-family: var(--font-mono);
             font-size: 1.1rem;
-            color: var(--accent);
+            color: #0000FF;
             min-width: 3.5rem;
             text-align: right;
         }
+        [data-theme="dark"] .slider-value { color: #5c7cfa; }
 
         .slider-desc {
             font-size: 0.65rem;
@@ -142,7 +186,7 @@
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            background: var(--accent);
+            background: #0000FF;
             cursor: pointer;
             transition: transform 0.15s ease;
         }
@@ -153,17 +197,18 @@
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            background: var(--accent);
+            background: #0000FF;
             cursor: pointer;
             border: none;
         }
 
         .result-box {
             background: var(--bg-card);
-            border: 2px solid var(--accent);
+            border: 2px solid #0000FF;
             padding: 1.25rem 2rem;
             margin: 0 auto 2rem;
         }
+        [data-theme="dark"] .result-box { border-color: #5c7cfa; }
 
         .result-label {
             font-size: 0.7rem;
@@ -177,9 +222,10 @@
         .result-value {
             font-family: var(--font-mono);
             font-size: 2.5rem;
-            color: var(--accent);
+            color: #0000FF;
             line-height: 1;
         }
+        [data-theme="dark"] .result-value { color: #5c7cfa; }
 
         .result-formula { margin-top: 0.5rem; }
         .result-formula .katex { font-size: 1rem; }
@@ -195,10 +241,11 @@
 
         .result-bar-fill {
             height: 100%;
-            background: var(--accent);
+            background: #0000FF;
             border-radius: 3px;
             transition: width 0.3s ease;
         }
+        [data-theme="dark"] .result-bar-fill { background: #5c7cfa; }
 
         .result-verdict {
             font-size: 0.75rem;
@@ -211,21 +258,24 @@
             display: inline-block;
             font-family: var(--font-sans);
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--text-muted);
+            color: #0000FF;
             text-decoration: none;
-            border: var(--border-weight) solid var(--border-color);
-            padding: 0.7rem 2rem;
+            border: 1px solid #0000FF;
+            padding: 0.5rem 1.2rem;
             transition: all 0.25s ease;
         }
+        [data-theme="dark"] .home-link { color: #5c7cfa; border-color: #5c7cfa; }
 
         .home-link:hover {
-            color: var(--accent);
-            border-color: var(--accent);
+            color: #ffffff;
+            background: #0000FF;
+            border-color: #0000FF;
             text-decoration: none;
         }
+        [data-theme="dark"] .home-link:hover { background: #0000DD; border-color: #0000DD; }
 
         .particle {
             position: fixed;
@@ -242,6 +292,45 @@
         @keyframes drift {
             0% { transform: translateY(100vh) rotate(0deg); }
             100% { transform: translateY(-20vh) rotate(360deg); }
+        }
+
+        /* --- Editorial Footer --- */
+        .error-editorial-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .error-editorial-footer nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .error-editorial-footer nav a {
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.2s ease;
+        }
+
+        .error-editorial-footer nav a:hover {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .error-editorial-footer .footer-copy {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
         }
 
         .container { animation: fadeUp 0.8s ease both; }
@@ -265,6 +354,14 @@
     </style>
 </head>
 <body>
+    <div class="error-top-bar">
+        <div class="error-top-bar-left">
+            <h1>404</h1>
+            <a href="/">&larr; Back to site</a>
+        </div>
+    </div>
+
+    <div class="error-main">
     <div class="error-code">404</div>
 
     <script>
@@ -336,6 +433,19 @@
 
         <a href="/" class="home-link">Update Your Posterior &rarr; Home</a>
     </div>
+    </div>
+
+    <footer class="error-editorial-footer">
+        <nav>
+            <a href="/">Home</a>
+            <a href="resume.html">Resume</a>
+            <a href="/#experience">Work</a>
+            <a href="/#projects">Projects</a>
+            <a href="/#blog">Writing</a>
+            <a href="/#contact">Contact</a>
+        </nav>
+        <div class="footer-copy">&copy; 2026 Ryan McComb &middot; Evanston, IL</div>
+    </footer>
 
     <script>
         // Theme support — respect same toggle as main site
