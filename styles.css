@@ -1582,6 +1582,75 @@ body.scrolled .site-nav { box-shadow: none; }
 [data-theme="dark"] .forecast-section-label { color: #5c7cfa; border-bottom-color: #5c7cfa; }
 [data-theme="dark"] .forecast-card:hover { border-color: #5c7cfa; }
 
+/* --- Profit Chart --- */
+.forecast-chart-wrap {
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    background: var(--bg-card);
+    transition: border-color 0.25s ease;
+}
+.forecast-chart-wrap:hover { border-color: #2244cc; }
+.forecast-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+.forecast-chart-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.forecast-chart-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+}
+.forecast-chart-stat {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #16a34a;
+    letter-spacing: -0.02em;
+}
+.forecast-chart-stat.negative { color: #dc2626; }
+.forecast-chart-container {
+    position: relative;
+    width: 100%;
+    height: 240px;
+}
+.forecast-chart-container canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.forecast-chart-range {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+.forecast-chart-tooltip {
+    display: none;
+    position: absolute;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-primary);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+[data-theme="dark"] .forecast-chart-wrap:hover { border-color: #5c7cfa; }
+
 /* --- Photos expanded --- */
 .featured-film {
     text-align: center;
@@ -2399,9 +2468,12 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #2244cc;
     color: #ffffff;
     padding: 3rem 2.5rem;
+    padding-bottom: 4rem;
     margin-bottom: 3rem;
     will-change: transform;
     transform-style: preserve-3d;
+    position: relative;
+    overflow: hidden;
 }
 
 /* --- Scroll Reveal --- */
@@ -2433,7 +2505,7 @@ body.scrolled .site-nav { box-shadow: none; }
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.5;
     width: fit-content;
-    margin: 0 auto;
+    margin: 0;
     position: relative;
 }
 .editorial-tagline.typing::after {
@@ -2601,6 +2673,117 @@ body.scrolled .site-nav { box-shadow: none; }
     border-color: #2244cc;
 }
 
+/* --- Forecast Line in Hero --- */
+.hero-forecast-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    opacity: 0.15;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.hero-forecast-line svg {
+    width: 100%;
+    height: 100%;
+}
+
+.hero-forecast-line .forecast-path {
+    stroke: #ffffff;
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    animation: draw-forecast 3s ease forwards 1.5s;
+}
+
+.hero-forecast-line .forecast-area {
+    fill: rgba(255, 255, 255, 0.08);
+    opacity: 0;
+    animation: fade-area 1s ease forwards 3s;
+}
+
+.hero-forecast-line .forecast-dot {
+    fill: #ffffff;
+    opacity: 0;
+    animation: pop-dot 0.3s ease forwards;
+}
+
+@keyframes draw-forecast {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes fade-area {
+    to { opacity: 1; }
+}
+
+@keyframes pop-dot {
+    0% { r: 0; opacity: 0; }
+    100% { r: 3; opacity: 1; }
+}
+
+/* --- Data Ticker --- */
+.hero-data-ticker {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05em;
+    overflow: hidden;
+}
+
+.ticker-item {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    white-space: nowrap;
+}
+
+.ticker-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ticker-item .ticker-label {
+    color: rgba(255, 255, 255, 0.35);
+    margin-right: 0.3rem;
+}
+
+.ticker-item .ticker-value {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* --- Chart-line Nav Hover --- */
+.editorial-sitemap a {
+    position: relative;
+    overflow: hidden;
+}
+
+.editorial-sitemap a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #2244cc;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.editorial-sitemap a:hover::after {
+    transform: scaleX(1);
+}
+
+[data-theme="dark"] .editorial-sitemap a::after {
+    background: #5c7cfa;
+}
+
 /* --- Responsive --- */
 @media (max-width: 600px) {
     .editorial-page {
@@ -2614,5 +2797,12 @@ body.scrolled .site-nav { box-shadow: none; }
     }
     .editorial-sitemap {
         gap: 0.75rem 1.5rem;
+    }
+    .hero-data-ticker {
+        gap: 1rem;
+        font-size: 0.65rem;
+    }
+    .hero-forecast-line {
+        height: 40px;
     }
 }
