@@ -56,24 +56,11 @@
             <a href="/" class="nav-brand">Ryan McComb</a>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#about" onclick="event.preventDefault();expandCard('about')">About</a></li>
-                <li class="nav-dropdown">
-                    <button class="nav-dropdown-toggle" onclick="this.parentElement.classList.toggle('active')">Work <span class="nav-chevron">&#9660;</span></button>
-                    <div class="nav-dropdown-menu">
-                        <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Experience</a>
-                        <a href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
-                        <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>
-                    </div>
-                </li>
-                <li class="nav-dropdown">
-                    <button class="nav-dropdown-toggle" onclick="this.parentElement.classList.toggle('active')">Writing <span class="nav-chevron">&#9660;</span></button>
-                    <div class="nav-dropdown-menu">
-                        <a href="#blog" onclick="event.preventDefault();expandCard('blog')">Blog</a>
-                        <a href="#hottakes" onclick="event.preventDefault();expandCard('hottakes')">Hot Takes</a>
-                    </div>
-                </li>
+                <li><a href="#experience" onclick="event.preventDefault();expandCard('experience')">Work</a></li>
+                <li><a href="#blog" onclick="event.preventDefault();expandCard('blog')">Writing</a></li>
                 <li><a href="#photos" onclick="event.preventDefault();expandCard('photos')">Photos</a></li>
                 <li><a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a></li>
-                <li><button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">&#9790;</button></li>
+                <li><button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9788;</button></li>
             </ul>
             <button class="hamburger" onclick="toggleNav()" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
@@ -86,7 +73,7 @@
 
         <!-- FIVEY FOX MASCOT -->
         <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;">
-            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:72px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
+            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:48px;cursor:grab;user-select:none;transition:transform 0.2s ease;opacity:0.5;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
             <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Click and hold to drag me around!</p>
@@ -102,14 +89,13 @@
         </div>
         <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
 
-        <!-- HERO SECTION — Landing page -->
-        <section class="hero scroll-reveal" style="position:relative;">
+        <!-- HERO SECTION — Wide photo, stacked -->
+        <section class="hero scroll-reveal">
+            <div class="hero-photo-wrap">
+                <img src="ddddd.jpg" alt="Ryan McComb" class="hero-photo">
+            </div>
             <div class="hero-content">
-                <h1 class="hero-title">Ryan<br>McComb</h1>
-                <hr class="hero-rule">
-                <p class="hero-position">Student Fellow &mdash; Data Science &amp; Decision Desk</p>
-                <p class="hero-position-org">VoteHub</p>
-                <p class="hero-position-org">Evanston, Illinois</p>
+                <h1 class="hero-title">Ryan McComb</h1>
                 <p class="hero-subtitle">Data, politics, and forecasting.</p>
                 <div class="hero-meta">
                     <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
@@ -118,9 +104,6 @@
                     <span class="hero-meta-sep">&middot;</span>
                     <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
                 </div>
-            </div>
-            <div class="hero-photo-wrap">
-                <img src="ddddd.jpg" alt="Ryan McComb" class="hero-photo">
             </div>
         </section>
 
@@ -140,7 +123,7 @@
                             </div>
                             <img src="ddddd.jpg" alt="Ryan" class="about-card-photo">
                         </div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- COUNTDOWN -->
@@ -154,7 +137,7 @@
                             <div class="cd-unit"><div class="cd-number" id="cd-m">--</div><div class="cd-label-text">min</div></div>
                             <div class="cd-unit"><div class="cd-number" id="cd-s">--</div><div class="cd-label-text">sec</div></div>
                         </div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- EXPERIENCE (span 2) -->
@@ -175,7 +158,7 @@
                                 <span style="color:var(--text-muted);font-size:0.8rem;">Biss for Congress &middot; Aug 2025</span>
                             </div>
                         </div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- HOT TAKE -->
@@ -184,7 +167,7 @@
                         <div class="take-preview" id="hottake-preview-text">"Loading a spicy take..."</div>
                         <div class="take-preview-spice" id="hottake-preview-spice"></div>
                         <div class="take-preview-footer" id="hottake-preview-footer">+ more takes &rarr;</div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- PROJECTS (span 2) -->
@@ -209,7 +192,7 @@
                                 <div style="font-size:0.8rem;color:var(--text-muted);">P2P lending for Manifold</div>
                             </div>
                         </div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- FILM -->
@@ -218,7 +201,7 @@
                         <div class="card-title" style="font-size:1.15rem;">Cabin Life</div>
                         <p class="card-text">A short film from Christmas 2025&ndash;2026.</p>
                         <div class="card-meta" style="margin-top:0.75rem;">Watch &rarr;</div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- BLOG (span 2) -->
@@ -240,7 +223,7 @@
                             </div>
                         </div>
                         <div class="card-meta" style="margin-top:0.75rem;">Read all &rarr;</div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- CONTACT -->
@@ -253,7 +236,7 @@
                             <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank" onclick="event.stopPropagation()" style="font-size:0.88rem;">LinkedIn</a>
                             <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" onclick="event.stopPropagation()" style="font-size:0.88rem;">Metaculus</a>
                         </div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- FORECASTING -->
@@ -262,7 +245,7 @@
                         <div class="card-title" style="font-size:1.15rem;">IL-09 Primary</div>
                         <p class="card-text">Open-source election forecasting for Illinois' 9th Congressional District.</p>
                         <div style="margin-top:0.75rem;"><a href="https://il9.org" target="_blank" onclick="event.stopPropagation()" style="font-size:0.85rem;">il9.org &nearr;</a></div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- EDUCATION -->
@@ -274,7 +257,7 @@
                             <span style="font-family:var(--font-serif);font-size:1.8rem;font-weight:700;color:var(--text-primary);">3.98</span>
                             <span style="font-size:0.75rem;color:var(--text-muted);margin-left:0.25rem;">UW GPA</span>
                         </div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
 
                     <!-- RESUME -->
@@ -283,7 +266,7 @@
                         <div class="card-title" style="font-size:1.15rem;">View Resume</div>
                         <p class="card-text">Experience, education, skills, and projects &mdash; all on one page.</p>
                         <div class="card-meta" style="margin-top:0.75rem;">Open PDF &rarr;</div>
-                        <span class="card-arrow">&nearr;</span>
+                        <span class="card-arrow">&rarr;</span>
                     </div>
                 </div>
             </div>
@@ -296,20 +279,14 @@
             </div>
             <div class="terminal-embed" onclick="openTerminal()">
                 <div class="terminal-embed-header">
-                    <div class="terminal-embed-dots">
-                        <div class="terminal-embed-dot red"></div>
-                        <div class="terminal-embed-dot yellow"></div>
-                        <div class="terminal-embed-dot green"></div>
-                    </div>
-                    <span class="terminal-embed-title">terminal &mdash; ryan@mccomb</span>
+                    <span class="terminal-embed-title">ryan@mccomb</span>
                 </div>
                 <div class="terminal-embed-body">
-                    <div><span class="terminal-embed-prompt">ryan@mccomb:~$</span> /info</div>
-                    <div style="color:#888;margin-top:0.5rem;">Interactive terminal with 20+ commands.</div>
-                    <div style="color:#888;">Games, quizzes, easter eggs, and more.</div>
-                    <div style="margin-top:1rem;"><span class="terminal-embed-prompt">ryan@mccomb:~$</span> <span class="terminal-embed-cursor"></span></div>
+                    <div><span class="terminal-embed-prompt">~$</span> /info</div>
+                    <div style="color:#555;margin-top:0.5rem;">Interactive terminal with 20+ commands.</div>
+                    <div style="margin-top:1rem;"><span class="terminal-embed-prompt">~$</span> <span class="terminal-embed-cursor"></span></div>
                 </div>
-                <div class="terminal-embed-hint">Click to open the interactive terminal</div>
+                <div class="terminal-embed-hint">Click to open</div>
             </div>
         </section>
 
@@ -320,35 +297,12 @@
 
         <!-- FOOTER -->
         <footer class="site-footer">
-            <div class="footer-top">
-                <div class="footer-sitemap">
-                    <div class="footer-sitemap-col">
-                        <div class="footer-sitemap-heading">Navigate</div>
-                        <a href="#about" onclick="event.preventDefault();expandCard('about')">About</a>
-                        <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Experience</a>
-                        <a href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
-                    </div>
-                    <div class="footer-sitemap-col">
-                        <div class="footer-sitemap-heading">Writing</div>
-                        <a href="#blog" onclick="event.preventDefault();expandCard('blog')">Blog</a>
-                        <a href="#hottakes" onclick="event.preventDefault();expandCard('hottakes')">Hot Takes</a>
-                        <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>
-                    </div>
-                    <div class="footer-sitemap-col">
-                        <div class="footer-sitemap-heading">Connect</div>
-                        <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
-                        <a href="https://x.com/bayes_pr" target="_blank">Twitter / X</a>
-                        <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
-                    </div>
-                </div>
-            </div>
             <div class="footer-bottom">
                 <div class="footer-left">&copy; 2026 Ryan McComb</div>
                 <div class="footer-right">
                     <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
                     <a href="https://x.com/bayes_pr" target="_blank">X</a>
                     <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
-                    <img src="flag-footer.png" alt="" class="footer-flag">
                 </div>
             </div>
         </footer>
@@ -439,20 +393,26 @@
     </div>
 
     <script>
-        // THEME TOGGLE
+        // THEME TOGGLE — dark (charcoal) is default
         function toggleTheme() {
             const html = document.documentElement;
-            const isDark = html.getAttribute('data-theme') === 'dark';
-            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            localStorage.setItem('theme', isDark ? 'light' : 'dark');
-            document.getElementById('theme-toggle').textContent = isDark ? '\u263E' : '\u2600';
+            const isLight = html.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('theme-toggle').textContent = '\u2600';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('theme-toggle').textContent = '\u263E';
+            }
         }
         (function() {
             const saved = localStorage.getItem('theme');
-            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.setAttribute('data-theme', 'dark');
+            if (saved === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
                 var btn = document.getElementById('theme-toggle');
-                if (btn) btn.textContent = '\u2600';
+                if (btn) btn.textContent = '\u263E';
             }
         })();
     </script>
