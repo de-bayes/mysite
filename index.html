@@ -3707,36 +3707,46 @@
                 </div>
             `,
             projects: () => `
-                <h1 class="page-title">Projects</h1>
+                <div class="page-hero">
+                    <h1>Projects</h1>
+                    <p>Things I've built and shipped.</p>
+                </div>
                 <div class="projects-grid">
-                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                    <article class="project-card">
+                        <div class="project-card-label">Data Science</div>
                         <h3>IL9CAST</h3>
-                        <p class="project-description">Open-source political forecasting project modeling the Illinois 9th Congressional District. Features data analytics, polling aggregation, and election predictions.</p>
-                        <div class="project-tags"><span class="tag">Data Science</span><span class="tag">Python</span><span class="tag">Open Source</span></div>
-                        <a href="https://il9.org" target="_blank" class="project-visit" onclick="event.stopPropagation()">Visit Project &#8599;</a>
+                        <p class="project-description">Open-source political forecasting project modeling the Illinois 9th Congressional District. Polling aggregation, fundamentals modeling, and probabilistic projections.</p>
+                        <div class="project-tags"><span class="tag">Python</span><span class="tag">Data Science</span><span class="tag">Open Source</span></div>
+                        <a href="https://il9.org" target="_blank" class="project-visit" onclick="event.stopPropagation()">il9.org &#8599;</a>
                     </article>
-                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                    <article class="project-card">
+                        <div class="project-card-label">Media</div>
                         <h3>Project 2028 Podcast</h3>
                         <p class="project-description">A podcast exploring political science and politics.</p>
                         <div class="project-tags"><span class="tag">Podcast</span><span class="tag">Political Science</span></div>
                         <a href="https://podcasts.apple.com/us/podcast/project-2028/id1753137875" target="_blank" class="project-visit" onclick="event.stopPropagation()">Listen &#8599;</a>
                     </article>
-                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                    <article class="project-card">
+                        <div class="project-card-label">Journalism</div>
                         <h3>The Evanstonian</h3>
                         <p class="project-description">Collection of my journalism work covering local politics, ETHS, D65, and community issues.</p>
                         <div class="project-tags"><span class="tag">Journalism</span><span class="tag">Writing</span></div>
                         <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="project-visit" onclick="event.stopPropagation()">Read Articles &#8599;</a>
                     </article>
-                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                    <article class="project-card">
+                        <div class="project-card-label">Web Dev</div>
                         <h3>ManiFed</h3>
                         <p class="project-description">Peer-to-peer lending platform built for the Manifold Markets community.</p>
                         <div class="project-tags"><span class="tag">Web Development</span><span class="tag">Finance</span></div>
-                        <a href="https://manifed.markets" target="_blank" class="project-visit" onclick="event.stopPropagation()">Launch Product &#8599;</a>
+                        <a href="https://manifed.markets" target="_blank" class="project-visit" onclick="event.stopPropagation()">manifed.markets &#8599;</a>
                     </article>
                 </div>
             `,
             photos: () => `
-                <h1 class="page-title">Photos &amp; Film</h1>
+                <div class="page-hero">
+                    <h1>Photos &amp; Film</h1>
+                    <p>Shooting on film and digital.</p>
+                </div>
                 <div class="featured-film">
                     <h2>Cabin Life</h2>
                     <iframe class="film-video" src="https://drive.google.com/file/d/1cGeVPasHX9805irZzNxSby3EdJdb4xOA/preview" allow="autoplay" allowfullscreen></iframe>
@@ -3745,7 +3755,10 @@
                 <p style="color:var(--text-muted);font-size:0.85rem;margin-top:2rem;text-align:center">Photo gallery coming soon.</p>
             `,
             contact: () => `
-                <h1 class="page-title">Contact</h1>
+                <div class="page-hero">
+                    <h1>Contact</h1>
+                    <p>Get in touch.</p>
+                </div>
                 <div class="contact-links">
                     <a href="mailto:rymccmcomb1@icloud.com" class="contact-link"><h3>Email</h3><p>rymccmcomb1@icloud.com</p></a>
                     <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank" class="contact-link"><h3>LinkedIn</h3><p>Ryan McComb</p></a>
@@ -3755,40 +3768,54 @@
                 </div>
             `,
             forecasting: () => `
-                <h1 class="page-title">Forecasting</h1>
-                <div style="max-width:600px;margin:0 auto">
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem">I trade on play-money prediction markets and build websites for real-money ones. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
-                    <div class="project-card" style="margin-bottom:1.5rem;cursor:default">
-                        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:0.5rem">IL9CAST</h3>
-                        <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:1rem">Open-source political forecasting for the Illinois 9th Congressional District. Features polling aggregation, fundamentals-based modeling, and probabilistic seat projections.</p>
+                <div class="page-hero">
+                    <h1>Forecasting</h1>
+                    <p>Prediction markets, modeling, and calibrated beliefs.</p>
+                </div>
+                <div class="forecast-body">
+                    <p class="forecast-intro">I trade on play-money prediction markets and build websites for real-money ones. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
+
+                    <div class="forecast-section-label">Featured Project</div>
+                    <div class="forecast-card">
+                        <h3>IL9CAST</h3>
+                        <p>Open-source political forecasting for the Illinois 9th Congressional District. Polling aggregation, fundamentals-based modeling, and probabilistic seat projections.</p>
                         <div class="project-tags"><span class="tag">Python</span><span class="tag">Data Science</span><span class="tag">Open Source</span></div>
-                        <a href="https://il9.org" target="_blank" style="display:inline-block;margin-top:1rem;color:#7a8a9a;font-weight:500;font-size:0.9rem;text-decoration:none">Visit il9.org &#8599;</a>
+                        <a href="https://il9.org" target="_blank" class="tl-link">il9.org &#8599;</a>
                     </div>
-                    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin:2rem 0 1rem;color:var(--text-secondary)">Prediction Markets</h2>
-                    <div class="contact-links">
-                        <a href="https://manifold.markets/JeromeHPowell" target="_blank" class="contact-link"><h3>Manifold Markets</h3><p>@JeromeHPowell &mdash; #61 / 160,000 traders (top 0.04% volume)</p></a>
-                        <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" class="contact-link"><h3>Metaculus</h3><p>Calibrated forecaster</p></a>
+
+                    <div class="forecast-section-label">Prediction Markets</div>
+                    <div class="forecast-card">
+                        <h3>Manifold Markets</h3>
+                        <p>@JeromeHPowell &mdash; #61 / 160,000 traders (top 0.04% volume). Top 0.5% in profit.</p>
+                        <a href="https://manifold.markets/JeromeHPowell" target="_blank" class="tl-link">Profile &#8599;</a>
                     </div>
-                    <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:1rem">Top 0.5% in profit on Manifold Markets</p>
+                    <div class="forecast-card">
+                        <h3>Metaculus</h3>
+                        <p>Calibrated forecaster.</p>
+                        <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" class="tl-link">Profile &#8599;</a>
+                    </div>
                 </div>
             `,
             hottakes: () => {
-                return `<h1 class="page-title">Hot Takes</h1>
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem">Opinions I'm willing to defend. Spiciness rated 1&ndash;5.</p>
+                return `<div class="page-hero">
+                    <h1>Hot Takes</h1>
+                    <p>Opinions I'm willing to defend. Spiciness rated 1&ndash;5.</p>
+                </div>
                     <div class="filter-bar" id="expand-filter-bar"><button class="filter-pill active" data-cat="all">All</button></div>
                     <div class="takes-wall" id="expand-takes-wall">${renderTakesWall(allTakesData)}</div>`;
             },
             countdowns: () => {
-                return `<h1 class="page-title">Countdowns</h1>
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem">Things I'm counting down to (and things that already happened).</p>
+                return `<div class="page-hero">
+                    <h1>Countdowns</h1>
+                    <p>Things I'm counting down to (and things that already happened).</p>
+                </div>
                     <div class="countdown-grid" id="expand-countdown-grid">${renderCountdownCards(allCountdownsData)}</div>`;
             },
             blog: () => {
                 return `<div class="blog-list" id="expand-blog-list">
-                    <div class="blog-hero-header">
-                        <div class="blog-hero-label">Blog</div>
-                        <h1 class="blog-hero-title">Writing &amp; Ideas</h1>
-                        <p class="blog-hero-desc">Thoughts on politics, data, prediction markets, and building things.</p>
+                    <div class="page-hero">
+                        <h1>Writing &amp; Ideas</h1>
+                        <p>Thoughts on politics, data, prediction markets, and building things.</p>
                     </div>
                     <div class="blog-featured">
                         <div class="blog-featured-card" onclick="openExpandedArticle('peoples-edict')">
