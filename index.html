@@ -50,24 +50,6 @@
         </div>
     </div>
 
-    <!-- NAVIGATION -->
-    <nav class="site-nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-brand">Ryan McComb</a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#about" onclick="event.preventDefault();expandCard('about')">About</a></li>
-                <li><a href="#experience" onclick="event.preventDefault();expandCard('experience')">Work</a></li>
-                <li><a href="#blog" onclick="event.preventDefault();expandCard('blog')">Writing</a></li>
-                <li><a href="#photos" onclick="event.preventDefault();expandCard('photos')">Photos</a></li>
-                <li><a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a></li>
-                <li><button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9788;</button></li>
-            </ul>
-            <button class="hamburger" onclick="toggleNav()" aria-label="Toggle menu">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </nav>
-
     <!-- SITE CONTENT -->
     <div id="site-content">
 
@@ -80,7 +62,7 @@
             </div>
         </div>
 
-        <!-- TERMINAL TOGGLE BUTTON (hidden, terminal accessed via scroll section) -->
+        <!-- TERMINAL TOGGLE BUTTON (hidden) -->
         <div class="terminal-button" onclick="openTerminal()" style="position:fixed;bottom:20px;right:20px;width:40px;height:40px;display:none;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border-color);border-radius:50%;cursor:pointer;z-index:999;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.06);" title="Open Terminal">&#9000;</div>
 
         <!-- POWER USER HINT -->
@@ -89,223 +71,47 @@
         </div>
         <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
 
-        <!-- HERO SECTION — Wide photo, stacked -->
-        <section class="hero scroll-reveal">
-            <div class="hero-photo-wrap">
-                <img src="ddddd.jpg" alt="Ryan McComb" class="hero-photo">
-            </div>
-            <div class="hero-content">
-                <h1 class="hero-title">Ryan McComb</h1>
-                <p class="hero-subtitle">Data, politics, and forecasting.</p>
-                <div class="hero-meta">
-                    <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
-                    <span class="hero-meta-sep">&middot;</span>
-                    <a href="https://x.com/bayes_pr" target="_blank">Twitter</a>
-                    <span class="hero-meta-sep">&middot;</span>
-                    <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
+        <!-- MINIMAL LAYOUT -->
+        <div class="minimal-page">
+            <header class="minimal-header">
+                <h1 class="minimal-name">Ryan McComb</h1>
+                <p class="minimal-tagline">Data, politics, and forecasting.</p>
+            </header>
+
+            <hr class="minimal-sep">
+
+            <nav class="minimal-nav">
+                <a class="minimal-link" href="#experience" onclick="event.preventDefault();expandCard('experience')">
+                    <div class="minimal-link-title">Work <span class="minimal-link-arrow">&rarr;</span></div>
+                    <div class="minimal-link-desc">VoteHub, IL9CAST, Biss for Congress, The Evanstonian.</div>
+                </a>
+                <a class="minimal-link" href="#projects" onclick="event.preventDefault();expandCard('projects')">
+                    <div class="minimal-link-title">Projects <span class="minimal-link-arrow">&rarr;</span></div>
+                    <div class="minimal-link-desc">IL9CAST, Project 2028, ManiFed, and more.</div>
+                </a>
+                <a class="minimal-link" href="#blog" onclick="event.preventDefault();expandCard('blog')">
+                    <div class="minimal-link-title">Writing <span class="minimal-link-arrow">&rarr;</span></div>
+                    <div class="minimal-link-desc">Essays on politics, forecasting, and data.</div>
+                </a>
+                <a class="minimal-link" href="#photos" onclick="event.preventDefault();expandCard('photos')">
+                    <div class="minimal-link-title">Photos <span class="minimal-link-arrow">&rarr;</span></div>
+                    <div class="minimal-link-desc">Film photography and visual work.</div>
+                </a>
+                <a class="minimal-link" href="#contact" onclick="event.preventDefault();expandCard('contact')">
+                    <div class="minimal-link-title">Contact <span class="minimal-link-arrow">&rarr;</span></div>
+                    <div class="minimal-link-desc">Email, GitHub, LinkedIn, and more.</div>
+                </a>
+            </nav>
+
+            <hr class="minimal-sep">
+
+            <footer class="minimal-footer">
+                <div class="minimal-footer-left">
+                    <span>&copy; 2026 Ryan McComb</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- EDITORIAL SECTIONS -->
-        <section class="editorial">
-
-            <!-- FEATURED: ABOUT + PROJECTS -->
-            <div class="editorial-section scroll-reveal">
-                <div class="cards-grid">
-                    <!-- ABOUT (span 2) -->
-                    <div class="card card-span-2" data-card="about" onclick="expandCard('about')">
-                        <div class="about-card">
-                            <div>
-                                <div class="card-meta">ABOUT</div>
-                                <div class="card-title">Ryan McComb</div>
-                                <p class="card-text">Student Fellow &mdash; Data Science &amp; Decision Desk<br><span style="font-size:0.82rem;color:var(--text-muted);">VoteHub &middot; 2025 &ndash; Present</span></p>
-                            </div>
-                            <img src="ddddd.jpg" alt="Ryan" class="about-card-photo">
-                        </div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- COUNTDOWN -->
-                    <div class="card" data-card="countdowns" onclick="expandCard('countdowns')">
-                        <div class="card-meta">COUNTDOWN</div>
-                        <div class="cd-preview-title" id="cd-preview-title">Loading...</div>
-                        <div class="cd-preview-date" id="cd-preview-date"></div>
-                        <div class="cd-timer">
-                            <div class="cd-unit"><div class="cd-number" id="cd-d">--</div><div class="cd-label-text">days</div></div>
-                            <div class="cd-unit"><div class="cd-number" id="cd-h">--</div><div class="cd-label-text">hrs</div></div>
-                            <div class="cd-unit"><div class="cd-number" id="cd-m">--</div><div class="cd-label-text">min</div></div>
-                            <div class="cd-unit"><div class="cd-number" id="cd-s">--</div><div class="cd-label-text">sec</div></div>
-                        </div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- EXPERIENCE (span 2) -->
-                    <div class="card card-span-2" data-card="experience" onclick="expandCard('experience')">
-                        <div class="card-meta">EXPERIENCE</div>
-                        <div class="card-title" style="font-size:1.15rem;">Where I've worked</div>
-                        <div style="margin-top:0.75rem;display:flex;flex-direction:column;gap:0.5rem;">
-                            <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                                <span style="color:var(--text-primary);font-weight:500;">Student Fellow</span>
-                                <span style="color:var(--text-muted);font-size:0.8rem;">VoteHub &middot; Mar 2026</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                                <span style="color:var(--text-primary);font-weight:500;">Data Analyst</span>
-                                <span style="color:var(--text-muted);font-size:0.8rem;">IL9CAST &middot; Dec 2025</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                                <span style="color:var(--text-primary);font-weight:500;">Vol. Finance Lead</span>
-                                <span style="color:var(--text-muted);font-size:0.8rem;">Biss for Congress &middot; Aug 2025</span>
-                            </div>
-                        </div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- HOT TAKE -->
-                    <div class="card" data-card="hottakes" onclick="expandCard('hottakes')">
-                        <div class="card-meta">HOT TAKE</div>
-                        <div class="take-preview" id="hottake-preview-text">"Loading a spicy take..."</div>
-                        <div class="take-preview-spice" id="hottake-preview-spice"></div>
-                        <div class="take-preview-footer" id="hottake-preview-footer">+ more takes &rarr;</div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- PROJECTS (span 2) -->
-                    <div class="card card-span-2" data-card="projects" onclick="expandCard('projects')">
-                        <div class="card-meta">PROJECTS</div>
-                        <div class="card-title" style="font-size:1.15rem;">Things I've built</div>
-                        <div style="margin-top:0.75rem;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-                            <div>
-                                <div style="font-weight:600;font-size:0.92rem;color:var(--text-primary);">IL9CAST</div>
-                                <div style="font-size:0.8rem;color:var(--text-muted);">Open-source political forecasting</div>
-                            </div>
-                            <div>
-                                <div style="font-weight:600;font-size:0.92rem;color:var(--text-primary);">Project 2028</div>
-                                <div style="font-size:0.8rem;color:var(--text-muted);">Political science podcast</div>
-                            </div>
-                            <div>
-                                <div style="font-weight:600;font-size:0.92rem;color:var(--text-primary);">The Evanstonian</div>
-                                <div style="font-size:0.8rem;color:var(--text-muted);">Local politics journalism</div>
-                            </div>
-                            <div>
-                                <div style="font-weight:600;font-size:0.92rem;color:var(--text-primary);">ManiFed</div>
-                                <div style="font-size:0.8rem;color:var(--text-muted);">P2P lending for Manifold</div>
-                            </div>
-                        </div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- FILM -->
-                    <div class="card" data-card="photos" onclick="expandCard('photos')">
-                        <div class="card-meta">FILM</div>
-                        <div class="card-title" style="font-size:1.15rem;">Cabin Life</div>
-                        <p class="card-text">A short film from Christmas 2025&ndash;2026.</p>
-                        <div class="card-meta" style="margin-top:0.75rem;">Watch &rarr;</div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- BLOG (span 2) -->
-                    <div class="card card-span-2" data-card="blog" onclick="expandCard('blog')">
-                        <div class="card-meta">BLOG</div>
-                        <div class="card-title" style="font-size:1.15rem;">Essays &amp; writing</div>
-                        <div style="margin-top:0.75rem;display:flex;flex-direction:column;gap:0.4rem;">
-                            <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                                <span style="color:var(--text-primary);">People's Edict</span>
-                                <span style="color:var(--text-muted);font-size:0.78rem;">May 2025</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                                <span style="color:var(--text-primary);">The Median Voter Theory</span>
-                                <span style="color:var(--text-muted);font-size:0.78rem;">Jan 2025</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                                <span style="color:var(--text-primary);">NSA Surveillance</span>
-                                <span style="color:var(--text-muted);font-size:0.78rem;">Sep 2024</span>
-                            </div>
-                        </div>
-                        <div class="card-meta" style="margin-top:0.75rem;">Read all &rarr;</div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- CONTACT -->
-                    <div class="card" data-card="contact" onclick="expandCard('contact')">
-                        <div class="card-meta">CONTACT</div>
-                        <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:0.35rem;">
-                            <a href="mailto:rymccmcomb1@icloud.com" onclick="event.stopPropagation()" style="font-size:0.88rem;">Email</a>
-                            <a href="https://github.com/de-bayes" target="_blank" onclick="event.stopPropagation()" style="font-size:0.88rem;">GitHub</a>
-                            <a href="https://manifold.markets/JeromeHPowell" target="_blank" onclick="event.stopPropagation()" style="font-size:0.88rem;">Manifold</a>
-                            <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank" onclick="event.stopPropagation()" style="font-size:0.88rem;">LinkedIn</a>
-                            <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" onclick="event.stopPropagation()" style="font-size:0.88rem;">Metaculus</a>
-                        </div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- FORECASTING -->
-                    <div class="card" data-card="forecasting" onclick="expandCard('forecasting')">
-                        <div class="card-meta" style="color:var(--accent);">FORECASTING</div>
-                        <div class="card-title" style="font-size:1.15rem;">IL-09 Primary</div>
-                        <p class="card-text">Open-source election forecasting for Illinois' 9th Congressional District.</p>
-                        <div style="margin-top:0.75rem;"><a href="https://il9.org" target="_blank" onclick="event.stopPropagation()" style="font-size:0.85rem;">il9.org &nearr;</a></div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- EDUCATION -->
-                    <div class="card" data-card="education" onclick="expandCard('experience')">
-                        <div class="card-meta">EDUCATION</div>
-                        <div class="card-title" style="font-size:1.05rem;">Evanston Township HS</div>
-                        <p class="card-text">Class of 2026</p>
-                        <div style="margin-top:0.75rem;">
-                            <span style="font-family:var(--font-serif);font-size:1.8rem;font-weight:700;color:var(--text-primary);">3.98</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);margin-left:0.25rem;">UW GPA</span>
-                        </div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-
-                    <!-- RESUME -->
-                    <div class="card" onclick="window.open('resume.html','_blank')">
-                        <div class="card-meta">RESUME</div>
-                        <div class="card-title" style="font-size:1.15rem;">View Resume</div>
-                        <p class="card-text">Experience, education, skills, and projects &mdash; all on one page.</p>
-                        <div class="card-meta" style="margin-top:0.75rem;">Open PDF &rarr;</div>
-                        <span class="card-arrow">&rarr;</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TERMINAL SECTION -->
-        <section class="terminal-section scroll-reveal">
-            <div class="terminal-section-header">
-                <h2 class="terminal-section-title">Terminal</h2>
-            </div>
-            <div class="terminal-embed" onclick="openTerminal()">
-                <div class="terminal-embed-header">
-                    <span class="terminal-embed-title">ryan@mccomb</span>
-                </div>
-                <div class="terminal-embed-body">
-                    <div><span class="terminal-embed-prompt">~$</span> /info</div>
-                    <div style="color:#555;margin-top:0.5rem;">Interactive terminal with 20+ commands.</div>
-                    <div style="margin-top:1rem;"><span class="terminal-embed-prompt">~$</span> <span class="terminal-embed-cursor"></span></div>
-                </div>
-                <div class="terminal-embed-hint">Click to open</div>
-            </div>
-        </section>
-
-        <!-- BOTTOM CTA -->
-        <div class="bottom-cta scroll-reveal">
-            <a href="#contact" class="bottom-cta-btn" onclick="event.preventDefault();expandCard('contact')">Get in touch &rarr;</a>
+                <button class="minimal-theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9790;</button>
+            </footer>
         </div>
-
-        <!-- FOOTER -->
-        <footer class="site-footer">
-            <div class="footer-bottom">
-                <div class="footer-left">&copy; 2026 Ryan McComb</div>
-                <div class="footer-right">
-                    <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
-                    <a href="https://x.com/bayes_pr" target="_blank">X</a>
-                    <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
-                </div>
-            </div>
-        </footer>
 
         <!-- EXPAND OVERLAY -->
         <div id="expand-overlay" class="expand-overlay">
@@ -393,26 +199,26 @@
     </div>
 
     <script>
-        // THEME TOGGLE — dark (charcoal) is default
+        // THEME TOGGLE — light (white) is default
         function toggleTheme() {
             const html = document.documentElement;
-            const isLight = html.getAttribute('data-theme') === 'light';
-            if (isLight) {
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            if (isDark) {
                 html.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'dark');
-                document.getElementById('theme-toggle').textContent = '\u2600';
-            } else {
-                html.setAttribute('data-theme', 'light');
                 localStorage.setItem('theme', 'light');
                 document.getElementById('theme-toggle').textContent = '\u263E';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('theme-toggle').textContent = '\u2600';
             }
         }
         (function() {
             const saved = localStorage.getItem('theme');
-            if (saved === 'light') {
-                document.documentElement.setAttribute('data-theme', 'light');
+            if (saved === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
                 var btn = document.getElementById('theme-toggle');
-                if (btn) btn.textContent = '\u263E';
+                if (btn) btn.textContent = '\u2600';
             }
         })();
     </script>
@@ -602,7 +408,7 @@
             clearInterval(progressInterval);
             setTimeout(showFivey, 2000);
         } else {
-            setTimeout(finishLoader, 3000);
+            setTimeout(finishLoader, 2500);
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
