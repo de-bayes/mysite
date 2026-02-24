@@ -427,8 +427,6 @@
         let lastY = 0;
         let lastTime = 0;
         let animationId = null;
-        let currentRotation = -2; // starting rotation in degrees
-        let angularVelocity = 0;
 
         // Particle trail system
         const particles = [];
@@ -644,9 +642,8 @@
             mascot.style.left = newX + 'px';
             mascot.style.top = newY + 'px';
 
-            // Tilt mascot in drag direction
-            const tilt = Math.max(-25, Math.min(25, velocityX * 2));
-            mascotImg.style.transform = `scale(1.2) rotate(${tilt}deg)`;
+            // Keep sticker flat while dragging
+            mascotImg.style.transform = `scale(1.15) rotate(-2deg)`;
 
             localStorage.setItem('fiveyPosition', JSON.stringify({ x: newX, y: newY }));
         }
@@ -655,9 +652,6 @@
             if (!isDragging) return;
             isDragging = false;
             mascot.classList.remove('dragging');
-
-            // Set initial angular velocity from throw direction
-            angularVelocity = velocityX * 1.5;
 
             animatePhysics();
         }
@@ -682,42 +676,29 @@
         });
 
         function animatePhysics() {
-            const friction = 0.985;       // Much less air friction — Fivey carries momentum
-            const gravity = 0.4;          // Gentle gravity pulling down
+            const friction = 0.985;       // Low friction — sticker slides with real momentum
             const bounceFactor = 0.65;    // Energy retained on bounce
             const minVelocity = 0.3;      // Stop threshold
-            const angularFriction = 0.96; // Spin decay
             let frameCount = 0;
 
             function animate() {
                 let x = parseFloat(mascot.style.left);
                 let y = parseFloat(mascot.style.top);
 
-                // Apply gravity
-                velocityY += gravity;
+                // No gravity — sticker slides flat like on a desk
 
                 // Apply velocity
                 x += velocityX;
                 y += velocityY;
 
-                // Apply air friction
+                // Apply friction
                 velocityX *= friction;
                 velocityY *= friction;
 
-                // Spin
-                currentRotation += angularVelocity * 0.1;
-                angularVelocity *= angularFriction;
-
-                // Squash & stretch based on velocity
                 const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-                const stretchFactor = Math.min(speed / 30, 0.3);
-                const moveAngle = Math.atan2(velocityY, velocityX);
-                const scaleX = 1 + stretchFactor;
-                const scaleY = 1 - stretchFactor * 0.5;
 
-                // Apply transform with rotation, squash, stretch
-                mascotImg.style.transform = `rotate(${currentRotation}deg) scaleX(${scaleX}) scaleY(${scaleY})`;
-                mascotImg.style.transformOrigin = 'center center';
+                // Sticker stays flat — no warping, no spin
+                mascotImg.style.transform = 'rotate(-2deg)';
 
                 // Get mascot dimensions
                 const rect = mascot.getBoundingClientRect();
@@ -730,7 +711,6 @@
                     x = 0;
                     const impactSpeed = Math.abs(velocityX);
                     velocityX = Math.abs(velocityX) * bounceFactor;
-                    angularVelocity = -velocityY * 2;
                     spawnParticles(0, y + height / 2, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
                     screenShake(impactSpeed);
                     bounced = true;
@@ -738,7 +718,6 @@
                     x = window.innerWidth - width;
                     const impactSpeed = Math.abs(velocityX);
                     velocityX = -Math.abs(velocityX) * bounceFactor;
-                    angularVelocity = velocityY * 2;
                     spawnParticles(window.innerWidth, y + height / 2, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
                     screenShake(impactSpeed);
                     bounced = true;
@@ -748,7 +727,6 @@
                     y = 0;
                     const impactSpeed = Math.abs(velocityY);
                     velocityY = Math.abs(velocityY) * bounceFactor;
-                    angularVelocity = velocityX * 2;
                     spawnParticles(x + width / 2, 0, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
                     screenShake(impactSpeed);
                     bounced = true;
@@ -756,15 +734,13 @@
                     y = window.innerHeight - height;
                     const impactSpeed = Math.abs(velocityY);
                     velocityY = -Math.abs(velocityY) * bounceFactor;
-                    angularVelocity = -velocityX * 2;
                     spawnParticles(x + width / 2, window.innerHeight, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
                     screenShake(impactSpeed);
                     bounced = true;
                 }
 
-                // Squash on bounce frame + update bounce counter
+                // Update bounce counter
                 if (bounced) {
-                    mascotImg.style.transform = `rotate(${currentRotation}deg) scale(1.3, 0.7)`;
                     ensureParticleLoop();
                     window.fiveyBounceCount++;
                     if (speed > window.fiveyMaxSpeed) window.fiveyMaxSpeed = speed;
@@ -789,14 +765,13 @@
                 // Save position
                 localStorage.setItem('fiveyPosition', JSON.stringify({ x, y }));
 
-                // Continue animation if still moving meaningfully
+                // Continue animation if still moving
                 if (speed > minVelocity) {
                     animationId = requestAnimationFrame(animate);
                 } else {
-                    // Settle: reset transform gently
                     velocityX = 0;
                     velocityY = 0;
-                    mascotImg.style.transform = `rotate(${currentRotation % 360}deg)`;
+                    mascotImg.style.transform = 'rotate(-2deg)';
                     animationId = null;
                 }
             }
