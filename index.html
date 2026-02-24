@@ -30,7 +30,7 @@
 
         <!-- FIVEY FOX MASCOT -->
         <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;">
-            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:110px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
+            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:150px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
             <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Grab and throw me! I have real physics now.</p>
@@ -51,7 +51,7 @@
                 <div class="hero-data-ticker" id="hero-data-ticker">
                     <span class="ticker-item"><span class="ticker-label">MANIFOLD</span><span class="ticker-value">#61 / 160K</span></span>
                     <span class="ticker-item"><span class="ticker-label">IL-09</span><span class="ticker-value">TRACKING</span></span>
-                    <span class="ticker-item"><span class="ticker-label">CALIBRATION</span><span class="ticker-value" id="ticker-cal">--</span></span>
+                    <span class="ticker-item"><span class="ticker-label">TOP</span><span class="ticker-value" id="ticker-cal">--</span></span>
                 </div>
                 <div class="hero-forecast-line">
                     <svg viewBox="0 0 640 60" preserveAspectRatio="none">
@@ -324,17 +324,16 @@
             items.forEach((item, i) => {
                 setTimeout(() => item.classList.add('visible'), 3200 + i * 300);
             });
-            // Animate calibration number counting up
+            // Animate top % counting down
             const calEl = document.getElementById('ticker-cal');
             if (calEl) {
                 setTimeout(() => {
-                    let current = 0;
-                    const target = 82;
+                    const frames = [5, 3, 1.5, 0.8, 0.4, 0.2, 0.1, 0.06, 0.04];
+                    let i = 0;
                     const step = () => {
-                        current += Math.ceil((target - current) / 6);
-                        if (current >= target) { calEl.textContent = target + '%'; return; }
-                        calEl.textContent = current + '%';
-                        requestAnimationFrame(step);
+                        calEl.textContent = frames[i] + '%';
+                        i++;
+                        if (i < frames.length) setTimeout(step, 120);
                     };
                     step();
                 }, 4000);
@@ -659,11 +658,11 @@
             const deltaTime = currentTime - lastTime;
 
             if (deltaTime > 0) {
-                // Smoothed velocity with higher multiplier for more throw momentum
-                const newVX = (newX - lastX) / deltaTime * 15;
-                const newVY = (newY - lastY) / deltaTime * 15;
-                velocityX = velocityX * 0.3 + newVX * 0.7;
-                velocityY = velocityY * 0.3 + newVY * 0.7;
+                // Smoothed velocity — moderate throw momentum
+                const newVX = (newX - lastX) / deltaTime * 10;
+                const newVY = (newY - lastY) / deltaTime * 10;
+                velocityX = velocityX * 0.4 + newVX * 0.6;
+                velocityY = velocityY * 0.4 + newVY * 0.6;
             }
 
             lastX = newX;
@@ -707,8 +706,8 @@
         });
 
         function animatePhysics() {
-            const friction = 0.985;       // Low friction — sticker slides with real momentum
-            const bounceFactor = 0.65;    // Energy retained on bounce
+            const friction = 0.955;       // Higher friction — sticker drags and slows quickly
+            const bounceFactor = 0.45;    // Less energy retained on bounce
             const minVelocity = 0.3;      // Stop threshold
             let frameCount = 0;
 
