@@ -85,16 +85,16 @@
     <div id="site-content">
 
         <!-- FIVEY FOX MASCOT -->
-        <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;z-index:900;opacity:0;transform:translateY(20px) scale(0.8);transition:opacity 0.6s ease, transform 0.6s ease;">
-            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:72px;cursor:grab;user-select:none;opacity:0.9;transition:opacity 0.2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));">
+        <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;">
+            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:72px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
             <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Click and hold to drag me around!</p>
             </div>
         </div>
 
-        <!-- TERMINAL TOGGLE BUTTON -->
-        <div class="terminal-button" onclick="openTerminal()" style="position:fixed;bottom:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border-color);border-radius:50%;cursor:pointer;z-index:999;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.06);" title="Open Terminal">&#9000;</div>
+        <!-- TERMINAL TOGGLE BUTTON (hidden, terminal accessed via scroll section) -->
+        <div class="terminal-button" onclick="openTerminal()" style="position:fixed;bottom:20px;right:20px;width:40px;height:40px;display:none;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border-color);border-radius:50%;cursor:pointer;z-index:999;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.06);" title="Open Terminal">&#9000;</div>
 
         <!-- POWER USER HINT -->
         <div class="power-hint">
@@ -102,21 +102,25 @@
         </div>
         <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
 
-        <!-- HERO SECTION -->
-        <section class="hero scroll-reveal">
+        <!-- HERO SECTION — Landing page -->
+        <section class="hero scroll-reveal" style="position:relative;">
             <div class="hero-content">
-                <h1 class="hero-title">Ryan McComb</h1>
+                <h1 class="hero-title">Ryan<br>McComb</h1>
                 <hr class="hero-rule">
-                <p class="hero-subtitle">Data, politics, and <strong>forecasting.</strong></p>
+                <p class="hero-position">Student Fellow &mdash; Data Science &amp; Decision Desk</p>
+                <p class="hero-position-org">VoteHub</p>
+                <p class="hero-position-org">Evanston, Illinois</p>
+                <p class="hero-subtitle">Data, politics, and forecasting.</p>
                 <div class="hero-meta">
-                    <span>Evanston, Illinois</span>
-                    <span class="hero-meta-sep">&middot;</span>
                     <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
                     <span class="hero-meta-sep">&middot;</span>
                     <a href="https://x.com/bayes_pr" target="_blank">Twitter</a>
                     <span class="hero-meta-sep">&middot;</span>
                     <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
                 </div>
+            </div>
+            <div class="hero-photo-wrap">
+                <img src="ddddd.jpg" alt="Ryan McComb" class="hero-photo">
             </div>
         </section>
 
@@ -282,6 +286,30 @@
                         <span class="card-arrow">&nearr;</span>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- TERMINAL SECTION -->
+        <section class="terminal-section scroll-reveal">
+            <div class="terminal-section-header">
+                <h2 class="terminal-section-title">Terminal</h2>
+            </div>
+            <div class="terminal-embed" onclick="openTerminal()">
+                <div class="terminal-embed-header">
+                    <div class="terminal-embed-dots">
+                        <div class="terminal-embed-dot red"></div>
+                        <div class="terminal-embed-dot yellow"></div>
+                        <div class="terminal-embed-dot green"></div>
+                    </div>
+                    <span class="terminal-embed-title">terminal &mdash; ryan@mccomb</span>
+                </div>
+                <div class="terminal-embed-body">
+                    <div><span class="terminal-embed-prompt">ryan@mccomb:~$</span> /info</div>
+                    <div style="color:#888;margin-top:0.5rem;">Interactive terminal with 20+ commands.</div>
+                    <div style="color:#888;">Games, quizzes, easter eggs, and more.</div>
+                    <div style="margin-top:1rem;"><span class="terminal-embed-prompt">ryan@mccomb:~$</span> <span class="terminal-embed-cursor"></span></div>
+                </div>
+                <div class="terminal-embed-hint">Click to open the interactive terminal</div>
             </div>
         </section>
 
@@ -618,12 +646,11 @@
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
-        // Fivey Fox delayed entrance
+        // Fivey Fox delayed entrance (stickerSlap animation)
         function showFivey() {
             const mascot = document.getElementById('mascot-corner');
             if (mascot) {
-                mascot.style.opacity = '1';
-                mascot.style.transform = 'translateY(0) scale(1)';
+                mascot.classList.add('slap-in');
             }
         }
 

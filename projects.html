@@ -67,7 +67,7 @@
         .page-title {
             font-family: 'VT323', monospace;
             font-size: clamp(2.5rem, 5vw, 4rem);
-            color: #e67e22;
+            color: #3c3c3c;
             margin-bottom: 2.5rem;
             text-align: center;
         }
@@ -263,13 +263,13 @@
         }
 
         .project-card:hover {
-            border-color: #e67e22;
-            box-shadow: 0 8px 24px rgba(230, 126, 34, 0.12);
+            border-color: #3c3c3c;
+            box-shadow: 0 8px 24px rgba(60, 60, 60, 0.12);
         }
 
         .project-card.expanded {
-            border-color: #e67e22;
-            box-shadow: 0 8px 24px rgba(230, 126, 34, 0.15);
+            border-color: #3c3c3c;
+            box-shadow: 0 8px 24px rgba(60, 60, 60, 0.15);
         }
 
         .project-card h3 {
@@ -318,8 +318,8 @@
         .tag {
             font-size: 0.75rem;
             padding: 0.25rem 0.6rem;
-            background: rgba(230, 126, 34, 0.1);
-            color: #e67e22;
+            background: rgba(60, 60, 60, 0.1);
+            color: #3c3c3c;
             border-radius: 6px;
         }
 
@@ -327,7 +327,7 @@
             margin-top: auto;
             font-size: 0.9rem;
             font-weight: 500;
-            color: #e67e22;
+            color: #3c3c3c;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -336,7 +336,7 @@
         }
 
         .project-visit:hover {
-            color: #cf6d17;
+            color: #2a2a2a;
         }
 
         .project-hint {
@@ -600,7 +600,7 @@
         document.getElementById('cmd-palette-input').addEventListener('keydown',e=>{if(e.key==='Escape'){closeCmd();e.preventDefault();}else if(e.key==='ArrowDown'){e.preventDefault();cmdIdx=Math.min(cmdIdx+1,cmdFiltered.length-1);renderCmd();}else if(e.key==='ArrowUp'){e.preventDefault();cmdIdx=Math.max(cmdIdx-1,0);renderCmd();}else if(e.key==='Enter'){e.preventDefault();if(cmdFiltered[cmdIdx]){closeCmd();cmdFiltered[cmdIdx].action();}}});
         document.getElementById('cmd-palette-overlay').addEventListener('click',e=>{if(e.target.id==='cmd-palette-overlay')closeCmd();});
         const ks=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let ki=0;
-        document.addEventListener('keydown',e=>{if(e.key===ks[ki]){ki++;if(ki===ks.length){ki=0;document.body.classList.add('konami-active');const cols=['#e67e22','#4ec9b0','#569cd6','#f48771','#ffbd2e','#cc66cc','#0f0'];for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.animationDelay=Math.random()*1.5+'s';p.style.animationDuration=(2+Math.random()*2)+'s';p.style.width=(6+Math.random()*8)+'px';p.style.height=(6+Math.random()*8)+'px';document.body.appendChild(p);setTimeout(()=>p.remove(),5000);}setTimeout(()=>document.body.classList.remove('konami-active'),5000);}}else ki=0;});
+        document.addEventListener('keydown',e=>{if(e.key===ks[ki]){ki++;if(ki===ks.length){ki=0;document.body.classList.add('konami-active');const cols=['#3c3c3c','#4ec9b0','#569cd6','#f48771','#ffbd2e','#cc66cc','#0f0'];for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.animationDelay=Math.random()*1.5+'s';p.style.animationDuration=(2+Math.random()*2)+'s';p.style.width=(6+Math.random()*8)+'px';p.style.height=(6+Math.random()*8)+'px';document.body.appendChild(p);setTimeout(()=>p.remove(),5000);}setTimeout(()=>document.body.classList.remove('konami-active'),5000);}}else ki=0;});
         document.querySelectorAll('a[href$=".html"]').forEach(l=>{l.addEventListener('click',e=>{const h=l.getAttribute('href');if(h&&!l.target&&!e.metaKey&&!e.ctrlKey){e.preventDefault();document.body.classList.add('page-leaving');setTimeout(()=>window.location.href=h,300);}});});
         const sro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('revealed');});},{threshold:0.1});
         document.querySelectorAll('.scroll-reveal,.scroll-stagger').forEach(el=>sro.observe(el));
