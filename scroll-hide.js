@@ -6,7 +6,7 @@
         const scrolled = window.scrollY > SCROLL_THRESHOLD;
         document.body.classList.toggle('scrolled', scrolled);
         if (scrolled) {
-            document.querySelector('.nav-tabs')?.classList.remove('open');
+            document.querySelector('.nav-links')?.classList.remove('mobile-open');
             document.querySelector('.hamburger')?.classList.remove('active');
         }
         ticking = false;
