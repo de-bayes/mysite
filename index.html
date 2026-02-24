@@ -18,35 +18,22 @@
 <body>
     <!-- LOADER -->
     <div id="loader" class="loader">
-        <canvas id="loader-rain" class="loader-rain"></canvas>
-        <div class="loader-center">
-            <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
-
-            <!-- Matrix multiplication animation -->
-            <div class="matmul" id="matmul">
-                <div class="matmul-row">
-                    <div class="matrix matrix-a" id="matrix-a">
-                        <div class="matrix-bracket left">[</div>
-                        <div class="matrix-grid grid-2x3" id="grid-a"></div>
-                        <div class="matrix-bracket right">]</div>
-                    </div>
-                    <div class="matmul-op">&times;</div>
-                    <div class="matrix matrix-b" id="matrix-b">
-                        <div class="matrix-bracket left">[</div>
-                        <div class="matrix-grid grid-3x4" id="grid-b"></div>
-                        <div class="matrix-bracket right">]</div>
-                    </div>
-                    <div class="matmul-op">=</div>
-                    <div class="matrix matrix-c" id="matrix-c">
-                        <div class="matrix-bracket left">[</div>
-                        <div class="matrix-grid grid-2x4" id="grid-c"></div>
-                        <div class="matrix-bracket right">]</div>
-                    </div>
-                </div>
+        <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
+        <p class="loader-text" id="loader-text">loading</p>
+        <div class="loader-counter">
+            <div class="loader-line">
+                <div class="loader-block" style="background:#6aadcf"></div>
+                <div class="loader-block" style="background:#6aadcf"></div>
+                <div class="loader-block" style="background:#7a9fbf"></div>
+                <div class="loader-block" style="background:#8b93b0"></div>
+                <div class="loader-block" style="background:#9c87a1"></div>
+                <div class="loader-block" style="background:#ad7b92"></div>
+                <div class="loader-block" style="background:#be7383"></div>
+                <div class="loader-block" style="background:#cf6b6b"></div>
+                <div class="loader-block" style="background:#cf6b6b"></div>
+                <div class="loader-block" style="background:#cf6b6b"></div>
             </div>
-
-            <div class="loader-progress"><div class="loader-progress-fill" id="loader-progress-fill"></div></div>
-            <p class="loader-text" id="loader-text">loading</p>
+            <span class="loader-number" id="loader-number">1</span>
         </div>
     </div>
 
@@ -71,45 +58,39 @@
         </div>
         <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
 
-        <!-- MINIMAL LAYOUT -->
-        <div class="minimal-page">
-            <header class="minimal-header">
-                <h1 class="minimal-name">Ryan McComb</h1>
-                <p class="minimal-tagline">Data, politics, and forecasting.</p>
+        <!-- EDITORIAL LAYOUT -->
+        <div class="editorial-page">
+            <!-- Blue hero patch -->
+            <header class="editorial-hero">
+                <h1 class="editorial-name">RYAN McCOMB</h1>
+                <p class="editorial-tagline">Data, politics, and forecasting.</p>
             </header>
 
-            <hr class="minimal-sep">
+            <!-- Essay-style about section with inline links -->
+            <main class="editorial-body">
+                <p>I'm Ryan McComb, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in data, prediction markets, politics, and the web. I like making things people can use and forming beliefs based on evidence.</p>
 
-            <nav class="minimal-nav">
-                <a class="minimal-link" href="#experience" onclick="event.preventDefault();expandCard('experience')">
-                    <div class="minimal-link-title">Work <span class="minimal-link-arrow">&rarr;</span></div>
-                    <div class="minimal-link-desc">VoteHub, IL9CAST, Biss for Congress, The Evanstonian.</div>
-                </a>
-                <a class="minimal-link" href="#projects" onclick="event.preventDefault();expandCard('projects')">
-                    <div class="minimal-link-title">Projects <span class="minimal-link-arrow">&rarr;</span></div>
-                    <div class="minimal-link-desc">IL9CAST, Project 2028, ManiFed, and more.</div>
-                </a>
-                <a class="minimal-link" href="#blog" onclick="event.preventDefault();expandCard('blog')">
-                    <div class="minimal-link-title">Writing <span class="minimal-link-arrow">&rarr;</span></div>
-                    <div class="minimal-link-desc">Essays on politics, forecasting, and data.</div>
-                </a>
-                <a class="minimal-link" href="#photos" onclick="event.preventDefault();expandCard('photos')">
-                    <div class="minimal-link-title">Photos <span class="minimal-link-arrow">&rarr;</span></div>
-                    <div class="minimal-link-desc">Film photography and visual work.</div>
-                </a>
-                <a class="minimal-link" href="#contact" onclick="event.preventDefault();expandCard('contact')">
-                    <div class="minimal-link-title">Contact <span class="minimal-link-arrow">&rarr;</span></div>
-                    <div class="minimal-link-desc">Email, GitHub, LinkedIn, and more.</div>
-                </a>
-            </nav>
+                <p>I built <a href="https://il9.org" target="_blank">IL9.org</a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm also a Student Fellow at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> doing race-call work and election modeling, and a Volunteer Finance Lead for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss congressional campaign</a>.</p>
 
-            <hr class="minimal-sep">
+                <p>I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
+            </main>
 
-            <footer class="minimal-footer">
-                <div class="minimal-footer-left">
+            <!-- Small sitemap footer -->
+            <footer class="editorial-footer">
+                <nav class="editorial-sitemap">
+                    <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Work</a>
+                    <a href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
+                    <a href="#blog" onclick="event.preventDefault();expandCard('blog')">Writing</a>
+                    <a href="#photos" onclick="event.preventDefault();expandCard('photos')">Photos</a>
+                    <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>
+                    <a href="#hottakes" onclick="event.preventDefault();expandCard('hottakes')">Hot Takes</a>
+                    <a href="#countdowns" onclick="event.preventDefault();expandCard('countdowns')">Countdowns</a>
+                    <a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
+                </nav>
+                <div class="editorial-footer-bottom">
                     <span>&copy; 2026 Ryan McComb</span>
+                    <button class="minimal-theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9790;</button>
                 </div>
-                <button class="minimal-theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9790;</button>
             </footer>
         </div>
 
@@ -239,161 +220,43 @@
 
         const loader = document.getElementById('loader');
         const siteContent = document.getElementById('site-content');
+        const loaderNumber = document.getElementById('loader-number');
         const loaderText = document.getElementById('loader-text');
-        const progressFill = document.getElementById('loader-progress-fill');
 
-        // Matrix rain canvas
-        (function initLoaderRain() {
-            const canvas = document.getElementById('loader-rain');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const chars = 'rjmccomb.xyzABCDEF0123456789<>/{}[]|;:';
-            const fontSize = 14;
-            const columns = Math.floor(canvas.width / fontSize);
-            const drops = Array(columns).fill(1);
-            function draw() {
-                ctx.fillStyle = 'rgba(13, 13, 15, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.font = fontSize + 'px VT323, monospace';
-                for (let i = 0; i < drops.length; i++) {
-                    const char = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillStyle = Math.random() > 0.5 ? '#6aadcf' : '#cf6b6b';
-                    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-            }
-            const rainInterval = setInterval(draw, 50);
-            setTimeout(() => clearInterval(rainInterval), 4000);
-        })();
+        const steps = [1, 13, 27, 41, 54, 68, 79, 88, 94, 100];
+        let currentStep = 0;
+        const stepDelay = 400;
 
-        // Matrix multiplication animation
-        (function initMatmulAnimation() {
-            const A = [[2, 1, 3], [0, 4, 2]];
-            const B = [[1, 4, 2, 1], [3, 0, 1, 2], [2, 1, 0, 3]];
-            const C = [[0,0,0,0],[0,0,0,0]];
-            const gridA = document.getElementById('grid-a');
-            const gridB = document.getElementById('grid-b');
-            const gridC = document.getElementById('grid-c');
-            if (!gridA || !gridB || !gridC) return;
-
-            // Populate grids
-            const cellsA = [], cellsB = [], cellsC = [];
-            A.forEach(row => row.forEach(val => {
-                const cell = document.createElement('div');
-                cell.className = 'matrix-cell';
-                cell.textContent = val;
-                gridA.appendChild(cell);
-                cellsA.push(cell);
-            }));
-            B.forEach(row => row.forEach(val => {
-                const cell = document.createElement('div');
-                cell.className = 'matrix-cell';
-                cell.textContent = val;
-                gridB.appendChild(cell);
-                cellsB.push(cell);
-            }));
-            C.forEach(row => row.forEach(() => {
-                const cell = document.createElement('div');
-                cell.className = 'matrix-cell';
-                cell.textContent = '?';
-                gridC.appendChild(cell);
-                cellsC.push(cell);
-            }));
-
-            // Animate step by step
-            const steps = [];
-            for (let i = 0; i < 2; i++) {
-                for (let j = 0; j < 4; j++) {
-                    steps.push({ row: i, col: j });
-                }
-            }
-
-            let stepIdx = 0;
-            function clearHighlights() {
-                cellsA.forEach(c => c.classList.remove('highlight-row'));
-                cellsB.forEach(c => c.classList.remove('highlight-col'));
-                cellsC.forEach(c => c.classList.remove('computing'));
-            }
-
-            function animateStep() {
-                if (stepIdx >= steps.length) {
-                    clearHighlights();
-                    return;
-                }
-                clearHighlights();
-                const { row, col } = steps[stepIdx];
-
-                // Highlight row in A
-                for (let k = 0; k < 3; k++) {
-                    cellsA[row * 3 + k].classList.add('highlight-row');
-                }
-                // Highlight col in B
-                for (let k = 0; k < 3; k++) {
-                    cellsB[k * 4 + col].classList.add('highlight-col');
-                }
-
-                // Compute result
-                let sum = 0;
-                for (let k = 0; k < 3; k++) {
-                    sum += A[row][k] * B[k][col];
-                }
-
-                // Animate the result cell
-                const resultCell = cellsC[row * 4 + col];
-                resultCell.classList.add('computing');
-                resultCell.textContent = sum;
-
-                setTimeout(() => {
-                    resultCell.classList.remove('computing');
-                    resultCell.classList.add('computed');
-                    stepIdx++;
-                    animateStep();
-                }, 250);
-            }
-
-            // Start after a short delay
-            setTimeout(animateStep, 900);
-        })();
-
-        // Progress bar animation
-        let loaderProgress = 0;
-        const progressInterval = setInterval(() => {
-            loaderProgress += Math.random() * 15 + 5;
-            if (loaderProgress > 95) loaderProgress = 95;
-            if (progressFill) progressFill.style.width = loaderProgress + '%';
-        }, 300);
-
-        // Loader text dots
         let dotCount = 0;
         const dotInterval = setInterval(() => {
             dotCount = (dotCount + 1) % 4;
             loaderText.textContent = 'loading' + '.'.repeat(dotCount);
-        }, 400);
+        }, 500);
 
-        function finishLoader() {
-            clearInterval(dotInterval);
-            clearInterval(progressInterval);
-            if (progressFill) progressFill.style.width = '100%';
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                // Wait for the loader fade-out to complete before showing content
-                // This prevents the overlap where both are partially transparent
-                loader.addEventListener('transitionend', function onEnd() {
-                    loader.removeEventListener('transitionend', onEnd);
-                    siteContent.classList.add('visible');
-                }, { once: true });
-                // Fallback in case transitionend doesn't fire
+        function updateLoader() {
+            const value = steps[currentStep];
+            loaderNumber.textContent = value;
+            loaderNumber.style.left = value + '%';
+            currentStep++;
+
+            if (currentStep < steps.length) {
+                setTimeout(updateLoader, stepDelay);
+            } else {
+                clearInterval(dotInterval);
                 setTimeout(() => {
-                    if (!siteContent.classList.contains('visible')) {
+                    loader.classList.add('hidden');
+                    loader.addEventListener('transitionend', function onEnd() {
+                        loader.removeEventListener('transitionend', onEnd);
                         siteContent.classList.add('visible');
-                    }
-                }, 700);
-                // Show Fivey Fox 2s after loader finishes
-                setTimeout(showFivey, 2000);
-            }, 300);
+                    }, { once: true });
+                    setTimeout(() => {
+                        if (!siteContent.classList.contains('visible')) {
+                            siteContent.classList.add('visible');
+                        }
+                    }, 700);
+                    setTimeout(showFivey, 2000);
+                }, 400);
+            }
         }
 
         // Check if page was refreshed or is a new visit
@@ -405,10 +268,9 @@
             loader.classList.add('hidden');
             siteContent.classList.add('visible');
             clearInterval(dotInterval);
-            clearInterval(progressInterval);
             setTimeout(showFivey, 2000);
         } else {
-            setTimeout(finishLoader, 2500);
+            updateLoader();
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
