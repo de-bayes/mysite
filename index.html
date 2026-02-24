@@ -10,8 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
     <title>Ryan McComb</title>
     <link rel="stylesheet" href="features.css">
-    <link rel="preload" href="photo-sketch.png" as="image" fetchpriority="high">
-    <link rel="preload" href="photo-original.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="ddddd.jpg" as="image" fetchpriority="high">
 
     <style>
         * {
@@ -25,30 +24,15 @@
         }
 
         :root {
-            --bg-primary: #faf8f5;
-            --bg-secondary: #f5f2ee;
-            --text-primary: #000000;
-            --text-secondary: #333333;
-            --text-muted: #555555;
-            --text-light: #888888;
-            --border-color: #e5e5e5;
-            --grid-color: rgba(0, 0, 0, 0.055);
-            --photo-hint-bg: rgba(250, 248, 245, 0.9);
-            --nav-menu-bg: #faf8f5;
-            --nav-menu-shadow: rgba(0, 0, 0, 0.1);
-        }
-
-        body.dark-mode {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #252525;
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #2a2a2a;
             --text-primary: #e5e5e5;
             --text-secondary: #cccccc;
             --text-muted: #aaaaaa;
             --text-light: #888888;
-            --border-color: #333333;
-            --grid-color: rgba(255, 255, 255, 0.055);
+            --border-color: #3a3a3a;
             --photo-hint-bg: rgba(0, 0, 0, 0.8);
-            --nav-menu-bg: #1a1a1a;
+            --nav-menu-bg: #1e1e1e;
             --nav-menu-shadow: rgba(0, 0, 0, 0.5);
         }
 
@@ -63,18 +47,6 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
-            /* transition handled by liquid effect */
-        }
-
-        /* GRID BACKGROUND */
-        #grid-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
         }
 
         .site-content {
@@ -91,7 +63,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-primary);
+            background: #1e1e1e;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -113,10 +85,12 @@
         }
 
         .loader-url span {
-            color: #e67e22;
             padding: 0.1rem 0.15rem;
-            animation: invertFlash 1.5s ease-in-out infinite;
+            animation: invertFlashBlue 1.5s ease-in-out infinite;
         }
+
+        .loader-url span:nth-child(odd) { color: #6aadcf; animation-name: invertFlashBlue; }
+        .loader-url span:nth-child(even) { color: #cf6b6b; animation-name: invertFlashRed; }
 
         .loader-url span:nth-child(1) { animation-delay: 0.3s; }
         .loader-url span:nth-child(2) { animation-delay: 1.1s; }
@@ -131,21 +105,32 @@
         .loader-url span:nth-child(11) { animation-delay: 0.2s; }
         .loader-url span:nth-child(12) { animation-delay: 0.6s; }
 
-        @keyframes invertFlash {
+        @keyframes invertFlashBlue {
             0%, 70%, 100% {
-                color: #e67e22;
+                color: #6aadcf;
                 background: transparent;
             }
             80%, 90% {
                 color: #ffffff;
-                background: #e67e22;
+                background: #6aadcf;
+            }
+        }
+
+        @keyframes invertFlashRed {
+            0%, 70%, 100% {
+                color: #cf6b6b;
+                background: transparent;
+            }
+            80%, 90% {
+                color: #ffffff;
+                background: #cf6b6b;
             }
         }
 
         .loader-text {
             font-family: 'VT323', monospace;
             font-size: 2.5rem;
-            color: #e67e22;
+            color: #cf6b6b;
             margin-top: 4rem;
             margin-bottom: 1.5rem;
             letter-spacing: 0.2em;
@@ -165,13 +150,19 @@
             left: 0;
             width: calc(100% + 2.5rem);
             height: 4px;
-            background: #e67e22;
+            display: flex;
+            gap: 3px;
+        }
+
+        .loader-block {
+            flex: 1;
+            height: 100%;
         }
 
         .loader-number {
             font-family: 'VT323', monospace;
             font-size: 1.5rem;
-            color: #e67e22;
+            color: #6aadcf;
             position: absolute;
         }
 
@@ -225,73 +216,6 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 2rem;
-        }
-
-        /* PHOTO CONTAINER */
-        .photo-container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 1;
-            overflow: hidden;
-            margin: 0 auto 3rem;
-        }
-
-        .photo-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .photo-sketch {
-            opacity: 1;
-            z-index: 2;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
-        }
-
-        .photo-original {
-            opacity: 0;
-            z-index: 1;
-        }
-
-        .photo-container:hover .photo-sketch,
-        .photo-container.touched .photo-sketch {
-            opacity: 0;
-        }
-
-        .photo-container:hover .photo-original,
-        .photo-container.touched .photo-original {
-            opacity: 1;
-        }
-
-        .photo-hint {
-            position: absolute;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.75rem;
-            color: var(--text-light);
-            background: var(--photo-hint-bg);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            z-index: 3;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .photo-hint {
-                opacity: 1;
-            }
-
-            .photo-container.touched .photo-hint {
-                opacity: 0;
-            }
         }
 
         /* CONTENT */
@@ -377,7 +301,7 @@
         }
 
         .mascot-tooltip {
-            background: #e67e22;
+            background: #6aadcf;
             padding: 1rem 1.25rem;
             max-width: 280px;
             opacity: 0;
@@ -622,7 +546,7 @@
             z-index: 100;
             font-size: 1.6rem;
             font-weight: 400;
-            color: #e67e22;
+            color: #6aadcf;
             text-decoration: none;
             cursor: pointer;
             letter-spacing: 0.02em;
@@ -642,7 +566,7 @@
             }
         }
 
-        /* POWER USER TOOLBAR (replaces standalone dark mode toggle) */
+        /* POWER USER TOOLBAR */
         .power-toolbar {
             position: fixed;
             bottom: 2rem;
@@ -680,12 +604,12 @@
         }
 
         .power-btn:hover {
-            background: rgba(230, 126, 34, 0.1);
+            background: rgba(106, 173, 207, 0.1);
             color: var(--text-primary);
         }
 
         .power-btn.active {
-            color: #e67e22;
+            color: #6aadcf;
         }
 
         .power-btn svg {
@@ -712,11 +636,6 @@
             font-family: 'Monaco', 'Menlo', monospace;
         }
 
-        #dark-mode-btn .sun-icon { display: none; }
-        #dark-mode-btn .moon-icon { display: block; }
-        body.dark-mode #dark-mode-btn .sun-icon { display: block; }
-        body.dark-mode #dark-mode-btn .moon-icon { display: none; }
-
         @media (max-width: 600px) {
             .power-toolbar {
                 bottom: 1rem;
@@ -726,23 +645,6 @@
             .power-btn kbd {
                 display: none;
             }
-        }
-
-        /* LIQUID DARK MODE TRANSITION */
-        .dark-mode-liquid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9998;
-            pointer-events: none;
-            clip-path: circle(0% at var(--liquid-x, 50%) var(--liquid-y, 50%));
-            transition: clip-path 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .dark-mode-liquid.expanding {
-            clip-path: circle(150% at var(--liquid-x, 50%) var(--liquid-y, 50%));
         }
 
         /* STAGGERED ENTRANCE */
@@ -1049,7 +951,7 @@
         }
 
         .ascii-art {
-            color: #e67e22 !important;
+            color: #6aadcf !important;
             font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 0.75rem;
             line-height: 1.3;
@@ -1059,7 +961,7 @@
         }
 
         .ascii-art * {
-            color: #e67e22 !important;
+            color: #6aadcf !important;
         }
 
         .terminal-command {
@@ -1072,61 +974,6 @@
 
         .terminal-success {
             color: #4ec9b0;
-        }
-
-        /* HOMEPAGE */
-        .homepage {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .homepage-name {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .homepage-name h1 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 4rem;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.75rem;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .homepage-name .name-text {
-            transition: opacity 0.4s ease;
-        }
-
-        .homepage-name .name-sig {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 280px;
-            height: auto;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .homepage-name h1:hover .name-text {
-            opacity: 0;
-        }
-
-        .homepage-name h1:hover .name-sig {
-            opacity: 1;
-        }
-
-        .homepage-name .subtitle {
-            font-size: 1.1rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            letter-spacing: 0.02em;
         }
 
         /* GAME LAUNCH BUTTONS */
@@ -1159,7 +1006,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(230, 126, 34, 0.08);
+            background: rgba(106, 173, 207, 0.08);
             transition: left 0.3s ease;
         }
 
@@ -1168,8 +1015,8 @@
         }
 
         .game-btn:hover {
-            border-color: #e67e22;
-            color: #e67e22;
+            border-color: #6aadcf;
+            color: #6aadcf;
         }
 
         .game-btn-icon {
@@ -1247,7 +1094,7 @@
         .quiz-header h2 {
             font-family: 'VT323', monospace;
             font-size: 1.8rem;
-            color: #e67e22;
+            color: #6aadcf;
             margin-bottom: 0.25rem;
             letter-spacing: 0.05em;
         }
@@ -1268,7 +1115,7 @@
 
         .quiz-progress-fill {
             height: 100%;
-            background: #e67e22;
+            background: #6aadcf;
             transition: width 0.4s ease;
         }
 
@@ -1317,9 +1164,9 @@
         }
 
         .quiz-option:hover:not(.disabled) {
-            border-color: #e67e22;
+            border-color: #6aadcf;
             color: var(--text-primary);
-            background: rgba(230, 126, 34, 0.05);
+            background: rgba(106, 173, 207, 0.05);
         }
 
         .quiz-option.correct {
@@ -1377,7 +1224,7 @@
         }
 
         .quiz-name-input:focus {
-            border-color: #e67e22;
+            border-color: #6aadcf;
         }
 
         .quiz-name-input::placeholder {
@@ -1388,7 +1235,7 @@
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
             padding: 0.65rem 2.5rem;
-            background: #e67e22;
+            background: #6aadcf;
             border: none;
             color: #fff;
             cursor: pointer;
@@ -1415,7 +1262,7 @@
         .quiz-results-score {
             font-family: 'VT323', monospace;
             font-size: 4rem;
-            color: #e67e22;
+            color: #6aadcf;
             line-height: 1;
             margin-bottom: 0.25rem;
         }
@@ -1441,7 +1288,7 @@
         .quiz-leaderboard h3 {
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
-            color: #e67e22;
+            color: #6aadcf;
             margin-bottom: 0.75rem;
             text-align: center;
         }
@@ -1497,7 +1344,7 @@
         .truths-header h2 {
             font-family: 'VT323', monospace;
             font-size: 1.8rem;
-            color: #e67e22;
+            color: #6aadcf;
             margin-bottom: 0.25rem;
             letter-spacing: 0.05em;
         }
@@ -1529,7 +1376,7 @@
         }
 
         .truth-card:hover:not(.disabled) {
-            border-color: #e67e22;
+            border-color: #6aadcf;
             color: var(--text-primary);
         }
 
@@ -1577,7 +1424,7 @@
         .truths-results-score {
             font-family: 'VT323', monospace;
             font-size: 4rem;
-            color: #e67e22;
+            color: #6aadcf;
             line-height: 1;
             margin-bottom: 0.25rem;
         }
@@ -1604,7 +1451,7 @@
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
             padding: 0.65rem 2.5rem;
-            background: #e67e22;
+            background: #6aadcf;
             border: none;
             color: #fff;
             cursor: pointer;
@@ -1655,30 +1502,16 @@
             line-height: 1.8;
         }
 
-        /* FOOTER */
-        footer {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            text-align: center;
+        /* FLAG FOOTER */
+        .flag-footer {
+            width: 100%;
+            margin-top: 3rem;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            letter-spacing: 0.03em;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--text-primary);
+        .flag-footer img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* RESPONSIVE */
@@ -1705,46 +1538,1238 @@
                 font-size: 0.65rem;
             }
 
-            .homepage {
-                padding: 1.5rem;
-            }
-
-            .homepage-name h1 {
-                font-size: 2.75rem;
-            }
-
-            .homepage-name .name-sig {
-                width: 200px;
-            }
-
-            .photo-container {
-                max-width: 280px;
-            }
         }
+
+        /* ============================================
+           BENTO GRID
+           ============================================ */
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 75vh;
+            min-height: 500px;
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            display: block;
+        }
+
+        .hero-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to bottom, transparent, #1e1e1e);
+            pointer-events: none;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+        }
+
+        .hero-overlay h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .hero-overlay p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 0.25rem;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-links {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hero-links a {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .hero-links a:hover { color: #ffffff; }
+
+        @media (max-width: 600px) {
+            .hero { height: 60vh; min-height: 350px; }
+            .hero-overlay h1 { font-size: 1.8rem; }
+        }
+
+        .bento {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(160px, auto);
+            gap: 1rem;
+        }
+
+        .bento .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            animation: bentoFadeUp 0.5s ease both;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .bento .card:hover {
+            border-color: #6aadcf;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        }
+
+        .card-label {
+            font-size: 0.6rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #6aadcf;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+
+        .card-full { display: none; }
+
+        /* SIZING */
+        .span-2 { grid-column: span 2; }
+        .tall { grid-row: span 2; }
+
+        /* ABOUT CARD */
+        .card-about {
+            grid-column: span 2;
+            grid-row: span 2;
+            padding: 2.5rem;
+        }
+
+        .card-about .card-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: 1rem;
+        }
+
+        .card-about .card-body {
+            font-size: 0.9rem;
+            max-width: 360px;
+        }
+
+        .card-about .about-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 2px solid var(--border-color);
+        }
+
+        .about-signature {
+            margin-top: auto;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        /* COUNTDOWN CARD */
+        .cd-display {
+            display: flex;
+            gap: 0.75rem;
+            margin: 0.75rem 0;
+        }
+
+        .cd-unit { text-align: center; }
+
+        .cd-num {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: #cf6b6b;
+            line-height: 1;
+        }
+
+        .cd-label-text {
+            font-size: 0.6rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* HOT TAKE CARD */
+        .card-hottake .card-label {
+            color: #cf6b6b;
+        }
+
+        .card-hottake .card-body {
+            font-size: 0.88rem;
+            font-style: italic;
+        }
+
+        .take-rotate {
+            transition: transform 0.4s ease;
+        }
+
+        .card-hottake:hover {
+            border-color: #cf6b6b;
+        }
+
+        .card-hottake:hover .take-rotate {
+            transform: rotate(-1deg);
+        }
+
+        .spice {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* BLOG CARD */
+        .card-blog .blog-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .blog-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .blog-entry:last-child { border-bottom: none; }
+
+        .blog-entry-title {
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .blog-entry-date {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+
+        /* PROJECTS CARD */
+        .project-mini {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .project-mini-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .project-mini-item:last-child { border-bottom: none; }
+
+        .pm-name {
+            font-weight: 500;
+            font-size: 0.82rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .pm-desc {
+            font-size: 0.72rem;
+            color: var(--text-light);
+        }
+
+        .pm-tags {
+            display: flex;
+            gap: 0.3rem;
+            margin-top: 0.3rem;
+        }
+
+        .pm-tag {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+        }
+
+        /* PHOTO CARD */
+        .card-photos {
+        }
+
+        .photo-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.35rem;
+            margin-top: 0.5rem;
+            flex: 1;
+        }
+
+        .photo-mini {
+            aspect-ratio: 1;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* CONTACT CARD */
+        .contact-mini {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .contact-mini a {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            padding: 0.35rem 0;
+            transition: color 0.2s;
+        }
+
+        .contact-mini a:hover { color: #6aadcf; }
+
+        /* EXPERIENCE CARD */
+        .exp-mini {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .exp-mini-item {
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .exp-mini-item:last-child { border-bottom: none; }
+
+        .em-role {
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+
+        .em-co {
+            font-size: 0.72rem;
+            color: #6aadcf;
+        }
+
+        .em-date {
+            font-size: 0.65rem;
+            color: var(--text-light);
+        }
+
+        /* PASSIONS CARD */
+        .passions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .passion-item {
+            text-align: center;
+            padding: 0.6rem 0.25rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+
+        .passion-name {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* EDUCATION CARD */
+        .edu-gpa {
+            margin-top: auto;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+
+        .gpa-num {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: #6aadcf;
+            line-height: 1;
+        }
+
+        .gpa-label {
+            font-size: 0.65rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* STAGGERED CARD ENTRANCE */
+        .bento .card:nth-child(1) { animation-delay: 0s; }
+        .bento .card:nth-child(2) { animation-delay: 0.04s; }
+        .bento .card:nth-child(3) { animation-delay: 0.08s; }
+        .bento .card:nth-child(4) { animation-delay: 0.12s; }
+        .bento .card:nth-child(5) { animation-delay: 0.16s; }
+        .bento .card:nth-child(6) { animation-delay: 0.2s; }
+        .bento .card:nth-child(7) { animation-delay: 0.24s; }
+        .bento .card:nth-child(8) { animation-delay: 0.28s; }
+        .bento .card:nth-child(9) { animation-delay: 0.32s; }
+        .bento .card:nth-child(10) { animation-delay: 0.36s; }
+        .bento .card:nth-child(11) { animation-delay: 0.4s; }
+        .bento .card:nth-child(12) { animation-delay: 0.44s; }
+
+        @keyframes bentoFadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           EXPAND OVERLAY
+           ============================================ */
+        #expand-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 500;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        #expand-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .expand-back {
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #6aadcf;
+            z-index: 10;
+            transition: background 0.2s;
+        }
+
+        .expand-back:hover {
+            background: var(--bg-secondary);
+        }
+
+        .expand-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .expand-content .page-title {
+            font-family: 'VT323', monospace;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: #6aadcf;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Expanded view content styles */
+        .expand-content .experience-list {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto 2rem;
+        }
+
+        .expand-content .experience-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .expand-content .experience-item:first-child {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .expand-content .experience-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .expand-content .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .expand-content .experience-item h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .expand-content .experience-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .expand-content .expand-icon {
+            font-size: 1.2rem;
+            color: #6aadcf;
+            transition: transform 0.2s;
+        }
+
+        .expand-content .experience-item.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .expand-content .experience-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .expand-content .experience-item.expanded .experience-details {
+            max-height: 500px;
+        }
+
+        .expand-content .experience-content {
+            padding-top: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .expand-content .experience-content a {
+            color: #6aadcf;
+        }
+
+        .expand-content .time-period {
+            font-size: 0.85rem;
+            color: #6aadcf;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .expand-content .section-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin: 2rem 0 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Expanded projects */
+        .expand-content .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .expand-content .project-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .expand-content .project-card:hover {
+            border-color: #6aadcf;
+            box-shadow: 0 8px 24px rgba(106, 173, 207, 0.12);
+        }
+
+        .expand-content .project-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .expand-content .project-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .expand-content .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .expand-content .tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            background: rgba(106, 173, 207, 0.1);
+            color: #6aadcf;
+            border-radius: 6px;
+        }
+
+        .expand-content .project-visit {
+            margin-top: auto;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6aadcf;
+            text-decoration: none;
+        }
+
+        .expand-content .project-visit:hover {
+            color: #5590ad;
+        }
+
+        /* Expanded hot takes */
+        .expand-content .takes-wall {
+            columns: 2;
+            column-gap: 1.5rem;
+        }
+
+        .expand-content .take-card {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem 1.5rem 1rem;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .expand-content .take-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+
+        .expand-content .take-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+
+        .expand-content .take-category {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        .expand-content .take-spice { font-size: 0.8rem; }
+
+        .take-color-0 { background: #2a2228; border-left: 3px solid #cf6b6b; }
+        .take-color-1 { background: #1e2530; border-left: 3px solid #3498db; }
+        .take-color-2 { background: #2a1e22; border-left: 3px solid #e74c3c; }
+        .take-color-3 { background: #1e2a1e; border-left: 3px solid #2ecc71; }
+        .take-color-4 { background: #261e2a; border-left: 3px solid #9b59b6; }
+        .take-color-5 { background: #2a2a1e; border-left: 3px solid #c9b458; }
+
+        .expand-content .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .expand-content .filter-pill {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .expand-content .filter-pill:hover { border-color: #6aadcf; color: #6aadcf; }
+        .expand-content .filter-pill.active { background: #6aadcf; color: #fff; border-color: #6aadcf; }
+
+        /* Expanded blog */
+        .expand-content .blog-featured-card {
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .expand-content .blog-featured-card:hover {
+            border-color: #6aadcf;
+        }
+
+        .expand-content .blog-featured-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-family: 'VT323', monospace;
+            font-size: 0.8rem;
+            color: #fff;
+            background: #6aadcf;
+            padding: 0.2rem 0.6rem;
+            z-index: 2;
+        }
+
+        .expand-content .blog-featured-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .expand-content .blog-featured-body {
+            padding: 2rem;
+        }
+
+        .expand-content .blog-featured-body h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .expand-content .blog-featured-body p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .expand-content .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .expand-content .blog-tag {
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            color: #6aadcf;
+            border: 1px solid #6aadcf;
+            padding: 0.1rem 0.5rem;
+        }
+
+        .expand-content .read-time {
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            color: #6aadcf;
+        }
+
+        .expand-content .blog-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .expand-content .blog-card {
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .expand-content .blog-card:hover {
+            border-color: #6aadcf;
+        }
+
+        .expand-content .blog-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .expand-content .blog-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        /* Expanded blog article view */
+        .expand-content .blog-article { display: none; }
+        .expand-content .blog-article.active { display: block; }
+        .expand-content .blog-list.hidden { display: none; }
+
+        .expand-content .blog-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #6aadcf;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .expand-content .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .expand-content .article-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .expand-content .article-hero-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            margin-bottom: 2rem;
+        }
+
+        .expand-content .article-body {
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--text-secondary);
+        }
+
+        .expand-content .article-body p { margin-bottom: 1.25rem; }
+
+        .expand-content .article-body h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin: 2rem 0 1rem;
+        }
+
+        .expand-content .article-body blockquote {
+            border-left: 3px solid #6aadcf;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            background: rgba(106, 173, 207, 0.04);
+            font-style: italic;
+            color: var(--text-muted);
+        }
+
+        .expand-content .article-body a { color: #6aadcf; text-decoration: underline; text-underline-offset: 2px; }
+        .expand-content .article-body ul, .expand-content .article-body ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+        .expand-content .article-body li { margin-bottom: 0.5rem; }
+
+        /* Expanded guestbook */
+        .expand-content .blog-guestbook {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .expand-content .blog-guestbook h2 {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: #6aadcf;
+            margin-bottom: 1rem;
+        }
+
+        .expand-content .gb-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .expand-content .gb-form input,
+        .expand-content .gb-form textarea {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .expand-content .gb-form input:focus,
+        .expand-content .gb-form textarea:focus {
+            border-color: #6aadcf;
+        }
+
+        .expand-content .gb-form input[name="name"] { width: 150px; }
+        .expand-content .gb-form textarea { flex: 1; min-width: 200px; resize: none; height: 38px; }
+
+        .expand-content .gb-submit {
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            padding: 0.5rem 1.2rem;
+            background: #6aadcf;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .expand-content .gb-submit:hover { background: #d35400; }
+
+        .expand-content .gb-entries {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .expand-content .gb-entry {
+            padding: 0.75rem 1rem;
+            border-left: 2px solid #6aadcf;
+            background: rgba(106, 173, 207, 0.03);
+        }
+
+        .expand-content .gb-entry-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .expand-content .gb-entry-name { font-weight: 500; font-size: 0.9rem; }
+        .expand-content .gb-entry-date { font-size: 0.75rem; color: var(--text-light); }
+        .expand-content .gb-entry-msg { font-size: 0.85rem; color: var(--text-muted); }
+        .expand-content .gb-status { font-family: 'VT323', monospace; font-size: 0.9rem; color: #6aadcf; margin-top: 0.5rem; }
+
+        /* Expanded photos */
+        .expand-content .featured-film {
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .expand-content .featured-film h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .expand-content .film-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .expand-content .featured-film p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .expand-content .photo-grid-full {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .expand-content .photo-grid-item {
+            aspect-ratio: 4/3;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 6px;
+        }
+
+        /* Expanded countdowns */
+        .expand-content .countdown-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .expand-content .countdown-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .expand-content .countdown-card.past { opacity: 0.5; }
+
+
+        .expand-content .countdown-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .expand-content .countdown-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.2rem;
+        }
+
+        .expand-content .countdown-timer {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .expand-content .countdown-unit { text-align: center; }
+
+        .expand-content .countdown-number {
+            font-family: 'VT323', monospace;
+            font-size: clamp(2rem, 5vw, 3rem);
+            line-height: 1;
+            color: #cf6b6b;
+        }
+
+        .expand-content .countdown-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+        }
+
+        .expand-content .countdown-done {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: #cf6b6b;
+        }
+
+        .expand-content .countdown-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: #cf6b6b;
+            opacity: 0.4;
+        }
+
+        .expand-content .section-divider {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Expanded passions */
+        .expand-content .passions-full-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .expand-content .passion-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            transition: all 0.2s;
+        }
+
+        .expand-content .passion-card:hover {
+            border-color: #6aadcf;
+            transform: translateY(-2px);
+        }
+
+        .expand-content .passion-card .passion-icon-lg { font-size: 2.5rem; margin-bottom: 1rem; }
+        .expand-content .passion-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .expand-content .passion-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Expanded contact */
+        .expand-content .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .expand-content .contact-link {
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .expand-content .contact-link:hover {
+            border-color: #6aadcf;
+            transform: translateX(4px);
+        }
+
+        .expand-content .contact-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .expand-content .contact-link p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Expanded about */
+        .expand-content .about-full {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .expand-content .about-full .about-photo-lg {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 2rem;
+            display: block;
+            border: 3px solid var(--border-color);
+        }
+
+        .expand-content .about-full p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .expand-content .about-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .expand-content .about-buttons .game-btn {
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            padding: 0.7rem 1.5rem;
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .expand-content .about-buttons .game-btn:hover {
+            border-color: #6aadcf;
+            color: #6aadcf;
+        }
+
+        /* BENTO RESPONSIVE */
+        @media (max-width: 900px) {
+            .bento { grid-template-columns: repeat(2, 1fr); }
+            .card-about { grid-column: span 2; grid-row: span 1; }
+        }
+
+        @media (max-width: 600px) {
+            .bento { grid-template-columns: 1fr; gap: 0.75rem; }
+            .span-2, .card-about { grid-column: span 1; }
+            .card-about { grid-row: span 1; }
+            .tall { grid-row: span 1; }
+            .expand-content .takes-wall { columns: 1; }
+            .expand-content .blog-grid { grid-template-columns: 1fr; }
+        }
+
     </style>
 </head>
 <body>
-    <!-- LIQUID DARK MODE OVERLAY -->
-    <div class="dark-mode-liquid" id="dark-mode-liquid"></div>
-
     <!-- LOADER -->
     <div class="loader" id="loader">
         <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
         <p class="loader-text" id="loader-text">loading</p>
         <div class="loader-counter">
-            <div class="loader-line"></div>
+            <div class="loader-line">
+                <div class="loader-block" style="background:#6aadcf"></div>
+                <div class="loader-block" style="background:#6aadcf"></div>
+                <div class="loader-block" style="background:#7a9fbf"></div>
+                <div class="loader-block" style="background:#8b93b0"></div>
+                <div class="loader-block" style="background:#9c87a1"></div>
+                <div class="loader-block" style="background:#ad7b92"></div>
+                <div class="loader-block" style="background:#be7383"></div>
+                <div class="loader-block" style="background:#cf6b6b"></div>
+                <div class="loader-block" style="background:#cf6b6b"></div>
+                <div class="loader-block" style="background:#cf6b6b"></div>
+            </div>
             <span class="loader-number" id="loader-number">1</span>
         </div>
     </div>
-
-    <canvas id="grid-canvas"></canvas>
 
     <!-- SITE CONTENT -->
     <div class="site-content" id="site-content">
         <div class="mascot-corner">
             <img src="538mascot.webp" alt="538 Mascot" class="mascot-img">
             <div class="mascot-tooltip">
-                <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="projects.html">projects</a>!</p>
+                <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.8;">Click and hold to drag me around!</p>
             </div>
         </div>
@@ -1753,76 +2778,231 @@
 
         <!-- POWER USER TOOLBAR -->
         <div class="power-toolbar">
-            <button class="power-btn" id="dark-mode-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-            </button>
-            <button class="power-btn" id="crt-btn" onclick="toggleCRT(); updateToolbarState();">
-                <span class="btn-label">CRT</span>
-            </button>
             <button class="power-btn" onclick="openCmdPalette()">
                 <span class="btn-label"><kbd class="shortcut-key"></kbd> Search</span>
             </button>
         </div>
         <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
 
-        <nav>
-            <div class="hamburger" onclick="toggleNav()">
-                <span></span>
-                <span></span>
-                <span></span>
+        <!-- HERO -->
+        <div class="hero">
+            <img src="ddddd.jpg" alt="Ryan McComb" class="hero-img">
+            <div class="hero-gradient"></div>
+            <div class="hero-overlay">
+                <h1>Ryan McComb</h1>
+                <p>Student at ETHS</p>
+                <div class="hero-links">
+                    <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
+                    <a href="https://manifold.markets/JeromeHPowell" target="_blank">Manifold</a>
+                    <a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
+                </div>
             </div>
-            <ul class="nav-tabs">
-                <li class="nav-dropdown">
-                    <span class="nav-dropdown-toggle has-active">About</span>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="index.html" class="active">Home</a></li>
-                        <li><a href="experience.html">Experience</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </li>
-                <li class="nav-dropdown">
-                    <span class="nav-dropdown-toggle">Work</span>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="photos.html">Photos</a></li>
-                    </ul>
-                </li>
-                <li class="nav-dropdown">
-                    <span class="nav-dropdown-toggle">Writing</span>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="hottakes.html">Hot Takes</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+        </div>
 
-        <main class="homepage">
-            <div class="homepage-name stagger-in" style="transition-delay: 0.1s;">
-                <h1>
-                    <span class="name-text">Ryan McComb</span>
-                    <img src="sig.webp" alt="Signature" class="name-sig">
-                </h1>
-                <p class="subtitle stagger-in" style="transition-delay: 0.3s;">Student at ETHS</p>
+        <!-- BENTO GRID -->
+        <div class="bento" id="bento-grid">
+            <!-- ABOUT (2x2) -->
+            <div class="card card-about" data-card="about" onclick="expandCard('about')">
+                <div class="card-preview">
+                    <img src="ddddd.jpg" alt="Ryan" class="about-photo">
+                    <div class="card-label">About</div>
+                    <div class="card-title">Building things,<br>predicting things.</div>
+                    <div class="card-body">Student interested in data, prediction markets, politics, and the web. I like making things people can use and forming beliefs based on evidence.</div>
+                    <div class="about-signature">&#8212; Ryan</div>
+                </div>
             </div>
 
-            <div class="photo-container stagger-in" id="photo-container" style="transition-delay: 0.5s;">
-                <img src="photo-sketch.png" alt="Ryan McComb" class="photo-sketch">
-                <img src="photo-original.jpg" alt="Ryan McComb" class="photo-original">
-                <span class="photo-hint">Tap to reveal</span>
+            <!-- COUNTDOWN (1x1) -->
+            <div class="card" data-card="countdowns" onclick="expandCard('countdowns')">
+                <div class="card-preview">
+                    <div class="card-label">Countdown</div>
+                    <div class="card-title" style="font-size: 1.1rem;" id="cd-preview-title">&#127891; Loading...</div>
+                    <div class="cd-display">
+                        <div class="cd-unit"><div class="cd-num" id="cd-d">--</div><div class="cd-label-text">days</div></div>
+                        <div class="cd-unit"><div class="cd-num" id="cd-h">--</div><div class="cd-label-text">hrs</div></div>
+                        <div class="cd-unit"><div class="cd-num" id="cd-m">--</div><div class="cd-label-text">min</div></div>
+                        <div class="cd-unit"><div class="cd-num" id="cd-s">--</div><div class="cd-label-text">sec</div></div>
+                    </div>
+                    <div class="card-footer" id="cd-preview-date"></div>
+                </div>
             </div>
 
-            <div class="game-buttons stagger-in" style="transition-delay: 0.7s;">
-                <button class="game-btn" onclick="openWebQuiz()"><span class="game-btn-icon">?</span> Quiz: How Well Do You Know Ryan?</button>
-                <button class="game-btn" onclick="openWebTruths()"><span class="game-btn-icon">&mdash;</span> Two Truths &amp; a Lie</button>
+            <!-- HOT TAKE (1x1) -->
+            <div class="card card-hottake" data-card="hottakes" onclick="expandCard('hottakes')">
+                <div class="card-preview">
+                    <div class="card-label">Hot Take</div>
+                    <div class="card-body take-rotate" id="hottake-preview-text">"Loading a spicy take..."</div>
+                    <div class="spice" id="hottake-preview-spice"></div>
+                    <div class="card-footer" id="hottake-preview-footer">+ more takes &rarr;</div>
+                </div>
             </div>
-        </main>
+
+            <!-- EXPERIENCE (2x1) -->
+            <div class="card span-2" data-card="experience" onclick="expandCard('experience')">
+                <div class="card-preview">
+                    <div class="card-label">Experience</div>
+                    <div class="card-title" style="font-size: 1.1rem;">Where I've worked</div>
+                    <div class="exp-mini">
+                        <div class="exp-mini-item">
+                            <div class="em-role">Student Fellow</div>
+                            <div class="em-co">VoteHub</div>
+                            <div class="em-date">Mar 2026 &ndash; Present</div>
+                        </div>
+                        <div class="exp-mini-item">
+                            <div class="em-role">Data Analyst</div>
+                            <div class="em-co">IL9CAST</div>
+                            <div class="em-date">Dec 2025 &ndash; Present</div>
+                        </div>
+                        <div class="exp-mini-item">
+                            <div class="em-role">Volunteer Finance Lead</div>
+                            <div class="em-co">Biss for Congress</div>
+                            <div class="em-date">Aug 2025 &ndash; Present</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECTS (2x2) -->
+            <div class="card span-2 tall" data-card="projects" onclick="expandCard('projects')">
+                <div class="card-preview">
+                    <div class="card-label">Projects</div>
+                    <div class="card-title" style="font-size: 1.1rem;">Things I've built</div>
+                    <div class="project-mini">
+                        <div class="project-mini-item">
+                            <div class="pm-name">IL9CAST</div>
+                            <div class="pm-desc">Open-source political forecasting for IL-9</div>
+                            <div class="pm-tags"><span class="pm-tag">Data Science</span><span class="pm-tag">Python</span></div>
+                        </div>
+                        <div class="project-mini-item">
+                            <div class="pm-name">Project 2028 Podcast</div>
+                            <div class="pm-desc">Political science podcast</div>
+                            <div class="pm-tags"><span class="pm-tag">Podcast</span></div>
+                        </div>
+                        <div class="project-mini-item">
+                            <div class="pm-name">The Evanstonian</div>
+                            <div class="pm-desc">Journalism covering local politics</div>
+                            <div class="pm-tags"><span class="pm-tag">Journalism</span></div>
+                        </div>
+                        <div class="project-mini-item">
+                            <div class="pm-name">ManiFed</div>
+                            <div class="pm-desc">Peer-to-peer lending for Manifold</div>
+                            <div class="pm-tags"><span class="pm-tag">Web Dev</span><span class="pm-tag">Finance</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHOTOS (1x1) -->
+            <div class="card card-photos" data-card="photos" onclick="expandCard('photos')">
+                <div class="card-preview">
+                    <div class="card-label">Photos</div>
+                    <div class="photo-mini-grid">
+                        <div class="photo-mini">&#128247;</div>
+                        <div class="photo-mini">&#128247;</div>
+                        <div class="photo-mini">&#128247;</div>
+                        <div class="photo-mini">&#127909;</div>
+                        <div class="photo-mini">&#128247;</div>
+                        <div class="photo-mini">&#128247;</div>
+                    </div>
+                    <div class="card-footer">Gallery &rarr;</div>
+                </div>
+            </div>
+
+            <!-- BLOG (2x1) -->
+            <div class="card span-2 card-blog" data-card="blog" onclick="expandCard('blog')">
+                <div class="card-preview">
+                    <div class="card-label">Blog</div>
+                    <div class="card-title" style="font-size: 1.1rem;">Essays &amp; writing</div>
+                    <div class="blog-preview">
+                        <div class="blog-entry">
+                            <span class="blog-entry-title">People's Edict</span>
+                            <span class="blog-entry-date">May 2025</span>
+                        </div>
+                        <div class="blog-entry">
+                            <span class="blog-entry-title">The Median Voter Theory</span>
+                            <span class="blog-entry-date">Jan 2025</span>
+                        </div>
+                        <div class="blog-entry">
+                            <span class="blog-entry-title">NSA Surveillance</span>
+                            <span class="blog-entry-date">Sep 2024</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">Read all &rarr;</div>
+                </div>
+            </div>
+
+            <!-- PASSIONS (1x1) -->
+            <div class="card" data-card="passions" onclick="expandCard('passions')">
+                <div class="card-preview">
+                    <div class="card-label">Passions</div>
+                    <div class="passions-grid">
+                        <div class="passion-item"><div class="passion-name">Markets</div></div>
+                        <div class="passion-item"><div class="passion-name">Politics</div></div>
+                        <div class="passion-item"><div class="passion-name">Photo</div></div>
+                        <div class="passion-item"><div class="passion-name">Coding</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT (1x1) -->
+            <div class="card" data-card="contact" onclick="expandCard('contact')">
+                <div class="card-preview">
+                    <div class="card-label">Contact</div>
+                    <div class="contact-mini">
+                        <a href="mailto:rymccmcomb1@icloud.com" onclick="event.stopPropagation()">Email</a>
+                        <a href="https://github.com/de-bayes" target="_blank" onclick="event.stopPropagation()">GitHub</a>
+                        <a href="https://manifold.markets/JeromeHPowell" target="_blank" onclick="event.stopPropagation()">Manifold</a>
+                        <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank" onclick="event.stopPropagation()">LinkedIn</a>
+                        <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" onclick="event.stopPropagation()">Metaculus</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORECASTING (1x1) -->
+            <div class="card card-forecast" data-card="forecasting" onclick="expandCard('forecasting')">
+                <div class="card-preview">
+                    <div class="card-label" style="color:#cf6b6b">Forecasting</div>
+                    <div class="card-title" style="font-size: 1.1rem;">IL-09 Primary</div>
+                    <div class="card-body">Open-source election forecasting for Illinois' 9th Congressional District.</div>
+                    <div class="card-footer"><a href="https://il9.org" target="_blank" onclick="event.stopPropagation()" style="color:#6aadcf;text-decoration:none">il9.org &#8599;</a></div>
+                </div>
+            </div>
+
+            <!-- EDUCATION (1x1) -->
+            <div class="card" data-card="education" onclick="expandCard('experience')">
+                <div class="card-preview">
+                    <div class="card-label">Education</div>
+                    <div class="card-title" style="font-size: 1rem;">Evanston Township HS</div>
+                    <div class="card-body">Class of 2026</div>
+                    <div class="edu-gpa">
+                        <span class="gpa-num">3.98</span>
+                        <span class="gpa-label">UW GPA</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESUME (1x1) -->
+            <div class="card" onclick="window.open('resume.html','_blank')">
+                <div class="card-preview">
+                    <div class="card-label">Resume</div>
+                    <div class="card-title" style="font-size: 1.1rem;">View Resume</div>
+                    <div class="card-body">Experience, education, skills, and projects — all on one page.</div>
+                    <div class="card-footer">Open PDF &rarr;</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLAG FOOTER -->
+        <div class="flag-footer">
+            <img src="flag-footer.png" alt="">
+        </div>
+
+        <!-- EXPAND OVERLAY -->
+        <div id="expand-overlay">
+            <div class="expand-back" onclick="collapseCard()">&larr; Back</div>
+            <div class="expand-content" id="expand-content"></div>
+        </div>
     </div>
-
-    <!-- CRT SCANLINE (only visible in CRT mode) -->
-    <div class="crt-scanline" id="crt-scanline"></div>
-    <div class="crt-badge" id="crt-badge" onclick="toggleCRT()">CRT ON</div>
 
     <!-- COMMAND PALETTE -->
     <div class="cmd-palette-overlay" id="cmd-palette-overlay">
@@ -1905,54 +3085,6 @@
     </div>
 
     <script>
-        // DARK MODE TOGGLE — liquid ink effect
-        let liquidAnimating = false;
-        function toggleDarkMode() {
-            if (liquidAnimating) return;
-            liquidAnimating = true;
-
-            const toggle = document.getElementById('dark-mode-btn');
-            const liquid = document.getElementById('dark-mode-liquid');
-            const rect = toggle.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-
-            // Set origin point
-            liquid.style.setProperty('--liquid-x', x + 'px');
-            liquid.style.setProperty('--liquid-y', y + 'px');
-
-            const goingDark = !document.body.classList.contains('dark-mode');
-
-            // Set overlay to the TARGET theme color
-            liquid.style.background = goingDark ? '#1a1a1a' : '#faf8f5';
-
-            // Force layout before adding class
-            liquid.offsetHeight;
-            liquid.classList.add('expanding');
-
-            // Once circle covers the screen, swap the actual theme underneath
-            setTimeout(() => {
-                document.body.classList.toggle('dark-mode');
-                const isDark = document.body.classList.contains('dark-mode');
-                localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-
-                // Remove overlay instantly (theme is now applied underneath)
-                liquid.classList.remove('expanding');
-                liquid.style.clipPath = 'circle(0% at ' + x + 'px ' + y + 'px)';
-
-                // Reset for next use
-                requestAnimationFrame(() => {
-                    liquid.style.clipPath = '';
-                    liquidAnimating = false;
-                });
-            }, 800);
-        }
-
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-        }
-
         // HAMBURGER MENU
         function toggleNav() {
             document.querySelector('.hamburger').classList.toggle('active');
@@ -1967,31 +3099,11 @@
             });
         });
 
-        // PHOTO TOUCH TOGGLE
-        const photoContainer = document.getElementById('photo-container');
-        if (photoContainer) {
-            photoContainer.addEventListener('click', function() {
-                // Only toggle on touch devices
-                if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-                    this.classList.toggle('touched');
-                }
-            });
-        }
-
         const loader = document.getElementById('loader');
         const siteContent = document.getElementById('site-content');
         const loaderNumber = document.getElementById('loader-number');
         const loaderText = document.getElementById('loader-text');
 
-        // Preload the hero photo pair while the loader is visible.
-        ['photo-sketch.png', 'photo-original.jpg'].forEach(src => {
-            const img = new Image();
-            img.decoding = 'async';
-            img.src = src;
-        });
-
-        // Progress: drives loader display and grid line drawing
-        let gridProgress = 0;
         const steps = [1, 13, 27, 41, 54, 68, 79, 88, 94, 100];
         let currentStep = 0;
         const stepDelay = 400;
@@ -2004,10 +3116,9 @@
 
         function updateLoader() {
             const value = steps[currentStep];
-            gridProgress = value / 100;
 
             loaderNumber.textContent = value;
-            loaderNumber.style.left = (gridProgress * 100) + '%';
+            loaderNumber.style.left = value + '%';
 
             currentStep++;
 
@@ -2027,7 +3138,6 @@
         const hasLoaded = sessionStorage.getItem('hasLoaded');
 
         if (hasLoaded && !isRefresh) {
-            gridProgress = 1;
             loader.classList.add('hidden');
             siteContent.classList.add('visible');
             document.querySelectorAll('.stagger-in').forEach(el => el.classList.add('visible'));
@@ -2036,140 +3146,6 @@
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
-        // GRID BACKGROUND - lines draw in progressively as gridProgress increases
-        const canvas = document.getElementById('grid-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let mouseX = -1000;
-        let mouseY = -1000;
-        let targetMouseX = -1000;
-        let targetMouseY = -1000;
-        const gridSize = 40;
-        const influence = 280;
-        const maxDisplacement = 15;
-        const smoothing = 0.06;
-
-        // Store current point positions for smooth animation
-        let pointsState = null;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            pointsState = null;
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        document.addEventListener('mousemove', (e) => {
-            targetMouseX = e.clientX;
-            targetMouseY = e.clientY;
-        });
-
-        document.addEventListener('mouseleave', () => {
-            targetMouseX = -1000;
-            targetMouseY = -1000;
-        });
-
-        // Touch support for grid
-        document.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 0) {
-                targetMouseX = e.touches[0].clientX;
-                targetMouseY = e.touches[0].clientY;
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchend', () => {
-            targetMouseX = -1000;
-            targetMouseY = -1000;
-        });
-
-        function drawGrid() {
-            // Smooth mouse position
-            mouseX += (targetMouseX - mouseX) * smoothing;
-            mouseY += (targetMouseY - mouseY) * smoothing;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--grid-color').trim();
-            ctx.strokeStyle = gridColor;
-            ctx.lineWidth = 1;
-
-            const cols = Math.ceil(canvas.width / gridSize) + 1;
-            const rows = Math.ceil(canvas.height / gridSize) + 1;
-
-            // Initialize points state if needed
-            if (!pointsState || pointsState.length !== rows + 1) {
-                pointsState = [];
-                for (let row = 0; row <= rows; row++) {
-                    pointsState[row] = [];
-                    for (let col = 0; col <= cols; col++) {
-                        pointsState[row][col] = { x: col * gridSize, y: row * gridSize };
-                    }
-                }
-            }
-
-            // Calculate target positions and smoothly animate
-            for (let row = 0; row <= rows; row++) {
-                for (let col = 0; col <= cols; col++) {
-                    const baseX = col * gridSize;
-                    const baseY = row * gridSize;
-                    let targetX = baseX;
-                    let targetY = baseY;
-
-                    const dx = baseX - mouseX;
-                    const dy = baseY - mouseY;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < influence && dist > 0) {
-                        // Smoother falloff for more fabric-like feel
-                        const falloff = 1 - dist / influence;
-                        const force = falloff * falloff * falloff * maxDisplacement;
-                        const angle = Math.atan2(dy, dx);
-                        // Push away from mouse
-                        targetX = baseX + Math.cos(angle) * force;
-                        targetY = baseY + Math.sin(angle) * force;
-                    }
-
-                    // Slower interpolation for dampened feel
-                    pointsState[row][col].x += (targetX - pointsState[row][col].x) * 0.06;
-                    pointsState[row][col].y += (targetY - pointsState[row][col].y) * 0.06;
-                }
-            }
-
-            // Draw horizontal lines with curves (progressive: top to bottom)
-            const maxHoriz = Math.floor((rows + 1) * gridProgress);
-            for (let row = 0; row < maxHoriz; row++) {
-                ctx.beginPath();
-                ctx.moveTo(pointsState[row][0].x, pointsState[row][0].y);
-                for (let col = 1; col <= cols; col++) {
-                    const prev = pointsState[row][col - 1];
-                    const curr = pointsState[row][col];
-                    const midX = (prev.x + curr.x) / 2;
-                    const midY = (prev.y + curr.y) / 2;
-                    ctx.quadraticCurveTo(prev.x, prev.y, midX, midY);
-                }
-                ctx.stroke();
-            }
-
-            // Draw vertical lines with curves (progressive: left to right)
-            const maxVert = Math.floor((cols + 1) * gridProgress);
-            for (let col = 0; col < maxVert; col++) {
-                ctx.beginPath();
-                ctx.moveTo(pointsState[0][col].x, pointsState[0][col].y);
-                for (let row = 1; row <= rows; row++) {
-                    const prev = pointsState[row - 1][col];
-                    const curr = pointsState[row][col];
-                    const midX = (prev.x + curr.x) / 2;
-                    const midY = (prev.y + curr.y) / 2;
-                    ctx.quadraticCurveTo(prev.x, prev.y, midX, midY);
-                }
-                ctx.stroke();
-            }
-
-            requestAnimationFrame(drawGrid);
-        }
-
-        drawGrid();
 
         // FIVEY FOX DRAG WITH PHYSICS
         const mascot = document.querySelector('.mascot-corner');
@@ -2491,7 +3467,7 @@
         // Terminal commands
         const commandHistory = [];
         let historyIndex = -1;
-        const allCommands = ['/info', '/home', '/exp', '/experience', '/proj', '/projects', '/pass', '/passions', '/pics', '/photos', '/contact', '/clear', '/matrix', '/snake', '/dino', '/crt', '/ascii', '/tetris', '/wordle', '/type', '/desktop', '/sudo', '/quiz', '/2truths', '/weather', '/guestbook', '/resume', '/stats', '/blog'];
+        const allCommands = ['/info', '/home', '/exp', '/experience', '/proj', '/projects', '/pass', '/passions', '/pics', '/photos', '/contact', '/clear', '/matrix', '/snake', '/dino', '/ascii', '/tetris', '/wordle', '/type', '/desktop', '/sudo', '/quiz', '/2truths', '/weather', '/guestbook', '/resume', '/stats', '/blog'];
 
         const asciiPages = {
             home: `
@@ -2669,7 +3645,7 @@
 
             if (command === '/info') {
                 addTerminalLine('');
-                addTerminalLine('<span style="color: #e67e22; font-weight: bold;">Available Commands</span>');
+                addTerminalLine('<span style="color: #6aadcf; font-weight: bold;">Available Commands</span>');
                 addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                 addTerminalLine('  <span class="terminal-command">/home</span>      → View home page');
                 addTerminalLine('  <span class="terminal-command">/exp</span>       → View experience & education');
@@ -2679,7 +3655,7 @@
                 addTerminalLine('  <span class="terminal-command">/contact</span>   → View contact info');
                 addTerminalLine('  <span class="terminal-command">/clear</span>     → Clear terminal');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #e67e22; font-weight: bold;">Games</span>');
+                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Games</span>');
                 addTerminalLine('  <span class="terminal-command">/matrix</span>    → Matrix rain');
                 addTerminalLine('  <span class="terminal-command">/snake</span>     → Play Snake');
                 addTerminalLine('  <span class="terminal-command">/dino</span>      → Play Dino Run');
@@ -2687,17 +3663,16 @@
                 addTerminalLine('  <span class="terminal-command">/wordle</span>    → Play Wordle');
                 addTerminalLine('  <span class="terminal-command">/type</span>      → Typing speed test');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #e67e22; font-weight: bold;">Interactive</span>');
+                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Interactive</span>');
                 addTerminalLine('  <span class="terminal-command">/quiz</span>      → How Well Do You Know Ryan?');
                 addTerminalLine('  <span class="terminal-command">/2truths</span>   → Two Truths and a Lie');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #e67e22; font-weight: bold;">Social</span>');
+                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Social</span>');
                 addTerminalLine('  <span class="terminal-command">/weather</span>   → Current weather in Evanston');
                 addTerminalLine('  <span class="terminal-command">/guestbook</span> → View & sign the guestbook');
                 addTerminalLine('  <span class="terminal-command">/stats</span>     → Visitor analytics dashboard');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #e67e22; font-weight: bold;">Tools</span>');
-                addTerminalLine('  <span class="terminal-command">/crt</span>       → Toggle CRT scanline mode');
+                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Tools</span>');
                 addTerminalLine('  <span class="terminal-command">/ascii</span>     → Generate ASCII art from text');
                 addTerminalLine('  <span class="terminal-command">/desktop</span>   → Enter Desktop OS mode');
                 addTerminalLine('  <span class="terminal-command">/resume</span>    → View printable resume');
@@ -2742,10 +3717,8 @@
                 addTerminalLine('<span class="terminal-success">Starting Dino Run... Press Space to jump. Press Escape to quit.</span>');
                 setTimeout(() => startDinoGame(), 300);
             } else if (command === '/crt') {
-                toggleCRT();
-                const isOn = document.body.classList.contains('crt-mode');
                 addTerminalLine('');
-                addTerminalLine('<span class="terminal-success">CRT mode ' + (isOn ? 'ON' : 'OFF') + '</span>');
+                addTerminalLine('<span class="terminal-error">CRT mode has been removed.</span>');
                 addTerminalLine('');
             } else if (command.startsWith('/ascii')) {
                 const text = cmd.trim().substring(6).trim();
@@ -2886,7 +3859,7 @@
                     }
                 } else {
                     addTerminalLine('');
-                    addTerminalLine('<span style="color: #e67e22; font-weight: bold;">Visitor Guestbook</span>');
+                    addTerminalLine('<span style="color: #6aadcf; font-weight: bold;">Visitor Guestbook</span>');
                     addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                     addTerminalLine('  Sign it: <span class="terminal-command">/guestbook sign Name: Your message</span>');
                     addTerminalLine('');
@@ -2912,7 +3885,7 @@
                 }
             } else if (command === '/stats') {
                 addTerminalLine('');
-                addTerminalLine('<span style="color: #e67e22; font-weight: bold;">Visitor Analytics Dashboard</span>');
+                addTerminalLine('<span style="color: #6aadcf; font-weight: bold;">Visitor Analytics Dashboard</span>');
                 addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                 fetch('/api/stats')
                     .then(r => r.json())
@@ -2923,7 +3896,7 @@
 
                         const pages = Object.entries(stats.pageViews || {}).sort((a, b) => b[1] - a[1]);
                         if (pages.length > 0) {
-                            addTerminalLine('  <span style="color: #e67e22;">Page Views</span>');
+                            addTerminalLine('  <span style="color: #6aadcf;">Page Views</span>');
                             const maxViews = pages[0][1];
                             pages.forEach(([page, count]) => {
                                 const barLen = Math.round((count / maxViews) * 20);
@@ -2935,7 +3908,7 @@
 
                         const commands = Object.entries(stats.commands || {}).sort((a, b) => b[1] - a[1]);
                         if (commands.length > 0) {
-                            addTerminalLine('  <span style="color: #e67e22;">Most Used Commands</span>');
+                            addTerminalLine('  <span style="color: #6aadcf;">Most Used Commands</span>');
                             commands.slice(0, 8).forEach(([cmd, count]) => {
                                 addTerminalLine('    <span class="terminal-command">' + cmd.padEnd(14) + '</span> ' + count + ' uses');
                             });
@@ -2944,7 +3917,7 @@
 
                         const games = Object.entries(stats.games || {}).sort((a, b) => b[1] - a[1]);
                         if (games.length > 0) {
-                            addTerminalLine('  <span style="color: #e67e22;">Most Played Games</span>');
+                            addTerminalLine('  <span style="color: #6aadcf;">Most Played Games</span>');
                             games.forEach(([game, count]) => {
                                 addTerminalLine('    ' + game.padEnd(18) + ' ' + count + ' plays');
                             });
@@ -3396,7 +4369,7 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Food
-                ctx.fillStyle = '#e67e22';
+                ctx.fillStyle = '#6aadcf';
                 ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
 
                 // Snake
@@ -3413,7 +4386,7 @@
                 if (gameOver) {
                     ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#e67e22';
+                    ctx.fillStyle = '#6aadcf';
                     ctx.font = '32px "VT323", monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
@@ -3506,7 +4479,7 @@
             }
 
             function drawCactus(obs) {
-                ctx.fillStyle = '#e67e22';
+                ctx.fillStyle = '#6aadcf';
                 // Main trunk
                 ctx.fillRect(obs.x + 4, obs.y - obs.h, obs.w - 8, obs.h);
                 // Left arm
@@ -3613,7 +4586,7 @@
                 if (gameOver) {
                     ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#e67e22';
+                    ctx.fillStyle = '#6aadcf';
                     ctx.font = '32px "VT323", monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
@@ -3676,7 +4649,7 @@
 
         // --- MAGNETIC BUTTONS ---
         function initMagneticButtons() {
-            const magneticEls = document.querySelectorAll('.nav-dropdown-menu a, .nav-dropdown-toggle, .footer-links a, .terminal-button');
+            const magneticEls = document.querySelectorAll('.nav-dropdown-menu a, .nav-dropdown-toggle, .terminal-button');
             const magnetStrength = 0.3;
             const magnetRange = 80;
 
@@ -3759,32 +4732,6 @@
         initInkBleed();
 
         // =============================================
-        // CRT MODE
-        // =============================================
-        function toggleCRT() {
-            document.body.classList.toggle('crt-mode');
-            const isOn = document.body.classList.contains('crt-mode');
-            localStorage.setItem('crtMode', isOn ? 'enabled' : 'disabled');
-            updateToolbarState();
-        }
-        function updateToolbarState() {
-            const crtBtn = document.getElementById('crt-btn');
-            if (crtBtn) {
-                if (document.body.classList.contains('crt-mode')) {
-                    crtBtn.classList.add('active');
-                } else {
-                    crtBtn.classList.remove('active');
-                }
-            }
-        }
-        // Restore CRT mode if previously enabled
-        if (localStorage.getItem('crtMode') === 'enabled') {
-            document.body.classList.add('crt-mode');
-        }
-        // Set initial toolbar state
-        updateToolbarState();
-
-        // =============================================
         // ASCII ART GENERATOR
         // =============================================
         function generateAsciiArt(text) {
@@ -3861,7 +4808,7 @@
             const offsetX = Math.floor((canvas.width - COLS * BLOCK) / 2);
             const offsetY = Math.floor((canvas.height - ROWS * BLOCK) / 2);
 
-            const COLORS = ['', '#4ec9b0', '#e67e22', '#569cd6', '#f48771', '#0f0', '#cc66cc', '#ffbd2e'];
+            const COLORS = ['', '#4ec9b0', '#6aadcf', '#569cd6', '#f48771', '#0f0', '#cc66cc', '#ffbd2e'];
             const PIECES = [
                 [[1,1,1,1]],
                 [[2,0],[2,0],[2,2]],
@@ -3986,7 +4933,7 @@
                 if (gameOver) {
                     ctx.fillStyle = 'rgba(30, 30, 30, 0.85)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#e67e22';
+                    ctx.fillStyle = '#6aadcf';
                     ctx.font = '32px "VT323", monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
@@ -4086,7 +5033,7 @@
                 ctx.fillStyle = '#1e1e1e';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                ctx.fillStyle = '#e67e22';
+                ctx.fillStyle = '#6aadcf';
                 ctx.font = '28px "VT323", monospace';
                 ctx.textAlign = 'center';
                 ctx.fillText('WORDLE', canvas.width / 2, startY - 15);
@@ -4235,7 +5182,7 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Title
-                ctx.fillStyle = '#e67e22';
+                ctx.fillStyle = '#6aadcf';
                 ctx.font = '28px "VT323", monospace';
                 ctx.textAlign = 'center';
                 ctx.fillText('TYPING TEST', canvas.width / 2, 40);
@@ -4307,7 +5254,7 @@
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                     ctx.textAlign = 'center';
-                    ctx.fillStyle = '#e67e22';
+                    ctx.fillStyle = '#6aadcf';
                     ctx.font = '36px "VT323", monospace';
                     ctx.fillText('TEST COMPLETE', canvas.width / 2, canvas.height / 2 - 80);
 
@@ -4321,7 +5268,7 @@
                     ctx.fillText('Characters: ' + totalCorrect + '/' + totalTyped + ' correct', canvas.width / 2, canvas.height / 2 + 30);
 
                     if (typingNameInput) {
-                        ctx.fillStyle = '#e67e22';
+                        ctx.fillStyle = '#6aadcf';
                         ctx.font = '20px "VT323", monospace';
                         ctx.fillText('Enter name for leaderboard:', canvas.width / 2, canvas.height / 2 + 65);
                         ctx.fillStyle = '#fff';
@@ -4331,7 +5278,7 @@
                         ctx.font = '16px "VT323", monospace';
                         ctx.fillText('Press Enter to submit, Esc to skip', canvas.width / 2, canvas.height / 2 + 115);
                     } else if (typingLeaderboard.length > 0) {
-                        ctx.fillStyle = '#e67e22';
+                        ctx.fillStyle = '#6aadcf';
                         ctx.font = '20px "VT323", monospace';
                         ctx.fillText('LEADERBOARD', canvas.width / 2, canvas.height / 2 + 60);
                         ctx.font = '18px "VT323", monospace';
@@ -4494,7 +5441,7 @@
 
             function getRating(s) {
                 if (s <= 2) return { text: 'Complete stranger vibes.', color: '#f48771' };
-                if (s <= 4) return { text: 'Casual acquaintance.', color: '#e67e22' };
+                if (s <= 4) return { text: 'Casual acquaintance.', color: '#6aadcf' };
                 if (s <= 6) return { text: 'You know some things!', color: '#dcdcaa' };
                 if (s <= 8) return { text: 'Close friend energy.', color: '#4ec9b0' };
                 if (s === 9) return { text: 'Basically best friends.', color: '#569cd6' };
@@ -4522,7 +5469,7 @@
                     // Final screen
                     const rating = getRating(score);
 
-                    ctx.fillStyle = '#e67e22';
+                    ctx.fillStyle = '#6aadcf';
                     ctx.font = '32px "VT323", monospace';
                     ctx.fillText('QUIZ COMPLETE', canvas.width / 2, 50);
 
@@ -4541,7 +5488,7 @@
                     // Leaderboard
                     const leaderboard = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
                     if (leaderboard.length > 0) {
-                        ctx.fillStyle = '#e67e22';
+                        ctx.fillStyle = '#6aadcf';
                         ctx.font = '22px "VT323", monospace';
                         ctx.fillText('LEADERBOARD', canvas.width / 2, 220);
 
@@ -4566,7 +5513,7 @@
                 }
 
                 // Header
-                ctx.fillStyle = '#e67e22';
+                ctx.fillStyle = '#6aadcf';
                 ctx.font = '26px "VT323", monospace';
                 ctx.fillText('HOW WELL DO YOU KNOW RYAN?', canvas.width / 2, 35);
 
@@ -4816,7 +5763,7 @@
 
             function getRating(s) {
                 if (s <= 1) return { text: 'You believed everything!', color: '#f48771' };
-                if (s <= 3) return { text: 'Getting warmer...', color: '#e67e22' };
+                if (s <= 3) return { text: 'Getting warmer...', color: '#6aadcf' };
                 if (s <= 5) return { text: 'Decent BS detector.', color: '#dcdcaa' };
                 if (s === 6) return { text: 'Very perceptive!', color: '#4ec9b0' };
                 return { text: 'Human lie detector!', color: '#c586c0' };
@@ -4830,7 +5777,7 @@
                 if (finished) {
                     const rating = getRating(score);
 
-                    ctx.fillStyle = '#e67e22';
+                    ctx.fillStyle = '#6aadcf';
                     ctx.font = '32px "VT323", monospace';
                     ctx.fillText('GAME COMPLETE', canvas.width / 2, 60);
 
@@ -4869,7 +5816,7 @@
                 }
 
                 // Header
-                ctx.fillStyle = '#e67e22';
+                ctx.fillStyle = '#6aadcf';
                 ctx.font = '26px "VT323", monospace';
                 ctx.fillText('TWO TRUTHS AND A LIE', canvas.width / 2, 35);
 
@@ -4878,7 +5825,7 @@
                 const barH = 8;
                 ctx.fillStyle = '#333';
                 ctx.fillRect(50, 50, barW, barH);
-                ctx.fillStyle = '#e67e22';
+                ctx.fillStyle = '#6aadcf';
                 ctx.fillRect(50, 50, barW * (currentR / 7), barH);
 
                 ctx.fillStyle = '#888';
@@ -4909,7 +5856,7 @@
                             ctx.fillStyle = 'rgba(78, 201, 176, 0.1)';
                         }
                     } else {
-                        ctx.fillStyle = isSelected ? 'rgba(230, 126, 34, 0.15)' : 'rgba(255,255,255,0.03)';
+                        ctx.fillStyle = isSelected ? 'rgba(106, 173, 207, 0.15)' : 'rgba(255,255,255,0.03)';
                     }
                     ctx.fillRect(stmtX - 10, y - 22, canvas.width - 80, 55);
 
@@ -4919,7 +5866,7 @@
                     ctx.strokeRect(stmtX - 10, y - 22, canvas.width - 80, 55);
 
                     // Number
-                    ctx.fillStyle = '#e67e22';
+                    ctx.fillStyle = '#6aadcf';
                     ctx.font = '22px "VT323", monospace';
                     ctx.fillText((i + 1) + '.', stmtX, y + 5);
 
@@ -5148,7 +6095,7 @@
                 '</div>' +
                 '<span class="desktop-window-title">' + title + '</span>' +
                 '</div>' +
-                '<div class="desktop-window-body"><pre style="font-family: VT323, monospace; color: #e67e22; font-size: 0.8rem; white-space: pre-wrap;">' + content + '</pre></div>';
+                '<div class="desktop-window-body"><pre style="font-family: VT323, monospace; color: #6aadcf; font-size: 0.8rem; white-space: pre-wrap;">' + content + '</pre></div>';
 
             // Close button
             win.querySelector('.close-btn').addEventListener('click', () => {
@@ -5216,16 +6163,484 @@
         }
 
         // =============================================
+        // BENTO GRID — EXPAND / COLLAPSE
+        // =============================================
+        let currentExpandedCard = null;
+        let allTakesData = [];
+        let allCountdownsData = [];
+        let guestbookLoaded = false;
+
+        // Expanded content generators for each card
+        const expandedContent = {
+            about: () => `
+                <h1 class="page-title">About</h1>
+                <div class="about-full">
+                    <img src="ddddd.jpg" alt="Ryan McComb" class="about-photo-lg">
+                    <p>I'm Ryan McComb, a student at Evanston Township High School interested in data, prediction markets, politics, and the web. I like making things people can use and forming beliefs based on evidence.</p>
+                    <p>I built <a href="https://il9.org" target="_blank" style="color:#6aadcf">IL9.org</a>, an open-source political forecasting project. I'm also a Student Fellow at VoteHub doing race-call work and election modeling, and a Volunteer Finance Lead for the Biss congressional campaign.</p>
+                    <div class="about-buttons">
+                        <button class="game-btn" onclick="openWebQuiz()">? Quiz: How Well Do You Know Ryan?</button>
+                        <button class="game-btn" onclick="openWebTruths()">&mdash; Two Truths &amp; a Lie</button>
+                    </div>
+                </div>
+            `,
+            experience: () => `
+                <h1 class="page-title">Experiences</h1>
+                <h2 class="section-subtitle">Experience</h2>
+                <div class="experience-list">
+                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
+                        <div class="experience-header"><div><h3>Student Fellow</h3><p class="experience-meta">VoteHub &bull; Fellowship</p></div><span class="expand-icon">&#9660;</span></div>
+                        <div class="experience-details"><div class="experience-content"><p class="time-period">March 2026 - Present</p><p>I recently started as a Student Fellow at <a href="https://votehub.com" target="_blank">VoteHub</a> and I'm super excited to be doing race-call work and election modeling with a team that cares deeply about political data.</p></div></div>
+                    </div>
+                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
+                        <div class="experience-header"><div><h3>Data Analyst</h3><p class="experience-meta">IL9CAST &bull; Self-employed</p></div><span class="expand-icon">&#9660;</span></div>
+                        <div class="experience-details"><div class="experience-content"><p class="time-period">December 2025 - Present</p><p>I built <a href="https://il9.org" target="_blank">IL9.org</a>, an open-source political forecasting project focused on modeling the Illinois 9th Congressional District.</p></div></div>
+                    </div>
+                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
+                        <div class="experience-header"><div><h3>Volunteer Finance Lead</h3><p class="experience-meta">Biss for Congress &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
+                        <div class="experience-details"><div class="experience-content"><p class="time-period">August 2025 - Present</p><p>Volunteer finance Lead for the Biss congressional campaign, helping donor outreach, pulling data needed for fundraising, and community connections.</p></div></div>
+                    </div>
+                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
+                        <div class="experience-header"><div><h3>Freelance Photographer</h3><p class="experience-meta">Chicago Union &bull; Freelance</p></div><span class="expand-icon">&#9660;</span></div>
+                        <div class="experience-details"><div class="experience-content"><p class="time-period">June 2025 - Present</p><p>Helped out the Union a bit with some killer pics! Check out my work at <a href="https://www.instagram.com/mccomb.photo/" target="_blank">@mccomb.photo</a></p></div></div>
+                    </div>
+                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
+                        <div class="experience-header"><div><h3>Swim Instructor</h3><p class="experience-meta">YWCA USA &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
+                        <div class="experience-details"><div class="experience-content"><p class="time-period">June 2025 - Present</p><p>Taught swimming.....need I say more</p></div></div>
+                    </div>
+                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
+                        <div class="experience-header"><div><h3>Staff Writer</h3><p class="experience-meta">The Evanstonian &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
+                        <div class="experience-details"><div class="experience-content"><p class="time-period">August 2024 - Present</p><p>Wrote about a variety of issues in Evanstonian for the news section including informative articles about local politics, ETHS, D65, and community social issues!</p></div></div>
+                    </div>
+                </div>
+                <h2 class="section-subtitle">Education</h2>
+                <div class="experience-list">
+                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
+                        <div class="experience-header"><div><h3>Evanston Township High School</h3><p class="experience-meta">Class of 2026 &bull; Evanston, IL</p></div><span class="expand-icon">&#9660;</span></div>
+                        <div class="experience-details"><div class="experience-content"><p class="time-period">GPA: 3.98 Unweighted / 4.41 Weighted</p><p>Currently taking Chem/Phys among other courses.</p></div></div>
+                    </div>
+                </div>
+            `,
+            projects: () => `
+                <h1 class="page-title">Projects</h1>
+                <div class="projects-grid">
+                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                        <h3>IL9CAST</h3>
+                        <p class="project-description">Open-source political forecasting project modeling the Illinois 9th Congressional District. Features data analytics, polling aggregation, and election predictions.</p>
+                        <div class="project-tags"><span class="tag">Data Science</span><span class="tag">Python</span><span class="tag">Open Source</span></div>
+                        <a href="https://il9.org" target="_blank" class="project-visit" onclick="event.stopPropagation()">Visit Project &#8599;</a>
+                    </article>
+                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                        <h3>Project 2028 Podcast</h3>
+                        <p class="project-description">A podcast exploring political science and politics.</p>
+                        <div class="project-tags"><span class="tag">Podcast</span><span class="tag">Political Science</span></div>
+                        <a href="https://podcasts.apple.com/us/podcast/project-2028/id1753137875" target="_blank" class="project-visit" onclick="event.stopPropagation()">Listen &#8599;</a>
+                    </article>
+                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                        <h3>The Evanstonian</h3>
+                        <p class="project-description">Collection of my journalism work covering local politics, ETHS, D65, and community issues.</p>
+                        <div class="project-tags"><span class="tag">Journalism</span><span class="tag">Writing</span></div>
+                        <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="project-visit" onclick="event.stopPropagation()">Read Articles &#8599;</a>
+                    </article>
+                    <article class="project-card" onclick="this.classList.toggle('expanded')">
+                        <h3>ManiFed</h3>
+                        <p class="project-description">Peer-to-peer lending platform built for the Manifold Markets community.</p>
+                        <div class="project-tags"><span class="tag">Web Development</span><span class="tag">Finance</span></div>
+                        <a href="https://manifed.markets" target="_blank" class="project-visit" onclick="event.stopPropagation()">Launch Product &#8599;</a>
+                    </article>
+                </div>
+            `,
+            photos: () => `
+                <h1 class="page-title">Photos</h1>
+                <div class="featured-film">
+                    <h2>Cabin Life</h2>
+                    <iframe class="film-video" src="https://drive.google.com/file/d/1cGeVPasHX9805irZzNxSby3EdJdb4xOA/preview" allow="autoplay" allowfullscreen></iframe>
+                    <p>A short film I made over Christmas 2025-2026.</p>
+                </div>
+                <h2 class="section-subtitle" style="margin-top:2rem">Gallery</h2>
+                <div class="photo-grid-full">
+                    <div class="photo-grid-item">&#128248;</div>
+                    <div class="photo-grid-item">&#128248;</div>
+                    <div class="photo-grid-item">&#128248;</div>
+                    <div class="photo-grid-item">&#128248;</div>
+                    <div class="photo-grid-item">&#128248;</div>
+                    <div class="photo-grid-item">&#128248;</div>
+                </div>
+            `,
+            passions: () => `
+                <h1 class="page-title">Passions</h1>
+                <div class="passions-full-grid">
+                    <div class="passion-card"><div class="passion-icon-lg">&#128202;</div><h3>Prediction Markets</h3><p>Forecasting political outcomes and studying market behavior.</p></div>
+                    <div class="passion-card"><div class="passion-icon-lg"><img src="538mascot.webp" alt="Fivey" style="width:50px;height:auto"></div><h3>Politics</h3><p>Following elections, policy analysis, and political trends.</p></div>
+                    <div class="passion-card"><div class="passion-icon-lg">&#128248;</div><h3>Photography and Videography</h3><p>Capturing moments through film and digital media, cinematography, and visual storytelling.</p></div>
+                    <div class="passion-card"><div class="passion-icon-lg">&#128187;</div><h3>Making Cool Websites and Software</h3><p>Building tools and exploring new technologies.</p></div>
+                    <div class="passion-card"><div class="passion-icon-lg">&#128218;</div><h3>Reading</h3><p>Non-fiction, political theory, and behavioral economics.</p></div>
+                </div>
+            `,
+            contact: () => `
+                <h1 class="page-title">Contact</h1>
+                <div class="contact-links">
+                    <a href="mailto:rymccmcomb1@icloud.com" class="contact-link"><h3>Email</h3><p>rymccmcomb1@icloud.com</p></a>
+                    <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank" class="contact-link"><h3>LinkedIn</h3><p>Ryan McComb</p></a>
+                    <a href="https://github.com/de-bayes" target="_blank" class="contact-link"><h3>GitHub</h3><p>@de-bayes</p></a>
+                    <a href="https://manifold.markets/JeromeHPowell" target="_blank" class="contact-link"><h3>Manifold Markets</h3><p>@JeromeHPowell</p></a>
+                    <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" class="contact-link"><h3>Metaculus</h3><p>Profile #238376</p></a>
+                </div>
+            `,
+            forecasting: () => `
+                <h1 class="page-title">Forecasting</h1>
+                <div style="max-width:600px;margin:0 auto">
+                    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem">I build election forecasting models and trade on prediction markets. Data-driven beliefs, updated with evidence.</p>
+                    <div class="project-card" style="margin-bottom:1.5rem;cursor:default">
+                        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:0.5rem">IL9CAST</h3>
+                        <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:1rem">Open-source political forecasting for the Illinois 9th Congressional District. Features polling aggregation, fundamentals-based modeling, and probabilistic seat projections.</p>
+                        <div class="project-tags"><span class="tag">Python</span><span class="tag">Data Science</span><span class="tag">Open Source</span></div>
+                        <a href="https://il9.org" target="_blank" style="display:inline-block;margin-top:1rem;color:#6aadcf;font-weight:500;font-size:0.9rem;text-decoration:none">Visit il9.org &#8599;</a>
+                    </div>
+                    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin:2rem 0 1rem;color:var(--text-secondary)">Prediction Markets</h2>
+                    <div class="contact-links">
+                        <a href="https://manifold.markets/JeromeHPowell" target="_blank" class="contact-link"><h3>Manifold Markets</h3><p>@JeromeHPowell</p></a>
+                        <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" class="contact-link"><h3>Metaculus</h3><p>Calibrated forecaster</p></a>
+                    </div>
+                </div>
+            `,
+            hottakes: () => {
+                return `<h1 class="page-title">Hot Takes</h1>
+                    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem">Opinions I'm willing to defend. Spiciness rated 1&ndash;5.</p>
+                    <div class="filter-bar" id="expand-filter-bar"><button class="filter-pill active" data-cat="all">All</button></div>
+                    <div class="takes-wall" id="expand-takes-wall">${renderTakesWall(allTakesData)}</div>`;
+            },
+            countdowns: () => {
+                return `<h1 class="page-title">Countdowns</h1>
+                    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem">Things I'm counting down to (and things that already happened).</p>
+                    <div class="countdown-grid" id="expand-countdown-grid">${renderCountdownCards(allCountdownsData)}</div>`;
+            },
+            blog: () => {
+                return `<h1 class="page-title">Blog</h1>
+                    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem">Thoughts on politics, data, prediction markets, and building things</p>
+                    <div class="blog-list" id="expand-blog-list">
+                        <div class="blog-featured">
+                            <div class="blog-featured-card" style="position:relative" onclick="openExpandedArticle('peoples-edict')">
+                                <span class="blog-featured-badge">FEATURED</span>
+                                <img src="2500.webp" alt="People's Edict" class="blog-featured-image">
+                                <div class="blog-featured-body">
+                                    <h2>People's Edict</h2>
+                                    <p>An on-demand essay on power and strife, exploring when and how authority should be challenged.</p>
+                                    <div class="blog-meta"><span class="read-time">5 min read</span><span class="blog-tag">Essay</span><span>May 2025</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-family:'VT323',monospace;font-size:1rem;color:#6aadcf;letter-spacing:0.15em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border-color)">MORE POSTS</div>
+                        <div class="blog-grid">
+                            <div class="blog-card" onclick="openExpandedArticle('median-voter-theory')">
+                                <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
+                                <p>How the Trump Campaign Used an Obscure Political Science Concept to Move the Electorate</p>
+                                <div class="blog-meta"><span class="read-time">6 min read</span><span class="blog-tag">Politics</span><span>Jan 2025</span></div>
+                            </div>
+                            <div class="blog-card" onclick="openExpandedArticle('nsa-surveillance')">
+                                <h3>Resolution on State Interception of Communications</h3>
+                                <p>Why the intentional censorship and oversight of private communications without a warrant is unconstitutional</p>
+                                <div class="blog-meta"><span class="read-time">7 min read</span><span class="blog-tag">Essay</span><span>Sep 2024</span></div>
+                            </div>
+                        </div>
+                        <div class="blog-guestbook" id="expand-guestbook">
+                            <h2>Guestbook</h2>
+                            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem">Leave a message, say hi, or drop some feedback.</p>
+                            <div class="gb-form" id="expand-gb-form">
+                                <input type="text" name="name" placeholder="Your name" maxlength="40">
+                                <textarea name="message" placeholder="Your message..." maxlength="200"></textarea>
+                                <button class="gb-submit" onclick="signExpandedGuestbook()">Sign</button>
+                            </div>
+                            <div class="gb-status" id="expand-gb-status"></div>
+                            <div class="gb-entries" id="expand-gb-entries"></div>
+                        </div>
+                    </div>
+                    <div class="blog-article" id="expand-blog-article">
+                        <a class="blog-back" onclick="closeExpandedArticle()">&larr; Back to all posts</a>
+                        <div class="article-header" id="expand-article-header"></div>
+                        <div class="article-body" id="expand-article-body"></div>
+                    </div>`;
+            }
+        };
+
+        function expandCard(cardName) {
+            currentExpandedCard = cardName;
+            const overlay = document.getElementById('expand-overlay');
+            const content = document.getElementById('expand-content');
+
+            const generator = expandedContent[cardName];
+            if (!generator) return;
+            content.innerHTML = generator();
+            overlay.style.display = 'block';
+            requestAnimationFrame(() => overlay.classList.add('active'));
+            overlay.scrollTop = 0;
+            document.body.style.overflow = 'hidden';
+            history.pushState({ card: cardName }, '', '#' + cardName);
+
+            // Post-render hooks
+            if (cardName === 'hottakes') initExpandedTakesFilters();
+            if (cardName === 'countdowns') startExpandedCountdownTick();
+            if (cardName === 'blog' && !guestbookLoaded) { loadExpandedGuestbook(); guestbookLoaded = true; }
+
+            // Track
+            fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'pageview', value: cardName }) }).catch(() => {});
+        }
+
+        function collapseCard() {
+            const overlay = document.getElementById('expand-overlay');
+            overlay.classList.remove('active');
+            setTimeout(() => { overlay.style.display = 'none'; }, 300);
+            document.body.style.overflow = '';
+            currentExpandedCard = null;
+            if (window.location.hash) history.pushState(null, '', window.location.pathname);
+        }
+
+        // Escape key + back button
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && currentExpandedCard) collapseCard();
+        });
+
+        window.addEventListener('popstate', (e) => {
+            if (e.state && e.state.card) {
+                expandCard(e.state.card);
+            } else if (currentExpandedCard) {
+                collapseCard();
+            }
+        });
+
+        // Deep link on load
+        if (window.location.hash) {
+            const card = window.location.hash.substring(1);
+            if (expandedContent[card]) {
+                // Wait for page load
+                setTimeout(() => expandCard(card), 100);
+            }
+        }
+
+        // =============================================
+        // API DATA — Hot Takes + Countdowns
+        // =============================================
+        function renderTakesWall(takes) {
+            if (!takes.length) return '<div style="text-align:center;padding:2rem;color:var(--text-light);font-style:italic">No takes yet.</div>';
+            return takes.map((t, i) => `
+                <div class="take-card take-color-${i % 6}" style="transform:rotate(${(Math.random() - 0.5) * 2}deg)">
+                    <div class="take-text">${t.text}</div>
+                    <div class="take-footer">
+                        <span class="take-category">${t.category}</span>
+                        <span class="take-spice">${t.spiciness}/5</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function initExpandedTakesFilters() {
+            const bar = document.getElementById('expand-filter-bar');
+            if (!bar || !allTakesData.length) return;
+            const cats = [...new Set(allTakesData.map(t => t.category))];
+            bar.innerHTML = '<button class="filter-pill active" data-cat="all">All</button>' +
+                cats.map(c => `<button class="filter-pill" data-cat="${c}">${c}</button>`).join('');
+            bar.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    bar.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const cat = btn.dataset.cat;
+                    const filtered = cat === 'all' ? allTakesData : allTakesData.filter(t => t.category === cat);
+                    document.getElementById('expand-takes-wall').innerHTML = renderTakesWall(filtered);
+                });
+            });
+        }
+
+        function renderCountdownCards(countdowns) {
+            if (!countdowns.length) return '<div style="text-align:center;padding:2rem;color:var(--text-light);font-style:italic">No countdowns yet.</div>';
+            const now = Date.now();
+            const upcoming = countdowns.filter(c => new Date(c.date).getTime() > now);
+            const past = countdowns.filter(c => new Date(c.date).getTime() <= now);
+            let html = '';
+            upcoming.forEach(c => {
+                const diff = new Date(c.date).getTime() - now;
+                const d = Math.floor(diff / 86400000);
+                const h = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+                const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                const target = new Date(c.date);
+                const created = new Date(c.created || c.date);
+                const total = target.getTime() - created.getTime();
+                const elapsed = now - created.getTime();
+                const pct = total > 0 ? Math.min(100, (elapsed / total) * 100) : 0;
+                html += `<div class="countdown-card" data-date="${c.date}">
+
+                    <div class="countdown-title">${escapeHtml(c.title)}</div>
+                    <div class="countdown-date">${target.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                    <div class="countdown-timer" data-target="${c.date}">
+                        <div class="countdown-unit"><div class="countdown-number" data-unit="days">${d}</div><div class="countdown-label">Days</div></div>
+                        <div class="countdown-unit"><div class="countdown-number" data-unit="hours">${h}</div><div class="countdown-label">Hours</div></div>
+                        <div class="countdown-unit"><div class="countdown-number" data-unit="minutes">${m}</div><div class="countdown-label">Min</div></div>
+                        <div class="countdown-unit"><div class="countdown-number" data-unit="seconds">${s}</div><div class="countdown-label">Sec</div></div>
+                    </div>
+                    <div class="countdown-progress" style="width:${pct}%"></div>
+                </div>`;
+            });
+            if (past.length) {
+                html += '<div class="section-divider">Already Happened</div>';
+                past.reverse().forEach(c => {
+                    html += `<div class="countdown-card past">
+    
+                        <div class="countdown-title">${escapeHtml(c.title)}</div>
+                        <div class="countdown-date">${new Date(c.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                        <div class="countdown-done">Happened!</div>
+                    </div>`;
+                });
+            }
+            return html;
+        }
+
+        function startExpandedCountdownTick() {
+            const tickFn = () => {
+                if (currentExpandedCard !== 'countdowns') return;
+                const grid = document.getElementById('expand-countdown-grid');
+                if (!grid) return;
+                grid.querySelectorAll('.countdown-timer').forEach(timer => {
+                    const t = new Date(timer.dataset.target).getTime() - Date.now();
+                    if (t <= 0) return;
+                    timer.querySelector('[data-unit="days"]').textContent = Math.floor(t / 86400000);
+                    timer.querySelector('[data-unit="hours"]').textContent = String(Math.floor((t % 86400000) / 3600000)).padStart(2, '0');
+                    timer.querySelector('[data-unit="minutes"]').textContent = String(Math.floor((t % 3600000) / 60000)).padStart(2, '0');
+                    timer.querySelector('[data-unit="seconds"]').textContent = String(Math.floor((t % 60000) / 1000)).padStart(2, '0');
+                });
+                setTimeout(tickFn, 1000);
+            };
+            tickFn();
+        }
+
+        // Blog articles data (for expanded blog view)
+        const blogArticles = {
+            'peoples-edict': { title: "People's Edict", date: 'May 23, 2025', readTime: '5 min read', tags: ['Essay'], image: '2500.webp', body: '<p>I wrote an interesting on-demand essay in English on power and strife. This is what I came up with in 50 minutes. Not pure gold, but it resonates.</p><p>Authority is inherently meant to be challenged. Since the dawn of time, power struggles have transcended not only humans but also the most basic of animals. However, for such a primal topic, it has been fraught with various philosophies and theses on how to govern while allowing the populace to have agency over themselves and their decisions.</p><p>Instead of writing a philosophical and motivational thesis, I believe we must be pragmatic about challenging authority. Authority should be challenged only when it is both a necessity and, more importantly, achievable.</p><p>This claim is most exhaustively demonstrated in "Raisin in the Sun." The Youngers realized that the most effective way to challenge authority was to stay and fight the battle they could win.</p><p>These stories both present cautionary tales and ideal models for opposing authority. They suggest that, when necessary and applicable, authority should be questioned.</p>' },
+            'median-voter-theory': { title: "The Conflation Between Median Voter Theory and Trump's Win", date: 'January 8, 2025', readTime: '6 min read', tags: ['Politics'], image: '1721605711463.webp', body: '<p><strong>How the Trump Campaign Used an Obscure Political Science Concept to Move the Electorate</strong></p><p>In the aftermath of the election, a wave of analysis has swept through the Democratic Party and political pundits alike. However, unlike its predecessors, this election was shaped by a concept older than the United States itself.</p><p>The term Median Voter Theory was coined by Duncan Black in the mid-1900s and refers to the idea that in a first-past-the-post system, a "Median Voter" would decide the election.</p><p>In this election, the Trump campaign identified a unique opportunity to tactically exploit Median Voter Theory in action: leveraging Kamala Harris\' 2020 bid for president to position her as out of touch with the "median voter."</p><p>Armed with the same data that is at the press of a few buttons on your laptop, the Trump campaign took it and ran.</p>' },
+            'nsa-surveillance': { title: "Resolution on State Interception of Communications", date: 'September 29, 2024', readTime: '7 min read', tags: ['Essay'], body: '<p><em>I wrote this essay in eighth grade, so the quality may be subpar.</em></p><p>In an age where digital technology permeates every facet of modern life, the issue of government surveillance has emerged as a contentious battleground between national security imperatives and individual privacy rights.</p><p>Even while enticing for national security, the intentional censorship and oversight of personal and private-enterprise communications without an official warrant is not only immoral but outright unconstitutional.</p>' }
+        };
+
+        function openExpandedArticle(id) {
+            const article = blogArticles[id];
+            if (!article) return;
+            const blogList = document.getElementById('expand-blog-list');
+            const blogArticle = document.getElementById('expand-blog-article');
+            if (blogList) blogList.classList.add('hidden');
+            if (blogArticle) {
+                blogArticle.classList.add('active');
+                document.getElementById('expand-article-header').innerHTML = '<h1>' + article.title + '</h1><div class="blog-meta"><span class="read-time">' + article.readTime + '</span>' + article.tags.map(t => '<span class="blog-tag">' + t + '</span>').join('') + '<span>' + article.date + '</span></div>';
+                const imgHtml = article.image ? '<img src="' + article.image + '" alt="' + article.title + '" class="article-hero-img">' : '';
+                document.getElementById('expand-article-body').innerHTML = imgHtml + article.body;
+            }
+            document.getElementById('expand-overlay').scrollTop = 0;
+        }
+
+        function closeExpandedArticle() {
+            const blogList = document.getElementById('expand-blog-list');
+            const blogArticle = document.getElementById('expand-blog-article');
+            if (blogList) blogList.classList.remove('hidden');
+            if (blogArticle) blogArticle.classList.remove('active');
+            document.getElementById('expand-overlay').scrollTop = 0;
+        }
+
+        // Guestbook for expanded blog
+        function loadExpandedGuestbook() {
+            fetch('/api/guestbook')
+                .then(r => r.json())
+                .then(entries => {
+                    const container = document.getElementById('expand-gb-entries');
+                    if (!container) return;
+                    if (!entries.length) { container.innerHTML = '<p style="color:var(--text-light);font-size:0.85rem">No entries yet. Be the first!</p>'; return; }
+                    container.innerHTML = entries.slice(0, 20).map(e => {
+                        const d = new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        return '<div class="gb-entry"><div class="gb-entry-header"><span class="gb-entry-name">' + escapeHtml(e.name) + '</span><span class="gb-entry-date">' + d + '</span></div><div class="gb-entry-msg">' + escapeHtml(e.message) + '</div></div>';
+                    }).join('');
+                }).catch(() => {});
+        }
+
+        function signExpandedGuestbook() {
+            const form = document.getElementById('expand-gb-form');
+            if (!form) return;
+            const name = form.querySelector('input[name="name"]').value.trim();
+            const message = form.querySelector('textarea[name="message"]').value.trim();
+            const status = document.getElementById('expand-gb-status');
+            if (!name || !message) { status.textContent = 'Please fill in both fields.'; return; }
+            status.textContent = 'Signing...';
+            fetch('/api/guestbook', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, message }) })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.ok) { status.textContent = 'Signed! Thanks, ' + name + '!'; form.querySelector('input[name="name"]').value = ''; form.querySelector('textarea[name="message"]').value = ''; loadExpandedGuestbook(); }
+                    else { status.textContent = data.error || 'Could not sign.'; }
+                }).catch(() => { status.textContent = 'Network error.'; });
+        }
+
+        // Load API data on page load
+        function loadSiteData() {
+            // Hot takes
+            fetch('/api/hottakes')
+                .then(r => r.json())
+                .then(takes => {
+                    allTakesData = takes;
+                    // Populate preview card
+                    if (takes.length) {
+                        const random = takes[Math.floor(Math.random() * takes.length)];
+                        const previewText = document.getElementById('hottake-preview-text');
+                        const previewSpice = document.getElementById('hottake-preview-spice');
+                        const previewFooter = document.getElementById('hottake-preview-footer');
+                        if (previewText) previewText.textContent = '"' + random.text + '"';
+                        if (previewSpice) previewSpice.textContent = random.spiciness + '/5';
+                        if (previewFooter) previewFooter.textContent = '+ ' + (takes.length - 1) + ' more takes \u2192';
+                    }
+                }).catch(() => {});
+
+            // Countdowns
+            fetch('/api/countdowns')
+                .then(r => r.json())
+                .then(data => {
+                    allCountdownsData = data;
+                    // Populate preview card with next upcoming
+                    const now = Date.now();
+                    const upcoming = data.filter(c => new Date(c.date).getTime() > now);
+                    if (upcoming.length) {
+                        const next = upcoming[0];
+                        const titleEl = document.getElementById('cd-preview-title');
+                        const dateEl = document.getElementById('cd-preview-date');
+                        if (titleEl) titleEl.textContent = next.title;
+                        if (dateEl) dateEl.textContent = new Date(next.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                        // Start live ticker
+                        function tickPreview() {
+                            const diff = new Date(next.date).getTime() - Date.now();
+                            if (diff <= 0) return;
+                            const dEl = document.getElementById('cd-d');
+                            const hEl = document.getElementById('cd-h');
+                            const mEl = document.getElementById('cd-m');
+                            const sEl = document.getElementById('cd-s');
+                            if (dEl) dEl.textContent = Math.floor(diff / 86400000);
+                            if (hEl) hEl.textContent = Math.floor((diff % 86400000) / 3600000);
+                            if (mEl) mEl.textContent = Math.floor((diff % 3600000) / 60000);
+                            if (sEl) sEl.textContent = Math.floor((diff % 60000) / 1000);
+                        }
+                        tickPreview();
+                        setInterval(tickPreview, 1000);
+                    }
+                }).catch(() => {});
+        }
+
+        loadSiteData();
+
+        // =============================================
         // COMMAND PALETTE (Cmd+K / Ctrl+K)
         // =============================================
         const cmdPaletteItems = [
-            { section: 'Pages', icon: '\uD83C\uDFE0', label: 'Home', action: () => window.location.href = 'index.html' },
-            { section: 'Pages', icon: '\uD83D\uDCBC', label: 'Experience', action: () => window.location.href = 'experience.html' },
-            { section: 'Pages', icon: '\uD83D\uDCC1', label: 'Projects', action: () => window.location.href = 'projects.html' },
-            { section: 'Pages', icon: '\uD83D\uDCF7', label: 'Photos', action: () => window.location.href = 'photos.html' },
-            { section: 'Pages', icon: '\uD83C\uDF36\uFE0F', label: 'Hot Takes', action: () => window.location.href = 'hottakes.html' },
-            { section: 'Pages', icon: '\u23F3', label: 'Countdowns', action: () => window.location.href = 'countdowns.html' },
-            { section: 'Pages', icon: '\uD83D\uDCE7', label: 'Contact', action: () => window.location.href = 'contact.html' },
+            { section: 'Pages', icon: '\uD83C\uDFE0', label: 'Home', action: () => collapseCard() },
+            { section: 'Pages', icon: '\uD83D\uDCBC', label: 'Experience', action: () => expandCard('experience') },
+            { section: 'Pages', icon: '\uD83D\uDCC1', label: 'Projects', action: () => expandCard('projects') },
+            { section: 'Pages', icon: '\uD83D\uDCF7', label: 'Photos', action: () => expandCard('photos') },
+            { section: 'Pages', icon: '\uD83C\uDF36\uFE0F', label: 'Hot Takes', action: () => expandCard('hottakes') },
+            { section: 'Pages', icon: '\u23F3', label: 'Countdowns', action: () => expandCard('countdowns') },
+            { section: 'Pages', icon: '\uD83D\uDCE7', label: 'Contact', action: () => expandCard('contact') },
+            { section: 'Pages', icon: '\u2764\uFE0F', label: 'Passions', action: () => expandCard('passions') },
+            { section: 'Pages', icon: '\uD83D\uDCCA', label: 'Forecasting', action: () => expandCard('forecasting') },
+            { section: 'Pages', icon: '\uD83C\uDF93', label: 'Education', action: () => expandCard('experience') },
             { section: 'Games', icon: '\uD83D\uDC0D', label: 'Snake', shortcut: '/snake', action: () => { openTerminal(); setTimeout(() => executeCommand('/snake'), 300); } },
             { section: 'Games', icon: '\uD83E\uDD96', label: 'Dino Run', shortcut: '/dino', action: () => { openTerminal(); setTimeout(() => executeCommand('/dino'), 300); } },
             { section: 'Games', icon: '\uD83E\uDDE9', label: 'Tetris', shortcut: '/tetris', action: () => { openTerminal(); setTimeout(() => executeCommand('/tetris'), 300); } },
@@ -5234,26 +6649,24 @@
             { section: 'Games', icon: '\u2753', label: 'Quiz: Know Ryan?', shortcut: '/quiz', action: () => { openWebQuiz(); } },
             { section: 'Games', icon: '\uD83E\uDD25', label: 'Two Truths & a Lie', shortcut: '/2truths', action: () => { openWebTruths(); } },
             { section: 'Tools', icon: '\uD83D\uDDA5\uFE0F', label: 'Terminal', action: () => openTerminal() },
-            { section: 'Tools', icon: '\uD83D\uDCFA', label: 'CRT Mode', shortcut: '/crt', action: () => { toggleCRT(); } },
             { section: 'Tools', icon: '\uD83D\uDCBB', label: 'Desktop Mode', shortcut: '/desktop', action: () => startDesktopMode() },
-            { section: 'Tools', icon: '\uD83C\uDF19', label: 'Toggle Dark Mode', action: () => toggleDarkMode() },
             { section: 'Social', icon: '\u2600\uFE0F', label: 'Weather', shortcut: '/weather', action: () => { openTerminal(); setTimeout(() => executeCommand('/weather'), 300); } },
             { section: 'Social', icon: '\uD83D\uDCD6', label: 'Guestbook', shortcut: '/guestbook', action: () => { openTerminal(); setTimeout(() => executeCommand('/guestbook'), 300); } },
             { section: 'Social', icon: '\uD83D\uDCCA', label: 'Analytics', shortcut: '/stats', action: () => { openTerminal(); setTimeout(() => executeCommand('/stats'), 300); } },
-            { section: 'Pages', icon: '\uD83D\uDCDD', label: 'Blog', action: () => window.location.href = 'blog.html' },
+            { section: 'Pages', icon: '\uD83D\uDCDD', label: 'Blog', action: () => expandCard('blog') },
             { section: 'Tools', icon: '\uD83D\uDCC4', label: 'Resume', shortcut: '/resume', action: () => window.open('resume.html', '_blank') },
         ];
 
         const siteSearchPages = [
             { url: 'index.html', title: 'Home' },
-            { url: 'experience.html', title: 'Experience' },
-            { url: 'projects.html', title: 'Projects' },
-            { url: 'photos.html', title: 'Photos' },
-            { url: 'passions.html', title: 'Passions' },
-            { url: 'contact.html', title: 'Contact' },
-            { url: 'hottakes.html', title: 'Hot Takes' },
-            { url: 'countdowns.html', title: 'Countdowns' },
-            { url: 'blog.html', title: 'Blog' }
+            { url: 'index.html#experience', title: 'Experience' },
+            { url: 'index.html#projects', title: 'Projects' },
+            { url: 'index.html#photos', title: 'Photos' },
+            { url: 'index.html#passions', title: 'Passions' },
+            { url: 'index.html#contact', title: 'Contact' },
+            { url: 'index.html#hottakes', title: 'Hot Takes' },
+            { url: 'index.html#countdowns', title: 'Countdowns' },
+            { url: 'index.html#blog', title: 'Blog' }
         ];
         let siteSearchIndex = [];
         let cmdSelectedIdx = 0;
@@ -5308,7 +6721,7 @@
 
                 results.push({
                     section: 'Site Search',
-                    icon: '🔎',
+                    icon: '&gt;',
                     label: `${page.title}: "${query}"`,
                     description: `...${highlightedSnippet}...`,
                     shortcut: page.url,
@@ -5453,7 +6866,7 @@
             document.body.classList.add('konami-active');
 
             // Spawn confetti
-            const colors = ['#e67e22', '#4ec9b0', '#569cd6', '#f48771', '#ffbd2e', '#cc66cc', '#0f0'];
+            const colors = ['#6aadcf', '#4ec9b0', '#569cd6', '#f48771', '#ffbd2e', '#cc66cc', '#0f0'];
             for (let i = 0; i < 60; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
@@ -5564,7 +6977,7 @@
 
             function getRating(s) {
                 if (s <= 2) return { text: 'Complete stranger vibes.', color: '#f48771' };
-                if (s <= 4) return { text: 'Casual acquaintance.', color: '#e67e22' };
+                if (s <= 4) return { text: 'Casual acquaintance.', color: '#6aadcf' };
                 if (s <= 6) return { text: 'You know some things!', color: '#dcdcaa' };
                 if (s <= 8) return { text: 'Close friend energy.', color: '#569cd6' };
                 if (s === 9) return { text: 'Basically best friends.', color: '#4ec9b0' };
@@ -5577,7 +6990,7 @@
                     const prevScore = localStorage.getItem('webquiz_high_score') || '?';
                     inner.innerHTML = '<div class="quiz-header"><h2>HOW WELL DO YOU KNOW RYAN?</h2></div>' +
                         '<div class="quiz-name-screen">' +
-                        '<p style="color:#e67e22;font-family:VT323,monospace;font-size:1.2rem;">You already took the quiz!</p>' +
+                        '<p style="color:#6aadcf;font-family:VT323,monospace;font-size:1.2rem;">You already took the quiz!</p>' +
                         '<p>Your score: <strong>' + prevScore + '/10</strong></p>' +
                         '<p style="font-size:0.8rem;color:var(--text-light);">One attempt only — no retries.</p>' +
                         '</div>';
@@ -5840,7 +7253,7 @@
             function getRating(s, total) {
                 var pct = s / total;
                 if (pct <= 0.15) return { text: 'You believed everything!', color: '#f48771' };
-                if (pct <= 0.4) return { text: 'Getting warmer...', color: '#e67e22' };
+                if (pct <= 0.4) return { text: 'Getting warmer...', color: '#6aadcf' };
                 if (pct <= 0.7) return { text: 'Decent BS detector.', color: '#dcdcaa' };
                 if (pct <= 0.85) return { text: 'Very perceptive!', color: '#4ec9b0' };
                 return { text: 'Human lie detector!', color: '#c586c0' };
@@ -5960,25 +7373,6 @@
                 if (e.target === overlay) closeBtn.click();
             });
         })();
-
-        // =============================================
-        // PAGE TRANSITIONS
-        // =============================================
-        function initPageTransitions() {
-            document.querySelectorAll('a[href$=".html"]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = link.getAttribute('href');
-                    if (href && !link.target && !e.metaKey && !e.ctrlKey) {
-                        e.preventDefault();
-                        document.body.classList.add('page-leaving');
-                        setTimeout(() => {
-                            window.location.href = href;
-                        }, 300);
-                    }
-                });
-            });
-        }
-        initPageTransitions();
 
         // =============================================
         // ANALYTICS TRACKING
