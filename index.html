@@ -3617,39 +3617,117 @@
                 </div>
             `,
             experience: () => `
-                <h1 class="page-title">Experiences</h1>
-                <h2 class="section-subtitle">Experience</h2>
-                <div class="experience-list">
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Student Fellow</h3><p class="experience-meta">VoteHub &bull; Fellowship</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">March 2026 - Present</p><p>I recently started as a Student Fellow at <a href="https://votehub.com" target="_blank">VoteHub</a> and I'm super excited to be doing race-call work and election modeling with a team that cares deeply about political data.</p></div></div>
+                <div class="tl-page">
+                    <div class="tl-hero">
+                        <h1 class="tl-title">Experience</h1>
+                        <p class="tl-subtitle">What I've been working on.</p>
                     </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Data Analyst</h3><p class="experience-meta">IL9CAST &bull; Self-employed</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">December 2025 - Present</p><p>I built <a href="https://il9.org" target="_blank">IL9.org</a>, an open-source political forecasting project focused on modeling the Illinois 9th Congressional District.</p></div></div>
+
+                    <div class="tl-track" id="tl-track">
+                        <div class="tl-line" id="tl-line"></div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Mar 2026</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Student Fellow</h3>
+                                    <span class="tl-org">VoteHub</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Race-call work and election modeling with a team that cares deeply about political data. Building forecasting tools and analyzing real-time results.</p>
+                                    <a href="https://votehub.com" target="_blank" class="tl-link">votehub.com &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Dec 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Data Analyst</h3>
+                                    <span class="tl-org">IL9CAST</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Built <strong>IL9.org</strong>, an open-source political forecasting project modeling the Illinois 9th Congressional District. Polling aggregation, fundamentals modeling, and probabilistic projections.</p>
+                                    <a href="https://il9.org" target="_blank" class="tl-link">il9.org &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Aug 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Volunteer Finance Lead</h3>
+                                    <span class="tl-org">Biss for Congress</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Donor outreach, fundraising data, and community connections for the Biss congressional campaign.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Jun 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Freelance Photographer</h3>
+                                    <span class="tl-org">Chicago Union</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Game-day and event photography for the Chicago Union ultimate frisbee team.</p>
+                                    <a href="https://www.instagram.com/mccomb.photo/" target="_blank" class="tl-link">@mccomb.photo &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Jun 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Swim Instructor</h3>
+                                    <span class="tl-org">YWCA USA</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Taught swimming to kids and adults. Need I say more?</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Aug 2024</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Staff Writer</h3>
+                                    <span class="tl-org">The Evanstonian</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Covered local politics, ETHS, D65, and community issues for the news section. Informative journalism on things that matter to Evanston.</p>
+                                    <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="tl-link">Read articles &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Volunteer Finance Lead</h3><p class="experience-meta">Biss for Congress &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">August 2025 - Present</p><p>Volunteer finance Lead for the Biss congressional campaign, helping donor outreach, pulling data needed for fundraising, and community connections.</p></div></div>
-                    </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Freelance Photographer</h3><p class="experience-meta">Chicago Union &bull; Freelance</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">June 2025 - Present</p><p>Helped out the Union a bit with some killer pics! Check out my work at <a href="https://www.instagram.com/mccomb.photo/" target="_blank">@mccomb.photo</a></p></div></div>
-                    </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Swim Instructor</h3><p class="experience-meta">YWCA USA &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">June 2025 - Present</p><p>Taught swimming.....need I say more</p></div></div>
-                    </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Staff Writer</h3><p class="experience-meta">The Evanstonian &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">August 2024 - Present</p><p>Wrote about a variety of issues in Evanstonian for the news section including informative articles about local politics, ETHS, D65, and community social issues!</p></div></div>
-                    </div>
-                </div>
-                <h2 class="section-subtitle">Education</h2>
-                <div class="experience-list">
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Evanston Township High School</h3><p class="experience-meta">Class of 2026 &bull; Evanston, IL</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">GPA: 3.98 Unweighted / 4.41 Weighted</p><p>Currently taking Chem/Phys among other courses.</p></div></div>
+
+                    <div class="tl-edu">
+                        <div class="tl-edu-label">Education</div>
+                        <div class="tl-edu-card">
+                            <h3>Evanston Township High School</h3>
+                            <p class="tl-edu-meta">Class of 2026 &bull; Evanston, IL</p>
+                            <p class="tl-edu-detail">GPA: 3.98 UW / 4.41 W</p>
+                        </div>
                     </div>
                 </div>
             `,
@@ -3804,12 +3882,31 @@
             history.pushState({ card: cardName }, '', '#' + cardName);
 
             // Post-render hooks
+            if (cardName === 'experience') initTimeline();
             if (cardName === 'hottakes') initExpandedTakesFilters();
             if (cardName === 'countdowns') startExpandedCountdownTick();
             if (cardName === 'blog') { loadExpandedGuestbook(); loadApiBlogPosts(); guestbookLoaded = true; }
 
             // Track
             fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'pageview', value: cardName }) }).catch(() => {});
+        }
+
+        function initTimeline() {
+            const line = document.getElementById('tl-line');
+            const nodes = document.querySelectorAll('.tl-node');
+            if (!line || !nodes.length) return;
+
+            // Draw the line
+            requestAnimationFrame(() => {
+                line.classList.add('drawn');
+            });
+
+            // Stagger-reveal each node
+            nodes.forEach((node, i) => {
+                setTimeout(() => {
+                    node.classList.add('visible');
+                }, 200 + i * 120);
+            });
         }
 
         function collapseCard() {
