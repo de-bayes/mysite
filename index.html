@@ -90,10 +90,8 @@
             animation: invertFlashBlue 1.5s ease-in-out infinite;
         }
 
-        .loader-url span {
-            color: #e0e0e0;
-            animation-name: invertFlash;
-        }
+        .loader-url span:nth-child(odd) { color: #6aadcf; animation-name: invertFlashBlue; }
+        .loader-url span:nth-child(even) { color: #cf6b6b; animation-name: invertFlashRed; }
 
         .loader-url span:nth-child(1) { animation-delay: 0.3s; }
         .loader-url span:nth-child(2) { animation-delay: 1.1s; }
@@ -108,14 +106,25 @@
         .loader-url span:nth-child(11) { animation-delay: 0.2s; }
         .loader-url span:nth-child(12) { animation-delay: 0.6s; }
 
-        @keyframes invertFlash {
+        @keyframes invertFlashBlue {
             0%, 70%, 100% {
-                color: #e0e0e0;
+                color: #6aadcf;
                 background: transparent;
             }
             80%, 90% {
-                color: #111111;
-                background: #e0e0e0;
+                color: #ffffff;
+                background: #6aadcf;
+            }
+        }
+
+        @keyframes invertFlashRed {
+            0%, 70%, 100% {
+                color: #cf6b6b;
+                background: transparent;
+            }
+            80%, 90% {
+                color: #ffffff;
+                background: #cf6b6b;
             }
         }
 
@@ -124,38 +133,8 @@
             font-size: 2.5rem;
             color: #555;
             margin-top: 4rem;
-            margin-bottom: 1.5rem;
             letter-spacing: 0.2em;
             padding: 0.5rem 1rem;
-        }
-
-        .loader-counter {
-            width: 80%;
-            max-width: 600px;
-            position: relative;
-            height: 3rem;
-        }
-
-        .loader-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: calc(100% + 2.5rem);
-            height: 4px;
-            display: flex;
-            gap: 3px;
-        }
-
-        .loader-block {
-            flex: 1;
-            height: 100%;
-        }
-
-        .loader-number {
-            font-family: 'VT323', monospace;
-            font-size: 1.5rem;
-            color: #555;
-            position: absolute;
         }
 
         /* SITE CONTENT - hidden until loaded */
@@ -2811,21 +2790,6 @@
     <div class="loader" id="loader">
         <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
         <p class="loader-text" id="loader-text">loading</p>
-        <div class="loader-counter">
-            <div class="loader-line">
-                <div class="loader-block" style="background:#333"></div>
-                <div class="loader-block" style="background:#3a3a3a"></div>
-                <div class="loader-block" style="background:#444"></div>
-                <div class="loader-block" style="background:#4a4a4a"></div>
-                <div class="loader-block" style="background:#555"></div>
-                <div class="loader-block" style="background:#5a5a5a"></div>
-                <div class="loader-block" style="background:#666"></div>
-                <div class="loader-block" style="background:#6a6a6a"></div>
-                <div class="loader-block" style="background:#777"></div>
-                <div class="loader-block" style="background:#888"></div>
-            </div>
-            <span class="loader-number" id="loader-number">1</span>
-        </div>
     </div>
 
     <!-- SITE CONTENT -->
@@ -3160,36 +3124,13 @@
 
         const loader = document.getElementById('loader');
         const siteContent = document.getElementById('site-content');
-        const loaderNumber = document.getElementById('loader-number');
         const loaderText = document.getElementById('loader-text');
 
-        const steps = [1, 13, 27, 41, 54, 68, 79, 88, 94, 100];
-        let currentStep = 0;
-        const stepDelay = 400;
-
         let dotCount = 0;
-        setInterval(() => {
+        const dotInterval = setInterval(() => {
             dotCount = (dotCount + 1) % 4;
             loaderText.textContent = 'loading' + '.'.repeat(dotCount);
         }, 500);
-
-        function updateLoader() {
-            const value = steps[currentStep];
-
-            loaderNumber.textContent = value;
-            loaderNumber.style.left = value + '%';
-
-            currentStep++;
-
-            if (currentStep < steps.length) {
-                setTimeout(updateLoader, stepDelay);
-            } else {
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                    siteContent.classList.add('visible');
-                }, 400);
-            }
-        }
 
         // Check if page was refreshed or is a new visit (skip loader when navigating from another page)
         const perfData = performance.getEntriesByType?.('navigation')?.[0];
@@ -3199,9 +3140,14 @@
         if (hasLoaded && !isRefresh) {
             loader.classList.add('hidden');
             siteContent.classList.add('visible');
+            clearInterval(dotInterval);
             document.querySelectorAll('.stagger-in').forEach(el => el.classList.add('visible'));
         } else {
-            updateLoader();
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                siteContent.classList.add('visible');
+                clearInterval(dotInterval);
+            }, 3500);
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
