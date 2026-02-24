@@ -30,7 +30,7 @@
 
         <!-- FIVEY FOX MASCOT -->
         <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;">
-            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:110px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
+            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:150px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
             <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Grab and throw me! I have real physics now.</p>
@@ -48,6 +48,20 @@
             <header class="editorial-hero" id="editorial-hero">
                 <h1 class="editorial-name">RYAN McCOMB</h1>
                 <p class="editorial-tagline" id="editorial-tagline"></p>
+                <div class="hero-data-ticker" id="hero-data-ticker">
+                    <span class="ticker-item"><span class="ticker-label">NET WORTH</span><span class="ticker-value" id="ticker-networth">--</span></span>
+                    <span class="ticker-item"><span class="ticker-label">STREAK</span><span class="ticker-value" id="ticker-streak">--</span></span>
+                    <span class="ticker-item"><span class="ticker-label">PROFIT</span><span class="ticker-value" id="ticker-profit">--</span></span>
+                </div>
+                <div class="hero-forecast-line">
+                    <svg viewBox="0 0 640 60" preserveAspectRatio="none">
+                        <path class="forecast-area" d="M0,55 L40,50 L80,52 L120,45 L160,42 L200,38 L240,35 L280,30 L320,28 L360,22 L400,20 L440,18 L480,15 L520,12 L560,10 L600,8 L640,5 L640,60 L0,60 Z"/>
+                        <path class="forecast-path" d="M0,55 L40,50 L80,52 L120,45 L160,42 L200,38 L240,35 L280,30 L320,28 L360,22 L400,20 L440,18 L480,15 L520,12 L560,10 L600,8 L640,5"/>
+                        <circle class="forecast-dot" cx="640" cy="5" r="0" style="animation-delay: 4s"/>
+                        <circle class="forecast-dot" cx="320" cy="28" r="0" style="animation-delay: 3.2s"/>
+                        <circle class="forecast-dot" cx="160" cy="42" r="0" style="animation-delay: 2.5s"/>
+                    </svg>
+                </div>
             </header>
 
             <!-- Essay-style about section with inline links -->
@@ -302,7 +316,64 @@
             });
         })();
 
-        // 3. Scroll-triggered reveal animations
+        // 3. Data ticker — live from Manifold API
+        const MANIFOLD_USER_ID = 'rqyVlY3yvaZkXJ51lMa60NlqbOI3';
+        (function initDataTicker() {
+            const items = document.querySelectorAll('.ticker-item');
+            if (!items.length) return;
+
+            // Stagger reveal after typewriter finishes (~3s)
+            items.forEach((item, i) => {
+                setTimeout(() => item.classList.add('visible'), 3200 + i * 300);
+            });
+
+            // Animate a number counting up from 0
+            function countUp(el, target, prefix, suffix, duration) {
+                const start = performance.now();
+                function tick(now) {
+                    const t = Math.min((now - start) / duration, 1);
+                    const ease = 1 - Math.pow(1 - t, 3);
+                    const current = Math.round(target * ease);
+                    el.textContent = prefix + current.toLocaleString() + suffix;
+                    if (t < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            // Fetch both endpoints in parallel
+            Promise.all([
+                fetch('https://api.manifold.markets/v0/user/JeromeHPowell').then(r => r.json()),
+                fetch('https://api.manifold.markets/v0/get-user-portfolio?userId=' + MANIFOLD_USER_ID).then(r => r.json())
+            ]).then(([user, portfolio]) => {
+                const networthEl = document.getElementById('ticker-networth');
+                const streakEl = document.getElementById('ticker-streak');
+                const profitEl = document.getElementById('ticker-profit');
+
+                if (networthEl) {
+                    const netWorth = Math.round((portfolio.balance || 0) + (portfolio.investmentValue || 0));
+                    setTimeout(() => countUp(networthEl, netWorth, 'M$', '', 1400), 3500);
+                }
+                if (streakEl && user.currentBettingStreak) {
+                    setTimeout(() => countUp(streakEl, user.currentBettingStreak, '', 'd', 900), 3800);
+                }
+                if (profitEl) {
+                    const dailyProfit = Math.round(portfolio.dailyProfit || 0);
+                    setTimeout(() => {
+                        const sign = dailyProfit >= 0 ? '+' : '';
+                        countUp(profitEl, Math.abs(dailyProfit), (dailyProfit >= 0 ? '+M$' : '-M$'), '/day', 1000);
+                    }, 4100);
+                }
+            }).catch(() => {
+                const networthEl = document.getElementById('ticker-networth');
+                const streakEl = document.getElementById('ticker-streak');
+                const profitEl = document.getElementById('ticker-profit');
+                if (networthEl) networthEl.textContent = 'M$61,788';
+                if (streakEl) streakEl.textContent = '220d';
+                if (profitEl) profitEl.textContent = '+M$1,055/day';
+            });
+        })();
+
+        // 4. Scroll-triggered reveal animations
         (function initScrollReveal() {
             const reveals = document.querySelectorAll('.scroll-reveal');
             if (!reveals.length) return;
@@ -620,11 +691,11 @@
             const deltaTime = currentTime - lastTime;
 
             if (deltaTime > 0) {
-                // Smoothed velocity with higher multiplier for more throw momentum
-                const newVX = (newX - lastX) / deltaTime * 15;
-                const newVY = (newY - lastY) / deltaTime * 15;
-                velocityX = velocityX * 0.3 + newVX * 0.7;
-                velocityY = velocityY * 0.3 + newVY * 0.7;
+                // Smoothed velocity — moderate throw momentum
+                const newVX = (newX - lastX) / deltaTime * 10;
+                const newVY = (newY - lastY) / deltaTime * 10;
+                velocityX = velocityX * 0.4 + newVX * 0.6;
+                velocityY = velocityY * 0.4 + newVY * 0.6;
             }
 
             lastX = newX;
@@ -668,8 +739,8 @@
         });
 
         function animatePhysics() {
-            const friction = 0.985;       // Low friction — sticker slides with real momentum
-            const bounceFactor = 0.65;    // Energy retained on bounce
+            const friction = 0.955;       // Higher friction — sticker drags and slows quickly
+            const bounceFactor = 0.45;    // Less energy retained on bounce
             const minVelocity = 0.3;      // Stop threshold
             let frameCount = 0;
 
@@ -3767,6 +3838,25 @@
                 <div class="forecast-body">
                     <p class="forecast-intro">I trade on play-money prediction markets and build websites for real-money ones. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
 
+                    <div class="forecast-section-label">Portfolio Performance</div>
+                    <div class="forecast-chart-wrap" id="forecast-chart-wrap">
+                        <div class="forecast-chart-header">
+                            <div>
+                                <span class="forecast-chart-title">Manifold Profit</span>
+                                <span class="forecast-chart-subtitle">@JeromeHPowell</span>
+                            </div>
+                            <div class="forecast-chart-stat" id="forecast-chart-stat">--</div>
+                        </div>
+                        <div class="forecast-chart-container">
+                            <canvas id="forecast-chart" width="640" height="240"></canvas>
+                            <div class="forecast-chart-tooltip" id="forecast-chart-tooltip"></div>
+                        </div>
+                        <div class="forecast-chart-range">
+                            <span id="forecast-chart-start"></span>
+                            <span id="forecast-chart-end"></span>
+                        </div>
+                    </div>
+
                     <div class="forecast-section-label">Featured Project</div>
                     <div class="forecast-card">
                         <h3>IL9CAST</h3>
@@ -3877,6 +3967,7 @@
 
             // Post-render hooks
             if (cardName === 'experience') initTimeline();
+            if (cardName === 'forecasting') initProfitChart();
             if (cardName === 'hottakes') initExpandedTakesFilters();
             if (cardName === 'countdowns') startExpandedCountdownTick();
             if (cardName === 'blog') { loadExpandedGuestbook(); loadApiBlogPosts(); guestbookLoaded = true; }
@@ -3901,6 +3992,236 @@
                     node.classList.add('visible');
                 }, 200 + i * 120);
             });
+        }
+
+        function initProfitChart() {
+            const canvas = document.getElementById('forecast-chart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const wrap = document.getElementById('forecast-chart-wrap');
+            const tooltip = document.getElementById('forecast-chart-tooltip');
+            const statEl = document.getElementById('forecast-chart-stat');
+            const startLabel = document.getElementById('forecast-chart-start');
+            const endLabel = document.getElementById('forecast-chart-end');
+
+            // Hi-DPI
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+            const W = rect.width;
+            const H = rect.height;
+
+            fetch('https://api.manifold.markets/v0/get-user-portfolio-history?userId=' + MANIFOLD_USER_ID + '&period=allTime')
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.length) return;
+
+                    // Extract profit series
+                    const points = data.map(d => ({ t: d.timestamp, v: d.profit || 0 }));
+                    const profits = points.map(p => p.v);
+                    const minP = Math.min(...profits);
+                    const maxP = Math.max(...profits);
+                    const range = maxP - minP || 1;
+                    const pad = { top: 12, bottom: 20, left: 0, right: 0 };
+                    const chartW = W - pad.left - pad.right;
+                    const chartH = H - pad.top - pad.bottom;
+
+                    // Current profit for stat display
+                    const currentProfit = Math.round(profits[profits.length - 1]);
+                    if (statEl) {
+                        statEl.textContent = (currentProfit >= 0 ? '+' : '') + 'M$' + Math.abs(currentProfit).toLocaleString();
+                        if (currentProfit < 0) statEl.classList.add('negative');
+                    }
+
+                    // Date range labels
+                    const fmt = (ts) => new Date(ts).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                    if (startLabel) startLabel.textContent = fmt(points[0].t);
+                    if (endLabel) endLabel.textContent = fmt(points[points.length - 1].t);
+
+                    function xOf(i) { return pad.left + (i / (points.length - 1)) * chartW; }
+                    function yOf(v) { return pad.top + chartH - ((v - minP) / range) * chartH; }
+
+                    // Zero line
+                    if (minP < 0 && maxP > 0) {
+                        const zeroY = yOf(0);
+                        ctx.strokeStyle = document.documentElement.getAttribute('data-theme') === 'dark'
+                            ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([4, 4]);
+                        ctx.beginPath();
+                        ctx.moveTo(pad.left, zeroY);
+                        ctx.lineTo(W - pad.right, zeroY);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+
+                    // Gradient fill
+                    const grad = ctx.createLinearGradient(0, pad.top, 0, H - pad.bottom);
+                    const isUp = currentProfit >= 0;
+                    if (isUp) {
+                        grad.addColorStop(0, 'rgba(34, 68, 204, 0.18)');
+                        grad.addColorStop(1, 'rgba(34, 68, 204, 0)');
+                    } else {
+                        grad.addColorStop(0, 'rgba(220, 38, 38, 0)');
+                        grad.addColorStop(1, 'rgba(220, 38, 38, 0.18)');
+                    }
+
+                    // Area fill
+                    ctx.beginPath();
+                    ctx.moveTo(xOf(0), yOf(points[0].v));
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(xOf(i), yOf(points[i].v));
+                    }
+                    ctx.lineTo(xOf(points.length - 1), H - pad.bottom);
+                    ctx.lineTo(pad.left, H - pad.bottom);
+                    ctx.closePath();
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+
+                    // Line
+                    ctx.beginPath();
+                    ctx.moveTo(xOf(0), yOf(points[0].v));
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(xOf(i), yOf(points[i].v));
+                    }
+                    ctx.strokeStyle = isUp ? '#2244cc' : '#dc2626';
+                    ctx.lineWidth = 2;
+                    ctx.lineJoin = 'round';
+                    ctx.stroke();
+
+                    // End dot
+                    const lastX = xOf(points.length - 1);
+                    const lastY = yOf(points[points.length - 1].v);
+                    ctx.beginPath();
+                    ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = isUp ? '#2244cc' : '#dc2626';
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(lastX, lastY, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = '#fff';
+                    ctx.fill();
+
+                    // Interactive tooltip on hover
+                    const container = canvas.parentElement;
+                    container.addEventListener('mousemove', (e) => {
+                        const br = canvas.getBoundingClientRect();
+                        const mx = e.clientX - br.left;
+                        const idx = Math.round(((mx - pad.left) / chartW) * (points.length - 1));
+                        if (idx < 0 || idx >= points.length) { tooltip.style.display = 'none'; return; }
+
+                        const p = points[idx];
+                        const px = xOf(idx);
+                        const py = yOf(p.v);
+                        const date = new Date(p.t).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        const val = (p.v >= 0 ? '+' : '') + 'M$' + Math.round(Math.abs(p.v)).toLocaleString();
+                        tooltip.innerHTML = '<div>' + date + '</div><div style="font-weight:700;color:' + (p.v >= 0 ? '#2244cc' : '#dc2626') + '">' + val + '</div>';
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = Math.min(px + 10, W - 120) + 'px';
+                        tooltip.style.top = (py - 50) + 'px';
+
+                        // Crosshair
+                        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+                        // Redraw zero line
+                        if (minP < 0 && maxP > 0) {
+                            const zeroY = yOf(0);
+                            ctx.strokeStyle = document.documentElement.getAttribute('data-theme') === 'dark'
+                                ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+                            ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 4]);
+                            ctx.beginPath();
+                            ctx.moveTo(pad.left, zeroY);
+                            ctx.lineTo(W - pad.right, zeroY);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+                        // Redraw area
+                        ctx.beginPath();
+                        ctx.moveTo(xOf(0), yOf(points[0].v));
+                        for (let j = 1; j < points.length; j++) ctx.lineTo(xOf(j), yOf(points[j].v));
+                        ctx.lineTo(xOf(points.length - 1), H - pad.bottom);
+                        ctx.lineTo(pad.left, H - pad.bottom);
+                        ctx.closePath();
+                        ctx.fillStyle = grad;
+                        ctx.fill();
+                        // Redraw line
+                        ctx.beginPath();
+                        ctx.moveTo(xOf(0), yOf(points[0].v));
+                        for (let j = 1; j < points.length; j++) ctx.lineTo(xOf(j), yOf(points[j].v));
+                        ctx.strokeStyle = isUp ? '#2244cc' : '#dc2626';
+                        ctx.lineWidth = 2;
+                        ctx.lineJoin = 'round';
+                        ctx.stroke();
+                        // Vertical crosshair
+                        ctx.strokeStyle = document.documentElement.getAttribute('data-theme') === 'dark'
+                            ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([3, 3]);
+                        ctx.beginPath();
+                        ctx.moveTo(px, pad.top);
+                        ctx.lineTo(px, H - pad.bottom);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                        // Hover dot
+                        ctx.beginPath();
+                        ctx.arc(px, py, 5, 0, Math.PI * 2);
+                        ctx.fillStyle = isUp ? '#2244cc' : '#dc2626';
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+                        ctx.fillStyle = '#fff';
+                        ctx.fill();
+                    });
+                    container.addEventListener('mouseleave', () => {
+                        tooltip.style.display = 'none';
+                        // Final clean redraw
+                        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+                        if (minP < 0 && maxP > 0) {
+                            const zeroY = yOf(0);
+                            ctx.strokeStyle = document.documentElement.getAttribute('data-theme') === 'dark'
+                                ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+                            ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 4]);
+                            ctx.beginPath();
+                            ctx.moveTo(pad.left, zeroY);
+                            ctx.lineTo(W - pad.right, zeroY);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+                        ctx.beginPath();
+                        ctx.moveTo(xOf(0), yOf(points[0].v));
+                        for (let j = 1; j < points.length; j++) ctx.lineTo(xOf(j), yOf(points[j].v));
+                        ctx.lineTo(xOf(points.length - 1), H - pad.bottom);
+                        ctx.lineTo(pad.left, H - pad.bottom);
+                        ctx.closePath();
+                        ctx.fillStyle = grad;
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.moveTo(xOf(0), yOf(points[0].v));
+                        for (let j = 1; j < points.length; j++) ctx.lineTo(xOf(j), yOf(points[j].v));
+                        ctx.strokeStyle = isUp ? '#2244cc' : '#dc2626';
+                        ctx.lineWidth = 2;
+                        ctx.lineJoin = 'round';
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+                        ctx.fillStyle = isUp ? '#2244cc' : '#dc2626';
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(lastX, lastY, 2, 0, Math.PI * 2);
+                        ctx.fillStyle = '#fff';
+                        ctx.fill();
+                    });
+                })
+                .catch(() => {
+                    ctx.font = '13px Inter, sans-serif';
+                    ctx.fillStyle = '#999';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Could not load chart data', W / 2, H / 2);
+                });
         }
 
         function collapseCard() {
