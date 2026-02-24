@@ -213,6 +213,7 @@
             <button class="dash-tab" data-panel="blog">Blog Posts</button>
             <button class="dash-tab" data-panel="countdowns">Countdowns</button>
             <button class="dash-tab" data-panel="guestbook">Guestbook</button>
+            <button class="dash-tab" data-panel="resume">Resume</button>
         </div>
 
         <div class="dash-content">
@@ -331,6 +332,23 @@
                 </div>
                 <div class="item-list" id="gb-list"></div>
             </div>
+
+            <!-- RESUME PANEL -->
+            <div class="panel" id="panel-resume">
+                <div class="section-header">
+                    <span class="section-title">Edit Resume</span>
+                    <a href="resume.html" target="_blank" style="font-size:0.7rem;color:var(--text-muted)">Preview &rarr;</a>
+                </div>
+                <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem">Edit the HTML content inside the resume page. Use the resume's existing class names (<code>resume-section</code>, <code>resume-item</code>, <code>resume-item-row</code>, etc.).</p>
+                <div class="form-group">
+                    <label class="form-label">Resume HTML Content</label>
+                    <textarea class="form-textarea" id="resume-content" rows="25" style="min-height:400px;font-family:var(--font-mono);font-size:0.8rem;line-height:1.5;tab-size:4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="saveResume()">Save Resume</button>
+                    <button class="btn btn-ghost" onclick="loadResume()">Reload</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -424,7 +442,7 @@
             setTimeout(() => t.className = 'toast', 2500);
         }
 
-        function loadAll() { loadHotTakes(); loadBlogPosts(); loadCountdowns(); loadGuestbook(); }
+        function loadAll() { loadHotTakes(); loadBlogPosts(); loadCountdowns(); loadGuestbook(); loadResume(); }
 
         function loadHotTakes() {
             fetch('/api/hottakes').then(r => r.json()).then(takes => {
@@ -575,6 +593,27 @@
                     </div>
                 `).join('');
             });
+        }
+
+        function loadResume() {
+            fetch('/api/resume', { headers: authHeaders() })
+                .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+                .then(data => {
+                    document.getElementById('resume-content').value = data.content || '';
+                })
+                .catch(() => toast('Failed to load resume', true));
+        }
+
+        function saveResume() {
+            const content = document.getElementById('resume-content').value.trim();
+            if (!content) { toast('Resume content cannot be empty', true); return; }
+            fetch('/api/resume', {
+                method: 'PUT', headers: authHeaders(),
+                body: JSON.stringify({ content })
+            }).then(r => {
+                if (!r.ok) throw new Error();
+                toast('Resume saved!');
+            }).catch(() => toast('Failed to save resume', true));
         }
 
         function esc(s) {

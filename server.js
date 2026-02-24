@@ -495,6 +495,41 @@ app.delete('/api/countdowns/:id', requireAuth, (req, res) => {
     return res.json({ ok: true });
 });
 
+// =============================================
+// RESUME (read/write resume.html)
+// =============================================
+const RESUME_FILE = path.join(__dirname, 'resume.html');
+
+app.get('/api/resume', requireAuth, (req, res) => {
+    try {
+        const html = fs.readFileSync(RESUME_FILE, 'utf8');
+        // Extract just the resume-inner content
+        const match = html.match(/<div class="resume-inner">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>\s*<div class="flag-footer">/);
+        if (match) {
+            return res.json({ content: match[1].trim() });
+        }
+        return res.json({ content: '' });
+    } catch {
+        return res.status(500).json({ error: 'Failed to read resume' });
+    }
+});
+
+app.put('/api/resume', requireAuth, (req, res) => {
+    const content = String(req.body.content || '').trim();
+    if (!content) return res.status(400).json({ error: 'Content required' });
+    try {
+        let html = fs.readFileSync(RESUME_FILE, 'utf8');
+        html = html.replace(
+            /(<div class="resume-inner">)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>\s*<div class="flag-footer">)/,
+            '$1\n' + content + '\n            $3'
+        );
+        fs.writeFileSync(RESUME_FILE, html);
+        return res.json({ ok: true });
+    } catch (err) {
+        return res.status(500).json({ error: 'Failed to save resume' });
+    }
+});
+
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
 app.use((req, res) => {
