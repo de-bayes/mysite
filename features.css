@@ -48,7 +48,7 @@ body.page-leaving {
 }
 
 .cmd-palette {
-    background: #111111;
+    background: #1a1a1a;
     border: 1px solid #252525;
     border-radius: 0;
     width: 560px;
@@ -335,7 +335,7 @@ body.page-leaving {
 /* Desktop Windows */
 .desktop-window {
     position: absolute;
-    background: #111;
+    background: #1a1a1a;
     border-radius: 0;
     border: 1px solid #252525;
     display: flex;
@@ -403,7 +403,7 @@ body.page-leaving {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     line-height: 1.6;
-    background: #111111;
+    background: #1a1a1a;
 }
 
 .desktop-window-body::-webkit-scrollbar {
@@ -418,7 +418,7 @@ body.page-leaving {
 /* Taskbar */
 .desktop-taskbar {
     height: 48px;
-    background: #111;
+    background: #1a1a1a;
     border-top: 1px solid #252525;
     display: flex;
     align-items: center;
