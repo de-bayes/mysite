@@ -14,8 +14,8 @@
     --text-secondary: #4a4a4a;
     --text-muted: #8a8a8a;
     --text-light: #b0b0b0;
-    --accent: #2d2d2d;
-    --accent-hover: #111111;
+    --accent: #3c3c3c;
+    --accent-hover: #2a2a2a;
     --border-color: #e0e0e0;
     --rule-color: #1a1a1a;
     --nav-bg: rgba(255, 255, 255, 0.92);
@@ -47,8 +47,8 @@
     --text-secondary: #a8a8a8;
     --text-muted: #6e6e6e;
     --text-light: #505050;
-    --accent: #d0d0d0;
-    --accent-hover: #ffffff;
+    --accent: #c8c8c8;
+    --accent-hover: #e8e8e8;
     --border-color: #2e2e2e;
     --rule-color: #e8e8e8;
     --nav-bg: rgba(17, 17, 17, 0.92);
@@ -1906,8 +1906,33 @@ body.scrolled .site-nav { box-shadow: 0 1px 8px rgba(0,0,0,0.04); }
    ============================================= */
 .mascot-corner {
     z-index: 900;
+    opacity: 0;
+    transform: scale(0) rotate(-20deg);
 }
-.mascot-corner .mascot-img:hover { opacity: 1 !important; }
+.mascot-corner.slap-in {
+    animation: stickerSlap 0.5s ease-out forwards;
+}
+@keyframes stickerSlap {
+    0% { opacity: 0; transform: scale(0) rotate(-20deg); }
+    70% { transform: scale(1.15) rotate(5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+.mascot-corner.peeled {
+    animation: none;
+    opacity: 1 !important;
+    transform: none !important;
+}
+.mascot-corner.instant {
+    animation: none;
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+.mascot-corner.dragging .mascot-img {
+    cursor: grabbing !important;
+    transform: scale(1.15) rotate(-8deg);
+    filter: drop-shadow(8px 12px 20px rgba(0,0,0,0.4));
+}
+.mascot-corner:hover .mascot-img { transform: scale(1.05); }
 .mascot-corner .mascot-img:active { cursor: grabbing; }
 .mascot-tooltip {
     position: absolute;

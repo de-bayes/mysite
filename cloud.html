@@ -142,7 +142,7 @@
         .page-title {
             font-family: 'VT323', monospace;
             font-size: 5rem;
-            color: #e67e22;
+            color: #3c3c3c;
             margin-bottom: 2rem;
             text-align: center;
         }
@@ -171,21 +171,21 @@
 
         .field:focus {
             outline: none;
-            border-color: #e67e22;
-            box-shadow: 0 0 0 3px rgba(230, 126, 34, .14);
+            border-color: #3c3c3c;
+            box-shadow: 0 0 0 3px rgba(60, 60, 60, .14);
         }
 
         .btn {
             border: none;
             border-radius: 8px;
-            background: #e67e22;
+            background: #3c3c3c;
             color: #fff;
             font-weight: 600;
             cursor: pointer;
             padding: .72rem .86rem;
         }
 
-        .btn:hover { background: #cf6d17; }
+        .btn:hover { background: #2a2a2a; }
 
         .login-error { color: #b62121; min-height: 1.1rem; font-size: .9rem; }
 
@@ -247,7 +247,7 @@
 
         .toolbar-title { font-size: 1.05rem; font-weight: 600; }
         .breadcrumbs { color: #777; font-size: .9rem; }
-        .breadcrumbs a { color: #e67e22; text-decoration: none; }
+        .breadcrumbs a { color: #3c3c3c; text-decoration: none; }
         .breadcrumbs a:hover { text-decoration: underline; }
 
         .toolbar-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -266,10 +266,10 @@
 
         .drop-zone {
             margin: 1rem 1.1rem;
-            border: 2px dashed #ecd6c2;
+            border: 2px dashed #d0d0d0;
             border-radius: 10px;
-            background: rgba(230, 126, 34, 0.04);
-            color: #8b5f39;
+            background: rgba(60, 60, 60, 0.04);
+            color: #555555;
             text-align: center;
             padding: .95rem;
             position: relative;
@@ -277,8 +277,8 @@
         }
 
         .drop-zone.dragover {
-            border-color: #e67e22;
-            background: rgba(230, 126, 34, 0.09);
+            border-color: #3c3c3c;
+            background: rgba(60, 60, 60, 0.09);
         }
 
         .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
@@ -307,7 +307,7 @@
             text-align: left;
         }
 
-        .name-btn.folder { color: #c06214; font-weight: 600; }
+        .name-btn.folder { color: #3c3c3c; font-weight: 600; }
         .name-btn:hover { text-decoration: underline; }
 
         .actions { display: flex; gap: .45rem; }
@@ -530,7 +530,7 @@
         const height = window.innerHeight;
 
         ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = 'rgba(230, 126, 34, 0.09)';
+        ctx.strokeStyle = 'rgba(60, 60, 60, 0.09)';
         ctx.lineWidth = 1;
 
         const centerX = width * 0.5;
