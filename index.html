@@ -52,11 +52,6 @@
         <!-- TERMINAL TOGGLE BUTTON (hidden) -->
         <div class="terminal-button" onclick="openTerminal()" style="position:fixed;bottom:20px;right:20px;width:40px;height:40px;display:none;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border-color);border-radius:50%;cursor:pointer;z-index:999;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.06);" title="Open Terminal">&#9000;</div>
 
-        <!-- POWER USER HINT -->
-        <div class="power-hint">
-            <kbd class="shortcut-key"></kbd> to search
-        </div>
-        <script>document.querySelectorAll('.shortcut-key').forEach(el=>{el.textContent=navigator.platform.indexOf('Mac')>-1?'\u2318K':'Ctrl+K';});</script>
 
         <!-- EDITORIAL LAYOUT -->
         <div class="editorial-page">
@@ -75,7 +70,7 @@
                 <p>I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
             </main>
 
-            <!-- Small sitemap footer -->
+            <!-- Footer -->
             <footer class="editorial-footer">
                 <nav class="editorial-sitemap">
                     <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Work</a>
@@ -88,7 +83,7 @@
                     <a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
                 </nav>
                 <div class="editorial-footer-bottom">
-                    <span>&copy; 2026 Ryan McComb</span>
+                    <span>&copy; 2026 Ryan McComb &middot; Evanston, IL</span>
                     <button class="minimal-theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9790;</button>
                 </div>
             </footer>
@@ -101,20 +96,6 @@
         </div>
     </div>
 
-    <!-- COMMAND PALETTE -->
-    <div class="cmd-palette-overlay" id="cmd-palette-overlay">
-        <div class="cmd-palette">
-            <div class="cmd-palette-input-wrap">
-                <input type="text" class="cmd-palette-input" id="cmd-palette-input" placeholder="Type a command..." autocomplete="off" spellcheck="false">
-            </div>
-            <div class="cmd-palette-results" id="cmd-palette-results"></div>
-            <div class="cmd-palette-footer">
-                <span><kbd>&uarr;&darr;</kbd> navigate</span>
-                <span><kbd>&crarr;</kbd> select</span>
-                <span><kbd>esc</kbd> close</span>
-            </div>
-        </div>
-    </div>
 
     <!-- DESKTOP OS MODE -->
     <div class="desktop-overlay" id="desktop-overlay">
@@ -3973,221 +3954,6 @@
 
         loadSiteData();
 
-        // =============================================
-        // COMMAND PALETTE (Cmd+K / Ctrl+K)
-        // =============================================
-        const cmdPaletteItems = [
-            { section: 'Pages', icon: '\uD83C\uDFE0', label: 'Home', action: () => collapseCard() },
-            { section: 'Pages', icon: '\uD83D\uDCBC', label: 'Experience', action: () => expandCard('experience') },
-            { section: 'Pages', icon: '\uD83D\uDCC1', label: 'Projects', action: () => expandCard('projects') },
-            { section: 'Pages', icon: '\uD83D\uDCF7', label: 'Photos', action: () => expandCard('photos') },
-            { section: 'Pages', icon: '\uD83C\uDF36\uFE0F', label: 'Hot Takes', action: () => expandCard('hottakes') },
-            { section: 'Pages', icon: '\u23F3', label: 'Countdowns', action: () => expandCard('countdowns') },
-            { section: 'Pages', icon: '\uD83D\uDCE7', label: 'Contact', action: () => expandCard('contact') },
-
-            { section: 'Pages', icon: '\uD83D\uDCCA', label: 'Forecasting', action: () => expandCard('forecasting') },
-            { section: 'Pages', icon: '\uD83C\uDF93', label: 'Education', action: () => expandCard('experience') },
-            { section: 'Games', icon: '\uD83D\uDC0D', label: 'Snake', shortcut: '/snake', action: () => { openTerminal(); setTimeout(() => executeCommand('/snake'), 300); } },
-            { section: 'Games', icon: '\uD83E\uDD96', label: 'Dino Run', shortcut: '/dino', action: () => { openTerminal(); setTimeout(() => executeCommand('/dino'), 300); } },
-            { section: 'Games', icon: '\uD83E\uDDE9', label: 'Tetris', shortcut: '/tetris', action: () => { openTerminal(); setTimeout(() => executeCommand('/tetris'), 300); } },
-            { section: 'Games', icon: '\uD83D\uDFE9', label: 'Wordle', shortcut: '/wordle', action: () => { openTerminal(); setTimeout(() => executeCommand('/wordle'), 300); } },
-            { section: 'Games', icon: '\u2328\uFE0F', label: 'Typing Test', shortcut: '/type', action: () => { openTerminal(); setTimeout(() => executeCommand('/type'), 300); } },
-            { section: 'Games', icon: '\u2753', label: 'Quiz: Know Ryan?', shortcut: '/quiz', action: () => { openWebQuiz(); } },
-            { section: 'Games', icon: '\uD83E\uDD25', label: 'Two Truths & a Lie', shortcut: '/2truths', action: () => { openWebTruths(); } },
-            { section: 'Tools', icon: '\uD83D\uDDA5\uFE0F', label: 'Terminal', action: () => openTerminal() },
-            { section: 'Tools', icon: '\uD83D\uDCBB', label: 'Desktop Mode', shortcut: '/desktop', action: () => startDesktopMode() },
-            { section: 'Social', icon: '\u2600\uFE0F', label: 'Weather', shortcut: '/weather', action: () => { openTerminal(); setTimeout(() => executeCommand('/weather'), 300); } },
-            { section: 'Social', icon: '\uD83D\uDCD6', label: 'Guestbook', shortcut: '/guestbook', action: () => { openTerminal(); setTimeout(() => executeCommand('/guestbook'), 300); } },
-            { section: 'Social', icon: '\uD83D\uDCCA', label: 'Analytics', shortcut: '/stats', action: () => { openTerminal(); setTimeout(() => executeCommand('/stats'), 300); } },
-            { section: 'Pages', icon: '\uD83D\uDCDD', label: 'Blog', action: () => expandCard('blog') },
-            { section: 'Tools', icon: '\uD83D\uDCC4', label: 'Resume', shortcut: '/resume', action: () => window.open('resume.html', '_blank') },
-        ];
-
-        const siteSearchPages = [
-            { url: 'index.html', title: 'Home' },
-            { url: 'index.html#experience', title: 'Experience' },
-            { url: 'index.html#projects', title: 'Projects' },
-            { url: 'index.html#photos', title: 'Photos' },
-            { url: 'index.html#contact', title: 'Contact' },
-            { url: 'index.html#hottakes', title: 'Hot Takes' },
-            { url: 'index.html#countdowns', title: 'Countdowns' },
-            { url: 'index.html#blog', title: 'Blog' }
-        ];
-        let siteSearchIndex = [];
-        let cmdSelectedIdx = 0;
-        let cmdFilteredItems = [...cmdPaletteItems];
-
-        function escapeHtml(value) {
-            return value
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
-        async function buildSiteSearchIndex() {
-            if (siteSearchIndex.length) return;
-            const parser = new DOMParser();
-
-            const pages = await Promise.all(siteSearchPages.map(async (page) => {
-                try {
-                    const response = await fetch(page.url);
-                    if (!response.ok) return null;
-                    const html = await response.text();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const bodyText = (doc.body ? doc.body.textContent : doc.documentElement.textContent) || '';
-                    const normalizedText = bodyText.replace(/\s+/g, ' ').trim();
-                    return { ...page, text: normalizedText.toLowerCase(), rawText: normalizedText };
-                } catch {
-                    return null;
-                }
-            }));
-
-            siteSearchIndex = pages.filter(Boolean);
-        }
-
-        async function getSiteSearchResults(query) {
-            if (query.length < 2) return [];
-            await buildSiteSearchIndex();
-
-            const lowerQuery = query.toLowerCase();
-            const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const results = [];
-
-            siteSearchIndex.forEach(page => {
-                const matchIndex = page.text.indexOf(lowerQuery);
-                if (matchIndex === -1) return;
-
-                const start = Math.max(0, matchIndex - 40);
-                const end = Math.min(page.rawText.length, matchIndex + query.length + 70);
-                const snippet = escapeHtml(page.rawText.slice(start, end).trim());
-                const highlightedSnippet = snippet.replace(new RegExp(`(${safeQuery})`, 'ig'), '<mark>$1</mark>');
-
-                results.push({
-                    section: 'Site Search',
-                    icon: '&gt;',
-                    label: `${page.title}: "${query}"`,
-                    description: `...${highlightedSnippet}...`,
-                    shortcut: page.url,
-                    action: () => {
-                        window.location.href = `${page.url}#:~:text=${encodeURIComponent(query)}`;
-                    }
-                });
-            });
-
-            return results.slice(0, 5);
-        }
-
-        function openCmdPalette() {
-            const overlay = document.getElementById('cmd-palette-overlay');
-            overlay.classList.add('active');
-            const input = document.getElementById('cmd-palette-input');
-            input.value = '';
-            cmdSelectedIdx = 0;
-            cmdFilteredItems = [...cmdPaletteItems];
-            renderCmdPalette();
-            setTimeout(() => input.focus(), 50);
-        }
-
-        function closeCmdPalette() {
-            document.getElementById('cmd-palette-overlay').classList.remove('active');
-        }
-
-        function renderCmdPalette() {
-            const results = document.getElementById('cmd-palette-results');
-            let html = '';
-            let lastSection = '';
-
-            cmdFilteredItems.forEach((item, idx) => {
-                if (item.section !== lastSection) {
-                    html += '<div class="cmd-palette-section">' + item.section + '</div>';
-                    lastSection = item.section;
-                }
-                html += '<div class="cmd-palette-item' + (idx === cmdSelectedIdx ? ' selected' : '') + '" data-idx="' + idx + '">' +
-                    '<span class="cmd-icon">' + item.icon + '</span>' +
-                    '<span class="cmd-text">' +
-                        '<span class="cmd-label">' + escapeHtml(item.label) + '</span>' +
-                        (item.description ? '<span class="cmd-description">' + item.description + '</span>' : '') +
-                    '</span>' +
-                    (item.shortcut ? '<span class="cmd-shortcut">' + escapeHtml(item.shortcut) + '</span>' : '') +
-                    '</div>';
-            });
-
-            if (cmdFilteredItems.length === 0) {
-                html = '<div class="cmd-palette-empty">No results found</div>';
-            }
-
-            results.innerHTML = html;
-
-            // Add click handlers
-            results.querySelectorAll('.cmd-palette-item').forEach(el => {
-                el.addEventListener('click', () => {
-                    const idx = parseInt(el.dataset.idx);
-                    closeCmdPalette();
-                    cmdFilteredItems[idx].action();
-                });
-                el.addEventListener('mouseenter', () => {
-                    cmdSelectedIdx = parseInt(el.dataset.idx);
-                    results.querySelectorAll('.cmd-palette-item').forEach(e => e.classList.remove('selected'));
-                    el.classList.add('selected');
-                });
-            });
-        }
-
-        // Cmd+K / Ctrl+K listener
-        document.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                const overlay = document.getElementById('cmd-palette-overlay');
-                if (overlay.classList.contains('active')) {
-                    closeCmdPalette();
-                } else {
-                    openCmdPalette();
-                }
-            }
-        });
-
-        // Command palette input handling
-        document.getElementById('cmd-palette-input').addEventListener('input', async (e) => {
-            const query = e.target.value.trim();
-            const lowerQuery = query.toLowerCase();
-
-            const commandResults = cmdPaletteItems.filter(item =>
-                item.label.toLowerCase().includes(lowerQuery) ||
-                (item.shortcut && item.shortcut.toLowerCase().includes(lowerQuery)) ||
-                item.section.toLowerCase().includes(lowerQuery)
-            );
-
-            const siteResults = query ? await getSiteSearchResults(query) : [];
-            cmdFilteredItems = [...commandResults, ...siteResults];
-            cmdSelectedIdx = 0;
-            renderCmdPalette();
-        });
-
-        document.getElementById('cmd-palette-input').addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { closeCmdPalette(); e.preventDefault(); }
-            else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                cmdSelectedIdx = Math.min(cmdSelectedIdx + 1, cmdFilteredItems.length - 1);
-                renderCmdPalette();
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                cmdSelectedIdx = Math.max(cmdSelectedIdx - 1, 0);
-                renderCmdPalette();
-            } else if (e.key === 'Enter') {
-                e.preventDefault();
-                if (cmdFilteredItems[cmdSelectedIdx]) {
-                    closeCmdPalette();
-                    cmdFilteredItems[cmdSelectedIdx].action();
-                }
-            }
-        });
-
-        // Click outside to close
-        document.getElementById('cmd-palette-overlay').addEventListener('click', (e) => {
-            if (e.target.id === 'cmd-palette-overlay') closeCmdPalette();
-        });
 
         // =============================================
         // KONAMI CODE EASTER EGG
