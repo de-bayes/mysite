@@ -2091,10 +2091,10 @@ body.scrolled .site-nav { box-shadow: none; }
 
 /* --- Essay Body --- */
 .editorial-body {
-    font-family: var(--font-sans);
+    font-family: 'Times New Roman', Times, serif;
     font-size: 1.05rem;
     line-height: 1.8;
-    color: var(--text-primary);
+    color: #0000FF;
     margin-bottom: 4rem;
 }
 
@@ -2109,7 +2109,9 @@ body.scrolled .site-nav { box-shadow: none; }
 }
 
 .editorial-body a:hover {
-    color: #0000CC;
+    color: #FFFFFF;
+    background: #0000FF;
+    text-decoration: none;
 }
 
 /* --- Sitemap Footer --- */
@@ -2155,6 +2157,12 @@ body.scrolled .site-nav { box-shadow: none; }
 
 [data-theme="dark"] .editorial-body a {
     color: #5c7cfa;
+}
+
+[data-theme="dark"] .editorial-body a:hover {
+    color: #FFFFFF;
+    background: #0000FF;
+    text-decoration: none;
 }
 
 [data-theme="dark"] .editorial-sitemap a:hover {
