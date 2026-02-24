@@ -1582,6 +1582,75 @@ body.scrolled .site-nav { box-shadow: none; }
 [data-theme="dark"] .forecast-section-label { color: #5c7cfa; border-bottom-color: #5c7cfa; }
 [data-theme="dark"] .forecast-card:hover { border-color: #5c7cfa; }
 
+/* --- Profit Chart --- */
+.forecast-chart-wrap {
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    background: var(--bg-card);
+    transition: border-color 0.25s ease;
+}
+.forecast-chart-wrap:hover { border-color: #2244cc; }
+.forecast-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+.forecast-chart-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.forecast-chart-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+}
+.forecast-chart-stat {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #16a34a;
+    letter-spacing: -0.02em;
+}
+.forecast-chart-stat.negative { color: #dc2626; }
+.forecast-chart-container {
+    position: relative;
+    width: 100%;
+    height: 240px;
+}
+.forecast-chart-container canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.forecast-chart-range {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+.forecast-chart-tooltip {
+    display: none;
+    position: absolute;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-primary);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+[data-theme="dark"] .forecast-chart-wrap:hover { border-color: #5c7cfa; }
+
 /* --- Photos expanded --- */
 .featured-film {
     text-align: center;
