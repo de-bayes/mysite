@@ -9,10 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* The resume paper itself uses Times New Roman for a traditional feel */
+        /* --- Top Bar: Blue editorial header --- */
         .top-bar {
-            background: var(--bg-secondary);
-            border-bottom: var(--border-weight) solid var(--border-color);
+            background: #0000FF;
             padding: 0.7rem 2rem;
             display: flex;
             align-items: center;
@@ -22,6 +21,10 @@
             z-index: 100;
         }
 
+        [data-theme="dark"] .top-bar {
+            background: #0000DD;
+        }
+
         .top-bar-left {
             display: flex;
             align-items: center;
@@ -29,23 +32,23 @@
         }
 
         .top-bar-name {
-            font-family: var(--font-sans);
-            font-size: 0.85rem;
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #ffffff;
             letter-spacing: 0.04em;
         }
 
         .top-bar a {
             font-family: var(--font-sans);
             font-size: 0.78rem;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: color 0.2s;
         }
 
         .top-bar a:hover {
-            color: var(--text-primary);
+            color: #ffffff;
             text-decoration: none;
         }
 
@@ -60,11 +63,11 @@
             font-size: 0.8rem;
             font-weight: 600;
             padding: 0.45rem 1.2rem;
-            background: var(--accent);
-            color: #fff;
+            background: #ffffff;
+            color: #0000FF;
             border: none;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: opacity 0.2s;
             letter-spacing: 0.02em;
         }
 
@@ -76,16 +79,16 @@
             font-weight: 600;
             padding: 0.45rem 1.2rem;
             background: transparent;
-            color: var(--text-muted);
-            border: var(--border-weight) solid var(--border-color);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             cursor: pointer;
             transition: all 0.2s;
             letter-spacing: 0.02em;
         }
 
         .btn-print:hover {
-            border-color: var(--accent);
-            color: var(--text-primary);
+            border-color: #ffffff;
+            color: #ffffff;
         }
 
         /* RESUME PAPER */
@@ -225,10 +228,50 @@
         .flag-footer { width: 100%; }
         .flag-footer img { width: 100%; height: auto; display: block; }
 
+        /* --- Editorial Footer --- */
+        .resume-editorial-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            max-width: 8.5in;
+            margin: 0 auto;
+        }
+
+        .resume-editorial-footer nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .resume-editorial-footer nav a {
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.2s ease;
+        }
+
+        .resume-editorial-footer nav a:hover {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .resume-editorial-footer .footer-copy {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
+        }
+
         /* PRINT */
         @media print {
             body { background: #fff; }
-            .top-bar, .flag-footer { display: none; }
+            .top-bar, .flag-footer, .resume-editorial-footer { display: none; }
             .resume-wrap { padding: 0; }
             .resume-page { box-shadow: none; margin: 0; max-width: none; }
             .resume-inner { padding: 0.4in 0.5in; }
@@ -401,6 +444,15 @@
         </div>
     </div>
 
-    <div class="flag-footer"><img src="flag-footer.png" alt=""></div>
+    <footer class="resume-editorial-footer">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#experience">Work</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="index.html#blog">Writing</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+        <div class="footer-copy">&copy; 2026 Ryan McComb &middot; Evanston, IL</div>
+    </footer>
 </body>
 </html>

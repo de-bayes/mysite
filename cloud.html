@@ -10,40 +10,58 @@
     <link rel="stylesheet" href="styles.css">
     <title>Cloud - Ryan McComb</title>
     <style>
+        /* --- Blue editorial top bar --- */
+        .cloud-top-bar {
+            background: #0000FF;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        [data-theme="dark"] .cloud-top-bar {
+            background: #0000DD;
+        }
+
+        .cloud-top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .cloud-top-bar h1 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.04em;
+            margin: 0;
+        }
+
+        .cloud-top-bar a {
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .cloud-top-bar a:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
         .page-container {
             position: relative;
             z-index: 1;
-            min-height: 100vh;
+            min-height: calc(100vh - 60px);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 4rem 2rem;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .page-title {
-            font-family: var(--font-mono);
-            font-size: 5rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .back-link {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            text-decoration: none;
-        }
-        .back-link:hover { color: var(--text-primary); text-decoration: none; }
-
-        #polar-grid {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
+            padding: 3rem 2rem 2rem;
         }
 
         .login-box {
@@ -225,9 +243,49 @@
             .sidebar { width: 100%; border-right: none; border-bottom: var(--border-weight) solid var(--border-color); }
         }
 
+        /* --- Editorial Footer --- */
+        .cloud-editorial-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .cloud-editorial-footer nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cloud-editorial-footer nav a {
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.2s ease;
+        }
+
+        .cloud-editorial-footer nav a:hover {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .cloud-editorial-footer .footer-copy {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
+        }
+
         @media (max-width: 600px) {
-            .page-title { font-size: 3.6rem; }
-            .page-container { padding: 4rem 1rem; }
+            .cloud-top-bar { padding: 1rem 1.25rem; }
+            .cloud-top-bar h1 { font-size: 1.1rem; }
+            .page-container { padding: 2rem 1rem; }
         }
     </style>
 </head>
@@ -241,13 +299,14 @@
     })();
 </script>
 
-<canvas id="polar-grid"></canvas>
+<div class="cloud-top-bar">
+    <div class="cloud-top-bar-left">
+        <h1>CLOUD STORAGE</h1>
+        <a href="index.html">&larr; Back to site</a>
+    </div>
+</div>
 
 <div class="page-container">
-    <div class="page-header">
-        <h1 class="page-title">CLOUD</h1>
-        <a href="index.html" class="back-link">&larr; Back to site</a>
-    </div>
 
     <section id="loginBox" class="login-box">
         <input id="passwordInput" class="field" type="password" autocomplete="current-password" placeholder="Cloud password">
@@ -315,49 +374,20 @@
             </main>
         </div>
     </section>
+
+    <footer class="cloud-editorial-footer">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#experience">Work</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="index.html#blog">Writing</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+        <div class="footer-copy">&copy; 2026 Ryan McComb &middot; Evanston, IL</div>
+    </footer>
 </div>
 
 <script>
-    const canvas = document.getElementById('polar-grid');
-    const ctx = canvas.getContext('2d');
-
-    function drawGrid() {
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = Math.floor(window.innerWidth * dpr);
-        canvas.height = Math.floor(window.innerHeight * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-
-        ctx.clearRect(0, 0, width, height);
-
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.06)';
-        ctx.lineWidth = 1;
-
-        const centerX = width * 0.5;
-        const centerY = height * 0.5;
-
-        for (let r = 60; r < Math.max(width, height); r += 60) {
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
-            ctx.stroke();
-        }
-
-        for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
-            const x = centerX + Math.cos(a) * Math.max(width, height);
-            const y = centerY + Math.sin(a) * Math.max(width, height);
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.lineTo(x, y);
-            ctx.stroke();
-        }
-    }
-
-    window.addEventListener('resize', drawGrid);
-    drawGrid();
-
     const loginBox = document.getElementById('loginBox');
     const cloudUi = document.getElementById('cloudUi');
     const passwordInput = document.getElementById('passwordInput');
