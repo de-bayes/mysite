@@ -97,10 +97,11 @@ img { max-width: 100%; height: auto; display: block; }
     position: fixed; inset: 0; z-index: 10000;
     background: #0d0d0f;
     display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.5s ease;
+    will-change: opacity;
     overflow: hidden;
 }
-.loader.hidden { opacity: 0; pointer-events: none; }
+.loader.hidden { opacity: 0; pointer-events: none; will-change: auto; }
 
 .loader-rain {
     position: absolute; inset: 0;
@@ -267,8 +268,8 @@ img { max-width: 100%; height: auto; display: block; }
     .matmul-op { font-size: 0.85rem; }
 }
 
-#site-content { opacity: 0; transition: opacity 0.6s ease; }
-#site-content.visible { opacity: 1; }
+#site-content { opacity: 0; transition: opacity 0.5s ease; will-change: opacity; }
+#site-content.visible { opacity: 1; will-change: auto; }
 
 @media (max-width: 600px) {
     .loader-url { font-size: clamp(2rem, 10vw, 3.5rem); }
@@ -1423,13 +1424,15 @@ body.scrolled .site-nav { box-shadow: 0 1px 8px rgba(0,0,0,0.04); }
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
+    will-change: opacity, transform;
 }
 .scroll-reveal.revealed {
     opacity: 1;
     transform: translateY(0);
+    will-change: auto;
 }
-.scroll-stagger { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-.scroll-stagger.revealed { opacity: 1; transform: translateY(0); }
+.scroll-stagger { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; will-change: opacity, transform; }
+.scroll-stagger.revealed { opacity: 1; transform: translateY(0); will-change: auto; }
 
 
 /* =============================================
