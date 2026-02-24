@@ -10,6 +10,8 @@
     <meta property="og:description" content="Data, politics, and forecasting.">
     <meta property="og:type" content="website">
     <link rel="icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="features.css">
 </head>
@@ -80,7 +82,7 @@
     </nav>
 
     <!-- SITE CONTENT -->
-    <div id="site-content" style="opacity:0;transition:opacity 0.5s ease;">
+    <div id="site-content">
 
         <!-- FIVEY FOX MASCOT -->
         <div class="mascot-corner" style="position:fixed;bottom:80px;right:20px;z-index:900;">
@@ -617,7 +619,18 @@
             if (progressFill) progressFill.style.width = '100%';
             setTimeout(() => {
                 loader.classList.add('hidden');
-                siteContent.classList.add('visible');
+                // Wait for the loader fade-out to complete before showing content
+                // This prevents the overlap where both are partially transparent
+                loader.addEventListener('transitionend', function onEnd() {
+                    loader.removeEventListener('transitionend', onEnd);
+                    siteContent.classList.add('visible');
+                }, { once: true });
+                // Fallback in case transitionend doesn't fire
+                setTimeout(() => {
+                    if (!siteContent.classList.contains('visible')) {
+                        siteContent.classList.add('visible');
+                    }
+                }, 700);
             }, 300);
         }
 
@@ -4505,6 +4518,20 @@
             const revealEls = document.querySelectorAll('.scroll-reveal, .scroll-stagger');
             if (!revealEls.length) return;
 
+            // Instantly reveal elements already in the viewport (above the fold)
+            // to prevent the jarring translateY "jump" on page load
+            revealEls.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    el.style.transition = 'none';
+                    el.classList.add('revealed');
+                    // Re-enable transitions after paint so future scroll reveals still animate
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => { el.style.transition = ''; });
+                    });
+                }
+            });
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -4513,7 +4540,11 @@
                 });
             }, { threshold: 0.1 });
 
-            revealEls.forEach(el => observer.observe(el));
+            revealEls.forEach(el => {
+                if (!el.classList.contains('revealed')) {
+                    observer.observe(el);
+                }
+            });
         }
         initScrollReveals();
 
