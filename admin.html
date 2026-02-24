@@ -3,52 +3,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <title>Admin - Ryan McComb</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg: #111111; --bg2: #191919; --fg: #e0e0e0; --fg2: #a0a0a0;
-            --muted: #555; --border: #252525; --accent: #3c3c3c;
-            --danger: #b07070; --success: #70907a; --card: #191919;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg); color: var(--fg);
-            -webkit-font-smoothing: antialiased;
-        }
-
         /* LOGIN */
         .login-overlay {
-            position: fixed; inset: 0; background: var(--bg);
+            position: fixed; inset: 0; background: var(--bg-primary);
             display: flex; align-items: center; justify-content: center;
             z-index: 1000; transition: opacity 0.3s;
         }
         .login-overlay.hidden { opacity: 0; pointer-events: none; }
         .login-box { text-align: center; max-width: 360px; padding: 2rem; }
         .login-box h1 {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--font-serif);
             font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;
         }
-        .login-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+        .login-box p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem; }
         .login-input {
-            width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border);
-            border-radius: 4px; font-size: 0.9rem; background: var(--bg2);
-            color: var(--fg); outline: none; margin-bottom: 1rem;
+            width: 100%; padding: 0.75rem 1rem; border: var(--border-weight) solid var(--border-color);
+            font-size: 0.9rem; background: var(--bg-secondary);
+            color: var(--text-primary); outline: none; margin-bottom: 1rem;
+            font-family: var(--font-sans);
         }
         .login-input:focus { border-color: var(--accent); }
         .login-btn {
             width: 100%; padding: 0.75rem; background: var(--accent); color: #fff;
-            border: none; border-radius: 4px; font-size: 0.85rem; font-weight: 500;
+            border: none; font-size: 0.85rem; font-weight: 500;
             cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase;
+            font-family: var(--font-sans);
         }
         .login-btn:hover { opacity: 0.9; }
-        .login-error { color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; }
+        .login-error { color: #b07070; font-size: 0.8rem; margin-top: 0.5rem; }
 
         /* DASHBOARD */
         .dashboard { display: none; }
@@ -56,29 +44,30 @@
 
         .dash-header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem; border-bottom: var(--border-weight) solid var(--border-color);
         }
         .dash-header h1 {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--font-serif);
             font-size: 1.5rem; font-weight: 600;
         }
         .dash-header-actions { display: flex; gap: 0.75rem; align-items: center; }
         .dash-header a {
-            font-size: 0.75rem; color: var(--muted); text-decoration: none;
+            font-size: 0.75rem; color: var(--text-muted); text-decoration: none;
         }
-        .dash-header a:hover { color: var(--accent); }
+        .dash-header a:hover { color: var(--accent); text-decoration: none; }
 
         .dash-tabs {
-            display: flex; gap: 0; border-bottom: 1px solid var(--border);
+            display: flex; gap: 0; border-bottom: var(--border-weight) solid var(--border-color);
             padding: 0 2rem;
         }
         .dash-tab {
             padding: 1rem 1.5rem; font-size: 0.8rem; font-weight: 500;
-            color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent;
+            color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent;
             text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.2s;
             background: none; border-top: none; border-left: none; border-right: none;
+            font-family: var(--font-sans);
         }
-        .dash-tab:hover { color: var(--fg); }
+        .dash-tab:hover { color: var(--text-primary); }
         .dash-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
         .dash-content { max-width: 900px; margin: 0 auto; padding: 2rem; }
@@ -91,12 +80,12 @@
         .form-label {
             display: block; font-size: 0.7rem; font-weight: 500;
             text-transform: uppercase; letter-spacing: 0.08em;
-            color: var(--muted); margin-bottom: 0.4rem;
+            color: var(--text-muted); margin-bottom: 0.4rem;
         }
         .form-input, .form-select, .form-textarea {
-            width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--border);
-            border-radius: 4px; font-size: 0.85rem; background: var(--bg2);
-            color: var(--fg); font-family: inherit; outline: none;
+            width: 100%; padding: 0.65rem 0.9rem; border: var(--border-weight) solid var(--border-color);
+            font-size: 0.85rem; background: var(--bg-secondary);
+            color: var(--text-primary); font-family: inherit; outline: none;
         }
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             border-color: var(--accent);
@@ -104,21 +93,22 @@
         .form-textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
         .form-row { display: flex; gap: 1rem; }
         .form-row > * { flex: 1; }
-        .form-hint { font-size: 0.7rem; color: var(--muted); margin-top: 0.3rem; }
+        .form-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
 
         .btn {
-            padding: 0.6rem 1.2rem; border: none; border-radius: 4px;
+            padding: 0.6rem 1.2rem; border: none;
             font-size: 0.8rem; font-weight: 500; cursor: pointer;
             letter-spacing: 0.04em; transition: opacity 0.2s;
+            font-family: var(--font-sans);
         }
         .btn:hover { opacity: 0.85; }
         .btn-primary { background: var(--accent); color: #fff; }
-        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger { background: #b07070; color: #fff; }
         .btn-ghost {
-            background: transparent; color: var(--muted);
-            border: 1px solid var(--border);
+            background: transparent; color: var(--text-muted);
+            border: var(--border-weight) solid var(--border-color);
         }
-        .btn-ghost:hover { color: var(--fg); border-color: var(--fg); }
+        .btn-ghost:hover { color: var(--text-primary); border-color: var(--text-primary); }
 
         .form-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
 
@@ -126,23 +116,24 @@
         .item-list { margin-top: 1.5rem; }
         .item-card {
             display: flex; align-items: flex-start; gap: 1rem;
-            padding: 1rem 1.25rem; border: 1px solid var(--border);
-            border-radius: 4px; margin-bottom: 0.75rem; background: var(--card);
+            padding: 1rem 1.25rem; border: var(--border-weight) solid var(--border-color);
+            margin-bottom: 0.75rem; background: var(--bg-card);
         }
         .item-card-body { flex: 1; min-width: 0; }
         .item-card-title {
             font-weight: 500; font-size: 0.9rem; margin-bottom: 0.2rem;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .item-card-meta { font-size: 0.75rem; color: var(--muted); }
+        .item-card-meta { font-size: 0.75rem; color: var(--text-muted); }
         .item-card-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
         .item-btn {
-            padding: 0.35rem 0.7rem; font-size: 0.7rem; border-radius: 3px;
-            border: 1px solid var(--border); background: transparent;
-            color: var(--muted); cursor: pointer; transition: all 0.2s;
+            padding: 0.35rem 0.7rem; font-size: 0.7rem;
+            border: var(--border-weight) solid var(--border-color); background: transparent;
+            color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+            font-family: var(--font-sans);
         }
-        .item-btn:hover { border-color: var(--fg); color: var(--fg); }
-        .item-btn.delete:hover { border-color: var(--danger); color: var(--danger); }
+        .item-btn:hover { border-color: var(--text-primary); color: var(--text-primary); }
+        .item-btn.delete:hover { border-color: #b07070; color: #b07070; }
 
         .section-header {
             display: flex; justify-content: space-between; align-items: center;
@@ -150,27 +141,28 @@
         }
         .section-title {
             font-size: 0.75rem; font-weight: 500; text-transform: uppercase;
-            letter-spacing: 0.1em; color: var(--muted);
+            letter-spacing: 0.1em; color: var(--text-muted);
         }
         .item-count {
-            font-size: 0.7rem; color: var(--muted);
-            background: var(--bg2); padding: 0.2rem 0.6rem; border-radius: 10px;
+            font-size: 0.7rem; color: var(--text-muted);
+            background: var(--bg-secondary); padding: 0.2rem 0.6rem; border-radius: 10px;
         }
 
         .toast {
             position: fixed; bottom: 2rem; right: 2rem; padding: 0.8rem 1.5rem;
-            background: var(--success); color: #fff; border-radius: 4px;
+            background: #70907a; color: #fff;
             font-size: 0.85rem; opacity: 0; transform: translateY(10px);
             transition: all 0.3s; z-index: 2000; pointer-events: none;
+            font-family: var(--font-sans);
         }
         .toast.show { opacity: 1; transform: translateY(0); }
-        .toast.error { background: var(--danger); }
+        .toast.error { background: #b07070; }
 
         /* Spiciness selector */
         .spice-selector { display: flex; gap: 0.3rem; }
         .spice-btn {
-            width: 32px; height: 32px; border: 1px solid var(--border);
-            border-radius: 4px; background: var(--bg2); cursor: pointer;
+            width: 32px; height: 32px; border: var(--border-weight) solid var(--border-color);
+            background: var(--bg-secondary); cursor: pointer;
             font-size: 1rem; display: flex; align-items: center; justify-content: center;
             transition: all 0.15s;
         }
@@ -186,6 +178,15 @@
     </style>
 </head>
 <body>
+    <script>
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+
     <!-- LOGIN -->
     <div class="login-overlay" id="login-overlay">
         <div class="login-box">
@@ -214,8 +215,8 @@
             <button class="dash-tab" data-panel="guestbook">Guestbook</button>
         </div>
 
-        <!-- HOT TAKES PANEL -->
         <div class="dash-content">
+            <!-- HOT TAKES PANEL -->
             <div class="panel active" id="panel-hottakes">
                 <div class="section-header">
                     <span class="section-title">Add New Hot Take</span>
@@ -336,12 +337,9 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        if (localStorage.getItem('darkMode') === 'enabled') document.body.classList.add('dark-mode');
-
         let token = sessionStorage.getItem('admin_token') || '';
         let htSpiciness = 3;
 
-        // Auth
         function authHeaders() {
             return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
         }
@@ -379,7 +377,6 @@
             location.reload();
         }
 
-        // Auto-login if token cached
         if (token) {
             fetch('/api/auth', {
                 method: 'POST',
@@ -416,12 +413,10 @@
                 });
             });
         });
-        // Init: first 3 active
         document.querySelectorAll('.spice-btn').forEach((b, i) => {
             b.classList.toggle('active', i < 3);
         });
 
-        // Toast
         function toast(msg, isError) {
             const t = document.getElementById('toast');
             t.textContent = msg;
@@ -429,15 +424,13 @@
             setTimeout(() => t.className = 'toast', 2500);
         }
 
-        // Load all
         function loadAll() { loadHotTakes(); loadBlogPosts(); loadCountdowns(); loadGuestbook(); }
 
-        // HOT TAKES
         function loadHotTakes() {
             fetch('/api/hottakes').then(r => r.json()).then(takes => {
                 document.getElementById('ht-count').textContent = takes.length;
                 const list = document.getElementById('ht-list');
-                if (!takes.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No takes yet.</div>'; return; }
+                if (!takes.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No takes yet.</div>'; return; }
                 list.innerHTML = takes.map(t => `
                     <div class="item-card">
                         <div class="item-card-body">
@@ -475,12 +468,11 @@
                 .catch(() => toast('Failed to delete', true));
         }
 
-        // BLOG POSTS
         function loadBlogPosts() {
             fetch('/api/blogposts').then(r => r.json()).then(posts => {
                 document.getElementById('bp-count').textContent = posts.length;
                 const list = document.getElementById('bp-list');
-                if (!posts.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No posts yet.</div>'; return; }
+                if (!posts.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No posts yet.</div>'; return; }
                 list.innerHTML = posts.map(p => `
                     <div class="item-card">
                         <div class="item-card-body">
@@ -523,12 +515,11 @@
                 .catch(() => toast('Failed to delete', true));
         }
 
-        // COUNTDOWNS
         function loadCountdowns() {
             fetch('/api/countdowns').then(r => r.json()).then(cds => {
                 document.getElementById('cd-count').textContent = cds.length;
                 const list = document.getElementById('cd-list');
-                if (!cds.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No countdowns yet.</div>'; return; }
+                if (!cds.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No countdowns yet.</div>'; return; }
                 list.innerHTML = cds.map(c => {
                     const d = new Date(c.date);
                     const isPast = d.getTime() < Date.now();
@@ -570,12 +561,11 @@
                 .catch(() => toast('Failed to delete', true));
         }
 
-        // GUESTBOOK
         function loadGuestbook() {
             fetch('/api/guestbook').then(r => r.json()).then(entries => {
                 document.getElementById('gb-count').textContent = entries.length;
                 const list = document.getElementById('gb-list');
-                if (!entries.length) { list.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0">No entries yet.</div>'; return; }
+                if (!entries.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No entries yet.</div>'; return; }
                 list.innerHTML = entries.map(e => `
                     <div class="item-card">
                         <div class="item-card-body">
@@ -587,7 +577,6 @@
             });
         }
 
-        // Helpers
         function esc(s) {
             const d = document.createElement('div');
             d.textContent = s || '';
