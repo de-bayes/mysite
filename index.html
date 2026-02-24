@@ -3843,50 +3843,61 @@
                     <div class="countdown-grid" id="expand-countdown-grid">${renderCountdownCards(allCountdownsData)}</div>`;
             },
             blog: () => {
-                return `<h1 class="page-title">Blog</h1>
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem">Thoughts on politics, data, prediction markets, and building things</p>
-                    <div class="blog-list" id="expand-blog-list">
-                        <div class="blog-featured">
-                            <div class="blog-featured-card" style="position:relative" onclick="openExpandedArticle('peoples-edict')">
-                                <span class="blog-featured-badge">FEATURED</span>
-                                <img src="2500.webp" alt="People's Edict" class="blog-featured-image">
-                                <div class="blog-featured-body">
-                                    <h2>People's Edict</h2>
-                                    <p>An on-demand essay on power and strife, exploring when and how authority should be challenged.</p>
-                                    <div class="blog-meta"><span class="read-time">5 min read</span><span class="blog-tag">Essay</span><span>May 2025</span></div>
-                                </div>
+                return `<div class="blog-list" id="expand-blog-list">
+                    <div class="blog-hero-header">
+                        <div class="blog-hero-label">Blog</div>
+                        <h1 class="blog-hero-title">Writing &amp; Ideas</h1>
+                        <p class="blog-hero-desc">Thoughts on politics, data, prediction markets, and building things.</p>
+                    </div>
+                    <div class="blog-featured">
+                        <div class="blog-featured-card" onclick="openExpandedArticle('peoples-edict')">
+                            <img src="2500.webp" alt="People's Edict" class="blog-featured-image">
+                            <div class="blog-featured-body">
+                                <div class="blog-meta"><span class="blog-tag">Essay</span><span class="read-time">5 min read</span></div>
+                                <h2>People's Edict</h2>
+                                <p>An on-demand essay on power and strife, exploring when and how authority should be challenged.</p>
+                                <span class="blog-read-link">Read essay &rarr;</span>
                             </div>
-                        </div>
-                        <div style="font-family:'VT323',monospace;font-size:1rem;color:#7a8a9a;letter-spacing:0.15em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border-color)">MORE POSTS</div>
-                        <div class="blog-grid">
-                            <div class="blog-card" onclick="openExpandedArticle('median-voter-theory')">
-                                <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
-                                <p>How the Trump Campaign Used an Obscure Political Science Concept to Move the Electorate</p>
-                                <div class="blog-meta"><span class="read-time">6 min read</span><span class="blog-tag">Politics</span><span>Jan 2025</span></div>
-                            </div>
-                            <div class="blog-card" onclick="openExpandedArticle('nsa-surveillance')">
-                                <h3>Resolution on State Interception of Communications</h3>
-                                <p>Why the intentional censorship and oversight of private communications without a warrant is unconstitutional</p>
-                                <div class="blog-meta"><span class="read-time">7 min read</span><span class="blog-tag">Essay</span><span>Sep 2024</span></div>
-                            </div>
-                        </div>
-                        <div class="blog-guestbook" id="expand-guestbook">
-                            <h2>Guestbook</h2>
-                            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem">Leave a message, say hi, or drop some feedback.</p>
-                            <div class="gb-form" id="expand-gb-form">
-                                <input type="text" name="name" placeholder="Your name" maxlength="40">
-                                <textarea name="message" placeholder="Your message..." maxlength="200"></textarea>
-                                <button class="gb-submit" onclick="signExpandedGuestbook()">Sign</button>
-                            </div>
-                            <div class="gb-status" id="expand-gb-status"></div>
-                            <div class="gb-entries" id="expand-gb-entries"></div>
                         </div>
                     </div>
-                    <div class="blog-article" id="expand-blog-article">
-                        <a class="blog-back" onclick="closeExpandedArticle()">&larr; Back to all posts</a>
-                        <div class="article-header" id="expand-article-header"></div>
-                        <div class="article-body" id="expand-article-body"></div>
-                    </div>`;
+                    <div class="blog-grid">
+                        <div class="blog-card" onclick="openExpandedArticle('median-voter-theory')">
+                            <div class="blog-card-inner">
+                                <div class="blog-meta"><span class="blog-tag">Politics</span><span>Jan 2025</span></div>
+                                <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
+                                <p>How the Trump Campaign Used an Obscure Political Science Concept to Move the Electorate</p>
+                                <span class="blog-read-link">Read &rarr;</span>
+                            </div>
+                        </div>
+                        <div class="blog-card" onclick="openExpandedArticle('nsa-surveillance')">
+                            <div class="blog-card-inner">
+                                <div class="blog-meta"><span class="blog-tag">Essay</span><span>Sep 2024</span></div>
+                                <h3>Resolution on State Interception of Communications</h3>
+                                <p>Why the intentional censorship and oversight of private communications without a warrant is unconstitutional</p>
+                                <span class="blog-read-link">Read &rarr;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="expand-api-posts"></div>
+                    <div class="blog-guestbook" id="expand-guestbook">
+                        <div class="gb-header">
+                            <h2>Guestbook</h2>
+                            <p>Leave a message, say hi, or drop some feedback.</p>
+                        </div>
+                        <div class="gb-form" id="expand-gb-form">
+                            <input type="text" name="name" placeholder="Your name" maxlength="40">
+                            <textarea name="message" placeholder="Your message..." maxlength="200"></textarea>
+                            <button class="gb-submit" onclick="signExpandedGuestbook()">Sign</button>
+                        </div>
+                        <div class="gb-status" id="expand-gb-status"></div>
+                        <div class="gb-entries" id="expand-gb-entries"></div>
+                    </div>
+                </div>
+                <div class="blog-article" id="expand-blog-article">
+                    <a class="blog-back" onclick="closeExpandedArticle()">&larr; Back to all posts</a>
+                    <div class="article-header" id="expand-article-header"></div>
+                    <div class="article-body" id="expand-article-body"></div>
+                </div>`;
             }
         };
 
@@ -3907,7 +3918,7 @@
             // Post-render hooks
             if (cardName === 'hottakes') initExpandedTakesFilters();
             if (cardName === 'countdowns') startExpandedCountdownTick();
-            if (cardName === 'blog' && !guestbookLoaded) { loadExpandedGuestbook(); guestbookLoaded = true; }
+            if (cardName === 'blog') { loadExpandedGuestbook(); loadApiBlogPosts(); guestbookLoaded = true; }
 
             // Track
             fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'pageview', value: cardName }) }).catch(() => {});
@@ -4139,6 +4150,10 @@
         }
 
         // Guestbook for expanded blog
+        function getAdminToken() {
+            return sessionStorage.getItem('admin_token') || '';
+        }
+
         function loadExpandedGuestbook() {
             fetch('/api/guestbook')
                 .then(r => r.json())
@@ -4146,11 +4161,33 @@
                     const container = document.getElementById('expand-gb-entries');
                     if (!container) return;
                     if (!entries.length) { container.innerHTML = '<p style="color:var(--text-light);font-size:0.85rem">No entries yet. Be the first!</p>'; return; }
+                    const isAdmin = !!getAdminToken();
                     container.innerHTML = entries.slice(0, 20).map(e => {
                         const d = new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                        return '<div class="gb-entry"><div class="gb-entry-header"><span class="gb-entry-name">' + escapeHtml(e.name) + '</span><span class="gb-entry-date">' + d + '</span></div><div class="gb-entry-msg">' + escapeHtml(e.message) + '</div></div>';
+                        const adminBtns = isAdmin && e.id ? '<div class="gb-entry-actions"><button class="gb-action-btn" onclick="editGuestbookEntry(\'' + e.id + '\',this)" title="Edit">Edit</button><button class="gb-action-btn gb-action-delete" onclick="deleteGuestbookEntry(\'' + e.id + '\')" title="Delete">Delete</button></div>' : '';
+                        return '<div class="gb-entry" data-id="' + (e.id || '') + '"><div class="gb-entry-header"><span class="gb-entry-name">' + escapeHtml(e.name) + '</span><span class="gb-entry-date">' + d + '</span></div><div class="gb-entry-msg">' + escapeHtml(e.message) + '</div>' + adminBtns + '</div>';
                     }).join('');
                 }).catch(() => {});
+        }
+
+        function deleteGuestbookEntry(id) {
+            if (!confirm('Delete this guestbook entry?')) return;
+            fetch('/api/guestbook/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + getAdminToken() } })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadExpandedGuestbook(); })
+                .catch(() => {});
+        }
+
+        function editGuestbookEntry(id, btn) {
+            const entry = btn.closest('.gb-entry');
+            const msgEl = entry.querySelector('.gb-entry-msg');
+            const currentMsg = msgEl.textContent;
+            const newMsg = prompt('Edit message:', currentMsg);
+            if (newMsg === null || newMsg.trim() === '' || newMsg === currentMsg) return;
+            fetch('/api/guestbook/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getAdminToken() }, body: JSON.stringify({ message: newMsg.trim() }) })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadExpandedGuestbook(); })
+                .catch(() => {});
         }
 
         function signExpandedGuestbook() {
@@ -4167,6 +4204,63 @@
                     if (data.ok) { status.textContent = 'Signed! Thanks, ' + name + '!'; form.querySelector('input[name="name"]').value = ''; form.querySelector('textarea[name="message"]').value = ''; loadExpandedGuestbook(); }
                     else { status.textContent = data.error || 'Could not sign.'; }
                 }).catch(() => { status.textContent = 'Network error.'; });
+        }
+
+        // Load API blog posts into expanded blog view
+        function loadApiBlogPosts() {
+            const container = document.getElementById('expand-api-posts');
+            if (!container) return;
+            fetch('/api/blogposts')
+                .then(r => r.json())
+                .then(posts => {
+                    if (!posts.length) return;
+                    const isAdmin = !!getAdminToken();
+                    container.innerHTML = '<div class="blog-grid">' + posts.map(p => {
+                        const d = new Date(p.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                        const tags = (p.tags || []).map(t => '<span class="blog-tag">' + escapeHtml(t) + '</span>').join('');
+                        const adminBtns = isAdmin ? '<div class="blog-card-actions"><button class="gb-action-btn" onclick="event.stopPropagation();editApiBlogPost(\'' + p.id + '\')">Edit</button><button class="gb-action-btn gb-action-delete" onclick="event.stopPropagation();deleteApiBlogPost(\'' + p.id + '\')">Delete</button></div>' : '';
+                        return '<div class="blog-card" onclick="openApiArticle(\'' + p.id + '\')"><div class="blog-card-inner"><div class="blog-meta">' + tags + '<span>' + d + '</span></div><h3>' + escapeHtml(p.title) + '</h3><span class="blog-read-link">Read &rarr;</span></div>' + adminBtns + '</div>';
+                    }).join('') + '</div>';
+                }).catch(() => {});
+        }
+
+        function openApiArticle(id) {
+            fetch('/api/blogposts')
+                .then(r => r.json())
+                .then(posts => {
+                    const post = posts.find(p => p.id === id);
+                    if (!post) return;
+                    const blogList = document.getElementById('expand-blog-list');
+                    const blogArticle = document.getElementById('expand-blog-article');
+                    if (blogList) blogList.classList.add('hidden');
+                    if (blogArticle) {
+                        blogArticle.classList.add('active');
+                        const tags = (post.tags || []).map(t => '<span class="blog-tag">' + escapeHtml(t) + '</span>').join('');
+                        const d = new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                        document.getElementById('expand-article-header').innerHTML = '<h1>' + escapeHtml(post.title) + '</h1><div class="blog-meta">' + tags + '<span>' + d + '</span></div>';
+                        document.getElementById('expand-article-body').innerHTML = post.body;
+                    }
+                    document.getElementById('expand-overlay').scrollTop = 0;
+                }).catch(() => {});
+        }
+
+        function editApiBlogPost(id) {
+            const newTitle = prompt('New title:');
+            if (!newTitle) return;
+            const newBody = prompt('New body (HTML):');
+            if (!newBody) return;
+            fetch('/api/blogposts/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getAdminToken() }, body: JSON.stringify({ title: newTitle, body: newBody }) })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadApiBlogPosts(); })
+                .catch(() => {});
+        }
+
+        function deleteApiBlogPost(id) {
+            if (!confirm('Delete this blog post?')) return;
+            fetch('/api/blogposts/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + getAdminToken() } })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadApiBlogPosts(); })
+                .catch(() => {});
         }
 
         // Load API data on page load
