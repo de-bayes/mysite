@@ -3,52 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/webp" href="538mascot.webp">
+    <link rel="icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
     <title>404 | Ryan McComb</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg-primary: #111111;
-            --bg-secondary: #191919;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --text-muted: #777777;
-            --text-light: #555555;
-            --accent: #7a8a9a;
-            --border-color: #252525;
-        }
-
-        body.dark-mode {
-            --bg-primary: #111111;
-            --bg-secondary: #191919;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --text-muted: #777777;
-            --text-light: #555555;
-            --accent: #7a8a9a;
-            --border-color: #252525;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
         .error-code {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--font-serif);
             font-size: clamp(8rem, 22vw, 18rem);
             font-weight: 600;
             line-height: 1;
@@ -74,7 +46,7 @@
         }
 
         .message {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--font-serif);
             font-size: clamp(1.3rem, 3vw, 1.8rem);
             font-weight: 500;
             line-height: 1.4;
@@ -88,55 +60,45 @@
         }
 
         .bayes-box {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: var(--border-weight) solid var(--border-color);
             padding: 1.75rem 2rem;
             margin: 0 auto 1.5rem;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
             text-align: center;
         }
 
         .bayes-label {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans);
             font-size: 0.7rem;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: var(--text-light);
+            color: var(--text-muted);
             margin-bottom: 0.75rem;
         }
 
         .bayes-formula .katex { font-size: 1.5rem; }
 
         .bayes-footnote {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans);
             font-size: 0.72rem;
-            color: var(--text-light);
+            color: var(--text-muted);
             margin-top: 0.75rem;
             font-style: italic;
         }
 
         .bayes-footnote span { color: var(--accent); }
 
-        /* SLIDERS */
         .sliders-box {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: var(--border-weight) solid var(--border-color);
             padding: 1.5rem 2rem;
             margin: 0 auto 1.5rem;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
             text-align: left;
         }
 
-        .slider-group {
-            margin-bottom: 1rem;
-        }
-
-        .slider-group:last-child {
-            margin-bottom: 0;
-        }
+        .slider-group { margin-bottom: 1rem; }
+        .slider-group:last-child { margin-bottom: 0; }
 
         .slider-label {
             display: flex;
@@ -145,15 +107,11 @@
             margin-bottom: 0.35rem;
         }
 
-        .slider-label-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
+        .slider-label-text { font-size: 0.75rem; color: var(--text-muted); }
         .slider-label-text .katex { font-size: 0.85rem; }
 
         .slider-value {
-            font-family: 'VT323', monospace;
+            font-family: var(--font-mono);
             font-size: 1.1rem;
             color: var(--accent);
             min-width: 3.5rem;
@@ -162,7 +120,7 @@
 
         .slider-desc {
             font-size: 0.65rem;
-            color: var(--text-light);
+            color: var(--text-muted);
             margin-bottom: 0.4rem;
             font-style: italic;
         }
@@ -189,9 +147,7 @@
             transition: transform 0.15s ease;
         }
 
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
         input[type="range"]::-moz-range-thumb {
             width: 14px;
@@ -202,14 +158,11 @@
             border: none;
         }
 
-        /* RESULT */
         .result-box {
-            background: var(--bg-primary);
+            background: var(--bg-card);
             border: 2px solid var(--accent);
-            border-radius: 8px;
             padding: 1.25rem 2rem;
             margin: 0 auto 2rem;
-            box-shadow: 0 2px 20px rgba(60, 60, 60, 0.08);
         }
 
         .result-label {
@@ -217,21 +170,18 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: var(--text-light);
+            color: var(--text-muted);
             margin-bottom: 0.5rem;
         }
 
         .result-value {
-            font-family: 'VT323', monospace;
+            font-family: var(--font-mono);
             font-size: 2.5rem;
             color: var(--accent);
             line-height: 1;
         }
 
-        .result-formula {
-            margin-top: 0.5rem;
-        }
-
+        .result-formula { margin-top: 0.5rem; }
         .result-formula .katex { font-size: 1rem; }
 
         .result-bar-track {
@@ -259,28 +209,27 @@
 
         .home-link {
             display: inline-block;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans);
             font-size: 0.8rem;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--text-muted);
             text-decoration: none;
-            border: 1px solid rgba(128, 128, 128, 0.25);
+            border: var(--border-weight) solid var(--border-color);
             padding: 0.7rem 2rem;
-            border-radius: 4px;
             transition: all 0.25s ease;
         }
 
         .home-link:hover {
             color: var(--accent);
             border-color: var(--accent);
+            text-decoration: none;
         }
 
-        /* Floating particles */
         .particle {
             position: fixed;
-            font-family: 'VT323', monospace;
+            font-family: var(--font-mono);
             color: var(--text-primary);
             opacity: 0.04;
             font-size: 1rem;
@@ -295,7 +244,6 @@
             100% { transform: translateY(-20vh) rotate(360deg); }
         }
 
-        /* Fade in */
         .container { animation: fadeUp 0.8s ease both; }
         .bayes-box { animation: fadeUp 0.8s ease 0.15s both; }
         .sliders-box { animation: fadeUp 0.8s ease 0.3s both; }
@@ -319,7 +267,6 @@
 <body>
     <div class="error-code">404</div>
 
-    <!-- floating math symbols -->
     <script>
         const symbols = ['P', '(', ')', '|', 'H', 'E', '=', '+', '\u222B', '\u03B8', '\u03C0', '\u03A3', '\u221E', '\u2202', '\u00D7'];
         for (let i = 0; i < 30; i++) {
@@ -391,14 +338,20 @@
     </div>
 
     <script>
-        // Render main formula
+        // Theme support — respect same toggle as main site
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+
         katex.render(
             String.raw`P(H \mid E) = \frac{P(E \mid H) \, P(H)}{P(E \mid H)\,P(H) + P(E \mid \neg H)\,P(\neg H)}`,
             document.getElementById('bayes'),
             { displayMode: true, throwOnError: false }
         );
 
-        // Render slider labels
         katex.render('P(H)', document.getElementById('ph-label'), { throwOnError: false });
         katex.render('P(E \\mid H)', document.getElementById('peh-label'), { throwOnError: false });
         katex.render('P(E \\mid \\neg H)', document.getElementById('penh-label'), { throwOnError: false });
@@ -432,7 +385,6 @@
             document.getElementById('posterior-bar').style.width = pct + '%';
             document.getElementById('verdict').textContent = getVerdict(posterior);
 
-            // Render the calculation with actual numbers
             const formula = `P(H \\mid E) = \\frac{${pEH.toFixed(2)} \\times ${pH.toFixed(2)}}{${pEH.toFixed(2)} \\times ${pH.toFixed(2)} + ${pENH.toFixed(2)} \\times ${(1-pH).toFixed(2)}} = ${posterior.toFixed(3)}`;
             katex.render(formula, document.getElementById('posterior-formula'), { throwOnError: false });
         }
@@ -442,10 +394,6 @@
         penhSlider.addEventListener('input', update);
 
         update();
-
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-        }
     </script>
 </body>
 </html>
