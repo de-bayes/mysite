@@ -3,7 +3,7 @@
    ============================================= */
 
 /* --- Google Fonts --- */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&family=VT323&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 /* --- CSS Variables — Light-first (white default) --- */
 :root {
@@ -69,7 +69,7 @@ html {
 
 body {
     font-family: var(--font-sans);
-    font-size: 1rem;
+    font-size: calc(1rem + 1pt);
     line-height: 1.7;
     color: var(--text-primary);
     background: var(--bg-primary);
@@ -77,8 +77,9 @@ body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-a { color: var(--text-primary); text-decoration: none; transition: color 0.2s ease; }
-a:hover { color: var(--accent-hover); text-decoration: underline; text-decoration-style: wavy; text-underline-offset: 3px; }
+a { color: var(--text-primary); text-decoration: none; transition: color 0.2s ease, background 0.2s ease; }
+a:hover { color: #cc2222; background: rgba(34, 68, 204, 0.1); text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #2244cc; text-underline-offset: 3px; }
+[data-theme="dark"] a:hover { color: #ff4c4c; background: rgba(92, 124, 250, 0.12); text-decoration-color: #5c7cfa; }
 
 img { max-width: 100%; height: auto; display: block; }
 
@@ -710,24 +711,30 @@ body.scrolled .site-nav { box-shadow: none; }
     text-transform: uppercase;
     color: #2244cc;
     cursor: pointer;
-    background: var(--bg-primary);
+    background: rgba(250, 250, 250, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: none;
     border-bottom: 1px solid var(--border-color);
     font-family: var(--font-sans);
-    padding: 0.9rem 2rem;
+    padding: 0.75rem max(2rem, calc((100% - var(--content-width)) / 2));
     position: sticky;
     top: 0;
     z-index: 10;
-    max-width: var(--content-width);
-    margin: 0 auto;
-    transition: color 0.2s ease, background 0.2s ease;
+    transition: color 0.2s ease, background 0.15s ease;
 }
 .expand-back:hover {
-    color: #ffffff;
-    background: #2244cc;
+    color: #1a2d8a;
+    background: rgba(34, 68, 204, 0.07);
 }
-[data-theme="dark"] .expand-back { color: #5c7cfa; }
-[data-theme="dark"] .expand-back:hover { color: #ffffff; background: #5c7cfa; }
+[data-theme="dark"] .expand-back {
+    color: #5c7cfa;
+    background: rgba(26, 26, 26, 0.85);
+}
+[data-theme="dark"] .expand-back:hover {
+    color: #7b96ff;
+    background: rgba(92, 124, 250, 0.1);
+}
 
 .page-title {
     font-family: var(--font-serif);
@@ -2543,7 +2550,7 @@ body.scrolled .site-nav { box-shadow: none; }
 }
 
 .editorial-name {
-    font-family: var(--font-serif);
+    font-family: 'Space Grotesk', var(--font-sans);
     font-size: 3rem;
     font-weight: 700;
     letter-spacing: 0.05em;
