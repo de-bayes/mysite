@@ -48,20 +48,6 @@
             <header class="editorial-hero" id="editorial-hero">
                 <h1 class="editorial-name">RYAN McCOMB</h1>
                 <p class="editorial-tagline" id="editorial-tagline"></p>
-                <div class="hero-data-ticker" id="hero-data-ticker">
-                    <span class="ticker-item"><span class="ticker-label">NET WORTH</span><span class="ticker-value" id="ticker-networth">--</span></span>
-                    <span class="ticker-item"><span class="ticker-label">STREAK</span><span class="ticker-value" id="ticker-streak">--</span></span>
-                    <span class="ticker-item"><span class="ticker-label">PROFIT</span><span class="ticker-value" id="ticker-profit">--</span></span>
-                </div>
-                <div class="hero-forecast-line">
-                    <svg viewBox="0 0 640 60" preserveAspectRatio="none">
-                        <path class="forecast-area" d="M0,55 L40,50 L80,52 L120,45 L160,42 L200,38 L240,35 L280,30 L320,28 L360,22 L400,20 L440,18 L480,15 L520,12 L560,10 L600,8 L640,5 L640,60 L0,60 Z"/>
-                        <path class="forecast-path" d="M0,55 L40,50 L80,52 L120,45 L160,42 L200,38 L240,35 L280,30 L320,28 L360,22 L400,20 L440,18 L480,15 L520,12 L560,10 L600,8 L640,5"/>
-                        <circle class="forecast-dot" cx="640" cy="5" r="0" style="animation-delay: 4s"/>
-                        <circle class="forecast-dot" cx="320" cy="28" r="0" style="animation-delay: 3.2s"/>
-                        <circle class="forecast-dot" cx="160" cy="42" r="0" style="animation-delay: 2.5s"/>
-                    </svg>
-                </div>
             </header>
 
             <!-- Essay-style about section with inline links -->
@@ -316,62 +302,8 @@
             });
         })();
 
-        // 3. Data ticker — live from Manifold API
+        // 3. Manifold user ID (used by forecasting page chart)
         const MANIFOLD_USER_ID = 'rqyVlY3yvaZkXJ51lMa60NlqbOI3';
-        (function initDataTicker() {
-            const items = document.querySelectorAll('.ticker-item');
-            if (!items.length) return;
-
-            // Stagger reveal after typewriter finishes (~3s)
-            items.forEach((item, i) => {
-                setTimeout(() => item.classList.add('visible'), 3200 + i * 300);
-            });
-
-            // Animate a number counting up from 0
-            function countUp(el, target, prefix, suffix, duration) {
-                const start = performance.now();
-                function tick(now) {
-                    const t = Math.min((now - start) / duration, 1);
-                    const ease = 1 - Math.pow(1 - t, 3);
-                    const current = Math.round(target * ease);
-                    el.textContent = prefix + current.toLocaleString() + suffix;
-                    if (t < 1) requestAnimationFrame(tick);
-                }
-                requestAnimationFrame(tick);
-            }
-
-            // Fetch both endpoints in parallel
-            Promise.all([
-                fetch('https://api.manifold.markets/v0/user/JeromeHPowell').then(r => r.json()),
-                fetch('https://api.manifold.markets/v0/get-user-portfolio?userId=' + MANIFOLD_USER_ID).then(r => r.json())
-            ]).then(([user, portfolio]) => {
-                const networthEl = document.getElementById('ticker-networth');
-                const streakEl = document.getElementById('ticker-streak');
-                const profitEl = document.getElementById('ticker-profit');
-
-                if (networthEl) {
-                    const netWorth = Math.round((portfolio.balance || 0) + (portfolio.investmentValue || 0));
-                    setTimeout(() => countUp(networthEl, netWorth, 'M$', '', 1400), 3500);
-                }
-                if (streakEl && user.currentBettingStreak) {
-                    setTimeout(() => countUp(streakEl, user.currentBettingStreak, '', 'd', 900), 3800);
-                }
-                if (profitEl) {
-                    const dailyProfit = Math.round(portfolio.dailyProfit || 0);
-                    setTimeout(() => {
-                        const sign = dailyProfit >= 0 ? '+' : '';
-                        countUp(profitEl, Math.abs(dailyProfit), (dailyProfit >= 0 ? '+M$' : '-M$'), '/day', 1000);
-                    }, 4100);
-                }
-            }).catch(() => {
-                const networthEl = document.getElementById('ticker-networth');
-                const streakEl = document.getElementById('ticker-streak');
-                const profitEl = document.getElementById('ticker-profit');
-                if (networthEl) networthEl.textContent = 'M$61,788';
-                if (streakEl) streakEl.textContent = '220d';
-                if (profitEl) profitEl.textContent = '+M$1,055/day';
-            });
-        })();
 
         // 4. Scroll-triggered reveal animations
         (function initScrollReveal() {
@@ -3838,6 +3770,29 @@
                 <div class="forecast-body">
                     <p class="forecast-intro">I trade on play-money prediction markets and build websites for real-money ones. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
 
+                    <div class="forecast-stats-bar" id="forecast-stats-bar">
+                        <div class="forecast-stat-item">
+                            <span class="forecast-stat-label">NET WORTH</span>
+                            <span class="forecast-stat-value" id="forecast-stat-networth">--</span>
+                        </div>
+                        <div class="forecast-stat-item">
+                            <span class="forecast-stat-label">PROFIT</span>
+                            <span class="forecast-stat-value" id="forecast-stat-profit">--</span>
+                        </div>
+                        <div class="forecast-stat-item">
+                            <span class="forecast-stat-label">STREAK</span>
+                            <span class="forecast-stat-value" id="forecast-stat-streak">--</span>
+                        </div>
+                        <div class="forecast-stat-item">
+                            <span class="forecast-stat-label">DAILY P/L</span>
+                            <span class="forecast-stat-value" id="forecast-stat-daily">--</span>
+                        </div>
+                        <div class="forecast-stat-item">
+                            <span class="forecast-stat-label">MARKETS</span>
+                            <span class="forecast-stat-value" id="forecast-stat-markets">--</span>
+                        </div>
+                    </div>
+
                     <div class="forecast-section-label">Portfolio Performance</div>
                     <div class="forecast-chart-wrap" id="forecast-chart-wrap">
                         <div class="forecast-chart-header">
@@ -3967,7 +3922,7 @@
 
             // Post-render hooks
             if (cardName === 'experience') initTimeline();
-            if (cardName === 'forecasting') initProfitChart();
+            if (cardName === 'forecasting') { initProfitChart(); initForecastStats(); }
             if (cardName === 'hottakes') initExpandedTakesFilters();
             if (cardName === 'countdowns') startExpandedCountdownTick();
             if (cardName === 'blog') { loadExpandedGuestbook(); loadApiBlogPosts(); guestbookLoaded = true; }
@@ -3991,6 +3946,69 @@
                 setTimeout(() => {
                     node.classList.add('visible');
                 }, 200 + i * 120);
+            });
+        }
+
+        function initForecastStats() {
+            const bar = document.getElementById('forecast-stats-bar');
+            if (!bar) return;
+
+            function countUp(el, target, prefix, suffix, duration) {
+                const start = performance.now();
+                function tick(now) {
+                    const t = Math.min((now - start) / duration, 1);
+                    const ease = 1 - Math.pow(1 - t, 3);
+                    const current = Math.round(target * ease);
+                    el.textContent = prefix + current.toLocaleString() + suffix;
+                    if (t < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            Promise.all([
+                fetch('https://api.manifold.markets/v0/user/JeromeHPowell').then(r => r.json()),
+                fetch('https://api.manifold.markets/v0/get-user-portfolio?userId=' + MANIFOLD_USER_ID).then(r => r.json())
+            ]).then(([user, portfolio]) => {
+                const networthEl = document.getElementById('forecast-stat-networth');
+                const profitEl = document.getElementById('forecast-stat-profit');
+                const streakEl = document.getElementById('forecast-stat-streak');
+                const dailyEl = document.getElementById('forecast-stat-daily');
+                const marketsEl = document.getElementById('forecast-stat-markets');
+
+                if (networthEl) {
+                    const netWorth = Math.round((portfolio.balance || 0) + (portfolio.investmentValue || 0));
+                    countUp(networthEl, netWorth, 'M$', '', 1200);
+                }
+                if (profitEl) {
+                    const totalProfit = Math.round(portfolio.profit || 0);
+                    const sign = totalProfit >= 0 ? '+' : '-';
+                    countUp(profitEl, Math.abs(totalProfit), sign + 'M$', '', 1200);
+                    if (totalProfit >= 0) profitEl.classList.add('positive');
+                    else profitEl.classList.add('negative');
+                }
+                if (streakEl && user.currentBettingStreak) {
+                    countUp(streakEl, user.currentBettingStreak, '', 'd', 900);
+                }
+                if (dailyEl) {
+                    const dailyProfit = Math.round(portfolio.dailyProfit || 0);
+                    const dsign = dailyProfit >= 0 ? '+' : '-';
+                    countUp(dailyEl, Math.abs(dailyProfit), dsign + 'M$', '/d', 1000);
+                    if (dailyProfit >= 0) dailyEl.classList.add('positive');
+                    else dailyEl.classList.add('negative');
+                }
+                if (marketsEl && user.createdTime) {
+                    marketsEl.textContent = (user.creatorTraderCount || 0).toLocaleString();
+                }
+
+                bar.classList.add('loaded');
+            }).catch(() => {
+                const networthEl = document.getElementById('forecast-stat-networth');
+                const profitEl = document.getElementById('forecast-stat-profit');
+                const streakEl = document.getElementById('forecast-stat-streak');
+                if (networthEl) networthEl.textContent = 'M$61,788';
+                if (profitEl) profitEl.textContent = '+M$4,200';
+                if (streakEl) streakEl.textContent = '220d';
+                bar.classList.add('loaded');
             });
         }
 
