@@ -179,6 +179,94 @@ img { max-width: 100%; height: auto; display: block; }
     letter-spacing: 0.2em;
 }
 
+/* Matrix multiplication animation */
+.matmul {
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: matmulFadeIn 0.6s ease 0.5s forwards;
+}
+@keyframes matmulFadeIn { to { opacity: 1; } }
+
+.matmul-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.matrix {
+    display: flex;
+    align-items: center;
+}
+
+.matrix-bracket {
+    font-family: 'VT323', monospace;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #333;
+    line-height: 1;
+    user-select: none;
+}
+
+.matrix-grid {
+    display: grid;
+    gap: 2px;
+}
+
+.grid-2x3 { grid-template-columns: repeat(3, 1fr); }
+.grid-3x4 { grid-template-columns: repeat(4, 1fr); }
+.grid-2x4 { grid-template-columns: repeat(4, 1fr); }
+
+.matrix-cell {
+    font-family: 'VT323', monospace;
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    width: clamp(22px, 3.5vw, 32px);
+    height: clamp(22px, 3.5vw, 28px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+    color: #444;
+}
+
+.matrix-a .matrix-cell { color: #6aadcf; }
+.matrix-b .matrix-cell { color: #cf6b6b; }
+.matrix-c .matrix-cell { color: #555; }
+.matrix-c .matrix-cell.computed {
+    color: #e0e0e0;
+    text-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+
+.matrix-cell.highlight-row {
+    background: rgba(106, 173, 207, 0.2);
+    color: #8cc8e8;
+    text-shadow: 0 0 10px rgba(106, 173, 207, 0.5);
+}
+.matrix-cell.highlight-col {
+    background: rgba(207, 107, 107, 0.2);
+    color: #e89090;
+    text-shadow: 0 0 10px rgba(207, 107, 107, 0.5);
+}
+.matrix-cell.computing {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+    transform: scale(1.15);
+}
+
+.matmul-op {
+    font-family: 'VT323', monospace;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    color: #444;
+    user-select: none;
+}
+
+@media (max-width: 600px) {
+    .matmul-row { gap: 0.3rem; }
+    .matrix-bracket { font-size: 1.5rem; }
+    .matrix-cell { width: 18px; height: 18px; font-size: 0.7rem; }
+    .matmul-op { font-size: 0.85rem; }
+}
+
 #site-content { opacity: 0; transition: opacity 0.6s ease; }
 #site-content.visible { opacity: 1; }
 
