@@ -33,7 +33,8 @@
             <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:110px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
             <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
-                <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Click and hold to drag me around!</p>
+                <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Grab and throw me! I have real physics now.</p>
+                <p class="fivey-bounce-counter" id="fivey-bounce-counter" style="margin-top:0.4rem;font-size:0.65rem;opacity:0;transition:opacity 0.3s;font-variant-numeric:tabular-nums;"></p>
             </div>
         </div>
 
@@ -44,20 +45,20 @@
         <!-- EDITORIAL LAYOUT -->
         <div class="editorial-page">
             <!-- Blue hero patch -->
-            <header class="editorial-hero">
+            <header class="editorial-hero" id="editorial-hero">
                 <h1 class="editorial-name">RYAN McCOMB</h1>
-                <p class="editorial-tagline">Data, politics, and forecasting.</p>
+                <p class="editorial-tagline" id="editorial-tagline"></p>
             </header>
 
             <!-- Essay-style about section with inline links -->
             <main class="editorial-body">
-                <p>I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p>
+                <p class="scroll-reveal">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p>
 
-                <p>I built <a href="https://il9.org" target="_blank"><strong>IL9.org</strong></a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm also a <strong>Student Fellow</strong> at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> doing race-call work and election modeling, and a <strong>Volunteer Finance Lead</strong> for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss congressional campaign</a>.</p>
+                <p class="scroll-reveal">I built <a href="https://il9.org" target="_blank"><strong>IL9.org</strong></a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm also a <strong>Student Fellow</strong> at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> doing race-call work and election modeling, and a <strong>Volunteer Finance Lead</strong> for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss congressional campaign</a>.</p>
 
-                <p>I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
+                <p class="scroll-reveal">I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
 
-                <p style="margin-top: 1.5rem;"><a href="resume.html" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid #0000FF; padding: 0.5rem 1.2rem;">View Resume &rarr;</a></p>
+                <p class="scroll-reveal" style="margin-top: 1.5rem;"><a href="resume.html" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid #2244cc; padding: 0.5rem 1.2rem;">View Resume &rarr;</a></p>
             </main>
 
             <!-- Footer -->
@@ -254,6 +255,90 @@
             }
         }
 
+        // === LANDING PAGE ENHANCEMENTS ===
+
+        // 1. Typewriter effect on tagline
+        (function initTypewriter() {
+            const tagline = document.getElementById('editorial-tagline');
+            if (!tagline) return;
+            const text = 'Data, politics, and forecasting.';
+            let i = 0;
+            tagline.textContent = '';
+            tagline.style.borderRight = '2px solid rgba(255,255,255,0.7)';
+            function type() {
+                if (i < text.length) {
+                    tagline.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50 + Math.random() * 40);
+                } else {
+                    // Blink cursor a few times then remove
+                    let blinks = 0;
+                    const blinkInterval = setInterval(() => {
+                        tagline.style.borderRight = blinks % 2 === 0 ? '2px solid transparent' : '2px solid rgba(255,255,255,0.7)';
+                        blinks++;
+                        if (blinks > 6) {
+                            clearInterval(blinkInterval);
+                            tagline.style.borderRight = 'none';
+                        }
+                    }, 400);
+                }
+            }
+            setTimeout(type, 800);
+        })();
+
+        // 2. Hero card 3D tilt on mouse move
+        (function initHeroTilt() {
+            const hero = document.getElementById('editorial-hero');
+            if (!hero) return;
+
+            hero.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+            hero.style.transformStyle = 'preserve-3d';
+
+            hero.addEventListener('mousemove', (e) => {
+                const rect = hero.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                const tiltX = y * -8;  // max 8 degrees
+                const tiltY = x * 8;
+                hero.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
+                hero.style.boxShadow = `${-tiltY * 2}px ${tiltX * 2}px 30px rgba(34, 68, 204, 0.2)`;
+            });
+
+            hero.addEventListener('mouseleave', () => {
+                hero.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
+                hero.style.boxShadow = 'none';
+            });
+        })();
+
+        // 3. Scroll-triggered reveal animations
+        (function initScrollReveal() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            if (!reveals.length) return;
+
+            // Set initial state
+            reveals.forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`;
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            reveals.forEach(el => observer.observe(el));
+        })();
+
+        // 4. Fivey bounce counter
+        window.fiveyBounceCount = 0;
+        window.fiveyMaxSpeed = 0;
+
 
         // RESIZABLE BENTO CARDS
         document.querySelectorAll('.bento .card').forEach(card => {
@@ -342,6 +427,115 @@
         let lastY = 0;
         let lastTime = 0;
         let animationId = null;
+        let currentRotation = -2; // starting rotation in degrees
+        let angularVelocity = 0;
+
+        // Particle trail system
+        const particles = [];
+        const particleCanvas = document.createElement('canvas');
+        particleCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:899;';
+        document.body.appendChild(particleCanvas);
+        const pCtx = particleCanvas.getContext('2d');
+        function resizeParticleCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        resizeParticleCanvas();
+        window.addEventListener('resize', resizeParticleCanvas);
+
+        function spawnParticles(x, y, vx, vy, count, type) {
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 3 + 1;
+                particles.push({
+                    x: x + Math.random() * 20 - 10,
+                    y: y + Math.random() * 20 - 10,
+                    vx: (type === 'trail' ? -vx * 0.2 : Math.cos(angle) * speed * 3) + (Math.random() - 0.5) * 2,
+                    vy: (type === 'trail' ? -vy * 0.2 : Math.sin(angle) * speed * 3) + (Math.random() - 0.5) * 2,
+                    life: 1,
+                    decay: type === 'bounce' ? 0.015 + Math.random() * 0.01 : 0.025 + Math.random() * 0.02,
+                    size: type === 'bounce' ? Math.random() * 5 + 3 : Math.random() * 3 + 1,
+                    type: type,
+                    shape: Math.random() > 0.5 ? 'star' : 'circle'
+                });
+            }
+        }
+
+        function drawStar(ctx, cx, cy, size) {
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                const angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+                const method = i === 0 ? 'moveTo' : 'lineTo';
+                ctx[method](cx + Math.cos(angle) * size, cy + Math.sin(angle) * size);
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        let particleAnimating = false;
+        function animateParticles() {
+            pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.1; // particle gravity
+                p.vx *= 0.98;
+                p.life -= p.decay;
+                if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+                const alpha = p.life * 0.8;
+                if (p.type === 'bounce') {
+                    pCtx.fillStyle = `rgba(34, 68, 204, ${alpha})`;
+                } else {
+                    pCtx.fillStyle = `rgba(34, 68, 204, ${alpha * 0.6})`;
+                }
+
+                if (p.shape === 'star') {
+                    drawStar(pCtx, p.x, p.y, p.size * p.life);
+                } else {
+                    pCtx.beginPath();
+                    pCtx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                    pCtx.fill();
+                }
+            }
+
+            if (particles.length > 0) {
+                requestAnimationFrame(animateParticles);
+            } else {
+                particleAnimating = false;
+            }
+        }
+
+        function ensureParticleLoop() {
+            if (!particleAnimating) {
+                particleAnimating = true;
+                animateParticles();
+            }
+        }
+
+        // Screen shake on hard bounces
+        function screenShake(intensity) {
+            const shakeAmount = Math.min(intensity * 0.4, 8);
+            if (shakeAmount < 1.5) return;
+            const duration = Math.min(intensity * 8, 300);
+            document.body.style.transition = 'none';
+            let start = null;
+            function shake(time) {
+                if (!start) start = time;
+                const elapsed = time - start;
+                if (elapsed > duration) {
+                    document.body.style.transform = '';
+                    return;
+                }
+                const decay = 1 - elapsed / duration;
+                const dx = (Math.random() - 0.5) * shakeAmount * decay;
+                const dy = (Math.random() - 0.5) * shakeAmount * decay;
+                document.body.style.transform = `translate(${dx}px, ${dy}px)`;
+                requestAnimationFrame(shake);
+            }
+            requestAnimationFrame(shake);
+        }
 
         // Check if Fivey has been moved before
         const savedPosition = localStorage.getItem('fiveyPosition');
@@ -357,10 +551,8 @@
             mascot.style.transform = 'none';
             mascot.style.animation = 'none';
         } else if (fiveyHasAppeared) {
-            // Returning to page — show Fivey instantly (no animation delay)
             mascot.classList.add('instant');
         }
-        // Mark Fivey as appeared after animation completes
         mascot.addEventListener('animationend', () => {
             sessionStorage.setItem('fiveyAppeared', 'true');
         });
@@ -387,7 +579,6 @@
         function handleDragStart(clientX, clientY, target) {
             if (target.tagName === 'A') return false;
 
-            // Stop any ongoing animation
             if (animationId) {
                 cancelAnimationFrame(animationId);
                 animationId = null;
@@ -400,12 +591,10 @@
             offsetX = clientX - rect.left;
             offsetY = clientY - rect.top;
 
-            // Track for velocity calculation
             lastX = clientX - offsetX;
             lastY = clientY - offsetY;
             lastTime = Date.now();
 
-            // Convert to fixed positioning smoothly
             mascot.style.position = 'fixed';
             mascot.style.left = rect.left + 'px';
             mascot.style.top = rect.top + 'px';
@@ -441,9 +630,11 @@
             const deltaTime = currentTime - lastTime;
 
             if (deltaTime > 0) {
-                // Calculate velocity (reduced multiplier for less acceleration)
-                velocityX = (newX - lastX) / deltaTime * 10;
-                velocityY = (newY - lastY) / deltaTime * 10;
+                // Smoothed velocity with higher multiplier for more throw momentum
+                const newVX = (newX - lastX) / deltaTime * 15;
+                const newVY = (newY - lastY) / deltaTime * 15;
+                velocityX = velocityX * 0.3 + newVX * 0.7;
+                velocityY = velocityY * 0.3 + newVY * 0.7;
             }
 
             lastX = newX;
@@ -453,7 +644,10 @@
             mascot.style.left = newX + 'px';
             mascot.style.top = newY + 'px';
 
-            // Save position while dragging
+            // Tilt mascot in drag direction
+            const tilt = Math.max(-25, Math.min(25, velocityX * 2));
+            mascotImg.style.transform = `scale(1.2) rotate(${tilt}deg)`;
+
             localStorage.setItem('fiveyPosition', JSON.stringify({ x: newX, y: newY }));
         }
 
@@ -462,7 +656,9 @@
             isDragging = false;
             mascot.classList.remove('dragging');
 
-            // Start physics simulation
+            // Set initial angular velocity from throw direction
+            angularVelocity = velocityX * 1.5;
+
             animatePhysics();
         }
 
@@ -486,61 +682,125 @@
         });
 
         function animatePhysics() {
-            const friction = 0.88; // Damping factor (more friction)
-            const bounceFactor = 0.6; // Energy retained on bounce
-            const minVelocity = 0.5; // Stop threshold
+            const friction = 0.985;       // Much less air friction — Fivey carries momentum
+            const gravity = 0.4;          // Gentle gravity pulling down
+            const bounceFactor = 0.65;    // Energy retained on bounce
+            const minVelocity = 0.3;      // Stop threshold
+            const angularFriction = 0.96; // Spin decay
+            let frameCount = 0;
 
             function animate() {
                 let x = parseFloat(mascot.style.left);
                 let y = parseFloat(mascot.style.top);
 
+                // Apply gravity
+                velocityY += gravity;
+
                 // Apply velocity
                 x += velocityX;
                 y += velocityY;
 
-                // Apply friction
+                // Apply air friction
                 velocityX *= friction;
                 velocityY *= friction;
+
+                // Spin
+                currentRotation += angularVelocity * 0.1;
+                angularVelocity *= angularFriction;
+
+                // Squash & stretch based on velocity
+                const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+                const stretchFactor = Math.min(speed / 30, 0.3);
+                const moveAngle = Math.atan2(velocityY, velocityX);
+                const scaleX = 1 + stretchFactor;
+                const scaleY = 1 - stretchFactor * 0.5;
+
+                // Apply transform with rotation, squash, stretch
+                mascotImg.style.transform = `rotate(${currentRotation}deg) scaleX(${scaleX}) scaleY(${scaleY})`;
+                mascotImg.style.transformOrigin = 'center center';
 
                 // Get mascot dimensions
                 const rect = mascot.getBoundingClientRect();
                 const width = rect.width;
                 const height = rect.height;
 
-                // Bounce off edges
+                // Bounce off edges with particles and screen shake
+                let bounced = false;
                 if (x < 0) {
                     x = 0;
+                    const impactSpeed = Math.abs(velocityX);
                     velocityX = Math.abs(velocityX) * bounceFactor;
+                    angularVelocity = -velocityY * 2;
+                    spawnParticles(0, y + height / 2, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
+                    screenShake(impactSpeed);
+                    bounced = true;
                 } else if (x + width > window.innerWidth) {
                     x = window.innerWidth - width;
+                    const impactSpeed = Math.abs(velocityX);
                     velocityX = -Math.abs(velocityX) * bounceFactor;
+                    angularVelocity = velocityY * 2;
+                    spawnParticles(window.innerWidth, y + height / 2, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
+                    screenShake(impactSpeed);
+                    bounced = true;
                 }
 
                 if (y < 0) {
                     y = 0;
+                    const impactSpeed = Math.abs(velocityY);
                     velocityY = Math.abs(velocityY) * bounceFactor;
+                    angularVelocity = velocityX * 2;
+                    spawnParticles(x + width / 2, 0, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
+                    screenShake(impactSpeed);
+                    bounced = true;
                 } else if (y + height > window.innerHeight) {
                     y = window.innerHeight - height;
+                    const impactSpeed = Math.abs(velocityY);
                     velocityY = -Math.abs(velocityY) * bounceFactor;
+                    angularVelocity = -velocityX * 2;
+                    spawnParticles(x + width / 2, window.innerHeight, velocityX, velocityY, Math.min(Math.floor(impactSpeed), 15), 'bounce');
+                    screenShake(impactSpeed);
+                    bounced = true;
+                }
+
+                // Squash on bounce frame + update bounce counter
+                if (bounced) {
+                    mascotImg.style.transform = `rotate(${currentRotation}deg) scale(1.3, 0.7)`;
+                    ensureParticleLoop();
+                    window.fiveyBounceCount++;
+                    if (speed > window.fiveyMaxSpeed) window.fiveyMaxSpeed = speed;
+                    const counter = document.getElementById('fivey-bounce-counter');
+                    if (counter) {
+                        counter.style.opacity = '1';
+                        counter.textContent = `Bounces: ${window.fiveyBounceCount} | Top speed: ${Math.round(window.fiveyMaxSpeed)}px/f`;
+                    }
+                }
+
+                // Spawn trail particles when moving fast
+                if (speed > 5 && frameCount % 2 === 0) {
+                    spawnParticles(x + width / 2, y + height / 2, velocityX, velocityY, 1, 'trail');
+                    ensureParticleLoop();
                 }
 
                 // Update position
                 mascot.style.left = x + 'px';
                 mascot.style.top = y + 'px';
+                frameCount++;
 
                 // Save position
                 localStorage.setItem('fiveyPosition', JSON.stringify({ x, y }));
 
-                // Continue animation if still moving
-                const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+                // Continue animation if still moving meaningfully
                 if (speed > minVelocity) {
                     animationId = requestAnimationFrame(animate);
                 } else {
+                    // Settle: reset transform gently
+                    velocityX = 0;
+                    velocityY = 0;
+                    mascotImg.style.transform = `rotate(${currentRotation % 360}deg)`;
                     animationId = null;
                 }
             }
 
-            // Only start if there's significant velocity
             const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
             if (speed > minVelocity) {
                 animate();
@@ -3357,39 +3617,117 @@
                 </div>
             `,
             experience: () => `
-                <h1 class="page-title">Experiences</h1>
-                <h2 class="section-subtitle">Experience</h2>
-                <div class="experience-list">
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Student Fellow</h3><p class="experience-meta">VoteHub &bull; Fellowship</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">March 2026 - Present</p><p>I recently started as a Student Fellow at <a href="https://votehub.com" target="_blank">VoteHub</a> and I'm super excited to be doing race-call work and election modeling with a team that cares deeply about political data.</p></div></div>
+                <div class="tl-page">
+                    <div class="tl-hero">
+                        <h1 class="tl-title">Experience</h1>
+                        <p class="tl-subtitle">What I've been working on.</p>
                     </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Data Analyst</h3><p class="experience-meta">IL9CAST &bull; Self-employed</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">December 2025 - Present</p><p>I built <a href="https://il9.org" target="_blank">IL9.org</a>, an open-source political forecasting project focused on modeling the Illinois 9th Congressional District.</p></div></div>
+
+                    <div class="tl-track" id="tl-track">
+                        <div class="tl-line" id="tl-line"></div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Mar 2026</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Student Fellow</h3>
+                                    <span class="tl-org">VoteHub</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Race-call work and election modeling with a team that cares deeply about political data. Building forecasting tools and analyzing real-time results.</p>
+                                    <a href="https://votehub.com" target="_blank" class="tl-link">votehub.com &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Dec 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Data Analyst</h3>
+                                    <span class="tl-org">IL9CAST</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Built <strong>IL9.org</strong>, an open-source political forecasting project modeling the Illinois 9th Congressional District. Polling aggregation, fundamentals modeling, and probabilistic projections.</p>
+                                    <a href="https://il9.org" target="_blank" class="tl-link">il9.org &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Aug 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Volunteer Finance Lead</h3>
+                                    <span class="tl-org">Biss for Congress</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Donor outreach, fundraising data, and community connections for the Biss congressional campaign.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Jun 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Freelance Photographer</h3>
+                                    <span class="tl-org">Chicago Union</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Game-day and event photography for the Chicago Union ultimate frisbee team.</p>
+                                    <a href="https://www.instagram.com/mccomb.photo/" target="_blank" class="tl-link">@mccomb.photo &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Jun 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Swim Instructor</h3>
+                                    <span class="tl-org">YWCA USA</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Taught swimming to kids and adults. Need I say more?</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Aug 2024</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Staff Writer</h3>
+                                    <span class="tl-org">The Evanstonian</span>
+                                    <span class="tl-badge">Current</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Covered local politics, ETHS, D65, and community issues for the news section. Informative journalism on things that matter to Evanston.</p>
+                                    <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="tl-link">Read articles &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Volunteer Finance Lead</h3><p class="experience-meta">Biss for Congress &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">August 2025 - Present</p><p>Volunteer finance Lead for the Biss congressional campaign, helping donor outreach, pulling data needed for fundraising, and community connections.</p></div></div>
-                    </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Freelance Photographer</h3><p class="experience-meta">Chicago Union &bull; Freelance</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">June 2025 - Present</p><p>Helped out the Union a bit with some killer pics! Check out my work at <a href="https://www.instagram.com/mccomb.photo/" target="_blank">@mccomb.photo</a></p></div></div>
-                    </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Swim Instructor</h3><p class="experience-meta">YWCA USA &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">June 2025 - Present</p><p>Taught swimming.....need I say more</p></div></div>
-                    </div>
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Staff Writer</h3><p class="experience-meta">The Evanstonian &bull; Part-time</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">August 2024 - Present</p><p>Wrote about a variety of issues in Evanstonian for the news section including informative articles about local politics, ETHS, D65, and community social issues!</p></div></div>
-                    </div>
-                </div>
-                <h2 class="section-subtitle">Education</h2>
-                <div class="experience-list">
-                    <div class="experience-item" onclick="this.classList.toggle('expanded')">
-                        <div class="experience-header"><div><h3>Evanston Township High School</h3><p class="experience-meta">Class of 2026 &bull; Evanston, IL</p></div><span class="expand-icon">&#9660;</span></div>
-                        <div class="experience-details"><div class="experience-content"><p class="time-period">GPA: 3.98 Unweighted / 4.41 Weighted</p><p>Currently taking Chem/Phys among other courses.</p></div></div>
+
+                    <div class="tl-edu">
+                        <div class="tl-edu-label">Education</div>
+                        <div class="tl-edu-card">
+                            <h3>Evanston Township High School</h3>
+                            <p class="tl-edu-meta">Class of 2026 &bull; Evanston, IL</p>
+                            <p class="tl-edu-detail">GPA: 3.98 UW / 4.41 W</p>
+                        </div>
                     </div>
                 </div>
             `,
@@ -3544,12 +3882,31 @@
             history.pushState({ card: cardName }, '', '#' + cardName);
 
             // Post-render hooks
+            if (cardName === 'experience') initTimeline();
             if (cardName === 'hottakes') initExpandedTakesFilters();
             if (cardName === 'countdowns') startExpandedCountdownTick();
             if (cardName === 'blog') { loadExpandedGuestbook(); loadApiBlogPosts(); guestbookLoaded = true; }
 
             // Track
             fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'pageview', value: cardName }) }).catch(() => {});
+        }
+
+        function initTimeline() {
+            const line = document.getElementById('tl-line');
+            const nodes = document.querySelectorAll('.tl-node');
+            if (!line || !nodes.length) return;
+
+            // Draw the line
+            requestAnimationFrame(() => {
+                line.classList.add('drawn');
+            });
+
+            // Stagger-reveal each node
+            nodes.forEach((node, i) => {
+                setTimeout(() => {
+                    node.classList.add('visible');
+                }, 200 + i * 120);
+            });
         }
 
         function collapseCard() {
