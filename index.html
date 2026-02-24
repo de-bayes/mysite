@@ -49,9 +49,9 @@
                 <h1 class="editorial-name">RYAN McCOMB</h1>
                 <p class="editorial-tagline" id="editorial-tagline"></p>
                 <div class="hero-data-ticker" id="hero-data-ticker">
-                    <span class="ticker-item"><span class="ticker-label">MANIFOLD</span><span class="ticker-value">#61 / 160K</span></span>
+                    <span class="ticker-item"><span class="ticker-label">BALANCE</span><span class="ticker-value" id="ticker-balance">--</span></span>
+                    <span class="ticker-item"><span class="ticker-label">STREAK</span><span class="ticker-value" id="ticker-streak">--</span></span>
                     <span class="ticker-item"><span class="ticker-label">IL-09</span><span class="ticker-value">TRACKING</span></span>
-                    <span class="ticker-item"><span class="ticker-label">TOP</span><span class="ticker-value" id="ticker-cal">--</span></span>
                 </div>
                 <div class="hero-forecast-line">
                     <svg viewBox="0 0 640 60" preserveAspectRatio="none">
@@ -316,28 +316,51 @@
             });
         })();
 
-        // 3. Data ticker stagger reveal + calibration counter
+        // 3. Data ticker — live from Manifold API
         (function initDataTicker() {
             const items = document.querySelectorAll('.ticker-item');
             if (!items.length) return;
+
             // Stagger reveal after typewriter finishes (~3s)
             items.forEach((item, i) => {
                 setTimeout(() => item.classList.add('visible'), 3200 + i * 300);
             });
-            // Animate top % counting down
-            const calEl = document.getElementById('ticker-cal');
-            if (calEl) {
-                setTimeout(() => {
-                    const frames = [5, 3, 1.5, 0.8, 0.4, 0.2, 0.1, 0.06, 0.04];
-                    let i = 0;
-                    const step = () => {
-                        calEl.textContent = frames[i] + '%';
-                        i++;
-                        if (i < frames.length) setTimeout(step, 120);
-                    };
-                    step();
-                }, 4000);
+
+            // Animate a number counting up from 0
+            function countUp(el, target, prefix, suffix, duration) {
+                const start = performance.now();
+                function tick(now) {
+                    const t = Math.min((now - start) / duration, 1);
+                    const ease = 1 - Math.pow(1 - t, 3); // ease-out cubic
+                    const current = Math.round(target * ease);
+                    el.textContent = prefix + current.toLocaleString() + suffix;
+                    if (t < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
             }
+
+            // Fetch live Manifold data
+            fetch('https://api.manifold.markets/v0/user/JeromeHPowell')
+                .then(r => r.json())
+                .then(user => {
+                    const balanceEl = document.getElementById('ticker-balance');
+                    const streakEl = document.getElementById('ticker-streak');
+
+                    if (balanceEl) {
+                        const balance = Math.round(user.balance || 0);
+                        setTimeout(() => countUp(balanceEl, balance, 'M$', '', 1200), 3500);
+                    }
+                    if (streakEl && user.currentBettingStreak) {
+                        setTimeout(() => countUp(streakEl, user.currentBettingStreak, '', 'd', 900), 3800);
+                    }
+                })
+                .catch(() => {
+                    // Fallback if API is down
+                    const balanceEl = document.getElementById('ticker-balance');
+                    const streakEl = document.getElementById('ticker-streak');
+                    if (balanceEl) balanceEl.textContent = 'M$21,803';
+                    if (streakEl) streakEl.textContent = '220d';
+                });
         })();
 
         // 4. Scroll-triggered reveal animations
