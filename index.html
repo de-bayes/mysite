@@ -23,22 +23,22 @@
         }
 
         :root {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #212121;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --text-muted: #777777;
-            --text-light: #555555;
-            --border-color: #2a2a2a;
+            --bg-primary: #2b2b2e;
+            --bg-secondary: #323235;
+            --text-primary: #d4d2cf;
+            --text-secondary: #9a9895;
+            --text-muted: #6e6c69;
+            --text-light: #504e4c;
+            --border-color: #3a3a3d;
             --accent: #7a8a9a;
             --photo-hint-bg: rgba(0, 0, 0, 0.8);
-            --nav-menu-bg: #1a1a1a;
-            --nav-menu-shadow: rgba(0, 0, 0, 0.5);
+            --nav-menu-bg: #2b2b2e;
+            --nav-menu-shadow: rgba(0, 0, 0, 0.4);
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #1a1a1a;
+            background: #2b2b2e;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -65,7 +65,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1a1a1a;
+            background: #2b2b2e;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -708,7 +708,7 @@
             transform: translate(-50%, -50%);
             width: 800px;
             height: 550px;
-            background: #1a1a1a;
+            background: var(--bg-primary);
             border-radius: 6px;
             border: 1px solid #252525;
             display: flex;
@@ -719,7 +719,7 @@
         }
 
         .terminal-header {
-            background: #1a1a1a;
+            background: var(--bg-primary);
             padding: 0.65rem 1rem;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
@@ -782,7 +782,7 @@
             color: #c0c0c0;
             overflow-y: auto;
             line-height: 1.6;
-            background: #1a1a1a;
+            background: var(--bg-primary);
         }
 
         .terminal-body::-webkit-scrollbar {
@@ -790,7 +790,7 @@
         }
 
         .terminal-body::-webkit-scrollbar-track {
-            background: #212121;
+            background: var(--bg-secondary);
         }
 
         .terminal-body::-webkit-scrollbar-thumb {
@@ -1510,39 +1510,47 @@
         /* ============================================
            BENTO GRID
            ============================================ */
-        /* HERO SECTION - Formal, split layout */
+        /* HERO SECTION - Wide cinematic layout */
         .hero {
             position: relative;
             width: 100%;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: auto;
+            display: block;
             overflow: hidden;
             background: var(--bg-primary);
         }
 
         .hero-inner {
-            max-width: 1100px;
+            max-width: none;
             width: 100%;
-            margin: 0 auto;
-            padding: 8rem 3rem 5rem;
-            display: flex;
-            align-items: stretch;
-            gap: 5rem;
+            margin: 0;
+            padding: 0;
+            display: block;
         }
 
         .hero-photo-col {
-            flex-shrink: 0;
+            width: 100%;
+            position: relative;
+        }
+
+        .hero-photo-col::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 45%;
+            background: linear-gradient(transparent, var(--bg-primary));
+            pointer-events: none;
         }
 
         .hero-img {
-            width: 400px;
-            height: 520px;
+            width: 100%;
+            height: 75vh;
             object-fit: cover;
-            object-position: center 30%;
+            object-position: center 20%;
             display: block;
-            border: 1px solid var(--border-color);
+            border: none;
         }
 
         .hero-gradient {
@@ -1550,10 +1558,11 @@
         }
 
         .hero-text-col {
-            flex: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 3rem 3rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
 
         .hero-overlay {
@@ -1565,7 +1574,7 @@
 
         .hero-overlay h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 5.5rem;
+            font-size: 4rem;
             font-weight: 600;
             color: var(--text-primary);
             line-height: 1;
@@ -1573,16 +1582,16 @@
         }
 
         .hero-rule {
-            width: 80px;
+            width: 60px;
             height: 2px;
-            background: var(--text-light);
-            margin: 1.75rem 0;
-            opacity: 0.5;
+            background: var(--accent);
+            margin: 1.5rem 0;
+            opacity: 0.6;
         }
 
         .hero-tagline {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.65rem;
+            font-size: 1.5rem;
             font-weight: 400;
             color: var(--text-secondary);
             letter-spacing: 0.02em;
@@ -1595,21 +1604,21 @@
         }
 
         .hero-overlay .hero-sub {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
-            margin-top: 1.25rem;
+            margin-top: 1rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
         }
 
         .hero-links {
-            margin-top: 1.5rem;
+            margin-top: 1.25rem;
             display: flex;
             gap: 1.25rem;
         }
 
         .hero-links a {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             text-decoration: none;
             transition: color 0.2s;
@@ -1624,14 +1633,9 @@
             border-bottom-color: var(--text-light);
         }
 
-        /* Hero inline stats */
+        /* Hero inline stats - hidden, redundant with dashboard */
         .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            margin-top: 2.5rem;
-            background: var(--border-color);
-            border: 1px solid var(--border-color);
+            display: none;
         }
 
         .hero-stat {
@@ -1657,16 +1661,17 @@
         }
 
         .hero-scroll-hint {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
+            position: relative;
+            bottom: auto;
+            left: auto;
+            transform: none;
             z-index: 3;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            opacity: 0.4;
+            opacity: 0.3;
+            padding: 1.5rem 0 0;
             animation: scrollBounce 2s ease-in-out infinite;
         }
 
@@ -1678,16 +1683,16 @@
         }
 
         .hero-scroll-hint svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             stroke: var(--text-muted);
             fill: none;
             stroke-width: 2;
         }
 
         @keyframes scrollBounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(6px); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
         }
 
         /* PERSONAL STATS DASHBOARD - Kalshi-inspired */
@@ -1727,7 +1732,7 @@
         }
 
         .stat-card:hover {
-            background: rgba(33, 33, 33, 0.9);
+            background: rgba(55, 55, 58, 0.9);
         }
 
         .stat-card-header {
@@ -1810,7 +1815,7 @@
         }
 
         .stat-card-wide:hover {
-            background: rgba(33, 33, 33, 0.9);
+            background: rgba(55, 55, 58, 0.9);
         }
 
         .stat-wide-label {
@@ -1868,33 +1873,24 @@
         }
 
         @media (max-width: 900px) {
-            .hero-inner {
-                flex-direction: column;
-                align-items: center;
-                gap: 3rem;
-                padding: 5rem 2rem 3rem;
-            }
             .hero-img {
-                width: 320px;
-                height: 420px;
+                height: 55vh;
             }
-            .hero-text-col { align-items: center; text-align: center; }
+            .hero-text-col { padding: 1.5rem 2rem 2rem; text-align: center; align-items: center; }
             .hero-overlay { align-items: center; text-align: center; }
-            .hero-overlay h1 { font-size: 3.8rem; }
+            .hero-overlay h1 { font-size: 3.2rem; }
             .hero-rule { margin: 1.25rem auto; }
-            .hero-tagline { font-size: 1.35rem; }
+            .hero-tagline { font-size: 1.3rem; }
             .hero-links { justify-content: center; }
-            .hero-stats { max-width: 400px; margin-left: auto; margin-right: auto; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stats-grid-wide { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 600px) {
-            .hero-inner { padding: 4.5rem 1.5rem 2.5rem; gap: 2rem; }
-            .hero-img { width: 260px; height: 340px; }
-            .hero-overlay h1 { font-size: 2.8rem; }
-            .hero-tagline { font-size: 1.15rem; }
-            .hero-stats { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
+            .hero-img { height: 45vh; }
+            .hero-text-col { padding: 1.25rem 1.5rem 2rem; }
+            .hero-overlay h1 { font-size: 2.5rem; }
+            .hero-tagline { font-size: 1.1rem; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
         }
 
