@@ -85,9 +85,9 @@
     <div id="site-content">
 
         <!-- FIVEY FOX MASCOT -->
-        <div class="mascot-corner" style="position:fixed;bottom:80px;right:20px;z-index:900;">
-            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:48px;cursor:grab;user-select:none;opacity:0.7;transition:opacity 0.2s;">
-            <div class="mascot-tooltip" style="position:absolute;bottom:100%;right:0;width:240px;font-size:0.78rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius);padding:0.75rem;color:var(--text-secondary);pointer-events:auto;opacity:0;visibility:hidden;transition:all 0.2s ease;box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+        <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;z-index:900;opacity:0;transform:translateY(20px) scale(0.8);transition:opacity 0.6s ease, transform 0.6s ease;">
+            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:72px;cursor:grab;user-select:none;opacity:0.9;transition:opacity 0.2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));">
+            <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Click and hold to drag me around!</p>
             </div>
@@ -105,7 +105,6 @@
         <!-- HERO SECTION -->
         <section class="hero scroll-reveal">
             <div class="hero-content">
-                <div class="hero-label">Portfolio &mdash; 2026</div>
                 <h1 class="hero-title">Ryan McComb</h1>
                 <hr class="hero-rule">
                 <p class="hero-subtitle">Data, politics, and <strong>forecasting.</strong></p>
@@ -114,67 +113,9 @@
                     <span class="hero-meta-sep">&middot;</span>
                     <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
                     <span class="hero-meta-sep">&middot;</span>
-                    <a href="https://manifold.markets/JeromeHPowell" target="_blank">Manifold</a>
+                    <a href="https://x.com/bayes_pr" target="_blank">Twitter</a>
                     <span class="hero-meta-sep">&middot;</span>
                     <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
-                    <span class="hero-meta-sep">&middot;</span>
-                    <a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
-                </div>
-                <img src="sig2.webp" alt="" class="hero-signature">
-            </div>
-            <img src="ddddd.jpg" alt="Ryan McComb" class="hero-photo">
-        </section>
-
-        <!-- BY THE NUMBERS -->
-        <section class="stats-section scroll-reveal">
-            <div class="stats-label">By the Numbers</div>
-            <hr class="stats-rule">
-            <div class="stats-grid">
-                <div class="stat-cell">
-                    <div class="stat-number">IL-09</div>
-                    <div class="stat-label">Forecasting Model</div>
-                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="85%"></div></div>
-                </div>
-                <div class="stat-cell">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Markets Traded</div>
-                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="72%"></div></div>
-                </div>
-                <div class="stat-cell">
-                    <div class="stat-number">12+</div>
-                    <div class="stat-label">Published Articles</div>
-                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="60%"></div></div>
-                </div>
-                <div class="stat-cell">
-                    <div class="stat-number">4.41</div>
-                    <div class="stat-label">Weighted GPA</div>
-                    <div class="stat-card-bar"><div class="stat-card-bar-fill" data-width="94%"></div></div>
-                </div>
-            </div>
-            <div class="stats-grid-wide">
-                <div class="stat-cell">
-                    <div class="stat-label" style="margin-bottom:0.5rem;font-weight:600;">Current Positions</div>
-                    <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
-                        Student Fellow &mdash; VoteHub<br>
-                        Data Analyst &mdash; IL9CAST<br>
-                        Finance Lead &mdash; Biss for Congress
-                    </div>
-                </div>
-                <div class="stat-cell">
-                    <div class="stat-label" style="margin-bottom:0.5rem;font-weight:600;">Skills &amp; Tools</div>
-                    <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
-                        Python &amp; Data Science<br>
-                        Web Development (HTML/CSS/JS)<br>
-                        Political Analysis &amp; Modeling
-                    </div>
-                </div>
-                <div class="stat-cell">
-                    <div class="stat-label" style="margin-bottom:0.5rem;font-weight:600;">Interests</div>
-                    <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8;">
-                        Prediction Markets (Manifold / Kalshi)<br>
-                        Film Photography (35mm)<br>
-                        Political Science &amp; Elections
-                    </div>
                 </div>
             </div>
         </section>
@@ -184,19 +125,14 @@
 
             <!-- FEATURED: ABOUT + PROJECTS -->
             <div class="editorial-section scroll-reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Explore</h2>
-                </div>
-
                 <div class="cards-grid">
                     <!-- ABOUT (span 2) -->
                     <div class="card card-span-2" data-card="about" onclick="expandCard('about')">
                         <div class="about-card">
                             <div>
                                 <div class="card-meta">ABOUT</div>
-                                <div class="card-title">Building things,<br>predicting things.</div>
-                                <p class="card-text">Student interested in data, prediction markets, politics, and the web. I like making things people can use and forming beliefs based on evidence.</p>
-                                <div class="card-meta" style="margin-top:0.75rem;font-style:italic;">&mdash; Ryan</div>
+                                <div class="card-title">Ryan McComb</div>
+                                <p class="card-text">Student Fellow &mdash; Data Science &amp; Decision Desk<br><span style="font-size:0.82rem;color:var(--text-muted);">VoteHub &middot; 2025 &ndash; Present</span></p>
                             </div>
                             <img src="ddddd.jpg" alt="Ryan" class="about-card-photo">
                         </div>
@@ -231,7 +167,7 @@
                                 <span style="color:var(--text-muted);font-size:0.8rem;">IL9CAST &middot; Dec 2025</span>
                             </div>
                             <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                                <span style="color:var(--text-primary);font-weight:500;">Finance Lead</span>
+                                <span style="color:var(--text-primary);font-weight:500;">Vol. Finance Lead</span>
                                 <span style="color:var(--text-muted);font-size:0.8rem;">Biss for Congress &middot; Aug 2025</span>
                             </div>
                         </div>
@@ -349,13 +285,43 @@
             </div>
         </section>
 
+        <!-- BOTTOM CTA -->
+        <div class="bottom-cta scroll-reveal">
+            <a href="#contact" class="bottom-cta-btn" onclick="event.preventDefault();expandCard('contact')">Get in touch &rarr;</a>
+        </div>
+
         <!-- FOOTER -->
         <footer class="site-footer">
-            <div class="footer-left">&copy; 2026 Ryan McComb</div>
-            <div class="footer-right">
-                <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
-                <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
-                <img src="flag-footer.png" alt="" class="footer-flag">
+            <div class="footer-top">
+                <div class="footer-sitemap">
+                    <div class="footer-sitemap-col">
+                        <div class="footer-sitemap-heading">Navigate</div>
+                        <a href="#about" onclick="event.preventDefault();expandCard('about')">About</a>
+                        <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Experience</a>
+                        <a href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
+                    </div>
+                    <div class="footer-sitemap-col">
+                        <div class="footer-sitemap-heading">Writing</div>
+                        <a href="#blog" onclick="event.preventDefault();expandCard('blog')">Blog</a>
+                        <a href="#hottakes" onclick="event.preventDefault();expandCard('hottakes')">Hot Takes</a>
+                        <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>
+                    </div>
+                    <div class="footer-sitemap-col">
+                        <div class="footer-sitemap-heading">Connect</div>
+                        <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
+                        <a href="https://x.com/bayes_pr" target="_blank">Twitter / X</a>
+                        <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-left">&copy; 2026 Ryan McComb</div>
+                <div class="footer-right">
+                    <a href="https://github.com/de-bayes" target="_blank">GitHub</a>
+                    <a href="https://x.com/bayes_pr" target="_blank">X</a>
+                    <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370/" target="_blank">LinkedIn</a>
+                    <img src="flag-footer.png" alt="" class="footer-flag">
+                </div>
             </div>
         </footer>
 
@@ -631,6 +597,8 @@
                         siteContent.classList.add('visible');
                     }
                 }, 700);
+                // Show Fivey Fox 2s after loader finishes
+                setTimeout(showFivey, 2000);
             }, 300);
         }
 
@@ -644,9 +612,19 @@
             siteContent.classList.add('visible');
             clearInterval(dotInterval);
             clearInterval(progressInterval);
+            setTimeout(showFivey, 2000);
         } else {
             setTimeout(finishLoader, 3000);
             sessionStorage.setItem('hasLoaded', 'true');
+        }
+
+        // Fivey Fox delayed entrance
+        function showFivey() {
+            const mascot = document.getElementById('mascot-corner');
+            if (mascot) {
+                mascot.style.opacity = '1';
+                mascot.style.transform = 'translateY(0) scale(1)';
+            }
         }
 
 
@@ -3839,7 +3817,7 @@
             forecasting: () => `
                 <h1 class="page-title">Forecasting</h1>
                 <div style="max-width:600px;margin:0 auto">
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem">I build election forecasting models and trade on prediction markets. Data-driven beliefs, updated with evidence.</p>
+                    <p style="text-align:center;color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem">I trade on play-money prediction markets and build websites for real-money ones. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
                     <div class="project-card" style="margin-bottom:1.5rem;cursor:default">
                         <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:0.5rem">IL9CAST</h3>
                         <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:1rem">Open-source political forecasting for the Illinois 9th Congressional District. Features polling aggregation, fundamentals-based modeling, and probabilistic seat projections.</p>
@@ -3848,9 +3826,10 @@
                     </div>
                     <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin:2rem 0 1rem;color:var(--text-secondary)">Prediction Markets</h2>
                     <div class="contact-links">
-                        <a href="https://manifold.markets/JeromeHPowell" target="_blank" class="contact-link"><h3>Manifold Markets</h3><p>@JeromeHPowell</p></a>
+                        <a href="https://manifold.markets/JeromeHPowell" target="_blank" class="contact-link"><h3>Manifold Markets</h3><p>@JeromeHPowell &mdash; #61 / 160,000 traders (top 0.04% volume)</p></a>
                         <a href="https://www.metaculus.com/accounts/profile/238376/" target="_blank" class="contact-link"><h3>Metaculus</h3><p>Calibrated forecaster</p></a>
                     </div>
+                    <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:1rem">Top 0.5% in profit on Manifold Markets</p>
                 </div>
             `,
             hottakes: () => {
@@ -3865,50 +3844,61 @@
                     <div class="countdown-grid" id="expand-countdown-grid">${renderCountdownCards(allCountdownsData)}</div>`;
             },
             blog: () => {
-                return `<h1 class="page-title">Blog</h1>
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem">Thoughts on politics, data, prediction markets, and building things</p>
-                    <div class="blog-list" id="expand-blog-list">
-                        <div class="blog-featured">
-                            <div class="blog-featured-card" style="position:relative" onclick="openExpandedArticle('peoples-edict')">
-                                <span class="blog-featured-badge">FEATURED</span>
-                                <img src="2500.webp" alt="People's Edict" class="blog-featured-image">
-                                <div class="blog-featured-body">
-                                    <h2>People's Edict</h2>
-                                    <p>An on-demand essay on power and strife, exploring when and how authority should be challenged.</p>
-                                    <div class="blog-meta"><span class="read-time">5 min read</span><span class="blog-tag">Essay</span><span>May 2025</span></div>
-                                </div>
+                return `<div class="blog-list" id="expand-blog-list">
+                    <div class="blog-hero-header">
+                        <div class="blog-hero-label">Blog</div>
+                        <h1 class="blog-hero-title">Writing &amp; Ideas</h1>
+                        <p class="blog-hero-desc">Thoughts on politics, data, prediction markets, and building things.</p>
+                    </div>
+                    <div class="blog-featured">
+                        <div class="blog-featured-card" onclick="openExpandedArticle('peoples-edict')">
+                            <img src="2500.webp" alt="People's Edict" class="blog-featured-image">
+                            <div class="blog-featured-body">
+                                <div class="blog-meta"><span class="blog-tag">Essay</span><span class="read-time">5 min read</span></div>
+                                <h2>People's Edict</h2>
+                                <p>An on-demand essay on power and strife, exploring when and how authority should be challenged.</p>
+                                <span class="blog-read-link">Read essay &rarr;</span>
                             </div>
-                        </div>
-                        <div style="font-family:'VT323',monospace;font-size:1rem;color:#7a8a9a;letter-spacing:0.15em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border-color)">MORE POSTS</div>
-                        <div class="blog-grid">
-                            <div class="blog-card" onclick="openExpandedArticle('median-voter-theory')">
-                                <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
-                                <p>How the Trump Campaign Used an Obscure Political Science Concept to Move the Electorate</p>
-                                <div class="blog-meta"><span class="read-time">6 min read</span><span class="blog-tag">Politics</span><span>Jan 2025</span></div>
-                            </div>
-                            <div class="blog-card" onclick="openExpandedArticle('nsa-surveillance')">
-                                <h3>Resolution on State Interception of Communications</h3>
-                                <p>Why the intentional censorship and oversight of private communications without a warrant is unconstitutional</p>
-                                <div class="blog-meta"><span class="read-time">7 min read</span><span class="blog-tag">Essay</span><span>Sep 2024</span></div>
-                            </div>
-                        </div>
-                        <div class="blog-guestbook" id="expand-guestbook">
-                            <h2>Guestbook</h2>
-                            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem">Leave a message, say hi, or drop some feedback.</p>
-                            <div class="gb-form" id="expand-gb-form">
-                                <input type="text" name="name" placeholder="Your name" maxlength="40">
-                                <textarea name="message" placeholder="Your message..." maxlength="200"></textarea>
-                                <button class="gb-submit" onclick="signExpandedGuestbook()">Sign</button>
-                            </div>
-                            <div class="gb-status" id="expand-gb-status"></div>
-                            <div class="gb-entries" id="expand-gb-entries"></div>
                         </div>
                     </div>
-                    <div class="blog-article" id="expand-blog-article">
-                        <a class="blog-back" onclick="closeExpandedArticle()">&larr; Back to all posts</a>
-                        <div class="article-header" id="expand-article-header"></div>
-                        <div class="article-body" id="expand-article-body"></div>
-                    </div>`;
+                    <div class="blog-grid">
+                        <div class="blog-card" onclick="openExpandedArticle('median-voter-theory')">
+                            <div class="blog-card-inner">
+                                <div class="blog-meta"><span class="blog-tag">Politics</span><span>Jan 2025</span></div>
+                                <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
+                                <p>How the Trump Campaign Used an Obscure Political Science Concept to Move the Electorate</p>
+                                <span class="blog-read-link">Read &rarr;</span>
+                            </div>
+                        </div>
+                        <div class="blog-card" onclick="openExpandedArticle('nsa-surveillance')">
+                            <div class="blog-card-inner">
+                                <div class="blog-meta"><span class="blog-tag">Essay</span><span>Sep 2024</span></div>
+                                <h3>Resolution on State Interception of Communications</h3>
+                                <p>Why the intentional censorship and oversight of private communications without a warrant is unconstitutional</p>
+                                <span class="blog-read-link">Read &rarr;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="expand-api-posts"></div>
+                    <div class="blog-guestbook" id="expand-guestbook">
+                        <div class="gb-header">
+                            <h2>Guestbook</h2>
+                            <p>Leave a message, say hi, or drop some feedback.</p>
+                        </div>
+                        <div class="gb-form" id="expand-gb-form">
+                            <input type="text" name="name" placeholder="Your name" maxlength="40">
+                            <textarea name="message" placeholder="Your message..." maxlength="200"></textarea>
+                            <button class="gb-submit" onclick="signExpandedGuestbook()">Sign</button>
+                        </div>
+                        <div class="gb-status" id="expand-gb-status"></div>
+                        <div class="gb-entries" id="expand-gb-entries"></div>
+                    </div>
+                </div>
+                <div class="blog-article" id="expand-blog-article">
+                    <a class="blog-back" onclick="closeExpandedArticle()">&larr; Back to all posts</a>
+                    <div class="article-header" id="expand-article-header"></div>
+                    <div class="article-body" id="expand-article-body"></div>
+                </div>`;
             }
         };
 
@@ -3929,7 +3919,7 @@
             // Post-render hooks
             if (cardName === 'hottakes') initExpandedTakesFilters();
             if (cardName === 'countdowns') startExpandedCountdownTick();
-            if (cardName === 'blog' && !guestbookLoaded) { loadExpandedGuestbook(); guestbookLoaded = true; }
+            if (cardName === 'blog') { loadExpandedGuestbook(); loadApiBlogPosts(); guestbookLoaded = true; }
 
             // Track
             fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'pageview', value: cardName }) }).catch(() => {});
@@ -4161,6 +4151,10 @@
         }
 
         // Guestbook for expanded blog
+        function getAdminToken() {
+            return sessionStorage.getItem('admin_token') || '';
+        }
+
         function loadExpandedGuestbook() {
             fetch('/api/guestbook')
                 .then(r => r.json())
@@ -4168,11 +4162,33 @@
                     const container = document.getElementById('expand-gb-entries');
                     if (!container) return;
                     if (!entries.length) { container.innerHTML = '<p style="color:var(--text-light);font-size:0.85rem">No entries yet. Be the first!</p>'; return; }
+                    const isAdmin = !!getAdminToken();
                     container.innerHTML = entries.slice(0, 20).map(e => {
                         const d = new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                        return '<div class="gb-entry"><div class="gb-entry-header"><span class="gb-entry-name">' + escapeHtml(e.name) + '</span><span class="gb-entry-date">' + d + '</span></div><div class="gb-entry-msg">' + escapeHtml(e.message) + '</div></div>';
+                        const adminBtns = isAdmin && e.id ? '<div class="gb-entry-actions"><button class="gb-action-btn" onclick="editGuestbookEntry(\'' + e.id + '\',this)" title="Edit">Edit</button><button class="gb-action-btn gb-action-delete" onclick="deleteGuestbookEntry(\'' + e.id + '\')" title="Delete">Delete</button></div>' : '';
+                        return '<div class="gb-entry" data-id="' + (e.id || '') + '"><div class="gb-entry-header"><span class="gb-entry-name">' + escapeHtml(e.name) + '</span><span class="gb-entry-date">' + d + '</span></div><div class="gb-entry-msg">' + escapeHtml(e.message) + '</div>' + adminBtns + '</div>';
                     }).join('');
                 }).catch(() => {});
+        }
+
+        function deleteGuestbookEntry(id) {
+            if (!confirm('Delete this guestbook entry?')) return;
+            fetch('/api/guestbook/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + getAdminToken() } })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadExpandedGuestbook(); })
+                .catch(() => {});
+        }
+
+        function editGuestbookEntry(id, btn) {
+            const entry = btn.closest('.gb-entry');
+            const msgEl = entry.querySelector('.gb-entry-msg');
+            const currentMsg = msgEl.textContent;
+            const newMsg = prompt('Edit message:', currentMsg);
+            if (newMsg === null || newMsg.trim() === '' || newMsg === currentMsg) return;
+            fetch('/api/guestbook/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getAdminToken() }, body: JSON.stringify({ message: newMsg.trim() }) })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadExpandedGuestbook(); })
+                .catch(() => {});
         }
 
         function signExpandedGuestbook() {
@@ -4189,6 +4205,63 @@
                     if (data.ok) { status.textContent = 'Signed! Thanks, ' + name + '!'; form.querySelector('input[name="name"]').value = ''; form.querySelector('textarea[name="message"]').value = ''; loadExpandedGuestbook(); }
                     else { status.textContent = data.error || 'Could not sign.'; }
                 }).catch(() => { status.textContent = 'Network error.'; });
+        }
+
+        // Load API blog posts into expanded blog view
+        function loadApiBlogPosts() {
+            const container = document.getElementById('expand-api-posts');
+            if (!container) return;
+            fetch('/api/blogposts')
+                .then(r => r.json())
+                .then(posts => {
+                    if (!posts.length) return;
+                    const isAdmin = !!getAdminToken();
+                    container.innerHTML = '<div class="blog-grid">' + posts.map(p => {
+                        const d = new Date(p.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                        const tags = (p.tags || []).map(t => '<span class="blog-tag">' + escapeHtml(t) + '</span>').join('');
+                        const adminBtns = isAdmin ? '<div class="blog-card-actions"><button class="gb-action-btn" onclick="event.stopPropagation();editApiBlogPost(\'' + p.id + '\')">Edit</button><button class="gb-action-btn gb-action-delete" onclick="event.stopPropagation();deleteApiBlogPost(\'' + p.id + '\')">Delete</button></div>' : '';
+                        return '<div class="blog-card" onclick="openApiArticle(\'' + p.id + '\')"><div class="blog-card-inner"><div class="blog-meta">' + tags + '<span>' + d + '</span></div><h3>' + escapeHtml(p.title) + '</h3><span class="blog-read-link">Read &rarr;</span></div>' + adminBtns + '</div>';
+                    }).join('') + '</div>';
+                }).catch(() => {});
+        }
+
+        function openApiArticle(id) {
+            fetch('/api/blogposts')
+                .then(r => r.json())
+                .then(posts => {
+                    const post = posts.find(p => p.id === id);
+                    if (!post) return;
+                    const blogList = document.getElementById('expand-blog-list');
+                    const blogArticle = document.getElementById('expand-blog-article');
+                    if (blogList) blogList.classList.add('hidden');
+                    if (blogArticle) {
+                        blogArticle.classList.add('active');
+                        const tags = (post.tags || []).map(t => '<span class="blog-tag">' + escapeHtml(t) + '</span>').join('');
+                        const d = new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                        document.getElementById('expand-article-header').innerHTML = '<h1>' + escapeHtml(post.title) + '</h1><div class="blog-meta">' + tags + '<span>' + d + '</span></div>';
+                        document.getElementById('expand-article-body').innerHTML = post.body;
+                    }
+                    document.getElementById('expand-overlay').scrollTop = 0;
+                }).catch(() => {});
+        }
+
+        function editApiBlogPost(id) {
+            const newTitle = prompt('New title:');
+            if (!newTitle) return;
+            const newBody = prompt('New body (HTML):');
+            if (!newBody) return;
+            fetch('/api/blogposts/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getAdminToken() }, body: JSON.stringify({ title: newTitle, body: newBody }) })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadApiBlogPosts(); })
+                .catch(() => {});
+        }
+
+        function deleteApiBlogPost(id) {
+            if (!confirm('Delete this blog post?')) return;
+            fetch('/api/blogposts/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + getAdminToken() } })
+                .then(r => r.json())
+                .then(data => { if (data.ok) loadApiBlogPosts(); })
+                .catch(() => {});
         }
 
         // Load API data on page load
