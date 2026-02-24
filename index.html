@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=VT323&display=swap" rel="stylesheet">
     <title>Ryan McComb</title>
     <link rel="stylesheet" href="features.css">
-    <link rel="preload" href="ddddd.jpg" as="image" fetchpriority="high">
 
     <style>
         * {
@@ -24,15 +23,16 @@
         }
 
         :root {
-            --bg-primary: #1e1e1e;
-            --bg-secondary: #2a2a2a;
-            --text-primary: #e5e5e5;
-            --text-secondary: #cccccc;
-            --text-muted: #aaaaaa;
-            --text-light: #888888;
-            --border-color: #3a3a3a;
+            --bg-primary: #111111;
+            --bg-secondary: #191919;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #777777;
+            --text-light: #555555;
+            --border-color: #252525;
+            --accent: #7a8a9a;
             --photo-hint-bg: rgba(0, 0, 0, 0.8);
-            --nav-menu-bg: #1e1e1e;
+            --nav-menu-bg: #111111;
             --nav-menu-shadow: rgba(0, 0, 0, 0.5);
         }
 
@@ -47,6 +47,7 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+            letter-spacing: 0.01em;
         }
 
         .site-content {
@@ -63,7 +64,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1e1e1e;
+            background: #111111;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -89,8 +90,10 @@
             animation: invertFlashBlue 1.5s ease-in-out infinite;
         }
 
-        .loader-url span:nth-child(odd) { color: #6aadcf; animation-name: invertFlashBlue; }
-        .loader-url span:nth-child(even) { color: #cf6b6b; animation-name: invertFlashRed; }
+        .loader-url span {
+            color: #e0e0e0;
+            animation-name: invertFlash;
+        }
 
         .loader-url span:nth-child(1) { animation-delay: 0.3s; }
         .loader-url span:nth-child(2) { animation-delay: 1.1s; }
@@ -105,32 +108,21 @@
         .loader-url span:nth-child(11) { animation-delay: 0.2s; }
         .loader-url span:nth-child(12) { animation-delay: 0.6s; }
 
-        @keyframes invertFlashBlue {
+        @keyframes invertFlash {
             0%, 70%, 100% {
-                color: #6aadcf;
+                color: #e0e0e0;
                 background: transparent;
             }
             80%, 90% {
-                color: #ffffff;
-                background: #6aadcf;
-            }
-        }
-
-        @keyframes invertFlashRed {
-            0%, 70%, 100% {
-                color: #cf6b6b;
-                background: transparent;
-            }
-            80%, 90% {
-                color: #ffffff;
-                background: #cf6b6b;
+                color: #111111;
+                background: #e0e0e0;
             }
         }
 
         .loader-text {
             font-family: 'VT323', monospace;
             font-size: 2.5rem;
-            color: #cf6b6b;
+            color: #555;
             margin-top: 4rem;
             margin-bottom: 1.5rem;
             letter-spacing: 0.2em;
@@ -162,7 +154,7 @@
         .loader-number {
             font-family: 'VT323', monospace;
             font-size: 1.5rem;
-            color: #6aadcf;
+            color: #555;
             position: absolute;
         }
 
@@ -247,10 +239,9 @@
             z-index: 100;
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
+            gap: 0.75rem;
             opacity: 0;
-            transform: scale(0) rotate(-20deg);
-            animation: stickerSlap 0.5s ease-out 2s forwards;
+            animation: fadeIn 0.4s ease 2s forwards;
         }
 
         /* Small windows: corner position */
@@ -271,43 +262,36 @@
             }
         }
 
-        @keyframes stickerSlap {
-            0% {
-                opacity: 0;
-                transform: scale(0) rotate(-20deg);
-            }
-            70% {
-                transform: scale(1.15) rotate(5deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .mascot-img {
-            width: 140px;
+            width: 80px;
             height: auto;
             cursor: grab;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
-            transition: transform 0.2s ease;
+            opacity: 0.5;
+            transition: opacity 0.2s ease;
             user-select: none;
             -webkit-user-drag: none;
             touch-action: none;
         }
 
         .mascot-corner:hover .mascot-img {
-            transform: scale(1.05);
+            opacity: 0.8;
         }
 
+
         .mascot-tooltip {
-            background: #6aadcf;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             padding: 1rem 1.25rem;
             max-width: 280px;
             opacity: 0;
             transform: translateX(-10px);
             transition: all 0.3s ease;
-            box-shadow: 3px 3px 0 #000000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             pointer-events: none;
         }
 
@@ -323,8 +307,7 @@
 
         .mascot-corner.dragging .mascot-img {
             cursor: grabbing !important;
-            transform: scale(1.15) rotate(-8deg);
-            filter: drop-shadow(8px 12px 20px rgba(0,0,0,0.4));
+            opacity: 0.9;
         }
 
         .mascot-corner.peeled {
@@ -342,13 +325,13 @@
         .mascot-tooltip p {
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
-            color: #ffffff;
+            color: var(--text-secondary);
             line-height: 1.4;
             margin: 0;
         }
 
         .mascot-tooltip a {
-            color: #ffffff;
+            color: var(--text-primary);
             text-decoration: underline;
         }
 
@@ -544,25 +527,25 @@
             top: 1.5rem;
             left: 2rem;
             z-index: 100;
-            font-size: 1.6rem;
-            font-weight: 400;
-            color: #6aadcf;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-light);
             text-decoration: none;
             cursor: pointer;
-            letter-spacing: 0.02em;
-            transition: opacity 0.2s ease;
-            font-family: 'VT323', monospace;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            font-family: 'Inter', sans-serif;
         }
 
         .terminal-button:hover {
-            opacity: 0.7;
+            color: var(--text-primary);
         }
 
         @media (max-width: 600px) {
             .terminal-button {
                 top: 1rem;
                 left: 1rem;
-                font-size: 1.3rem;
             }
         }
 
@@ -604,12 +587,12 @@
         }
 
         .power-btn:hover {
-            background: rgba(106, 173, 207, 0.1);
+            background: rgba(255, 255, 255, 0.04);
             color: var(--text-primary);
         }
 
         .power-btn.active {
-            color: #6aadcf;
+            color: var(--text-primary);
         }
 
         .power-btn svg {
@@ -705,7 +688,7 @@
         .terminal-game-overlay span {
             font-family: 'VT323', monospace;
             font-size: 1.5rem;
-            color: #4ec9b0;
+            color: #999;
         }
 
         /* TERMINAL MODE */
@@ -715,7 +698,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%);
+            background: rgba(17, 17, 17, 0.95);
             z-index: 9999;
             display: none;
             opacity: 0;
@@ -745,32 +728,27 @@
             transform: translate(-50%, -50%);
             width: 800px;
             height: 550px;
-            background: rgba(30, 30, 30, 0.98);
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            background: #111;
+            border-radius: 6px;
+            border: 1px solid #252525;
             display: flex;
             flex-direction: column;
             min-width: 500px;
             min-height: 350px;
             overflow: hidden;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .terminal-window:hover {
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
         }
 
         .terminal-header {
-            background: linear-gradient(180deg, #3a3a3a 0%, #2d2d2d 100%);
+            background: #1a1a1a;
             padding: 0.65rem 1rem;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             cursor: move;
             user-select: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid #252525;
         }
 
         .terminal-controls {
@@ -779,34 +757,33 @@
         }
 
         .terminal-btn {
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
             position: relative;
-            transition: all 0.2s ease;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.2s ease;
         }
 
         .terminal-btn:hover {
-            transform: scale(1.1);
+            opacity: 0.8;
         }
 
         .terminal-btn.close {
-            background: linear-gradient(135deg, #cc4c44 0%, #b33a33 100%);
+            background: #555;
         }
 
         .terminal-btn.close:hover {
-            background: linear-gradient(135deg, #ff6057 0%, #ff4d47 100%);
+            background: #888;
         }
 
         .terminal-btn.minimize {
-            background: linear-gradient(135deg, #ffbd2e 0%, #ffaa1f 100%);
+            background: #444;
         }
 
         .terminal-btn.maximize {
-            background: linear-gradient(135deg, #28ca42 0%, #1fb933 100%);
+            background: #444;
         }
 
         .terminal-title {
@@ -822,27 +799,27 @@
             padding: 1.25rem;
             font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 0.95rem;
-            color: #e0e0e0;
+            color: #c0c0c0;
             overflow-y: auto;
             line-height: 1.6;
-            background: #1e1e1e;
+            background: #111;
         }
 
         .terminal-body::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         .terminal-body::-webkit-scrollbar-track {
-            background: #2d2d2d;
+            background: #191919;
         }
 
         .terminal-body::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 4px;
+            background: #333;
+            border-radius: 3px;
         }
 
         .terminal-body::-webkit-scrollbar-thumb:hover {
-            background: #666;
+            background: #444;
         }
 
         .terminal-line {
@@ -852,7 +829,7 @@
         }
 
         .terminal-prompt {
-            color: #4ec9b0;
+            color: #999;
             display: inline;
         }
 
@@ -905,10 +882,10 @@
         .terminal-suggestion {
             font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 0.8rem;
-            color: #4ec9b0;
-            background: rgba(78, 201, 176, 0.1);
+            color: #999;
+            background: rgba(255, 255, 255, 0.04);
             padding: 0.15rem 0.5rem;
-            border: 1px solid rgba(78, 201, 176, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 3px;
         }
 
@@ -943,7 +920,7 @@
             right: 3px;
             width: 12px;
             height: 12px;
-            background: linear-gradient(135deg, transparent 40%, #555 40%, #555 60%, transparent 60%);
+            background: linear-gradient(135deg, transparent 40%, #333 40%, #333 60%, transparent 60%);
         }
 
         .terminal-window.resizing {
@@ -951,7 +928,7 @@
         }
 
         .ascii-art {
-            color: #6aadcf !important;
+            color: #555 !important;
             font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 0.75rem;
             line-height: 1.3;
@@ -961,19 +938,19 @@
         }
 
         .ascii-art * {
-            color: #6aadcf !important;
+            color: #555 !important;
         }
 
         .terminal-command {
-            color: #569cd6;
+            color: #aaa;
         }
 
         .terminal-error {
-            color: #f48771;
+            color: #b07070;
         }
 
         .terminal-success {
-            color: #4ec9b0;
+            color: #999;
         }
 
         /* GAME LAUNCH BUTTONS */
@@ -1006,7 +983,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(106, 173, 207, 0.08);
+            background: rgba(255, 255, 255, 0.03);
             transition: left 0.3s ease;
         }
 
@@ -1015,8 +992,8 @@
         }
 
         .game-btn:hover {
-            border-color: #6aadcf;
-            color: #6aadcf;
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         .game-btn-icon {
@@ -1046,6 +1023,7 @@
         .game-modal {
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
+            border-radius: 0;
             width: 100%;
             max-width: 560px;
             max-height: 90vh;
@@ -1094,7 +1072,7 @@
         .quiz-header h2 {
             font-family: 'VT323', monospace;
             font-size: 1.8rem;
-            color: #6aadcf;
+            color: var(--accent);
             margin-bottom: 0.25rem;
             letter-spacing: 0.05em;
         }
@@ -1115,7 +1093,7 @@
 
         .quiz-progress-fill {
             height: 100%;
-            background: #6aadcf;
+            background: var(--accent);
             transition: width 0.4s ease;
         }
 
@@ -1164,21 +1142,21 @@
         }
 
         .quiz-option:hover:not(.disabled) {
-            border-color: #6aadcf;
+            border-color: var(--accent);
             color: var(--text-primary);
-            background: rgba(106, 173, 207, 0.05);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .quiz-option.correct {
-            border-color: #4ec9b0;
-            background: rgba(78, 201, 176, 0.1);
-            color: #4ec9b0;
+            border-color: #666;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
         }
 
         .quiz-option.wrong {
-            border-color: #f48771;
-            background: rgba(244, 135, 113, 0.1);
-            color: #f48771;
+            border-color: #555;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
         }
 
         .quiz-option.dimmed {
@@ -1224,7 +1202,7 @@
         }
 
         .quiz-name-input:focus {
-            border-color: #6aadcf;
+            border-color: var(--accent);
         }
 
         .quiz-name-input::placeholder {
@@ -1235,7 +1213,7 @@
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
             padding: 0.65rem 2.5rem;
-            background: #6aadcf;
+            background: var(--accent);
             border: none;
             color: #fff;
             cursor: pointer;
@@ -1262,7 +1240,7 @@
         .quiz-results-score {
             font-family: 'VT323', monospace;
             font-size: 4rem;
-            color: #6aadcf;
+            color: var(--accent);
             line-height: 1;
             margin-bottom: 0.25rem;
         }
@@ -1288,7 +1266,7 @@
         .quiz-leaderboard h3 {
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
-            color: #6aadcf;
+            color: var(--accent);
             margin-bottom: 0.75rem;
             text-align: center;
         }
@@ -1303,7 +1281,7 @@
         }
 
         .quiz-lb-entry.you {
-            color: #4ec9b0;
+            color: #999;
         }
 
         .quiz-lb-rank {
@@ -1344,7 +1322,7 @@
         .truths-header h2 {
             font-family: 'VT323', monospace;
             font-size: 1.8rem;
-            color: #6aadcf;
+            color: var(--accent);
             margin-bottom: 0.25rem;
             letter-spacing: 0.05em;
         }
@@ -1376,20 +1354,20 @@
         }
 
         .truth-card:hover:not(.disabled) {
-            border-color: #6aadcf;
+            border-color: var(--accent);
             color: var(--text-primary);
         }
 
         .truth-card.is-truth {
-            border-color: #4ec9b0;
-            background: rgba(78, 201, 176, 0.08);
-            color: #4ec9b0;
+            border-color: #999;
+            background: rgba(255, 255, 255, 0.03);
+            color: #999;
         }
 
         .truth-card.is-lie {
-            border-color: #f48771;
-            background: rgba(244, 135, 113, 0.08);
-            color: #f48771;
+            border-color: #555;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
         }
 
         .truth-card.dimmed {
@@ -1424,7 +1402,7 @@
         .truths-results-score {
             font-family: 'VT323', monospace;
             font-size: 4rem;
-            color: #6aadcf;
+            color: var(--accent);
             line-height: 1;
             margin-bottom: 0.25rem;
         }
@@ -1451,7 +1429,7 @@
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
             padding: 0.65rem 2.5rem;
-            background: #6aadcf;
+            background: var(--accent);
             border: none;
             color: #fff;
             cursor: pointer;
@@ -1504,14 +1482,23 @@
 
         /* FLAG FOOTER */
         .flag-footer {
-            width: 100%;
-            margin-top: 3rem;
+            max-width: 1100px;
+            margin: 3rem auto 2rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
         }
 
         .flag-footer img {
-            width: 100%;
-            height: auto;
-            display: block;
+            display: none;
+        }
+
+        .flag-footer::after {
+            content: 'Ryan McComb';
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-light);
         }
 
         /* RESPONSIVE */
@@ -1547,54 +1534,45 @@
         .hero {
             position: relative;
             width: 100%;
-            height: 75vh;
-            min-height: 500px;
-            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 6rem 2rem 3rem;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
         }
 
         .hero-img {
-            width: 100%;
-            height: 100%;
+            width: 110px;
+            height: 140px;
             object-fit: cover;
             object-position: center 30%;
             display: block;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
 
         .hero-gradient {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            background: linear-gradient(to bottom, transparent, #1e1e1e);
-            pointer-events: none;
+            display: none;
         }
 
         .hero-overlay {
-            position: absolute;
-            bottom: 3.5rem;
-            left: 0;
-            right: 0;
-            text-align: center;
+            text-align: left;
         }
 
         .hero-overlay h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 5rem;
+            font-size: 3.5rem;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-primary);
             line-height: 1;
-            letter-spacing: -0.02em;
-            background: linear-gradient(180deg, #ffffff 40%, #6aadcf 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: -0.03em;
         }
 
         .hero-overlay .hero-sub {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.6);
-            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
         }
@@ -1602,30 +1580,31 @@
         .hero-links {
             margin-top: 1rem;
             display: flex;
-            justify-content: center;
             gap: 1.25rem;
         }
 
         .hero-links a {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.5);
+            font-size: 0.7rem;
+            color: var(--text-light);
             text-decoration: none;
             transition: color 0.2s;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
-        .hero-links a:hover { color: #ffffff; }
+        .hero-links a:hover { color: var(--text-primary); }
 
-        /* STATEMENT SECTION (inspired by Chain Reaction) */
+        /* STATEMENT SECTION */
         .statement {
             max-width: 900px;
             margin: 0 auto;
-            padding: 3.5rem 2rem 2rem;
+            padding: 2rem 2rem 2rem;
             text-align: center;
+            border-top: 1px solid var(--border-color);
         }
 
         .statement-label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
             color: var(--text-light);
@@ -1633,14 +1612,14 @@
         }
 
         .statement-label::before {
-            content: '\25A0';
+            content: '\2014';
             margin-right: 0.5rem;
-            color: #6aadcf;
+            color: var(--text-light);
         }
 
         .statement h2 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem;
+            font-size: 2.4rem;
             font-weight: 500;
             line-height: 1.15;
             color: var(--text-primary);
@@ -1648,10 +1627,8 @@
         }
 
         .statement h2 .accent {
-            background: linear-gradient(90deg, #6aadcf, #cf6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent);
         }
 
         .statement-pills {
@@ -1664,18 +1641,18 @@
         }
 
         .statement-pill {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            padding: 0.45rem 1.1rem;
+            padding: 0.4rem 1rem;
             border: 1px solid var(--border-color);
             border-radius: 0;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             transition: border-color 0.2s;
         }
 
         .statement-pill:hover {
-            border-color: #6aadcf;
+            border-color: var(--text-muted);
         }
 
         .statement-plus {
@@ -1695,16 +1672,17 @@
         }
 
         .bento-label::before {
-            content: '\25A0';
+            content: '\2014';
             margin-right: 0.5rem;
-            color: #cf6b6b;
+            color: var(--text-light);
         }
 
         @media (max-width: 600px) {
-            .hero { height: 60vh; min-height: 350px; }
-            .hero-overlay h1 { font-size: 3rem; }
+            .hero { padding: 5rem 1.5rem 2rem; flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+            .hero-img { width: 80px; height: 100px; }
+            .hero-overlay h1 { font-size: 2.4rem; }
             .statement h2 { font-size: 1.8rem; }
-            .statement { padding: 2.5rem 1.5rem 1.5rem; }
+            .statement { padding: 2rem 1.5rem 1.5rem; }
         }
 
         .bento {
@@ -1720,16 +1698,15 @@
         .bento .card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
+            border-radius: 0;
             padding: 1.5rem;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s ease;
             cursor: pointer;
             overflow: hidden;
             position: relative;
             display: flex;
             flex-direction: column;
             animation: bentoFadeUp 0.5s ease both;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             resize: both;
         }
 
@@ -1753,7 +1730,7 @@
         .card-resize-handle::after {
             content: '';
             position: absolute;
-            background: #6aadcf;
+            background: var(--text-light);
             border-radius: 1px;
         }
 
@@ -1789,9 +1766,7 @@
         }
 
         .bento .card:hover {
-            border-color: #6aadcf;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+            border-color: var(--text-light);
         }
 
         .card-label {
@@ -1799,15 +1774,8 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: #6aadcf;
+            color: var(--text-muted);
             margin-bottom: 0.5rem;
-        }
-
-        .card-label::before {
-            content: '\25A0';
-            margin-right: 0.35rem;
-            font-size: 0.45rem;
-            vertical-align: middle;
         }
 
         .card-title {
@@ -1856,12 +1824,12 @@
         }
 
         .card-about .about-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+            width: 60px;
+            height: 75px;
+            border-radius: 0;
             object-fit: cover;
             margin-bottom: 1rem;
-            border: 2px solid var(--border-color);
+            border: 1px solid var(--border-color);
         }
 
         .about-signature {
@@ -1884,7 +1852,7 @@
         .cd-num {
             font-family: 'VT323', monospace;
             font-size: 2rem;
-            color: #cf6b6b;
+            color: var(--text-primary);
             line-height: 1;
         }
 
@@ -1896,10 +1864,6 @@
         }
 
         /* HOT TAKE CARD */
-        .card-hottake .card-label {
-            color: #cf6b6b;
-        }
-
         .card-hottake .card-body {
             font-size: 0.88rem;
             font-style: italic;
@@ -1907,14 +1871,6 @@
 
         .take-rotate {
             transition: transform 0.4s ease;
-        }
-
-        .card-hottake:hover {
-            border-color: #cf6b6b;
-        }
-
-        .card-hottake:hover .take-rotate {
-            transform: rotate(-1deg);
         }
 
         .spice {
@@ -2031,7 +1987,7 @@
             transition: color 0.2s;
         }
 
-        .contact-mini a:hover { color: #6aadcf; }
+        .contact-mini a:hover { color: var(--accent); }
 
         /* EXPERIENCE CARD */
         .exp-mini {
@@ -2054,7 +2010,7 @@
 
         .em-co {
             font-size: 0.72rem;
-            color: #6aadcf;
+            color: var(--text-muted);
         }
 
         .em-date {
@@ -2074,7 +2030,7 @@
         .gpa-num {
             font-family: 'VT323', monospace;
             font-size: 2rem;
-            color: #6aadcf;
+            color: var(--text-primary);
             line-height: 1;
         }
 
@@ -2137,7 +2093,7 @@
             gap: 0.5rem;
             cursor: pointer;
             font-size: 0.85rem;
-            color: #6aadcf;
+            color: var(--text-muted);
             z-index: 10;
             transition: background 0.2s;
         }
@@ -2154,12 +2110,9 @@
 
         .expand-content .page-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 600;
-            background: linear-gradient(90deg, #6aadcf, #cf6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text-primary);
             margin-bottom: 2rem;
             text-align: center;
         }
@@ -2206,7 +2159,7 @@
 
         .expand-content .expand-icon {
             font-size: 1.2rem;
-            color: #6aadcf;
+            color: var(--accent);
             transition: transform 0.2s;
         }
 
@@ -2232,12 +2185,12 @@
         }
 
         .expand-content .experience-content a {
-            color: #6aadcf;
+            color: var(--accent);
         }
 
         .expand-content .time-period {
             font-size: 0.85rem;
-            color: #6aadcf;
+            color: var(--accent);
             font-weight: 500;
             margin-bottom: 0.5rem;
         }
@@ -2261,17 +2214,16 @@
         .expand-content .project-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 0;
             padding: 1.5rem;
-            transition: all 0.25s ease;
+            transition: border-color 0.2s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
         }
 
         .expand-content .project-card:hover {
-            border-color: #6aadcf;
-            box-shadow: 0 8px 24px rgba(106, 173, 207, 0.12);
+            border-color: var(--text-light);
         }
 
         .expand-content .project-card h3 {
@@ -2297,23 +2249,24 @@
         }
 
         .expand-content .tag {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.6rem;
-            background: rgba(106, 173, 207, 0.1);
-            color: #6aadcf;
-            border-radius: 6px;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            border-radius: 0;
+            border: 1px solid var(--border-color);
         }
 
         .expand-content .project-visit {
             margin-top: auto;
             font-size: 0.9rem;
             font-weight: 500;
-            color: #6aadcf;
+            color: var(--text-secondary);
             text-decoration: none;
         }
 
         .expand-content .project-visit:hover {
-            color: #5590ad;
+            color: var(--text-primary);
         }
 
         /* Expanded hot takes */
@@ -2354,12 +2307,11 @@
 
         .expand-content .take-spice { font-size: 0.8rem; }
 
-        .take-color-0 { background: #2a2228; border-left: 3px solid #cf6b6b; }
-        .take-color-1 { background: #1e2530; border-left: 3px solid #3498db; }
-        .take-color-2 { background: #2a1e22; border-left: 3px solid #e74c3c; }
-        .take-color-3 { background: #1e2a1e; border-left: 3px solid #2ecc71; }
-        .take-color-4 { background: #261e2a; border-left: 3px solid #9b59b6; }
-        .take-color-5 { background: #2a2a1e; border-left: 3px solid #c9b458; }
+        .take-color-0, .take-color-1, .take-color-2,
+        .take-color-3, .take-color-4, .take-color-5 {
+            background: var(--bg-secondary);
+            border-left: 2px solid var(--border-color);
+        }
 
         .expand-content .filter-bar {
             display: flex;
@@ -2383,8 +2335,8 @@
             transition: all 0.2s;
         }
 
-        .expand-content .filter-pill:hover { border-color: #6aadcf; color: #6aadcf; }
-        .expand-content .filter-pill.active { background: #6aadcf; color: #fff; border-color: #6aadcf; }
+        .expand-content .filter-pill:hover { border-color: var(--accent); color: var(--accent); }
+        .expand-content .filter-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
         /* Expanded blog */
         .expand-content .blog-featured-card {
@@ -2396,7 +2348,7 @@
         }
 
         .expand-content .blog-featured-card:hover {
-            border-color: #6aadcf;
+            border-color: var(--accent);
         }
 
         .expand-content .blog-featured-badge {
@@ -2406,7 +2358,7 @@
             font-family: 'VT323', monospace;
             font-size: 0.8rem;
             color: #fff;
-            background: #6aadcf;
+            background: var(--accent);
             padding: 0.2rem 0.6rem;
             z-index: 2;
         }
@@ -2446,15 +2398,15 @@
         .expand-content .blog-tag {
             font-family: 'VT323', monospace;
             font-size: 0.85rem;
-            color: #6aadcf;
-            border: 1px solid #6aadcf;
+            color: var(--accent);
+            border: 1px solid var(--accent);
             padding: 0.1rem 0.5rem;
         }
 
         .expand-content .read-time {
             font-family: 'VT323', monospace;
             font-size: 0.85rem;
-            color: #6aadcf;
+            color: var(--accent);
         }
 
         .expand-content .blog-grid {
@@ -2474,7 +2426,7 @@
         }
 
         .expand-content .blog-card:hover {
-            border-color: #6aadcf;
+            border-color: var(--accent);
         }
 
         .expand-content .blog-card h3 {
@@ -2502,7 +2454,7 @@
             align-items: center;
             gap: 0.5rem;
             font-size: 0.85rem;
-            color: #6aadcf;
+            color: var(--accent);
             cursor: pointer;
             margin-bottom: 2rem;
         }
@@ -2543,15 +2495,15 @@
         }
 
         .expand-content .article-body blockquote {
-            border-left: 3px solid #6aadcf;
+            border-left: 3px solid var(--accent);
             padding: 1rem 1.5rem;
             margin: 1.5rem 0;
-            background: rgba(106, 173, 207, 0.04);
+            background: rgba(255, 255, 255, 0.02);
             font-style: italic;
             color: var(--text-muted);
         }
 
-        .expand-content .article-body a { color: #6aadcf; text-decoration: underline; text-underline-offset: 2px; }
+        .expand-content .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
         .expand-content .article-body ul, .expand-content .article-body ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
         .expand-content .article-body li { margin-bottom: 0.5rem; }
 
@@ -2565,7 +2517,7 @@
         .expand-content .blog-guestbook h2 {
             font-family: 'VT323', monospace;
             font-size: 1.5rem;
-            color: #6aadcf;
+            color: var(--accent);
             margin-bottom: 1rem;
         }
 
@@ -2590,7 +2542,7 @@
 
         .expand-content .gb-form input:focus,
         .expand-content .gb-form textarea:focus {
-            border-color: #6aadcf;
+            border-color: var(--accent);
         }
 
         .expand-content .gb-form input[name="name"] { width: 150px; }
@@ -2600,13 +2552,13 @@
             font-family: 'VT323', monospace;
             font-size: 1rem;
             padding: 0.5rem 1.2rem;
-            background: #6aadcf;
+            background: var(--accent);
             color: #fff;
             border: none;
             cursor: pointer;
         }
 
-        .expand-content .gb-submit:hover { background: #d35400; }
+        .expand-content .gb-submit:hover { background: #666; }
 
         .expand-content .gb-entries {
             display: flex;
@@ -2616,8 +2568,8 @@
 
         .expand-content .gb-entry {
             padding: 0.75rem 1rem;
-            border-left: 2px solid #6aadcf;
-            background: rgba(106, 173, 207, 0.03);
+            border-left: 2px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .expand-content .gb-entry-header {
@@ -2629,7 +2581,7 @@
         .expand-content .gb-entry-name { font-weight: 500; font-size: 0.9rem; }
         .expand-content .gb-entry-date { font-size: 0.75rem; color: var(--text-light); }
         .expand-content .gb-entry-msg { font-size: 0.85rem; color: var(--text-muted); }
-        .expand-content .gb-status { font-family: 'VT323', monospace; font-size: 0.9rem; color: #6aadcf; margin-top: 0.5rem; }
+        .expand-content .gb-status { font-family: 'VT323', monospace; font-size: 0.9rem; color: var(--accent); margin-top: 0.5rem; }
 
         /* Expanded photos */
         .expand-content .featured-film {
@@ -2719,7 +2671,7 @@
             font-family: 'VT323', monospace;
             font-size: clamp(2rem, 5vw, 3rem);
             line-height: 1;
-            color: #cf6b6b;
+            color: var(--text-secondary);
         }
 
         .expand-content .countdown-label {
@@ -2733,7 +2685,7 @@
         .expand-content .countdown-done {
             font-family: 'VT323', monospace;
             font-size: 1.5rem;
-            color: #cf6b6b;
+            color: var(--text-secondary);
         }
 
         .expand-content .countdown-progress {
@@ -2741,7 +2693,7 @@
             bottom: 0;
             left: 0;
             height: 3px;
-            background: #cf6b6b;
+            background: var(--accent);
             opacity: 0.4;
         }
 
@@ -2776,8 +2728,7 @@
         }
 
         .expand-content .contact-link:hover {
-            border-color: #6aadcf;
-            transform: translateX(4px);
+            border-color: var(--text-light);
         }
 
         .expand-content .contact-link h3 {
@@ -2797,13 +2748,13 @@
         }
 
         .expand-content .about-full .about-photo-lg {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
+            width: 140px;
+            height: 180px;
+            border-radius: 0;
             object-fit: cover;
             margin: 0 auto 2rem;
             display: block;
-            border: 3px solid var(--border-color);
+            border: 1px solid var(--border-color);
         }
 
         .expand-content .about-full p {
@@ -2834,8 +2785,8 @@
         }
 
         .expand-content .about-buttons .game-btn:hover {
-            border-color: #6aadcf;
-            color: #6aadcf;
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         /* BENTO RESPONSIVE */
@@ -2862,16 +2813,16 @@
         <p class="loader-text" id="loader-text">loading</p>
         <div class="loader-counter">
             <div class="loader-line">
-                <div class="loader-block" style="background:#6aadcf"></div>
-                <div class="loader-block" style="background:#6aadcf"></div>
-                <div class="loader-block" style="background:#7a9fbf"></div>
-                <div class="loader-block" style="background:#8b93b0"></div>
-                <div class="loader-block" style="background:#9c87a1"></div>
-                <div class="loader-block" style="background:#ad7b92"></div>
-                <div class="loader-block" style="background:#be7383"></div>
-                <div class="loader-block" style="background:#cf6b6b"></div>
-                <div class="loader-block" style="background:#cf6b6b"></div>
-                <div class="loader-block" style="background:#cf6b6b"></div>
+                <div class="loader-block" style="background:#333"></div>
+                <div class="loader-block" style="background:#3a3a3a"></div>
+                <div class="loader-block" style="background:#444"></div>
+                <div class="loader-block" style="background:#4a4a4a"></div>
+                <div class="loader-block" style="background:#555"></div>
+                <div class="loader-block" style="background:#5a5a5a"></div>
+                <div class="loader-block" style="background:#666"></div>
+                <div class="loader-block" style="background:#6a6a6a"></div>
+                <div class="loader-block" style="background:#777"></div>
+                <div class="loader-block" style="background:#888"></div>
             </div>
             <span class="loader-number" id="loader-number">1</span>
         </div>
@@ -3069,10 +3020,10 @@
             <!-- FORECASTING (1x1) -->
             <div class="card card-forecast" data-card="forecasting" onclick="expandCard('forecasting')">
                 <div class="card-preview">
-                    <div class="card-label" style="color:#cf6b6b">Forecasting</div>
+                    <div class="card-label" style="color:#7a8a9a">Forecasting</div>
                     <div class="card-title" style="font-size: 1.1rem;">IL-09 Primary</div>
                     <div class="card-body">Open-source election forecasting for Illinois' 9th Congressional District.</div>
-                    <div class="card-footer"><a href="https://il9.org" target="_blank" onclick="event.stopPropagation()" style="color:#6aadcf;text-decoration:none">il9.org &#8599;</a></div>
+                    <div class="card-footer"><a href="https://il9.org" target="_blank" onclick="event.stopPropagation()" style="color:#7a8a9a;text-decoration:none">il9.org &#8599;</a></div>
                 </div>
             </div>
 
@@ -3822,7 +3773,7 @@
 
             if (command === '/info') {
                 addTerminalLine('');
-                addTerminalLine('<span style="color: #6aadcf; font-weight: bold;">Available Commands</span>');
+                addTerminalLine('<span style="color: var(--accent); font-weight: bold;">Available Commands</span>');
                 addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                 addTerminalLine('  <span class="terminal-command">/home</span>      → View home page');
                 addTerminalLine('  <span class="terminal-command">/exp</span>       → View experience & education');
@@ -3831,7 +3782,7 @@
                 addTerminalLine('  <span class="terminal-command">/contact</span>   → View contact info');
                 addTerminalLine('  <span class="terminal-command">/clear</span>     → Clear terminal');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Games</span>');
+                addTerminalLine('  <span style="color: var(--accent); font-weight: bold;">Games</span>');
                 addTerminalLine('  <span class="terminal-command">/matrix</span>    → Matrix rain');
                 addTerminalLine('  <span class="terminal-command">/snake</span>     → Play Snake');
                 addTerminalLine('  <span class="terminal-command">/dino</span>      → Play Dino Run');
@@ -3839,16 +3790,16 @@
                 addTerminalLine('  <span class="terminal-command">/wordle</span>    → Play Wordle');
                 addTerminalLine('  <span class="terminal-command">/type</span>      → Typing speed test');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Interactive</span>');
+                addTerminalLine('  <span style="color: var(--accent); font-weight: bold;">Interactive</span>');
                 addTerminalLine('  <span class="terminal-command">/quiz</span>      → How Well Do You Know Ryan?');
                 addTerminalLine('  <span class="terminal-command">/2truths</span>   → Two Truths and a Lie');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Social</span>');
+                addTerminalLine('  <span style="color: var(--accent); font-weight: bold;">Social</span>');
                 addTerminalLine('  <span class="terminal-command">/weather</span>   → Current weather in Evanston');
                 addTerminalLine('  <span class="terminal-command">/guestbook</span> → View & sign the guestbook');
                 addTerminalLine('  <span class="terminal-command">/stats</span>     → Visitor analytics dashboard');
                 addTerminalLine('');
-                addTerminalLine('  <span style="color: #6aadcf; font-weight: bold;">Tools</span>');
+                addTerminalLine('  <span style="color: var(--accent); font-weight: bold;">Tools</span>');
                 addTerminalLine('  <span class="terminal-command">/ascii</span>     → Generate ASCII art from text');
                 addTerminalLine('  <span class="terminal-command">/desktop</span>   → Enter Desktop OS mode');
                 addTerminalLine('  <span class="terminal-command">/resume</span>    → View printable resume');
@@ -4031,7 +3982,7 @@
                     }
                 } else {
                     addTerminalLine('');
-                    addTerminalLine('<span style="color: #6aadcf; font-weight: bold;">Visitor Guestbook</span>');
+                    addTerminalLine('<span style="color: var(--accent); font-weight: bold;">Visitor Guestbook</span>');
                     addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                     addTerminalLine('  Sign it: <span class="terminal-command">/guestbook sign Name: Your message</span>');
                     addTerminalLine('');
@@ -4043,7 +3994,7 @@
                             } else {
                                 entries.slice(0, 15).forEach(e => {
                                     const d = new Date(e.date).toLocaleDateString();
-                                    addTerminalLine('  <span style="color: #4ec9b0;">' + e.name + '</span> <span style="color: #555;">(' + d + ')</span>');
+                                    addTerminalLine('  <span style="color: #999;">' + e.name + '</span> <span style="color: #555;">(' + d + ')</span>');
                                     addTerminalLine('    ' + e.message);
                                     addTerminalLine('');
                                 });
@@ -4057,18 +4008,18 @@
                 }
             } else if (command === '/stats') {
                 addTerminalLine('');
-                addTerminalLine('<span style="color: #6aadcf; font-weight: bold;">Visitor Analytics Dashboard</span>');
+                addTerminalLine('<span style="color: var(--accent); font-weight: bold;">Visitor Analytics Dashboard</span>');
                 addTerminalLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                 fetch('/api/stats')
                     .then(r => r.json())
                     .then(stats => {
                         addTerminalLine('');
-                        addTerminalLine('  <span style="color: #4ec9b0;">Total Visits:</span> ' + (stats.totalVisits || 0));
+                        addTerminalLine('  <span style="color: #999;">Total Visits:</span> ' + (stats.totalVisits || 0));
                         addTerminalLine('');
 
                         const pages = Object.entries(stats.pageViews || {}).sort((a, b) => b[1] - a[1]);
                         if (pages.length > 0) {
-                            addTerminalLine('  <span style="color: #6aadcf;">Page Views</span>');
+                            addTerminalLine('  <span style="color: var(--accent);">Page Views</span>');
                             const maxViews = pages[0][1];
                             pages.forEach(([page, count]) => {
                                 const barLen = Math.round((count / maxViews) * 20);
@@ -4080,7 +4031,7 @@
 
                         const commands = Object.entries(stats.commands || {}).sort((a, b) => b[1] - a[1]);
                         if (commands.length > 0) {
-                            addTerminalLine('  <span style="color: #6aadcf;">Most Used Commands</span>');
+                            addTerminalLine('  <span style="color: var(--accent);">Most Used Commands</span>');
                             commands.slice(0, 8).forEach(([cmd, count]) => {
                                 addTerminalLine('    <span class="terminal-command">' + cmd.padEnd(14) + '</span> ' + count + ' uses');
                             });
@@ -4089,7 +4040,7 @@
 
                         const games = Object.entries(stats.games || {}).sort((a, b) => b[1] - a[1]);
                         if (games.length > 0) {
-                            addTerminalLine('  <span style="color: #6aadcf;">Most Played Games</span>');
+                            addTerminalLine('  <span style="color: var(--accent);">Most Played Games</span>');
                             games.forEach(([game, count]) => {
                                 addTerminalLine('    ' + game.padEnd(18) + ' ' + count + ' plays');
                             });
@@ -4433,7 +4384,7 @@
             function draw() {
                 ctx.fillStyle = 'rgba(30, 30, 30, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0f0';
+                ctx.fillStyle = '#aaa';
                 ctx.font = fontSize + 'px monospace';
 
                 for (let i = 0; i < drops.length; i++) {
@@ -4445,10 +4396,10 @@
                     if (Math.random() > 0.5) {
                         ctx.fillStyle = '#fff';
                     } else {
-                        ctx.fillStyle = '#0f0';
+                        ctx.fillStyle = '#aaa';
                     }
                     ctx.fillText(char, x, y);
-                    ctx.fillStyle = '#0f0';
+                    ctx.fillStyle = '#aaa';
 
                     if (y > canvas.height && Math.random() > 0.975) {
                         drops[i] = 0;
@@ -4537,16 +4488,16 @@
                 }
 
                 // Render
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Food
-                ctx.fillStyle = '#6aadcf';
+                ctx.fillStyle = '#7a8a9a';
                 ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
 
                 // Snake
                 snake.forEach((seg, i) => {
-                    ctx.fillStyle = i === 0 ? '#4ec9b0' : '#0f0';
+                    ctx.fillStyle = i === 0 ? '#999' : '#aaa';
                     ctx.fillRect(seg.x * gridSize, seg.y * gridSize, gridSize - 1, gridSize - 1);
                 });
 
@@ -4558,11 +4509,11 @@
                 if (gameOver) {
                     ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#6aadcf';
+                    ctx.fillStyle = '#7a8a9a';
                     ctx.font = '32px "VT323", monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
-                    ctx.fillStyle = '#4ec9b0';
+                    ctx.fillStyle = '#999';
                     ctx.font = '20px "VT323", monospace';
                     ctx.fillText('Score: ' + score + '  |  Press R to restart, Esc to quit', canvas.width / 2, canvas.height / 2 + 20);
                     ctx.textAlign = 'start';
@@ -4630,14 +4581,14 @@
             ];
 
             function drawDino() {
-                ctx.fillStyle = '#4ec9b0';
+                ctx.fillStyle = '#999';
                 // Body
                 ctx.fillRect(dino.x, dino.y - dino.h, dino.w, dino.h);
                 // Eye
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(dino.x + 16, dino.y - dino.h + 5, 4, 4);
                 // Legs (simple animation)
-                ctx.fillStyle = '#4ec9b0';
+                ctx.fillStyle = '#999';
                 const legPhase = Math.floor(Date.now() / 100) % 2;
                 if (!dino.jumping) {
                     ctx.fillRect(dino.x + 4, dino.y, 5, legPhase === 0 ? 6 : 3);
@@ -4651,7 +4602,7 @@
             }
 
             function drawCactus(obs) {
-                ctx.fillStyle = '#6aadcf';
+                ctx.fillStyle = '#7a8a9a';
                 // Main trunk
                 ctx.fillRect(obs.x + 4, obs.y - obs.h, obs.w - 8, obs.h);
                 // Left arm
@@ -4713,7 +4664,7 @@
             }
 
             function render() {
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Clouds
@@ -4748,7 +4699,7 @@
                 ctx.textAlign = 'start';
 
                 if (!started) {
-                    ctx.fillStyle = '#4ec9b0';
+                    ctx.fillStyle = '#999';
                     ctx.font = '24px "VT323", monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText('Press SPACE to start', canvas.width / 2, canvas.height / 2);
@@ -4758,11 +4709,11 @@
                 if (gameOver) {
                     ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#6aadcf';
+                    ctx.fillStyle = '#7a8a9a';
                     ctx.font = '32px "VT323", monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
-                    ctx.fillStyle = '#4ec9b0';
+                    ctx.fillStyle = '#999';
                     ctx.font = '20px "VT323", monospace';
                     ctx.fillText('Score: ' + Math.floor(score / 5) + '  |  Space to restart, Esc to quit', canvas.width / 2, canvas.height / 2 + 20);
                     ctx.textAlign = 'start';
@@ -4980,7 +4931,7 @@
             const offsetX = Math.floor((canvas.width - COLS * BLOCK) / 2);
             const offsetY = Math.floor((canvas.height - ROWS * BLOCK) / 2);
 
-            const COLORS = ['', '#4ec9b0', '#6aadcf', '#569cd6', '#f48771', '#0f0', '#cc66cc', '#ffbd2e'];
+            const COLORS = ['', '#7a8a9a', '#a0a0a0', '#666', '#888', '#999', '#777', '#bbb'];
             const PIECES = [
                 [[1,1,1,1]],
                 [[2,0],[2,0],[2,2]],
@@ -5068,7 +5019,7 @@
                 }
 
                 // Render
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Board border
@@ -5105,11 +5056,11 @@
                 if (gameOver) {
                     ctx.fillStyle = 'rgba(30, 30, 30, 0.85)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#6aadcf';
+                    ctx.fillStyle = '#7a8a9a';
                     ctx.font = '32px "VT323", monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
-                    ctx.fillStyle = '#4ec9b0';
+                    ctx.fillStyle = '#999';
                     ctx.font = '20px "VT323", monospace';
                     ctx.fillText('Score: ' + score + '  |  R to restart, Esc to quit', canvas.width / 2, canvas.height / 2 + 20);
                     ctx.textAlign = 'start';
@@ -5183,7 +5134,7 @@
                 // Green pass
                 for (let i = 0; i < 5; i++) {
                     if (guessArr[i] === targetArr[i]) {
-                        result[i] = '#538d4e';
+                        result[i] = '#888';
                         targetArr[i] = null;
                         guessArr[i] = null;
                     }
@@ -5202,10 +5153,10 @@
             }
 
             function render() {
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                ctx.fillStyle = '#6aadcf';
+                ctx.fillStyle = '#7a8a9a';
                 ctx.font = '28px "VT323", monospace';
                 ctx.textAlign = 'center';
                 ctx.fillText('WORDLE', canvas.width / 2, startY - 15);
@@ -5250,7 +5201,7 @@
                 ctx.textAlign = 'center';
 
                 if (gameOver) {
-                    ctx.fillStyle = won ? '#538d4e' : '#f48771';
+                    ctx.fillStyle = won ? '#888' : '#666';
                     ctx.font = '26px "VT323", monospace';
                     const msg = won ? 'YOU WON!' : 'The word was: ' + target;
                     ctx.fillText(msg, canvas.width / 2, startY + boardH + 40);
@@ -5350,11 +5301,11 @@
             }
 
             function render() {
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Title
-                ctx.fillStyle = '#6aadcf';
+                ctx.fillStyle = '#7a8a9a';
                 ctx.font = '28px "VT323", monospace';
                 ctx.textAlign = 'center';
                 ctx.fillText('TYPING TEST', canvas.width / 2, 40);
@@ -5401,7 +5352,7 @@
                             } else {
                                 typedChar = typed[c];
                             }
-                            ctx.fillStyle = typedChar === word[c] ? '#4ec9b0' : '#f48771';
+                            ctx.fillStyle = typedChar === word[c] ? '#999' : '#666';
                         } else if (w === wordIndex && c === typed.length) {
                             // Cursor position
                             ctx.fillStyle = '#e0e0e0';
@@ -5426,11 +5377,11 @@
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                     ctx.textAlign = 'center';
-                    ctx.fillStyle = '#6aadcf';
+                    ctx.fillStyle = '#7a8a9a';
                     ctx.font = '36px "VT323", monospace';
                     ctx.fillText('TEST COMPLETE', canvas.width / 2, canvas.height / 2 - 80);
 
-                    ctx.fillStyle = '#4ec9b0';
+                    ctx.fillStyle = '#999';
                     ctx.font = '48px "VT323", monospace';
                     ctx.fillText(wpm + ' WPM', canvas.width / 2, canvas.height / 2 - 30);
 
@@ -5440,7 +5391,7 @@
                     ctx.fillText('Characters: ' + totalCorrect + '/' + totalTyped + ' correct', canvas.width / 2, canvas.height / 2 + 30);
 
                     if (typingNameInput) {
-                        ctx.fillStyle = '#6aadcf';
+                        ctx.fillStyle = '#7a8a9a';
                         ctx.font = '20px "VT323", monospace';
                         ctx.fillText('Enter name for leaderboard:', canvas.width / 2, canvas.height / 2 + 65);
                         ctx.fillStyle = '#fff';
@@ -5450,7 +5401,7 @@
                         ctx.font = '16px "VT323", monospace';
                         ctx.fillText('Press Enter to submit, Esc to skip', canvas.width / 2, canvas.height / 2 + 115);
                     } else if (typingLeaderboard.length > 0) {
-                        ctx.fillStyle = '#6aadcf';
+                        ctx.fillStyle = '#7a8a9a';
                         ctx.font = '20px "VT323", monospace';
                         ctx.fillText('LEADERBOARD', canvas.width / 2, canvas.height / 2 + 60);
                         ctx.font = '18px "VT323", monospace';
@@ -5458,7 +5409,7 @@
                         const lbX = canvas.width / 2 - 120;
                         typingLeaderboard.slice(0, 5).forEach((s, i) => {
                             const medal = i === 0 ? '\uD83E\uDD47' : i === 1 ? '\uD83E\uDD48' : i === 2 ? '\uD83E\uDD49' : '  ';
-                            ctx.fillStyle = i < 3 ? '#4ec9b0' : '#888';
+                            ctx.fillStyle = i < 3 ? '#999' : '#888';
                             ctx.fillText(medal + ' ' + s.name.padEnd(15) + ' ' + s.wpm + ' WPM  (' + s.accuracy + '%)', lbX, canvas.height / 2 + 82 + i * 22);
                         });
                         ctx.textAlign = 'center';
@@ -5612,11 +5563,11 @@
             let savedToLeaderboard = false;
 
             function getRating(s) {
-                if (s <= 2) return { text: 'Complete stranger vibes.', color: '#f48771' };
-                if (s <= 4) return { text: 'Casual acquaintance.', color: '#6aadcf' };
+                if (s <= 2) return { text: 'Complete stranger vibes.', color: '#888' };
+                if (s <= 4) return { text: 'Casual acquaintance.', color: '#7a8a9a' };
                 if (s <= 6) return { text: 'You know some things!', color: '#dcdcaa' };
-                if (s <= 8) return { text: 'Close friend energy.', color: '#4ec9b0' };
-                if (s === 9) return { text: 'Basically best friends.', color: '#569cd6' };
+                if (s <= 8) return { text: 'Close friend energy.', color: '#999' };
+                if (s === 9) return { text: 'Basically best friends.', color: '#aaa' };
                 return { text: 'You ARE Ryan McComb.', color: '#c586c0' };
             }
 
@@ -5632,7 +5583,7 @@
             }
 
             function render() {
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 ctx.textAlign = 'center';
@@ -5641,11 +5592,11 @@
                     // Final screen
                     const rating = getRating(score);
 
-                    ctx.fillStyle = '#6aadcf';
+                    ctx.fillStyle = '#7a8a9a';
                     ctx.font = '32px "VT323", monospace';
                     ctx.fillText('QUIZ COMPLETE', canvas.width / 2, 50);
 
-                    ctx.fillStyle = '#4ec9b0';
+                    ctx.fillStyle = '#999';
                     ctx.font = '56px "VT323", monospace';
                     ctx.fillText(score + '/10', canvas.width / 2, 115);
 
@@ -5660,7 +5611,7 @@
                     // Leaderboard
                     const leaderboard = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
                     if (leaderboard.length > 0) {
-                        ctx.fillStyle = '#6aadcf';
+                        ctx.fillStyle = '#7a8a9a';
                         ctx.font = '22px "VT323", monospace';
                         ctx.fillText('LEADERBOARD', canvas.width / 2, 220);
 
@@ -5669,7 +5620,7 @@
                         top10.forEach((entry, i) => {
                             const medal = i === 0 ? '1st' : i === 1 ? '2nd' : i === 2 ? '3rd' : (i + 1) + 'th';
                             const isYou = entry.name === playerName.substring(0, 20) && entry.score === score;
-                            ctx.fillStyle = isYou ? '#4ec9b0' : (i === 0 ? '#ffd700' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : '#888');
+                            ctx.fillStyle = isYou ? '#999' : (i === 0 ? '#ccc' : i === 1 ? '#c0c0c0' : i === 2 ? '#777' : '#888');
                             const youTag = isYou ? ' (you)' : '';
                             ctx.fillText(medal + '  ' + entry.name + '  —  ' + entry.score + '/10' + youTag, canvas.width / 2, 245 + i * 22);
                         });
@@ -5685,7 +5636,7 @@
                 }
 
                 // Header
-                ctx.fillStyle = '#6aadcf';
+                ctx.fillStyle = '#7a8a9a';
                 ctx.font = '26px "VT323", monospace';
                 ctx.fillText('HOW WELL DO YOU KNOW RYAN?', canvas.width / 2, 35);
 
@@ -5696,7 +5647,7 @@
                 const barY = 50;
                 ctx.fillStyle = '#333';
                 ctx.fillRect(barX, barY, barW, barH);
-                ctx.fillStyle = '#4ec9b0';
+                ctx.fillStyle = '#999';
                 ctx.fillRect(barX, barY, barW * (currentQ / 10), barH);
 
                 // Score + question number
@@ -5740,9 +5691,9 @@
 
                     if (showingResult) {
                         if (isCorrect) {
-                            ctx.fillStyle = '#4ec9b0';
+                            ctx.fillStyle = '#999';
                         } else if (isSelected && !isCorrect) {
-                            ctx.fillStyle = '#f48771';
+                            ctx.fillStyle = '#888';
                         } else {
                             ctx.fillStyle = '#555';
                         }
@@ -5934,26 +5885,26 @@
             let resultTimer = null;
 
             function getRating(s) {
-                if (s <= 1) return { text: 'You believed everything!', color: '#f48771' };
-                if (s <= 3) return { text: 'Getting warmer...', color: '#6aadcf' };
+                if (s <= 1) return { text: 'You believed everything!', color: '#888' };
+                if (s <= 3) return { text: 'Getting warmer...', color: '#7a8a9a' };
                 if (s <= 5) return { text: 'Decent BS detector.', color: '#dcdcaa' };
-                if (s === 6) return { text: 'Very perceptive!', color: '#4ec9b0' };
+                if (s === 6) return { text: 'Very perceptive!', color: '#999' };
                 return { text: 'Human lie detector!', color: '#c586c0' };
             }
 
             function render() {
-                ctx.fillStyle = '#1e1e1e';
+                ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.textAlign = 'center';
 
                 if (finished) {
                     const rating = getRating(score);
 
-                    ctx.fillStyle = '#6aadcf';
+                    ctx.fillStyle = '#7a8a9a';
                     ctx.font = '32px "VT323", monospace';
                     ctx.fillText('GAME COMPLETE', canvas.width / 2, 60);
 
-                    ctx.fillStyle = '#4ec9b0';
+                    ctx.fillStyle = '#999';
                     ctx.font = '56px "VT323", monospace';
                     ctx.fillText(score + '/7', canvas.width / 2, 130);
 
@@ -5988,7 +5939,7 @@
                 }
 
                 // Header
-                ctx.fillStyle = '#6aadcf';
+                ctx.fillStyle = '#7a8a9a';
                 ctx.font = '26px "VT323", monospace';
                 ctx.fillText('TWO TRUTHS AND A LIE', canvas.width / 2, 35);
 
@@ -5997,7 +5948,7 @@
                 const barH = 8;
                 ctx.fillStyle = '#333';
                 ctx.fillRect(50, 50, barW, barH);
-                ctx.fillStyle = '#6aadcf';
+                ctx.fillStyle = '#7a8a9a';
                 ctx.fillRect(50, 50, barW * (currentR / 7), barH);
 
                 ctx.fillStyle = '#888';
@@ -6023,28 +5974,28 @@
                     // Background box
                     if (showingResult) {
                         if (stmt.isLie) {
-                            ctx.fillStyle = 'rgba(244, 135, 113, 0.15)';
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
                         } else {
-                            ctx.fillStyle = 'rgba(78, 201, 176, 0.1)';
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
                         }
                     } else {
-                        ctx.fillStyle = isSelected ? 'rgba(106, 173, 207, 0.15)' : 'rgba(255,255,255,0.03)';
+                        ctx.fillStyle = isSelected ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255,255,255,0.03)';
                     }
                     ctx.fillRect(stmtX - 10, y - 22, canvas.width - 80, 55);
 
                     // Border
-                    ctx.strokeStyle = showingResult ? (stmt.isLie ? '#f48771' : '#4ec9b0') : '#444';
+                    ctx.strokeStyle = showingResult ? (stmt.isLie ? '#666' : '#999') : '#444';
                     ctx.lineWidth = 1;
                     ctx.strokeRect(stmtX - 10, y - 22, canvas.width - 80, 55);
 
                     // Number
-                    ctx.fillStyle = '#6aadcf';
+                    ctx.fillStyle = '#7a8a9a';
                     ctx.font = '22px "VT323", monospace';
                     ctx.fillText((i + 1) + '.', stmtX, y + 5);
 
                     // Statement text with word wrap
                     if (showingResult) {
-                        ctx.fillStyle = stmt.isLie ? '#f48771' : '#4ec9b0';
+                        ctx.fillStyle = stmt.isLie ? '#666' : '#999';
                     } else {
                         ctx.fillStyle = '#e0e0e0';
                     }
@@ -6073,10 +6024,10 @@
                         const labelX = canvas.width - 100;
                         ctx.font = '18px "VT323", monospace';
                         if (stmt.isLie) {
-                            ctx.fillStyle = '#f48771';
+                            ctx.fillStyle = '#888';
                             ctx.fillText('LIE', labelX, y + 5);
                         } else {
-                            ctx.fillStyle = '#4ec9b0';
+                            ctx.fillStyle = '#999';
                             ctx.fillText('TRUTH', labelX, y + 5);
                         }
                     }
@@ -6267,7 +6218,7 @@
                 '</div>' +
                 '<span class="desktop-window-title">' + title + '</span>' +
                 '</div>' +
-                '<div class="desktop-window-body"><pre style="font-family: VT323, monospace; color: #6aadcf; font-size: 0.8rem; white-space: pre-wrap;">' + content + '</pre></div>';
+                '<div class="desktop-window-body"><pre style="font-family: VT323, monospace; color: var(--accent); font-size: 0.8rem; white-space: pre-wrap;">' + content + '</pre></div>';
 
             // Close button
             win.querySelector('.close-btn').addEventListener('click', () => {
@@ -6349,7 +6300,7 @@
                 <div class="about-full">
                     <img src="ddddd.jpg" alt="Ryan McComb" class="about-photo-lg">
                     <p>I'm Ryan McComb, a student at Evanston Township High School interested in data, prediction markets, politics, and the web. I like making things people can use and forming beliefs based on evidence.</p>
-                    <p>I built <a href="https://il9.org" target="_blank" style="color:#6aadcf">IL9.org</a>, an open-source political forecasting project. I'm also a Student Fellow at VoteHub doing race-call work and election modeling, and a Volunteer Finance Lead for the Biss congressional campaign.</p>
+                    <p>I built <a href="https://il9.org" target="_blank" style="color:#7a8a9a">IL9.org</a>, an open-source political forecasting project. I'm also a Student Fellow at VoteHub doing race-call work and election modeling, and a Volunteer Finance Lead for the Biss congressional campaign.</p>
                     <div class="about-buttons">
                         <button class="game-btn" onclick="openWebQuiz()">? Quiz: How Well Do You Know Ryan?</button>
                         <button class="game-btn" onclick="openWebTruths()">&mdash; Two Truths &amp; a Lie</button>
@@ -6449,7 +6400,7 @@
                         <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:0.5rem">IL9CAST</h3>
                         <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:1rem">Open-source political forecasting for the Illinois 9th Congressional District. Features polling aggregation, fundamentals-based modeling, and probabilistic seat projections.</p>
                         <div class="project-tags"><span class="tag">Python</span><span class="tag">Data Science</span><span class="tag">Open Source</span></div>
-                        <a href="https://il9.org" target="_blank" style="display:inline-block;margin-top:1rem;color:#6aadcf;font-weight:500;font-size:0.9rem;text-decoration:none">Visit il9.org &#8599;</a>
+                        <a href="https://il9.org" target="_blank" style="display:inline-block;margin-top:1rem;color:#7a8a9a;font-weight:500;font-size:0.9rem;text-decoration:none">Visit il9.org &#8599;</a>
                     </div>
                     <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin:2rem 0 1rem;color:var(--text-secondary)">Prediction Markets</h2>
                     <div class="contact-links">
@@ -6484,7 +6435,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="font-family:'VT323',monospace;font-size:1rem;color:#6aadcf;letter-spacing:0.15em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border-color)">MORE POSTS</div>
+                        <div style="font-family:'VT323',monospace;font-size:1rem;color:#7a8a9a;letter-spacing:0.15em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border-color)">MORE POSTS</div>
                         <div class="blog-grid">
                             <div class="blog-card" onclick="openExpandedArticle('median-voter-theory')">
                                 <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
@@ -7088,7 +7039,7 @@
             document.body.classList.add('konami-active');
 
             // Spawn confetti
-            const colors = ['#6aadcf', '#4ec9b0', '#569cd6', '#f48771', '#ffbd2e', '#cc66cc', '#0f0'];
+            const colors = ['#7a8a9a', '#a0a0a0', '#666', '#888', '#999', '#777', '#bbb'];
             for (let i = 0; i < 60; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
@@ -7110,8 +7061,8 @@
             const termBody = document.getElementById('terminal-body');
             if (termBody && document.getElementById('terminal-overlay').classList.contains('active')) {
                 addTerminalLine('');
-                addTerminalLine('<span style="color: #ffbd2e;">★ KONAMI CODE ACTIVATED ★</span>');
-                addTerminalLine('<span style="color: #4ec9b0;">You found the secret! Enjoy the rainbow.</span>');
+                addTerminalLine('<span style="color: #999;">★ KONAMI CODE ACTIVATED ★</span>');
+                addTerminalLine('<span style="color: #999;">You found the secret! Enjoy the rainbow.</span>');
                 addTerminalLine('');
             }
         }
@@ -7198,11 +7149,11 @@
             let quizState = null;
 
             function getRating(s) {
-                if (s <= 2) return { text: 'Complete stranger vibes.', color: '#f48771' };
-                if (s <= 4) return { text: 'Casual acquaintance.', color: '#6aadcf' };
+                if (s <= 2) return { text: 'Complete stranger vibes.', color: '#888' };
+                if (s <= 4) return { text: 'Casual acquaintance.', color: '#7a8a9a' };
                 if (s <= 6) return { text: 'You know some things!', color: '#dcdcaa' };
-                if (s <= 8) return { text: 'Close friend energy.', color: '#569cd6' };
-                if (s === 9) return { text: 'Basically best friends.', color: '#4ec9b0' };
+                if (s <= 8) return { text: 'Close friend energy.', color: '#aaa' };
+                if (s === 9) return { text: 'Basically best friends.', color: '#999' };
                 return { text: 'You ARE Ryan McComb.', color: '#c586c0' };
             }
 
@@ -7212,7 +7163,7 @@
                     const prevScore = localStorage.getItem('webquiz_high_score') || '?';
                     inner.innerHTML = '<div class="quiz-header"><h2>HOW WELL DO YOU KNOW RYAN?</h2></div>' +
                         '<div class="quiz-name-screen">' +
-                        '<p style="color:#6aadcf;font-family:VT323,monospace;font-size:1.2rem;">You already took the quiz!</p>' +
+                        '<p style="color:#7a8a9a;font-family:VT323,monospace;font-size:1.2rem;">You already took the quiz!</p>' +
                         '<p>Your score: <strong>' + prevScore + '/10</strong></p>' +
                         '<p style="font-size:0.8rem;color:var(--text-light);">One attempt only — no retries.</p>' +
                         '</div>';
@@ -7474,10 +7425,10 @@
 
             function getRating(s, total) {
                 var pct = s / total;
-                if (pct <= 0.15) return { text: 'You believed everything!', color: '#f48771' };
-                if (pct <= 0.4) return { text: 'Getting warmer...', color: '#6aadcf' };
+                if (pct <= 0.15) return { text: 'You believed everything!', color: '#888' };
+                if (pct <= 0.4) return { text: 'Getting warmer...', color: '#7a8a9a' };
                 if (pct <= 0.7) return { text: 'Decent BS detector.', color: '#dcdcaa' };
-                if (pct <= 0.85) return { text: 'Very perceptive!', color: '#4ec9b0' };
+                if (pct <= 0.85) return { text: 'Very perceptive!', color: '#999' };
                 return { text: 'Human lie detector!', color: '#c586c0' };
             }
 
@@ -7535,17 +7486,17 @@
                     var stmt = round.statements[i];
                     if (stmt.isLie) {
                         card.classList.add('is-lie');
-                        card.innerHTML += '<span class="truth-label" style="color:#f48771">LIE</span>';
+                        card.innerHTML += '<span class="truth-label" style="color:#888">LIE</span>';
                     } else {
                         card.classList.add('is-truth');
-                        card.innerHTML += '<span class="truth-label" style="color:#4ec9b0">TRUTH</span>';
+                        card.innerHTML += '<span class="truth-label" style="color:#999">TRUTH</span>';
                     }
                 });
 
                 if (correct) {
-                    resultLine.innerHTML = '<span style="color:#4ec9b0">Correct! You spotted the lie.</span>';
+                    resultLine.innerHTML = '<span style="color:#999">Correct! You spotted the lie.</span>';
                 } else {
-                    resultLine.innerHTML = '<span style="color:#f48771">Wrong — that one was true!</span>';
+                    resultLine.innerHTML = '<span style="color:#888">Wrong — that one was true!</span>';
                 }
 
                 setTimeout(function() {
