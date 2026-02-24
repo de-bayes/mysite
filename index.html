@@ -15,9 +15,13 @@
 </head>
 <body>
     <!-- LOADER -->
-    <div id="loader" style="position:fixed;inset:0;z-index:10000;background:var(--bg-primary);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 0.4s ease;">
-        <div style="font-family:var(--font-serif);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;color:var(--text-primary);letter-spacing:0.03em;">Ryan McComb</div>
-        <div id="loader-text" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">loading</div>
+    <div id="loader" class="loader">
+        <canvas id="loader-rain" class="loader-rain"></canvas>
+        <div class="loader-center">
+            <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
+            <div class="loader-progress"><div class="loader-progress-fill" id="loader-progress-fill"></div></div>
+            <p class="loader-text" id="loader-text">loading</p>
+        </div>
     </div>
 
     <!-- NAVIGATION -->
@@ -449,14 +453,61 @@
         const loader = document.getElementById('loader');
         const siteContent = document.getElementById('site-content');
         const loaderText = document.getElementById('loader-text');
+        const progressFill = document.getElementById('loader-progress-fill');
 
+        // Matrix rain canvas
+        (function initLoaderRain() {
+            const canvas = document.getElementById('loader-rain');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const chars = 'rjmccomb.xyzABCDEF0123456789<>/{}[]|;:';
+            const fontSize = 14;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+            function draw() {
+                ctx.fillStyle = 'rgba(13, 13, 15, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.font = fontSize + 'px VT323, monospace';
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillStyle = Math.random() > 0.5 ? '#6aadcf' : '#cf6b6b';
+                    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }
+            const rainInterval = setInterval(draw, 50);
+            setTimeout(() => clearInterval(rainInterval), 4000);
+        })();
+
+        // Progress bar animation
+        let loaderProgress = 0;
+        const progressInterval = setInterval(() => {
+            loaderProgress += Math.random() * 15 + 5;
+            if (loaderProgress > 95) loaderProgress = 95;
+            if (progressFill) progressFill.style.width = loaderProgress + '%';
+        }, 300);
+
+        // Loader text dots
         let dotCount = 0;
         const dotInterval = setInterval(() => {
             dotCount = (dotCount + 1) % 4;
             loaderText.textContent = 'loading' + '.'.repeat(dotCount);
-        }, 500);
+        }, 400);
 
-        // Check if page was refreshed or is a new visit (skip loader when navigating from another page)
+        function finishLoader() {
+            clearInterval(dotInterval);
+            clearInterval(progressInterval);
+            if (progressFill) progressFill.style.width = '100%';
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                siteContent.classList.add('visible');
+            }, 300);
+        }
+
+        // Check if page was refreshed or is a new visit
         const perfData = performance.getEntriesByType?.('navigation')?.[0];
         const isRefresh = perfData?.type === 'reload';
         const hasLoaded = sessionStorage.getItem('hasLoaded');
@@ -465,13 +516,9 @@
             loader.classList.add('hidden');
             siteContent.classList.add('visible');
             clearInterval(dotInterval);
-            document.querySelectorAll('.stagger-in').forEach(el => el.classList.add('visible'));
+            clearInterval(progressInterval);
         } else {
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                siteContent.classList.add('visible');
-                clearInterval(dotInterval);
-            }, 800);
+            setTimeout(finishLoader, 3000);
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
