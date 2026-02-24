@@ -264,23 +264,15 @@
             const text = 'Data, politics, and forecasting.';
             let i = 0;
             tagline.textContent = '';
-            tagline.style.borderRight = '2px solid rgba(255,255,255,0.7)';
+            tagline.classList.add('typing');
             function type() {
                 if (i < text.length) {
                     tagline.textContent += text.charAt(i);
                     i++;
                     setTimeout(type, 50 + Math.random() * 40);
                 } else {
-                    // Blink cursor a few times then remove
-                    let blinks = 0;
-                    const blinkInterval = setInterval(() => {
-                        tagline.style.borderRight = blinks % 2 === 0 ? '2px solid transparent' : '2px solid rgba(255,255,255,0.7)';
-                        blinks++;
-                        if (blinks > 6) {
-                            clearInterval(blinkInterval);
-                            tagline.style.borderRight = 'none';
-                        }
-                    }, 400);
+                    // Let cursor blink a few more times then hide
+                    setTimeout(() => { tagline.classList.remove('typing'); tagline.classList.add('done'); }, 2400);
                 }
             }
             setTimeout(type, 800);
