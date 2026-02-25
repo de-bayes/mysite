@@ -105,10 +105,36 @@
             margin: 0 auto;
             background: #fff;
             box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            border-top: 3px solid #2244cc;
         }
 
         [data-theme="dark"] .resume-page {
             box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .resume-corner-tile {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 52px;
+            height: 52px;
+            background: #2244cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .resume-corner-tile svg {
+            width: 34px;
+            height: auto;
+            transition: stroke 0.2s ease;
+        }
+
+        .resume-corner-tile:hover {
+            background: #1a1a1a;
         }
 
         .resume-inner { padding: 0.5in 0.6in; }
@@ -118,7 +144,7 @@
             text-align: center;
             margin-bottom: 0.18in;
             padding-bottom: 0.1in;
-            border-bottom: 1.5px solid #1a1a1a;
+            border-bottom: 2px solid #2244cc;
         }
 
         .resume-header h1 {
@@ -152,7 +178,7 @@
             text-transform: uppercase;
             letter-spacing: 0.12em;
             color: #1a1a1a;
-            border-bottom: 1px solid #bbb;
+            border-bottom: 1.5px solid #2244cc;
             padding-bottom: 0.05in;
             margin-bottom: 0.08in;
         }
@@ -277,10 +303,12 @@
         /* PRINT */
         @media print {
             body { background: #fff; }
-            .top-bar, .flag-footer, .resume-editorial-footer { display: none; }
+            .top-bar, .flag-footer, .resume-editorial-footer, .resume-corner-tile { display: none; }
             .resume-wrap { padding: 0; }
-            .resume-page { box-shadow: none; margin: 0; max-width: none; }
+            .resume-page { box-shadow: none; margin: 0; max-width: none; border-top: none; }
             .resume-inner { padding: 0.4in 0.5in; }
+            .resume-header { border-bottom-color: #1a1a1a; }
+            .resume-section h2 { border-bottom-color: #bbb; }
             a { color: inherit !important; text-decoration: none !important; }
         }
 
@@ -319,6 +347,14 @@
 
     <div class="resume-wrap">
         <div class="resume-page">
+            <div class="resume-corner-tile">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="36 6 52 32">
+                    <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="41" y1="12" x2="83" y2="12"/>
+                        <path d="M62 17 L44 33 M62 17 L80 33"/>
+                    </g>
+                </svg>
+            </div>
             <div class="resume-inner">
                 <div class="resume-header">
                     <h1>Ryan McComb</h1>
