@@ -78,8 +78,8 @@ body {
 }
 
 a { color: var(--text-primary); text-decoration: none; transition: color 0.15s ease, background 0.15s ease; }
-a:hover { color: #ffffff; background: #2244cc; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 3px; }
-[data-theme="dark"] a:hover { color: #ffffff; background: #5c7cfa; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 3px; }
+a:hover { color: #ffffff; background: #2244cc; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #2244cc; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 3px; }
+[data-theme="dark"] a:hover { color: #ffffff; background: #5c7cfa; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #5c7cfa; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 3px; }
 
 img { max-width: 100%; height: auto; display: block; }
 
@@ -2604,7 +2604,7 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #2244cc;
     text-decoration: underline;
     text-decoration-style: wavy;
-    text-decoration-color: #ffffff;
+    text-decoration-color: #2244cc;
     text-underline-offset: 4px;
     text-decoration-thickness: 1.5px;
     padding-bottom: 4px;
@@ -2652,7 +2652,7 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #2244cc;
     text-decoration: underline;
     text-decoration-style: wavy;
-    text-decoration-color: #ffffff;
+    text-decoration-color: #2244cc;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
 }
@@ -2691,7 +2691,7 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #5c7cfa;
     text-decoration: underline;
     text-decoration-style: wavy;
-    text-decoration-color: #ffffff;
+    text-decoration-color: #5c7cfa;
     text-underline-offset: 4px;
     text-decoration-thickness: 1.5px;
     padding-bottom: 4px;
@@ -2710,7 +2710,7 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #5c7cfa;
     text-decoration: underline;
     text-decoration-style: wavy;
-    text-decoration-color: #ffffff;
+    text-decoration-color: #5c7cfa;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
 }
