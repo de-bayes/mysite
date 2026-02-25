@@ -2493,13 +2493,34 @@ body.scrolled .site-nav { box-shadow: none; }
 .editorial-hero {
     background: #2244cc;
     color: #ffffff;
-    padding: 3rem 2.5rem;
-    padding-bottom: 4rem;
+    padding: 0;
     margin-bottom: 3rem;
     will-change: transform;
     transform-style: preserve-3d;
     position: relative;
     overflow: hidden;
+}
+
+.editorial-hero-photo {
+    width: 100%;
+    height: 55vh;
+    min-height: 350px;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+}
+
+.editorial-hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 3rem 2.5rem 2.5rem;
+    background: linear-gradient(to bottom, transparent, rgba(34, 68, 204, 0.85) 60%, #2244cc 100%);
+}
+
+[data-theme="dark"] .editorial-hero-overlay {
+    background: linear-gradient(to bottom, transparent, rgba(27, 54, 153, 0.85) 60%, #1b3699 100%);
 }
 
 /* --- Scroll Reveal --- */
@@ -2790,8 +2811,12 @@ body.scrolled .site-nav { box-shadow: none; }
     .editorial-page {
         padding: 5rem 1.25rem 3rem;
     }
-    .editorial-hero {
-        padding: 2rem 1.5rem;
+    .editorial-hero-photo {
+        height: 40vh;
+        min-height: 250px;
+    }
+    .editorial-hero-overlay {
+        padding: 2rem 1.5rem 2rem;
     }
     .editorial-name {
         font-size: 2.2rem;
