@@ -2585,45 +2585,63 @@ body.scrolled .site-nav { box-shadow: none; }
     width: fit-content;
     margin: 0;
     position: relative;
+    min-height: 1.5em;
 }
-.editorial-tagline.typing::after {
-    content: '';
-    display: inline-block;
-    width: 2px;
-    height: 1.1em;
-    background: rgba(255, 255, 255, 0.8);
-    margin-left: 2px;
-    vertical-align: text-bottom;
-    animation: tw-blink 0.6s step-end infinite;
-}
-.editorial-tagline.done::after { display: none; }
 
-/* Tagline highlight animation */
-.tagline-highlight {
+/* Collaborative editing cursors */
+.collab-cursor {
+    display: inline-block;
+    width: 0;
     position: relative;
-    background-size: 200% 100%;
-    background-position: 100% 0;
-    background-image: linear-gradient(to right, rgba(255,255,255,0.25) 50%, transparent 50%);
-    transition: background-position 0.4s ease, font-weight 0.3s ease, color 0.3s ease;
-    padding: 0.05em 0;
-    border-radius: 2px;
+    z-index: 2;
 }
-.tagline-highlight.selecting {
-    background-position: 0 0;
+.collab-cursor::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 1.15em;
+    bottom: -0.1em;
+    left: -1px;
+    background: var(--c);
+    border-radius: 1px;
+    animation: collab-blink 1s step-end infinite;
 }
-.tagline-highlight.bolded {
-    font-weight: 700;
-    color: #ffffff;
-    background-position: 0 0;
+.collab-cursor-flag {
+    position: absolute;
+    bottom: 1.1em;
+    left: -1px;
+    background: var(--c);
+    color: #fff;
+    font-size: 0.55rem;
+    padding: 1px 3px;
+    border-radius: 2px 2px 2px 0;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    line-height: 1.3;
+    pointer-events: none;
 }
-.tagline-highlight.settled {
-    background-image: none;
-    font-weight: 700;
-    color: #ffffff;
+.collab-cursor.fading {
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
-@keyframes tw-blink {
+.collab-cursor.fading::before {
+    animation: none;
+}
+@keyframes collab-blink {
+    0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
+
+/* Collaborative character styles */
+.collab-char { position: relative; }
+.collab-selected { background: var(--sc); border-radius: 1px; }
+.collab-strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--kc);
+    text-decoration-thickness: 2px;
+}
+.collab-bold { font-weight: 700; color: #ffffff; }
 
 /* --- Essay Body --- */
 .editorial-body {
