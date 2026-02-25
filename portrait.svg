@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Upward chevron with vertical stem — minimalist logo -->
+  <g stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left arm of chevron -->
+    <line x1="20" y1="55" x2="50" y2="25"/>
+    <!-- Right arm of chevron -->
+    <line x1="80" y1="55" x2="50" y2="25"/>
+    <!-- Vertical stem down from apex -->
+    <line x1="50" y1="25" x2="50" y2="80"/>
+  </g>
+</svg>
