@@ -2642,6 +2642,14 @@ body.scrolled .site-nav { box-shadow: none; }
     text-decoration-thickness: 2px;
 }
 .collab-bold { font-weight: 700; color: #ffffff; }
+@keyframes collab-glow {
+    0%, 15% { background: rgba(66, 133, 244, 0.4); }
+    100% { background: transparent; }
+}
+.collab-bold-highlight {
+    animation: collab-glow 1.3s ease-out forwards;
+    border-radius: 2px;
+}
 
 /* --- Essay Body --- */
 .editorial-body {
