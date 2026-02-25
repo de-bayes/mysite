@@ -19,10 +19,6 @@
     <!-- LOADER -->
     <div id="loader" class="loader">
         <p class="loader-url"><span>r</span><span>j</span><span>m</span><span>c</span><span>c</span><span>o</span><span>m</span><span>b</span><span>.</span><span>x</span><span>y</span><span>z</span></p>
-        <p class="loader-text" id="loader-text">loading</p>
-        <div class="loader-counter">
-            <span class="loader-number" id="loader-number">1</span>
-        </div>
     </div>
 
     <!-- SITE CONTENT -->
@@ -193,43 +189,19 @@
 
         const loader = document.getElementById('loader');
         const siteContent = document.getElementById('site-content');
-        const loaderNumber = document.getElementById('loader-number');
-        const loaderText = document.getElementById('loader-text');
 
-        const steps = [1, 13, 27, 41, 54, 68, 79, 88, 94, 100];
-        let currentStep = 0;
-        const stepDelay = 400;
-
-        let dotCount = 0;
-        const dotInterval = setInterval(() => {
-            dotCount = (dotCount + 1) % 4;
-            loaderText.textContent = 'loading' + '.'.repeat(dotCount);
-        }, 500);
-
-        function updateLoader() {
-            const value = steps[currentStep];
-            loaderNumber.textContent = value;
-            loaderNumber.style.left = value + '%';
-            currentStep++;
-
-            if (currentStep < steps.length) {
-                setTimeout(updateLoader, stepDelay);
-            } else {
-                clearInterval(dotInterval);
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                    loader.addEventListener('transitionend', function onEnd() {
-                        loader.removeEventListener('transitionend', onEnd);
-                        siteContent.classList.add('visible');
-                    }, { once: true });
-                    setTimeout(() => {
-                        if (!siteContent.classList.contains('visible')) {
-                            siteContent.classList.add('visible');
-                        }
-                    }, 700);
-                    setTimeout(showFivey, 2000);
-                }, 400);
-            }
+        function finishLoader() {
+            loader.classList.add('hidden');
+            loader.addEventListener('transitionend', function onEnd() {
+                loader.removeEventListener('transitionend', onEnd);
+                siteContent.classList.add('visible');
+            }, { once: true });
+            setTimeout(() => {
+                if (!siteContent.classList.contains('visible')) {
+                    siteContent.classList.add('visible');
+                }
+            }, 700);
+            setTimeout(showFivey, 2000);
         }
 
         // Check if page was refreshed or is a new visit
@@ -240,10 +212,10 @@
         if (hasLoaded && !isRefresh) {
             loader.classList.add('hidden');
             siteContent.classList.add('visible');
-            clearInterval(dotInterval);
             setTimeout(showFivey, 2000);
         } else {
-            updateLoader();
+            // Show the URL animation for ~2.5 seconds then fade out
+            setTimeout(finishLoader, 2500);
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
@@ -257,25 +229,68 @@
 
         // === LANDING PAGE ENHANCEMENTS ===
 
-        // 1. Typewriter effect on tagline
+        // 1. Typewriter effect on tagline — human-like with typo + backspace
         (function initTypewriter() {
             const tagline = document.getElementById('editorial-tagline');
             if (!tagline) return;
-            const text = 'Data, politics, and forecasting.';
-            let i = 0;
+
+            // Build a sequence of actions: type chars, pause, delete, retype
+            // "Data, politics, and forecasting."
+            // Typo: type "Data, poiltics" then pause, backspace "ltics", retype "litics, and forecasting."
+            const actions = [];
+            const preTypo = 'Data, poi';        // typed correctly up to here
+            const typoChars = 'ltcis';           // the typo (should be "litics")
+            const backCount = 5;                 // backspace 5 chars ("ltcis")
+            const correction = 'litics, and forecasting.';  // correct remainder
+
+            // Type the correct prefix
+            for (let c = 0; c < preTypo.length; c++) {
+                actions.push({ action: 'type', char: preTypo[c] });
+            }
+            // Type the typo
+            for (let c = 0; c < typoChars.length; c++) {
+                actions.push({ action: 'type', char: typoChars[c] });
+            }
+            // Pause to "notice" the mistake
+            actions.push({ action: 'pause', ms: 600 });
+            // Backspace the typo
+            for (let c = 0; c < backCount; c++) {
+                actions.push({ action: 'delete' });
+            }
+            // Small pause before correction
+            actions.push({ action: 'pause', ms: 300 });
+            // Type the correction
+            for (let c = 0; c < correction.length; c++) {
+                actions.push({ action: 'type', char: correction[c] });
+            }
+
+            let step = 0;
             tagline.textContent = '';
             tagline.classList.add('typing');
-            function type() {
-                if (i < text.length) {
-                    tagline.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, 50 + Math.random() * 40);
-                } else {
-                    // Let cursor blink a few more times then hide
+
+            function run() {
+                if (step >= actions.length) {
+                    // Done — let cursor blink then hide
                     setTimeout(() => { tagline.classList.remove('typing'); tagline.classList.add('done'); }, 2400);
+                    return;
+                }
+                const act = actions[step];
+                step++;
+                if (act.action === 'type') {
+                    tagline.textContent += act.char;
+                    // Vary speed: slower after comma/space, faster mid-word
+                    const delay = act.char === ' ' ? 80 + Math.random() * 60
+                                : act.char === ',' ? 120 + Math.random() * 80
+                                : 45 + Math.random() * 50;
+                    setTimeout(run, delay);
+                } else if (act.action === 'delete') {
+                    tagline.textContent = tagline.textContent.slice(0, -1);
+                    setTimeout(run, 60 + Math.random() * 30);
+                } else if (act.action === 'pause') {
+                    setTimeout(run, act.ms);
                 }
             }
-            setTimeout(type, 800);
+            setTimeout(run, 800);
         })();
 
         // 2. Hero card 3D tilt on mouse move
@@ -3788,7 +3803,7 @@
                             <span class="forecast-stat-value" id="forecast-stat-daily">--</span>
                         </div>
                         <div class="forecast-stat-item">
-                            <span class="forecast-stat-label">MARKETS</span>
+                            <span class="forecast-stat-label">TRADERS</span>
                             <span class="forecast-stat-value" id="forecast-stat-markets">--</span>
                         </div>
                     </div>
@@ -3980,7 +3995,8 @@
                     countUp(networthEl, netWorth, 'M$', '', 1200);
                 }
                 if (profitEl) {
-                    const totalProfit = Math.round(portfolio.profit || 0);
+                    // profit isn't in the portfolio endpoint; calculate from balance + investment - deposits
+                    const totalProfit = Math.round((portfolio.balance || 0) + (portfolio.investmentValue || 0) - (portfolio.totalDeposits || 0));
                     const sign = totalProfit >= 0 ? '+' : '-';
                     countUp(profitEl, Math.abs(totalProfit), sign + 'M$', '', 1200);
                     if (totalProfit >= 0) profitEl.classList.add('positive');
@@ -3996,8 +4012,9 @@
                     if (dailyProfit >= 0) dailyEl.classList.add('positive');
                     else dailyEl.classList.add('negative');
                 }
-                if (marketsEl && user.createdTime) {
-                    marketsEl.textContent = (user.creatorTraderCount || 0).toLocaleString();
+                if (marketsEl) {
+                    const traders = user.creatorTraders?.allTime || 0;
+                    countUp(marketsEl, traders, '', '', 900);
                 }
 
                 bar.classList.add('loaded');
@@ -4005,9 +4022,13 @@
                 const networthEl = document.getElementById('forecast-stat-networth');
                 const profitEl = document.getElementById('forecast-stat-profit');
                 const streakEl = document.getElementById('forecast-stat-streak');
-                if (networthEl) networthEl.textContent = 'M$61,788';
-                if (profitEl) profitEl.textContent = '+M$4,200';
+                if (networthEl) networthEl.textContent = 'M$61,748';
+                if (profitEl) profitEl.textContent = '+M$38,360';
                 if (streakEl) streakEl.textContent = '220d';
+                const marketsEl = document.getElementById('forecast-stat-markets');
+                if (marketsEl) marketsEl.textContent = '1,222';
+                const dailyEl = document.getElementById('forecast-stat-daily');
+                if (dailyEl) dailyEl.textContent = '+M$1,005/d';
                 bar.classList.add('loaded');
             });
         }
@@ -4053,6 +4074,13 @@
                     if (statEl) {
                         statEl.textContent = (currentProfit >= 0 ? '+' : '') + 'M$' + Math.abs(currentProfit).toLocaleString();
                         if (currentProfit < 0) statEl.classList.add('negative');
+                    }
+                    // Also update the stats bar profit with accurate history data
+                    const barProfitEl = document.getElementById('forecast-stat-profit');
+                    if (barProfitEl) {
+                        barProfitEl.textContent = (currentProfit >= 0 ? '+' : '') + 'M$' + Math.abs(currentProfit).toLocaleString();
+                        barProfitEl.classList.remove('positive', 'negative');
+                        barProfitEl.classList.add(currentProfit >= 0 ? 'positive' : 'negative');
                     }
 
                     // Date range labels
