@@ -232,68 +232,65 @@
 
         // === LANDING PAGE ENHANCEMENTS ===
 
-        // 1. Typewriter effect on tagline — human-like with typo + backspace
+        // 1. Typewriter effect on tagline — type, highlight "politics", bold it
         (function initTypewriter() {
             const tagline = document.getElementById('editorial-tagline');
             if (!tagline) return;
 
-            // Build a sequence of actions: type chars, pause, delete, retype
-            // "Data, politics, and forecasting."
-            // Typo: type "Data, poiltics" then pause, backspace "ltics", retype "litics, and forecasting."
-            const actions = [];
-            const preTypo = 'Data, poi';        // typed correctly up to here
-            const typoChars = 'ltcis';           // the typo (should be "litics")
-            const backCount = 5;                 // backspace 5 chars ("ltcis")
-            const correction = 'litics, and forecasting.';  // correct remainder
+            const fullText = 'Data, politics, and forecasting.';
+            const highlightWord = 'politics';
+            const highlightStart = fullText.indexOf(highlightWord);
+            const highlightEnd = highlightStart + highlightWord.length;
 
-            // Type the correct prefix
-            for (let c = 0; c < preTypo.length; c++) {
-                actions.push({ action: 'type', char: preTypo[c] });
-            }
-            // Type the typo
-            for (let c = 0; c < typoChars.length; c++) {
-                actions.push({ action: 'type', char: typoChars[c] });
-            }
-            // Pause to "notice" the mistake
-            actions.push({ action: 'pause', ms: 600 });
-            // Backspace the typo
-            for (let c = 0; c < backCount; c++) {
-                actions.push({ action: 'delete' });
-            }
-            // Small pause before correction
-            actions.push({ action: 'pause', ms: 300 });
-            // Type the correction
-            for (let c = 0; c < correction.length; c++) {
-                actions.push({ action: 'type', char: correction[c] });
-            }
-
-            let step = 0;
+            let i = 0;
             tagline.textContent = '';
             tagline.classList.add('typing');
 
-            function run() {
-                if (step >= actions.length) {
-                    // Done — let cursor blink then hide
-                    setTimeout(() => { tagline.classList.remove('typing'); tagline.classList.add('done'); }, 2400);
-                    return;
-                }
-                const act = actions[step];
-                step++;
-                if (act.action === 'type') {
-                    tagline.textContent += act.char;
-                    // Vary speed: slower after comma/space, faster mid-word
-                    const delay = act.char === ' ' ? 80 + Math.random() * 60
-                                : act.char === ',' ? 120 + Math.random() * 80
-                                : 45 + Math.random() * 50;
-                    setTimeout(run, delay);
-                } else if (act.action === 'delete') {
-                    tagline.textContent = tagline.textContent.slice(0, -1);
-                    setTimeout(run, 60 + Math.random() * 30);
-                } else if (act.action === 'pause') {
-                    setTimeout(run, act.ms);
+            // Phase 1: Type the full string quickly
+            function typeNext() {
+                if (i < fullText.length) {
+                    tagline.textContent += fullText[i];
+                    i++;
+                    const c = fullText[i - 1];
+                    const delay = c === ' ' ? 50 + Math.random() * 30
+                                : c === ',' ? 70 + Math.random() * 40
+                                : 30 + Math.random() * 25;
+                    setTimeout(typeNext, delay);
+                } else {
+                    // Done typing — pause, then highlight "politics"
+                    setTimeout(startHighlight, 600);
                 }
             }
-            setTimeout(run, 800);
+
+            // Phase 2: Animate a selection highlight sweeping across "politics"
+            function startHighlight() {
+                tagline.classList.remove('typing');
+                // Build HTML with a span we can animate
+                const before = fullText.slice(0, highlightStart);
+                const word = fullText.slice(highlightStart, highlightEnd);
+                const after = fullText.slice(highlightEnd);
+                tagline.innerHTML = before + '<span class="tagline-highlight">' + word + '</span>' + after;
+
+                const span = tagline.querySelector('.tagline-highlight');
+                // Trigger the selection sweep
+                requestAnimationFrame(() => {
+                    span.classList.add('selecting');
+                });
+
+                // After sweep completes, pause, then bold it
+                setTimeout(() => {
+                    span.classList.remove('selecting');
+                    span.classList.add('bolded');
+                }, 900);
+
+                // Remove highlight bg after bold settles
+                setTimeout(() => {
+                    span.classList.add('settled');
+                    tagline.classList.add('done');
+                }, 1500);
+            }
+
+            setTimeout(typeNext, 800);
         })();
 
         // 2. Hero card 3D tilt on mouse move

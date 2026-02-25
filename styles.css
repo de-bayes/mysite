@@ -2572,6 +2572,30 @@ body.scrolled .site-nav { box-shadow: none; }
     animation: tw-blink 0.6s step-end infinite;
 }
 .editorial-tagline.done::after { display: none; }
+
+/* Tagline highlight animation */
+.tagline-highlight {
+    position: relative;
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    background-image: linear-gradient(to right, rgba(255,255,255,0.25) 50%, transparent 50%);
+    transition: background-position 0.4s ease, font-weight 0.3s ease, color 0.3s ease;
+    padding: 0.05em 0;
+    border-radius: 2px;
+}
+.tagline-highlight.selecting {
+    background-position: 0 0;
+}
+.tagline-highlight.bolded {
+    font-weight: 700;
+    color: #ffffff;
+    background-position: 0 0;
+}
+.tagline-highlight.settled {
+    background-image: none;
+    font-weight: 700;
+    color: #ffffff;
+}
 @keyframes tw-blink {
     50% { opacity: 0; }
 }
