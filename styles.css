@@ -78,8 +78,8 @@ body {
 }
 
 a { color: var(--text-primary); text-decoration: none; transition: color 0.15s ease, background 0.15s ease; }
-a:hover { color: #ffffff; background: #2244cc; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-[data-theme="dark"] a:hover { color: #ffffff; background: #5c7cfa; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: #ffffff; background: #2244cc; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 3px; }
+[data-theme="dark"] a:hover { color: #ffffff; background: #5c7cfa; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 3px; }
 
 img { max-width: 100%; height: auto; display: block; }
 
@@ -2500,6 +2500,8 @@ body.scrolled .site-nav { box-shadow: none; }
     transform-style: preserve-3d;
     position: relative;
     overflow: hidden;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
 }
 
 .editorial-hero-photo {
@@ -2592,10 +2594,10 @@ body.scrolled .site-nav { box-shadow: none; }
 .editorial-body a {
     color: #2244cc;
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
     text-decoration-thickness: 1px;
     transition: color 0.2s ease, text-decoration-style 0s;
-    padding: 0 0.1em;
+    padding: 0.1em 0.15em;
     border-radius: 2px;
 }
 
@@ -2605,8 +2607,9 @@ body.scrolled .site-nav { box-shadow: none; }
     text-decoration: underline;
     text-decoration-style: wavy;
     text-decoration-color: #ffffff;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+    padding-bottom: 4px;
 }
 
 /* --- Professional Footer --- */
@@ -2691,8 +2694,9 @@ body.scrolled .site-nav { box-shadow: none; }
     text-decoration: underline;
     text-decoration-style: wavy;
     text-decoration-color: #ffffff;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+    padding-bottom: 4px;
 }
 
 [data-theme="dark"] .editorial-footer {
