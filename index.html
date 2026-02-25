@@ -292,57 +292,103 @@
                 el.innerHTML = h;
             }
 
-            // Text progression:
-            // "Data, numbers, and predictions."  →  Nate replaces "numbers" with "politics"
-            // "Data, politics, and predictions." →  Galen strikes "predictions", replaces with "forecasting"
-            // "Data, politics, and forecasting." →  Ryan bolds "politics"
-            var steps = [
-                // Initial text appears
-                { t: 0,    text: 'Data, numbers, and predictions.',
-                  cursors: [], selections: [], strikes: [], bolds: [] },
-                // Three cursors appear at different positions
-                { t: 400,  text: 'Data, numbers, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 6 }, { id: 'galen', pos: 19 }],
-                  selections: [], strikes: [], bolds: [] },
-                // Nate selects "numbers"
-                { t: 900,  text: 'Data, numbers, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 13 }, { id: 'galen', pos: 19 }],
-                  selections: [{ id: 'nate', start: 6, end: 13 }], strikes: [], bolds: [] },
-                // Nate replaces "numbers" → "politics"
-                { t: 1400, text: 'Data, politics, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 14 }, { id: 'galen', pos: 20 }],
-                  selections: [], strikes: [], bolds: [] },
-                // Galen selects "predictions"
-                { t: 1900, text: 'Data, politics, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
-                  selections: [{ id: 'galen', start: 20, end: 31 }], strikes: [], bolds: [] },
-                // Galen strikes through "predictions"
-                { t: 2300, text: 'Data, politics, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
-                  selections: [], strikes: [{ id: 'galen', start: 20, end: 31 }], bolds: [] },
-                // Galen replaces with "forecasting"
-                { t: 2800, text: 'Data, politics, and forecasting.',
-                  cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
-                  selections: [], strikes: [], bolds: [] },
-                // Ryan selects "politics"
-                { t: 3200, text: 'Data, politics, and forecasting.',
-                  cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
-                  selections: [{ id: 'ryan', start: 6, end: 14 }], strikes: [], bolds: [] },
-                // Ryan bolds "politics", all cursors fade
-                { t: 3600, text: 'Data, politics, and forecasting.',
-                  cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
-                  selections: [], strikes: [], bolds: [{ start: 6, end: 14 }],
-                  fading: ['ryan', 'nate', 'galen'] },
-                // Final state — cursors gone
-                { t: 4200, text: 'Data, politics, and forecasting.',
-                  cursors: [], selections: [], strikes: [], bolds: [{ start: 6, end: 14 }] }
-            ];
+            function buildSteps() {
+                var steps = [];
+                var base = 'Data, numbers, and predictions.';
+                var t = 0;
 
-            setTimeout(function() {
+                // Phase 1: Ryan types the text character by character
+                steps.push({ t: t, text: '', cursors: [{ id: 'ryan', pos: 0 }],
+                    selections: [], strikes: [], bolds: [] });
+                for (var ci = 1; ci <= base.length; ci++) {
+                    var prev = base[ci - 1];
+                    t += prev === ',' ? 65 : prev === ' ' ? 45 : prev === '.' ? 45 : 30;
+                    steps.push({ t: t, text: base.slice(0, ci),
+                        cursors: [{ id: 'ryan', pos: ci }],
+                        selections: [], strikes: [], bolds: [] });
+                }
+
+                // Pause after typing
+                t += 400;
+
+                // Phase 2: Nate + Galen cursors join
+                steps.push({ t: t, text: base,
+                    cursors: [{ id: 'ryan', pos: 31 }, { id: 'nate', pos: 6 }, { id: 'galen', pos: 19 }],
+                    selections: [], strikes: [], bolds: [] });
+
+                // Nate selects "numbers" (indices 6–12)
+                t += 500;
+                steps.push({ t: t, text: base,
+                    cursors: [{ id: 'ryan', pos: 31 }, { id: 'nate', pos: 13 }, { id: 'galen', pos: 19 }],
+                    selections: [{ id: 'nate', start: 6, end: 13 }], strikes: [], bolds: [] });
+
+                // Nate replaces "numbers" → "politics"
+                t += 500;
+                var text2 = 'Data, politics, and predictions.';
+                steps.push({ t: t, text: text2,
+                    cursors: [{ id: 'ryan', pos: 32 }, { id: 'nate', pos: 14 }, { id: 'galen', pos: 20 }],
+                    selections: [], strikes: [], bolds: [] });
+
+                // Galen selects "predictions" (indices 20–30)
+                t += 500;
+                steps.push({ t: t, text: text2,
+                    cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
+                    selections: [{ id: 'galen', start: 20, end: 31 }], strikes: [], bolds: [] });
+
+                // Galen strikes through "predictions"
+                t += 400;
+                steps.push({ t: t, text: text2,
+                    cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
+                    selections: [], strikes: [{ id: 'galen', start: 20, end: 31 }], bolds: [] });
+
+                // Galen replaces with "forecasting"
+                t += 500;
+                var text3 = 'Data, politics, and forecasting.';
+                steps.push({ t: t, text: text3,
+                    cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
+                    selections: [], strikes: [], bolds: [] });
+
+                // Ryan selects "politics" (indices 6–13)
+                t += 400;
+                steps.push({ t: t, text: text3,
+                    cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
+                    selections: [{ id: 'ryan', start: 6, end: 14 }], strikes: [], bolds: [] });
+
+                // Ryan bolds "politics", all cursors fade
+                t += 400;
+                steps.push({ t: t, text: text3,
+                    cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
+                    selections: [], strikes: [], bolds: [{ start: 6, end: 14 }],
+                    fading: ['ryan', 'nate', 'galen'] });
+
+                // Final — cursors gone
+                t += 600;
+                steps.push({ t: t, text: text3,
+                    cursors: [], selections: [], strikes: [], bolds: [{ start: 6, end: 14 }] });
+
+                return steps;
+            }
+
+            function runAnimation() {
+                var steps = buildSteps();
                 steps.forEach(function(step) {
                     setTimeout(function() { render(step); }, step.t);
                 });
-            }, 800);
+            }
+
+            // Wait for site content to be visible (after loader finishes) before starting
+            var sc = document.getElementById('site-content');
+            if (sc && sc.classList.contains('visible')) {
+                setTimeout(runAnimation, 300);
+            } else if (sc) {
+                var obs = new MutationObserver(function() {
+                    if (sc.classList.contains('visible')) {
+                        obs.disconnect();
+                        setTimeout(runAnimation, 300);
+                    }
+                });
+                obs.observe(sc, { attributes: true, attributeFilter: ['class'] });
+            }
         })();
 
         // 2. Hero card 3D tilt on mouse move
