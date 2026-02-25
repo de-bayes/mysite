@@ -283,6 +283,13 @@
                             sty += '--kc:' + users[st.id].c + ';';
                         }
                     }
+                    for (var ni = 0; ni < (s.newChars || []).length; ni++) {
+                        var nc = s.newChars[ni];
+                        if (i >= nc.start && i < nc.end) {
+                            cls += ' collab-new';
+                            sty += '--nc:' + users[nc.id].bg + ';';
+                        }
+                    }
                     for (var bi = 0; bi < s.bolds.length; bi++) {
                         if (i >= s.bolds[bi].start && i < s.bolds[bi].end) cls += ' collab-bold';
                     }
@@ -292,49 +299,63 @@
                 el.innerHTML = h;
             }
 
-            // Text progression:
-            // "Data, numbers, and predictions."  →  Nate replaces "numbers" with "politics"
-            // "Data, politics, and predictions." →  Galen strikes "predictions", replaces with "forecasting"
-            // "Data, politics, and forecasting." →  Ryan bolds "politics"
+            // Text progression (slow, deliberate — each edit lingers):
+            // "Data, numbers, and predictions."  →  Nate selects "numbers", strikes it, types "politics"
+            // "Data, politics, and predictions." →  Galen selects "predictions", strikes it, types "forecasting"
+            // "Data, politics, and forecasting." →  Ryan selects "politics", bolds it
             var steps = [
                 // Initial text appears
                 { t: 0,    text: 'Data, numbers, and predictions.',
                   cursors: [], selections: [], strikes: [], bolds: [] },
                 // Three cursors appear at different positions
-                { t: 400,  text: 'Data, numbers, and predictions.',
+                { t: 1000, text: 'Data, numbers, and predictions.',
                   cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 6 }, { id: 'galen', pos: 19 }],
                   selections: [], strikes: [], bolds: [] },
                 // Nate selects "numbers"
-                { t: 900,  text: 'Data, numbers, and predictions.',
+                { t: 2500, text: 'Data, numbers, and predictions.',
                   cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 13 }, { id: 'galen', pos: 19 }],
                   selections: [{ id: 'nate', start: 6, end: 13 }], strikes: [], bolds: [] },
-                // Nate replaces "numbers" → "politics"
-                { t: 1400, text: 'Data, politics, and predictions.',
+                // Nate strikes through "numbers"
+                { t: 4000, text: 'Data, numbers, and predictions.',
+                  cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 13 }, { id: 'galen', pos: 19 }],
+                  selections: [], strikes: [{ id: 'nate', start: 6, end: 13 }], bolds: [] },
+                // Nate replaces "numbers" → "politics" (new text glows)
+                { t: 5500, text: 'Data, politics, and predictions.',
                   cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 14 }, { id: 'galen', pos: 20 }],
+                  selections: [], strikes: [], bolds: [],
+                  newChars: [{ id: 'nate', start: 6, end: 14 }] },
+                // New text settles, cursors reposition
+                { t: 7500, text: 'Data, politics, and predictions.',
+                  cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
                   selections: [], strikes: [], bolds: [] },
                 // Galen selects "predictions"
-                { t: 1900, text: 'Data, politics, and predictions.',
+                { t: 9000, text: 'Data, politics, and predictions.',
                   cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
                   selections: [{ id: 'galen', start: 20, end: 31 }], strikes: [], bolds: [] },
                 // Galen strikes through "predictions"
-                { t: 2300, text: 'Data, politics, and predictions.',
+                { t: 10500, text: 'Data, politics, and predictions.',
                   cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
                   selections: [], strikes: [{ id: 'galen', start: 20, end: 31 }], bolds: [] },
-                // Galen replaces with "forecasting"
-                { t: 2800, text: 'Data, politics, and forecasting.',
+                // Galen replaces with "forecasting" (new text glows)
+                { t: 12000, text: 'Data, politics, and forecasting.',
                   cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
+                  selections: [], strikes: [], bolds: [],
+                  newChars: [{ id: 'galen', start: 20, end: 31 }] },
+                // New text settles, Ryan moves to "politics"
+                { t: 14000, text: 'Data, politics, and forecasting.',
+                  cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
                   selections: [], strikes: [], bolds: [] },
                 // Ryan selects "politics"
-                { t: 3200, text: 'Data, politics, and forecasting.',
+                { t: 15500, text: 'Data, politics, and forecasting.',
                   cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
                   selections: [{ id: 'ryan', start: 6, end: 14 }], strikes: [], bolds: [] },
-                // Ryan bolds "politics", all cursors fade
-                { t: 3600, text: 'Data, politics, and forecasting.',
+                // Ryan bolds "politics", all cursors start fading
+                { t: 17000, text: 'Data, politics, and forecasting.',
                   cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
                   selections: [], strikes: [], bolds: [{ start: 6, end: 14 }],
                   fading: ['ryan', 'nate', 'galen'] },
                 // Final state — cursors gone
-                { t: 4200, text: 'Data, politics, and forecasting.',
+                { t: 19000, text: 'Data, politics, and forecasting.',
                   cursors: [], selections: [], strikes: [], bolds: [{ start: 6, end: 14 }] }
             ];
 
@@ -342,7 +363,7 @@
                 steps.forEach(function(step) {
                     setTimeout(function() { render(step); }, step.t);
                 });
-            }, 800);
+            }, 1200);
         })();
 
         // 2. Hero card 3D tilt on mouse move
