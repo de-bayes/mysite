@@ -77,6 +77,11 @@ body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
+::selection { background: #2244cc; color: #ffffff; }
+::-moz-selection { background: #2244cc; color: #ffffff; }
+[data-theme="dark"] ::selection { background: #5c7cfa; color: #ffffff; }
+[data-theme="dark"] ::-moz-selection { background: #5c7cfa; color: #ffffff; }
+
 a { color: var(--text-primary); text-decoration: none; transition: color 0.15s ease, background 0.15s ease; }
 a:hover { color: #ffffff; background: #2244cc; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 6px; }
 [data-theme="dark"] a:hover { color: #ffffff; background: #5c7cfa; text-decoration: underline; text-decoration-style: wavy; text-decoration-color: #ffffff; text-underline-offset: 4px; text-decoration-thickness: 1.5px; padding-bottom: 6px; }
