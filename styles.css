@@ -2507,26 +2507,25 @@ body.scrolled .site-nav { box-shadow: none; }
     overflow: hidden;
 }
 
-.editorial-hero-photo {
-    width: 100%;
-    height: 35vh;
-    min-height: 200px;
-    object-fit: cover;
-    object-position: center center;
-    display: block;
-}
-
-.editorial-hero-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+.editorial-hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 3rem 2.5rem 2.5rem;
-    background: linear-gradient(to bottom, transparent, rgba(34, 68, 204, 0.85) 60%, #2244cc 100%);
+    min-height: 200px;
 }
 
-[data-theme="dark"] .editorial-hero-overlay {
-    background: linear-gradient(to bottom, transparent, rgba(27, 54, 153, 0.85) 60%, #1b3699 100%);
+.editorial-hero-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.editorial-hero-svg {
+    width: 180px;
+    height: auto;
+    flex-shrink: 0;
+    margin-left: 2rem;
+    opacity: 0.9;
 }
 
 /* --- Scroll Reveal --- */
@@ -2859,12 +2858,12 @@ body.scrolled .site-nav { box-shadow: none; }
     .editorial-page {
         padding: 5rem 1.25rem 3rem;
     }
-    .editorial-hero-photo {
-        height: 28vh;
-        min-height: 160px;
-    }
-    .editorial-hero-overlay {
+    .editorial-hero-content {
         padding: 2rem 1.5rem 2rem;
+    }
+    .editorial-hero-svg {
+        width: 120px;
+        margin-left: 1rem;
     }
     .editorial-name {
         font-size: 2.2rem;
