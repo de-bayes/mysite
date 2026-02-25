@@ -2521,11 +2521,33 @@ body.scrolled .site-nav { box-shadow: none; }
 }
 
 .editorial-hero-svg {
-    width: 180px;
-    height: auto;
     flex-shrink: 0;
     margin-left: 2rem;
-    opacity: 0.9;
+    cursor: default;
+}
+
+.editorial-hero-svg svg {
+    display: block;
+    width: 124px;
+    height: 46px;
+}
+
+.editorial-hero-svg .hero-svg-bg {
+    fill: transparent;
+    transition: fill 0.2s ease;
+}
+
+.editorial-hero-svg .hero-svg-icon {
+    stroke: #ffffff;
+    transition: stroke 0.2s ease;
+}
+
+.editorial-hero-svg:hover .hero-svg-bg {
+    fill: #ffffff;
+}
+
+.editorial-hero-svg:hover .hero-svg-icon {
+    stroke: #2244cc;
 }
 
 /* --- Scroll Reveal --- */
@@ -2690,6 +2712,10 @@ body.scrolled .site-nav { box-shadow: none; }
 /* --- Dark mode overrides --- */
 [data-theme="dark"] .editorial-hero {
     background: #1b3699;
+}
+
+[data-theme="dark"] .editorial-hero-svg:hover .hero-svg-icon {
+    stroke: #1b3699;
 }
 
 [data-theme="dark"] .editorial-body {
@@ -2862,8 +2888,11 @@ body.scrolled .site-nav { box-shadow: none; }
         padding: 2rem 1.5rem 2rem;
     }
     .editorial-hero-svg {
-        width: 120px;
         margin-left: 1rem;
+    }
+    .editorial-hero-svg svg {
+        width: 100px;
+        height: auto;
     }
     .editorial-name {
         font-size: 2.2rem;
