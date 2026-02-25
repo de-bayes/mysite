@@ -208,10 +208,12 @@
             loader.addEventListener('transitionend', function onEnd() {
                 loader.removeEventListener('transitionend', onEnd);
                 siteContent.classList.add('visible');
+                document.dispatchEvent(new Event('loaderDone'));
             }, { once: true });
             setTimeout(() => {
                 if (!siteContent.classList.contains('visible')) {
                     siteContent.classList.add('visible');
+                    document.dispatchEvent(new Event('loaderDone'));
                 }
             }, 700);
             setTimeout(showFivey, 2000);
@@ -225,10 +227,11 @@
         if (hasLoaded && !isRefresh) {
             loader.classList.add('hidden');
             siteContent.classList.add('visible');
+            document.dispatchEvent(new Event('loaderDone'));
             setTimeout(showFivey, 2000);
         } else {
-            // Show the URL animation for 3 seconds then fade out
-            setTimeout(finishLoader, 3000);
+            // Show the URL animation for 5 seconds then fade out
+            setTimeout(finishLoader, 5000);
             sessionStorage.setItem('hasLoaded', 'true');
         }
 
@@ -338,11 +341,21 @@
                   cursors: [], selections: [], strikes: [], bolds: [{ start: 6, end: 14 }] }
             ];
 
-            setTimeout(function() {
-                steps.forEach(function(step) {
-                    setTimeout(function() { render(step); }, step.t);
-                });
-            }, 800);
+            function startCollabAnimation() {
+                setTimeout(function() {
+                    steps.forEach(function(step) {
+                        setTimeout(function() { render(step); }, step.t);
+                    });
+                }, 800);
+            }
+
+            // Wait for loader to finish before starting the animation
+            var loaderEl = document.getElementById('loader');
+            if (loaderEl && loaderEl.classList.contains('hidden')) {
+                startCollabAnimation();
+            } else {
+                document.addEventListener('loaderDone', startCollabAnimation, { once: true });
+            }
         })();
 
         // 2. Hero card 3D tilt on mouse move
@@ -4807,7 +4820,7 @@
         // STATS BAR FILL + COUNTER ANIMATIONS
         // =============================================
         function initStatAnimations() {
-            // Animated bar fills
+            // Animated bar fills (IntersectionObserver — safe to init early)
             const bars = document.querySelectorAll('.stat-card-bar-fill[data-width]');
             if (bars.length) {
                 const barObserver = new IntersectionObserver((entries) => {
@@ -4821,18 +4834,26 @@
                 }, { threshold: 0.1 });
                 bars.forEach(bar => barObserver.observe(bar));
             }
-            // Counter animations for hero stats
-            const counters = document.querySelectorAll('.hero-stat-value[data-count]');
-            counters.forEach(el => {
-                const target = parseInt(el.dataset.count);
-                let current = 0;
-                const increment = Math.max(1, Math.floor(target / 30));
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) { current = target; clearInterval(timer); }
-                    el.textContent = current;
-                }, 50);
-            });
+            // Counter animations for hero stats — wait for loader to finish
+            function startCounters() {
+                const counters = document.querySelectorAll('.hero-stat-value[data-count]');
+                counters.forEach(el => {
+                    const target = parseInt(el.dataset.count);
+                    let current = 0;
+                    const increment = Math.max(1, Math.floor(target / 30));
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) { current = target; clearInterval(timer); }
+                        el.textContent = current;
+                    }, 50);
+                });
+            }
+            const loaderEl = document.getElementById('loader');
+            if (loaderEl && loaderEl.classList.contains('hidden')) {
+                startCounters();
+            } else {
+                document.addEventListener('loaderDone', startCounters, { once: true });
+            }
         }
         initStatAnimations();
 
