@@ -246,6 +246,7 @@
         // === LANDING PAGE ENHANCEMENTS ===
 
         // 1. Collaborative editing animation — multiple cursors editing the tagline
+        // Character-by-character typing, selection expansion, strikethrough, bold highlight
         (function initCollabTagline() {
             var el = document.getElementById('editorial-tagline');
             if (!el) return;
@@ -256,38 +257,58 @@
                 galen: { name: 'Galen', c: '#db4437', bg: 'rgba(219,68,55,0.3)' }
             };
 
-            function render(s) {
+            // Mutable animation state
+            var text = '';
+            var cursors = [];
+            var selections = [];
+            var strikes = [];
+            var bolds = [];
+            var fading = [];
+            var boldHighlight = false;
+
+            function cur(id) {
+                for (var i = 0; i < cursors.length; i++) {
+                    if (cursors[i].id === id) return cursors[i];
+                }
+                return null;
+            }
+
+            function render() {
                 var h = '';
-                for (var i = 0; i <= s.text.length; i++) {
-                    for (var ci = 0; ci < s.cursors.length; ci++) {
-                        var cur = s.cursors[ci];
-                        if (cur.pos === i) {
-                            var u = users[cur.id];
-                            var f = (s.fading || []).indexOf(cur.id) >= 0 ? ' fading' : '';
+                for (var i = 0; i <= text.length; i++) {
+                    for (var ci = 0; ci < cursors.length; ci++) {
+                        var c = cursors[ci];
+                        if (c.pos === i) {
+                            var u = users[c.id];
+                            var f = fading.indexOf(c.id) >= 0 ? ' fading' : '';
                             h += '<span class="collab-cursor' + f + '" style="--c:' + u.c + '">'
                                + '<span class="collab-cursor-flag">' + u.name + '</span></span>';
                         }
                     }
-                    if (i >= s.text.length) break;
-                    var ch = s.text[i];
+                    if (i >= text.length) break;
+                    var ch = text[i];
                     var cls = 'collab-char';
                     var sty = '';
-                    for (var si = 0; si < s.selections.length; si++) {
-                        var sel = s.selections[si];
+                    for (var si = 0; si < selections.length; si++) {
+                        var sel = selections[si];
                         if (i >= sel.start && i < sel.end) {
                             cls += ' collab-selected';
                             sty += '--sc:' + users[sel.id].bg + ';';
                         }
                     }
-                    for (var ki = 0; ki < s.strikes.length; ki++) {
-                        var st = s.strikes[ki];
+                    for (var ki = 0; ki < strikes.length; ki++) {
+                        var st = strikes[ki];
                         if (i >= st.start && i < st.end) {
                             cls += ' collab-strike';
                             sty += '--kc:' + users[st.id].c + ';';
                         }
                     }
-                    for (var bi = 0; bi < s.bolds.length; bi++) {
-                        if (i >= s.bolds[bi].start && i < s.bolds[bi].end) cls += ' collab-bold';
+                    for (var bi = 0; bi < bolds.length; bi++) {
+                        var b = bolds[bi];
+                        if (i >= b.start && i < b.end) {
+                            cls += ' collab-bold';
+                            if (boldHighlight) cls += ' collab-bold-highlight';
+                        }
                     }
                     var d = ch === ' ' ? '&nbsp;' : ch;
                     h += '<span class="' + cls + '"' + (sty ? ' style="' + sty + '"' : '') + '>' + d + '</span>';
@@ -295,61 +316,173 @@
                 el.innerHTML = h;
             }
 
-            // Text progression:
-            // "Data, numbers, and predictions."  →  Nate replaces "numbers" with "politics"
-            // "Data, politics, and predictions." →  Galen strikes "predictions", replaces with "forecasting"
-            // "Data, politics, and forecasting." →  Ryan bolds "politics"
-            var steps = [
-                // Initial text appears
-                { t: 0,    text: 'Data, numbers, and predictions.',
-                  cursors: [], selections: [], strikes: [], bolds: [] },
-                // Three cursors appear at different positions
-                { t: 400,  text: 'Data, numbers, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 6 }, { id: 'galen', pos: 19 }],
-                  selections: [], strikes: [], bolds: [] },
-                // Nate selects "numbers"
-                { t: 900,  text: 'Data, numbers, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 13 }, { id: 'galen', pos: 19 }],
-                  selections: [{ id: 'nate', start: 6, end: 13 }], strikes: [], bolds: [] },
-                // Nate replaces "numbers" → "politics"
-                { t: 1400, text: 'Data, politics, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 0 }, { id: 'nate', pos: 14 }, { id: 'galen', pos: 20 }],
-                  selections: [], strikes: [], bolds: [] },
-                // Galen selects "predictions"
-                { t: 1900, text: 'Data, politics, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
-                  selections: [{ id: 'galen', start: 20, end: 31 }], strikes: [], bolds: [] },
-                // Galen strikes through "predictions"
-                { t: 2300, text: 'Data, politics, and predictions.',
-                  cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
-                  selections: [], strikes: [{ id: 'galen', start: 20, end: 31 }], bolds: [] },
-                // Galen replaces with "forecasting"
-                { t: 2800, text: 'Data, politics, and forecasting.',
-                  cursors: [{ id: 'ryan', pos: 6 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 31 }],
-                  selections: [], strikes: [], bolds: [] },
-                // Ryan selects "politics"
-                { t: 3200, text: 'Data, politics, and forecasting.',
-                  cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
-                  selections: [{ id: 'ryan', start: 6, end: 14 }], strikes: [], bolds: [] },
-                // Ryan bolds "politics", all cursors fade
-                { t: 3600, text: 'Data, politics, and forecasting.',
-                  cursors: [{ id: 'ryan', pos: 14 }, { id: 'nate', pos: 32 }, { id: 'galen', pos: 32 }],
-                  selections: [], strikes: [], bolds: [{ start: 6, end: 14 }],
-                  fading: ['ryan', 'nate', 'galen'] },
-                // Final state — cursors gone
-                { t: 4200, text: 'Data, politics, and forecasting.',
-                  cursors: [], selections: [], strikes: [], bolds: [{ start: 6, end: 14 }] }
-            ];
+            // Timeline builder
+            var timeline = [];
+            var t = 0;
+            function after(ms, fn) { t += ms; timeline.push({ t: t, fn: fn }); }
 
+            // === Phase 1: Text appears, cursors arrive one by one ===
+            after(0, function() { text = 'Data, numbers, and predictions.'; render(); });
+            after(600, function() { cursors.push({ id: 'nate', pos: 13 }); render(); });
+            after(250, function() { cursors.push({ id: 'galen', pos: 31 }); render(); });
+            after(250, function() { cursors.push({ id: 'ryan', pos: 0 }); render(); });
+
+            // === Phase 2: Nate selects "numbers" backward (pos 12→6) ===
+            after(800, function() {
+                selections = [{ id: 'nate', start: 12, end: 13 }];
+                cur('nate').pos = 12;
+                render();
+            });
+            (function() {
+                for (var p = 11; p >= 6; p--) {
+                    (function(pos) {
+                        after(55, function() {
+                            selections[0].start = pos;
+                            cur('nate').pos = pos;
+                            render();
+                        });
+                    })(p);
+                }
+            })();
+
+            // === Phase 3: Nate types "politics" (first char replaces selection) ===
+            (function() {
+                var word = 'politics';
+                after(350, function() {
+                    // First keystroke replaces the selected "numbers"
+                    text = text.substring(0, 6) + word[0] + text.substring(13);
+                    selections = [];
+                    cur('nate').pos = 7;
+                    cur('galen').pos = 25;
+                    render();
+                });
+                for (var i = 1; i < word.length; i++) {
+                    (function(idx, ch) {
+                        after(95, function() {
+                            var ins = 6 + idx;
+                            text = text.substring(0, ins) + ch + text.substring(ins);
+                            cur('nate').pos = ins + 1;
+                            cur('galen').pos += 1;
+                            render();
+                        });
+                    })(i, word[i]);
+                }
+            })();
+            // Result: "Data, politics, and predictions." | nate@14 galen@32 ryan@0
+
+            // === Phase 4: Pause, Ryan drifts cursor to pos 6 ===
+            after(700, function() { cur('ryan').pos = 6; render(); });
+
+            // === Phase 5: Galen selects "predictions" backward (pos 30→20) ===
+            after(600, function() { cur('galen').pos = 31; render(); });
+            after(350, function() {
+                selections = [{ id: 'galen', start: 30, end: 31 }];
+                cur('galen').pos = 30;
+                render();
+            });
+            (function() {
+                for (var p = 29; p >= 20; p--) {
+                    (function(pos) {
+                        after(50, function() {
+                            selections[0].start = pos;
+                            cur('galen').pos = pos;
+                            render();
+                        });
+                    })(p);
+                }
+            })();
+
+            // === Phase 6: Galen applies strikethrough ===
+            after(400, function() {
+                strikes = [{ id: 'galen', start: 20, end: 31 }];
+                selections = [];
+                cur('galen').pos = 20;
+                render();
+            });
+
+            // === Phase 7: Galen types "forecasting" (replaces struck text) ===
+            (function() {
+                var word = 'forecasting';
+                after(900, function() {
+                    text = text.substring(0, 20) + word[0] + text.substring(31);
+                    strikes = [];
+                    cur('galen').pos = 21;
+                    render();
+                });
+                for (var i = 1; i < word.length; i++) {
+                    (function(idx, ch) {
+                        after(80, function() {
+                            var ins = 20 + idx;
+                            text = text.substring(0, ins) + ch + text.substring(ins);
+                            cur('galen').pos = ins + 1;
+                            render();
+                        });
+                    })(i, word[i]);
+                }
+            })();
+            // Result: "Data, politics, and forecasting." | galen@31
+
+            // === Phase 8: Ryan selects "politics" forward (pos 6→14) ===
+            after(900, function() {
+                cur('nate').pos = 32;
+                cur('galen').pos = 32;
+                render();
+            });
+            after(500, function() {
+                selections = [{ id: 'ryan', start: 6, end: 7 }];
+                cur('ryan').pos = 7;
+                render();
+            });
+            (function() {
+                for (var p = 8; p <= 14; p++) {
+                    (function(pos) {
+                        after(60, function() {
+                            selections[0].end = pos;
+                            cur('ryan').pos = pos;
+                            render();
+                        });
+                    })(p);
+                }
+            })();
+
+            // === Phase 9: Ryan bolds "politics" — highlight flash ===
+            after(400, function() {
+                bolds = [{ start: 6, end: 14 }];
+                selections = [];
+                boldHighlight = true;
+                render();
+            });
+
+            // === Phase 10: Highlight fades (CSS animation), then clean render ===
+            after(1400, function() {
+                boldHighlight = false;
+                render();
+            });
+
+            // === Phase 11: All cursors fade out ===
+            after(700, function() {
+                fading = ['ryan', 'nate', 'galen'];
+                render();
+            });
+
+            // === Phase 12: Cursors gone — final state ===
+            after(600, function() {
+                cursors = [];
+                fading = [];
+                render();
+            });
+
+            // === Run ===
             function startCollabAnimation() {
                 setTimeout(function() {
-                    steps.forEach(function(step) {
-                        setTimeout(function() { render(step); }, step.t);
-                    });
+                    for (var i = 0; i < timeline.length; i++) {
+                        (function(step) {
+                            setTimeout(step.fn, step.t);
+                        })(timeline[i]);
+                    }
                 }, 800);
             }
 
-            // Wait for loader to finish before starting the animation
             var loaderEl = document.getElementById('loader');
             if (loaderEl && loaderEl.classList.contains('hidden')) {
                 startCollabAnimation();
