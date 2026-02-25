@@ -321,11 +321,23 @@
             var t = 0;
             function after(ms, fn) { t += ms; timeline.push({ t: t, fn: fn }); }
 
-            // === Phase 1: Text appears, cursors arrive one by one ===
-            after(0, function() { text = 'Data, numbers, and predictions.'; render(); });
+            // === Phase 1: Ryan types the text character by character ===
+            after(0, function() { text = ''; cursors.push({ id: 'ryan', pos: 0 }); render(); });
+            (function() {
+                var fullText = 'Data, numbers, and predictions.';
+                for (var i = 0; i < fullText.length; i++) {
+                    (function(idx, ch) {
+                        after(60, function() {
+                            text += ch;
+                            cur('ryan').pos = idx + 1;
+                            render();
+                        });
+                    })(i, fullText[i]);
+                }
+            })();
+            // Other cursors arrive after typing
             after(600, function() { cursors.push({ id: 'nate', pos: 13 }); render(); });
             after(250, function() { cursors.push({ id: 'galen', pos: 31 }); render(); });
-            after(250, function() { cursors.push({ id: 'ryan', pos: 0 }); render(); });
 
             // === Phase 2: Nate selects "numbers" backward (pos 12→6) ===
             after(800, function() {
@@ -354,6 +366,7 @@
                     selections = [];
                     cur('nate').pos = 7;
                     cur('galen').pos = 25;
+                    cur('ryan').pos = 25;
                     render();
                 });
                 for (var i = 1; i < word.length; i++) {
@@ -363,12 +376,13 @@
                             text = text.substring(0, ins) + ch + text.substring(ins);
                             cur('nate').pos = ins + 1;
                             cur('galen').pos += 1;
+                            cur('ryan').pos += 1;
                             render();
                         });
                     })(i, word[i]);
                 }
             })();
-            // Result: "Data, politics, and predictions." | nate@14 galen@32 ryan@0
+            // Result: "Data, politics, and predictions." | nate@14 galen@32 ryan@32
 
             // === Phase 4: Pause, Ryan drifts cursor to pos 6 ===
             after(700, function() { cur('ryan').pos = 6; render(); });
@@ -491,7 +505,7 @@
             }
         })();
 
-        // 2. Hero card 3D tilt on mouse move
+        // 2. Hero card 3D tilt on mouse move (integrates with scroll zoom scale)
         (function initHeroTilt() {
             const hero = document.getElementById('editorial-hero');
             if (!hero) return;
@@ -503,14 +517,16 @@
                 const rect = hero.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width - 0.5;
                 const y = (e.clientY - rect.top) / rect.height - 0.5;
-                const tiltX = y * -8;  // max 8 degrees
+                const tiltX = y * -8;
                 const tiltY = x * 8;
-                hero.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
+                const s = window._heroBaseScale || 1;
+                hero.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${s * 1.02})`;
                 hero.style.boxShadow = `${-tiltY * 2}px ${tiltX * 2}px 30px rgba(34, 68, 204, 0.2)`;
             });
 
             hero.addEventListener('mouseleave', () => {
-                hero.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
+                const s = window._heroBaseScale || 1;
+                hero.style.transform = `scale(${s})`;
                 hero.style.boxShadow = 'none';
             });
         })();
@@ -518,29 +534,85 @@
         // 3. Manifold user ID (used by forecasting page chart)
         const MANIFOLD_USER_ID = 'rqyVlY3yvaZkXJ51lMa60NlqbOI3';
 
-        // 4. Scroll-triggered reveal animations
-        (function initScrollReveal() {
-            const reveals = document.querySelectorAll('.scroll-reveal');
-            if (!reveals.length) return;
+        // 4. Scroll-driven zoom animation (hero shrinks, paragraphs breathe)
+        (function initScrollZoom() {
+            const hero = document.getElementById('editorial-hero');
+            const paragraphs = document.querySelectorAll('.editorial-body .scroll-reveal');
+            if (!hero) return;
 
-            // Set initial state
-            reveals.forEach((el, i) => {
+            // Hero zoom config
+            const HERO_START_SCALE = 1.4;
+            const HERO_END_SCALE = 1.0;
+            const HERO_SCROLL_RANGE = 300;
+
+            // Paragraph zoom config
+            const PARA_MAX_SCALE = 1.12;
+            const PARA_NORMAL_SCALE = 1.0;
+
+            // Expose base scale for tilt handler
+            window._heroBaseScale = HERO_START_SCALE;
+
+            // Set initial paragraph state
+            paragraphs.forEach(el => {
                 el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`;
+                el.style.transform = 'scale(0.97) translateY(20px)';
             });
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.15 });
+            let ticking = false;
 
-            reveals.forEach(el => observer.observe(el));
+            function onScroll() {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(function() {
+                    const scrollY = window.scrollY;
+
+                    // --- Hero zoom: shrink from 1.4 → 1.0 over 300px ---
+                    const heroProgress = Math.min(scrollY / HERO_SCROLL_RANGE, 1);
+                    // Ease-out curve for smoother deceleration
+                    const eased = 1 - Math.pow(1 - heroProgress, 2);
+                    const heroScale = HERO_START_SCALE - (HERO_START_SCALE - HERO_END_SCALE) * eased;
+                    window._heroBaseScale = heroScale;
+                    hero.style.transform = 'scale(' + heroScale + ')';
+
+                    // --- Paragraph zoom: breathe in/out based on viewport center ---
+                    const viewportCenter = window.innerHeight / 2;
+                    paragraphs.forEach(function(el) {
+                        const rect = el.getBoundingClientRect();
+                        const elCenter = rect.top + rect.height / 2;
+                        const distance = Math.abs(elCenter - viewportCenter);
+                        const maxDist = window.innerHeight * 0.6;
+
+                        if (rect.top < window.innerHeight + 50 && rect.bottom > -50) {
+                            // Element is in or near viewport
+                            el.style.opacity = '1';
+                            const closeness = 1 - Math.min(distance / maxDist, 1);
+                            // Ease the closeness for a softer curve
+                            const easedCloseness = closeness * closeness;
+                            const scale = PARA_NORMAL_SCALE + (PARA_MAX_SCALE - PARA_NORMAL_SCALE) * easedCloseness;
+                            el.style.transform = 'scale(' + scale + ')';
+                        }
+                    });
+
+                    ticking = false;
+                });
+            }
+
+            function initZoom() {
+                hero.style.transform = 'scale(' + HERO_START_SCALE + ')';
+                onScroll();
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+
+            // Initialize after loader finishes or immediately if already loaded
+            var loaderEl = document.getElementById('loader');
+            if (loaderEl && loaderEl.classList.contains('hidden')) {
+                initZoom();
+            } else if (sessionStorage.getItem('hasLoaded')) {
+                initZoom();
+            } else {
+                document.addEventListener('loaderDone', initZoom, { once: true });
+            }
         })();
 
         // 4. Fivey bounce counter
@@ -4914,19 +4986,17 @@
 
         // =============================================
         // SCROLL REVEAL ANIMATIONS
+        // (editorial-body .scroll-reveal paragraphs are handled by initScrollZoom above)
         // =============================================
         function initScrollReveals() {
-            const revealEls = document.querySelectorAll('.scroll-reveal, .scroll-stagger');
+            const revealEls = document.querySelectorAll('.scroll-stagger');
             if (!revealEls.length) return;
 
-            // Instantly reveal elements already in the viewport (above the fold)
-            // to prevent the jarring translateY "jump" on page load
             revealEls.forEach(el => {
                 const rect = el.getBoundingClientRect();
                 if (rect.top < window.innerHeight && rect.bottom > 0) {
                     el.style.transition = 'none';
                     el.classList.add('revealed');
-                    // Re-enable transitions after paint so future scroll reveals still animate
                     requestAnimationFrame(() => {
                         requestAnimationFrame(() => { el.style.transition = ''; });
                     });
