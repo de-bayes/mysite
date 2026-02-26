@@ -39,7 +39,7 @@
 
 
         <!-- EDITORIAL LAYOUT -->
-        <div class="hero-spacer" id="hero-spacer">
+        <div class="editorial-page">
             <header class="editorial-hero" id="editorial-hero">
                 <div class="editorial-hero-content">
                     <div class="editorial-hero-text">
@@ -57,9 +57,6 @@
                     </div>
                 </div>
             </header>
-        </div>
-
-        <div class="editorial-page">
             <main class="editorial-body">
                 <p class="scroll-reveal">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p>
 
@@ -494,28 +491,21 @@
         // 2. Hero shrink on scroll
         (function initHeroShrink() {
             const hero = document.getElementById('editorial-hero');
-            const spacer = document.getElementById('hero-spacer');
-            if (!hero || !spacer) return;
+            if (!hero) return;
 
-            const startH = hero.offsetHeight; // natural height
-            const endH = 120;
+            const startH = hero.offsetHeight;
+            const endH = 140;
+            const scrollRange = startH * 1.2; // scroll distance to fully shrink
             let ticking = false;
 
             function onScroll() {
                 if (ticking) return;
                 ticking = true;
                 requestAnimationFrame(() => {
-                    const spacerH = spacer.offsetHeight;
-                    const scrollRange = spacerH - startH;
                     const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
 
                     const height = startH - progress * (startH - endH);
                     hero.style.height = height + 'px';
-
-                    const scale = 1 - progress * 0.02;
-                    const radius = progress * 8;
-                    hero.style.transform = `scale(${scale})`;
-                    hero.style.borderRadius = radius + 'px';
 
                     ticking = false;
                 });

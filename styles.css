@@ -2492,20 +2492,11 @@ body.scrolled .site-nav { box-shadow: none; }
    EDITORIAL LAYOUT — Blue on White
    ============================================= */
 
-/* --- Hero Spacer --- */
-.hero-spacer {
-    height: 150vh;
-    position: relative;
-}
-
 .editorial-page {
     max-width: 640px;
     margin: 0 auto;
-    padding: 3rem 2rem 4rem;
+    padding: 8rem 2rem 4rem;
     min-height: 100vh;
-    position: relative;
-    z-index: 1;
-    background: var(--bg-primary);
 }
 
 /* --- Blue Hero Patch --- */
@@ -2513,24 +2504,18 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #2244cc;
     color: #ffffff;
     padding: 0;
-    height: 100vh;
-    height: 100dvh;
-    position: sticky;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    will-change: transform, height;
+    margin-bottom: 3rem;
+    position: relative;
     overflow: hidden;
+    will-change: transform, height;
 }
 
 .editorial-hero-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 3rem 2.5rem 2.5rem;
-    max-width: 640px;
-    width: 100%;
+    padding: 4rem 2.5rem;
+    min-height: 350px;
 }
 
 .editorial-hero-text {
@@ -2940,10 +2925,11 @@ body.scrolled .site-nav { box-shadow: none; }
 /* --- Responsive --- */
 @media (max-width: 600px) {
     .editorial-page {
-        padding: 2rem 1.25rem 3rem;
+        padding: 5rem 1.25rem 3rem;
     }
     .editorial-hero-content {
         padding: 2rem 1.5rem 2rem;
+        min-height: 250px;
     }
     .editorial-hero-svg {
         margin-left: 1rem;
