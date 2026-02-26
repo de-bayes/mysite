@@ -2492,11 +2492,65 @@ body.scrolled .site-nav { box-shadow: none; }
    EDITORIAL LAYOUT — Blue on White
    ============================================= */
 
+/* --- Hero Spacer (parallax scroll room) --- */
+.hero-spacer {
+    height: 180vh;
+    position: relative;
+}
+
+/* --- Featured Paragraph Sections --- */
+.featured-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.featured-paragraph {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #2244cc;
+    max-width: 640px;
+    width: 100%;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center center;
+}
+
+.featured-paragraph strong { color: #2244cc; font-weight: 700; }
+
+.featured-paragraph a {
+    color: #2244cc;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s ease, background 0.2s ease;
+    padding: 0.1em 0.15em;
+    border-radius: 2px;
+}
+
+.featured-paragraph a:hover {
+    color: #ffffff;
+    background: #2244cc;
+    text-decoration-style: wavy;
+    text-decoration-color: #ffffff;
+    text-decoration-thickness: 1.5px;
+    padding-bottom: 6px;
+}
+
+.featured-paragraph a:hover strong { color: inherit; }
+
+[data-theme="dark"] .featured-paragraph { color: #5c7cfa; }
+[data-theme="dark"] .featured-paragraph strong { color: #7b9bff; }
+[data-theme="dark"] .featured-paragraph a { color: #5c7cfa; }
+[data-theme="dark"] .featured-paragraph a:hover { color: #ffffff; background: #5c7cfa; text-decoration-color: #ffffff; }
+[data-theme="dark"] .featured-paragraph a:hover strong { color: inherit; }
+
 .editorial-page {
     max-width: 640px;
     margin: 0 auto;
-    padding: 8rem 2rem 4rem;
-    min-height: 100vh;
+    padding: 3rem 2rem 4rem;
 }
 
 /* --- Blue Hero Patch --- */
@@ -2504,8 +2558,14 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #2244cc;
     color: #ffffff;
     padding: 0;
-    margin-bottom: 3rem;
-    position: relative;
+    height: 100vh;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, height;
     overflow: hidden;
 }
 
@@ -2514,7 +2574,8 @@ body.scrolled .site-nav { box-shadow: none; }
     align-items: center;
     justify-content: space-between;
     padding: 3rem 2.5rem 2.5rem;
-    min-height: 200px;
+    max-width: 640px;
+    width: 100%;
 }
 
 .editorial-hero-text {
@@ -2924,7 +2985,11 @@ body.scrolled .site-nav { box-shadow: none; }
 /* --- Responsive --- */
 @media (max-width: 600px) {
     .editorial-page {
-        padding: 5rem 1.25rem 3rem;
+        padding: 2rem 1.25rem 3rem;
+    }
+    .featured-section {
+        min-height: 80vh;
+        padding: 1.5rem;
     }
     .editorial-hero-content {
         padding: 2rem 1.5rem 2rem;
