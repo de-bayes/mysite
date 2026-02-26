@@ -39,7 +39,7 @@
 
 
         <!-- EDITORIAL LAYOUT -->
-        <div class="hero-spacer" id="hero-spacer">
+        <div class="editorial-page">
             <header class="editorial-hero" id="editorial-hero">
                 <div class="editorial-hero-content">
                     <div class="editorial-hero-text">
@@ -57,9 +57,6 @@
                     </div>
                 </div>
             </header>
-        </div>
-
-        <div class="editorial-page">
             <!-- Essay-style about section with inline links -->
             <main class="editorial-body">
                 <p class="scroll-reveal">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p>
@@ -492,11 +489,16 @@
             }
         })();
 
-        // 2. Hero parallax scroll-shrink
-        (function initHeroParallax() {
-            const hero = document.getElementById('editorial-hero');
-            const spacer = document.getElementById('hero-spacer');
-            if (!hero || !spacer) return;
+        // 2. Paragraph focus-on-scroll: each paragraph enlarges when centered, shrinks when not
+        (function initParagraphFocus() {
+            const paragraphs = document.querySelectorAll('.editorial-body .scroll-reveal');
+            if (!paragraphs.length) return;
+
+            // Set base styles
+            paragraphs.forEach(p => {
+                p.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+                p.style.transformOrigin = 'left center';
+            });
 
             let ticking = false;
 
@@ -504,27 +506,30 @@
                 if (ticking) return;
                 ticking = true;
                 requestAnimationFrame(() => {
-                    const spacerH = spacer.offsetHeight;
                     const viewH = window.innerHeight;
-                    const scrollRange = spacerH - viewH;
-                    const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
+                    const center = viewH * 0.45;
 
-                    // Interpolate height: 100vh -> 120px
-                    const height = viewH - progress * (viewH - 120);
-                    hero.style.height = height + 'px';
+                    paragraphs.forEach(p => {
+                        const rect = p.getBoundingClientRect();
+                        const pCenter = rect.top + rect.height / 2;
+                        const dist = Math.abs(pCenter - center);
+                        const maxDist = viewH * 0.6;
+                        const progress = Math.min(dist / maxDist, 1); // 0 = centered, 1 = far
 
-                    // Subtle scale + border radius for depth
-                    const scale = 1 - progress * 0.03;
-                    const radius = progress * 12;
-                    hero.style.transform = `scale(${scale})`;
-                    hero.style.borderRadius = radius + 'px';
+                        const scale = 1 - progress * 0.08;    // 1.0 → 0.92
+                        const opacity = 1 - progress * 0.5;   // 1.0 → 0.5
+
+                        p.style.transform = `scale(${scale})`;
+                        p.style.opacity = Math.max(opacity, 0.3);
+                    });
 
                     ticking = false;
                 });
             }
 
             window.addEventListener('scroll', onScroll, { passive: true });
-            onScroll(); // initial call
+            // Run after reveal animations have fired
+            setTimeout(onScroll, 1200);
         })();
 
         // 3. Manifold user ID (used by forecasting page chart)
