@@ -2492,11 +2492,20 @@ body.scrolled .site-nav { box-shadow: none; }
    EDITORIAL LAYOUT — Blue on White
    ============================================= */
 
+/* --- Hero Spacer (parallax scroll room) --- */
+.hero-spacer {
+    height: 180vh;
+    position: relative;
+}
+
 .editorial-page {
     max-width: 640px;
     margin: 0 auto;
-    padding: 8rem 2rem 4rem;
+    padding: 3rem 2rem 4rem;
     min-height: 100vh;
+    position: relative;
+    z-index: 1;
+    background: var(--bg-primary);
 }
 
 /* --- Blue Hero Patch --- */
@@ -2504,10 +2513,14 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #2244cc;
     color: #ffffff;
     padding: 0;
-    margin-bottom: 3rem;
-    will-change: transform;
-    transform-style: preserve-3d;
-    position: relative;
+    height: 100vh;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, height;
     overflow: hidden;
 }
 
@@ -2516,7 +2529,8 @@ body.scrolled .site-nav { box-shadow: none; }
     align-items: center;
     justify-content: space-between;
     padding: 3rem 2.5rem 2.5rem;
-    min-height: 200px;
+    max-width: 640px;
+    width: 100%;
 }
 
 .editorial-hero-text {
@@ -2690,11 +2704,23 @@ body.scrolled .site-nav { box-shadow: none; }
     padding-bottom: 6px;
 }
 
+.editorial-body a:hover strong { color: inherit; }
+
 /* --- Professional Footer --- */
 .editorial-footer {
-    border-top: 2px solid #2244cc;
-    padding: 1.5rem 0 1rem;
+    background: #2244cc;
+    color: #ffffff;
+    border-top: none;
+    padding: 2rem;
     margin-top: 4rem;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+.editorial-footer > * {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .editorial-sitemap {
@@ -2708,7 +2734,7 @@ body.scrolled .site-nav { box-shadow: none; }
     font-family: var(--font-sans);
     font-size: 0.75rem;
     font-weight: 600;
-    color: #2244cc;
+    color: #ffffff;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -2717,11 +2743,11 @@ body.scrolled .site-nav { box-shadow: none; }
 }
 
 .editorial-sitemap a:hover {
-    color: #ffffff;
-    background: #2244cc;
+    color: #2244cc;
+    background: #ffffff;
     text-decoration: underline;
     text-decoration-style: wavy;
-    text-decoration-color: #ffffff;
+    text-decoration-color: #2244cc;
     text-underline-offset: 4px;
     text-decoration-thickness: 1.5px;
     padding-bottom: 6px;
@@ -2734,7 +2760,7 @@ body.scrolled .site-nav { box-shadow: none; }
     font-family: var(--font-sans);
     font-size: 0.72rem;
     font-weight: 500;
-    color: #2244cc;
+    color: #ffffff;
     letter-spacing: 0.04em;
     white-space: nowrap;
 }
@@ -2771,34 +2797,36 @@ body.scrolled .site-nav { box-shadow: none; }
     padding-bottom: 6px;
 }
 
+[data-theme="dark"] .editorial-body a:hover strong { color: inherit; }
+
 [data-theme="dark"] .editorial-footer {
-    border-top-color: #5c7cfa;
+    background: #1b3699;
 }
 
 [data-theme="dark"] .editorial-sitemap a {
-    color: #5c7cfa;
+    color: #ffffff;
 }
 
 [data-theme="dark"] .editorial-sitemap a:hover {
-    color: #ffffff;
-    background: #5c7cfa;
+    color: #1b3699;
+    background: #ffffff;
     text-decoration: underline;
     text-decoration-style: wavy;
-    text-decoration-color: #ffffff;
+    text-decoration-color: #1b3699;
     text-underline-offset: 4px;
     text-decoration-thickness: 1.5px;
     padding-bottom: 6px;
 }
 
 [data-theme="dark"] .editorial-footer-bottom {
-    color: #5c7cfa;
+    color: #ffffff;
 }
 
 /* --- Theme Toggle --- */
 .minimal-theme-toggle {
     background: none;
-    border: 1px solid #2244cc;
-    color: #2244cc;
+    border: 1px solid #ffffff;
+    color: #ffffff;
     cursor: pointer;
     font-size: 0.95rem;
     padding: 0.3rem 0.6rem;
@@ -2808,20 +2836,20 @@ body.scrolled .site-nav { box-shadow: none; }
 }
 
 .minimal-theme-toggle:hover {
-    color: #ffffff;
-    background: #2244cc;
-    border-color: #2244cc;
+    color: #2244cc;
+    background: #ffffff;
+    border-color: #ffffff;
 }
 
 [data-theme="dark"] .minimal-theme-toggle {
-    border-color: #5c7cfa;
-    color: #5c7cfa;
+    border-color: #ffffff;
+    color: #ffffff;
 }
 
 [data-theme="dark"] .minimal-theme-toggle:hover {
-    color: #ffffff;
-    background: #2244cc;
-    border-color: #2244cc;
+    color: #1b3699;
+    background: #ffffff;
+    border-color: #ffffff;
 }
 
 /* --- Forecast Line in Hero --- */
@@ -2912,7 +2940,7 @@ body.scrolled .site-nav { box-shadow: none; }
 /* --- Responsive --- */
 @media (max-width: 600px) {
     .editorial-page {
-        padding: 5rem 1.25rem 3rem;
+        padding: 2rem 1.25rem 3rem;
     }
     .editorial-hero-content {
         padding: 2rem 1.5rem 2rem;

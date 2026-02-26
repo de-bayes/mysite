@@ -39,8 +39,7 @@
 
 
         <!-- EDITORIAL LAYOUT -->
-        <div class="editorial-page">
-            <!-- Blue hero patch -->
+        <div class="hero-spacer" id="hero-spacer">
             <header class="editorial-hero" id="editorial-hero">
                 <div class="editorial-hero-content">
                     <div class="editorial-hero-text">
@@ -58,7 +57,9 @@
                     </div>
                 </div>
             </header>
+        </div>
 
+        <div class="editorial-page">
             <!-- Essay-style about section with inline links -->
             <main class="editorial-body">
                 <p class="scroll-reveal">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p>
@@ -491,28 +492,39 @@
             }
         })();
 
-        // 2. Hero card 3D tilt on mouse move
-        (function initHeroTilt() {
+        // 2. Hero parallax scroll-shrink
+        (function initHeroParallax() {
             const hero = document.getElementById('editorial-hero');
-            if (!hero) return;
+            const spacer = document.getElementById('hero-spacer');
+            if (!hero || !spacer) return;
 
-            hero.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
-            hero.style.transformStyle = 'preserve-3d';
+            let ticking = false;
 
-            hero.addEventListener('mousemove', (e) => {
-                const rect = hero.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                const tiltX = y * -8;  // max 8 degrees
-                const tiltY = x * 8;
-                hero.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
-                hero.style.boxShadow = `${-tiltY * 2}px ${tiltX * 2}px 30px rgba(34, 68, 204, 0.2)`;
-            });
+            function onScroll() {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(() => {
+                    const spacerH = spacer.offsetHeight;
+                    const viewH = window.innerHeight;
+                    const scrollRange = spacerH - viewH;
+                    const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
 
-            hero.addEventListener('mouseleave', () => {
-                hero.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
-                hero.style.boxShadow = 'none';
-            });
+                    // Interpolate height: 100vh -> 120px
+                    const height = viewH - progress * (viewH - 120);
+                    hero.style.height = height + 'px';
+
+                    // Subtle scale + border radius for depth
+                    const scale = 1 - progress * 0.03;
+                    const radius = progress * 12;
+                    hero.style.transform = `scale(${scale})`;
+                    hero.style.borderRadius = radius + 'px';
+
+                    ticking = false;
+                });
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll(); // initial call
         })();
 
         // 3. Manifold user ID (used by forecasting page chart)
