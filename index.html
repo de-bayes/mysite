@@ -39,8 +39,7 @@
 
 
         <!-- EDITORIAL LAYOUT -->
-        <!-- Full-screen hero -->
-        <div class="hero-spacer" id="hero-spacer">
+        <div class="editorial-page">
             <header class="editorial-hero" id="editorial-hero">
                 <div class="editorial-hero-content">
                     <div class="editorial-hero-text">
@@ -58,18 +57,15 @@
                     </div>
                 </div>
             </header>
-        </div>
 
-        <!-- Featured paragraphs — each gets its own scroll section -->
-        <div class="featured-section"><p class="featured-paragraph">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p></div>
-
-        <div class="featured-section"><p class="featured-paragraph">I built <a href="https://il9.org" target="_blank"><strong>IL9.org</strong></a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm also a <strong>Student Fellow</strong> at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> doing race-call work and election modeling, and a <strong>Volunteer Finance Lead</strong> for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss congressional campaign</a>.</p></div>
-
-        <div class="featured-section"><p class="featured-paragraph">I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p></div>
-
-        <!-- Normal page after scroll story -->
-        <div class="editorial-page">
+            <!-- Featured paragraphs — each gets its own scroll section -->
             <main class="editorial-body">
+                <div class="featured-section"><p class="featured-paragraph">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p></div>
+
+                <div class="featured-section"><p class="featured-paragraph">I built <a href="https://il9.org" target="_blank"><strong>IL9.org</strong></a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm also a <strong>Student Fellow</strong> at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> doing race-call work and election modeling, and a <strong>Volunteer Finance Lead</strong> for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss congressional campaign</a>.</p></div>
+
+                <div class="featured-section"><p class="featured-paragraph">I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p></div>
+
                 <p style="margin-top: 1.5rem;"><a href="resume.html" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid #2244cc; padding: 0.5rem 1.2rem;">View Resume &rarr;</a></p>
             </main>
 
@@ -494,12 +490,10 @@
             }
         })();
 
-        // 2. Hero parallax shrink + featured paragraph focus
+        // 2. Featured paragraph focus on scroll
         (function initScrollStory() {
-            const hero = document.getElementById('editorial-hero');
-            const spacer = document.getElementById('hero-spacer');
             const paragraphs = document.querySelectorAll('.featured-paragraph');
-            if (!hero || !spacer) return;
+            if (!paragraphs.length) return;
 
             let ticking = false;
 
@@ -508,32 +502,24 @@
                 ticking = true;
                 requestAnimationFrame(() => {
                     const viewH = window.innerHeight;
+                    const center = viewH * 0.45;
 
-                    // Hero shrink: 100vh → 120px as spacer scrolls
-                    const spacerH = spacer.offsetHeight;
-                    const scrollRange = spacerH - viewH;
-                    const heroProgress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
-                    const height = viewH - heroProgress * (viewH - 120);
-                    hero.style.height = height + 'px';
-                    const scale = 1 - heroProgress * 0.03;
-                    const radius = heroProgress * 12;
-                    hero.style.transform = `scale(${scale})`;
-                    hero.style.borderRadius = radius + 'px';
-
-                    // Featured paragraphs: scale up when centered, fade when far
-                    const center = viewH * 0.5;
                     paragraphs.forEach(p => {
                         const rect = p.getBoundingClientRect();
                         const pCenter = rect.top + rect.height / 2;
                         const dist = Math.abs(pCenter - center);
-                        const maxDist = viewH * 0.7;
-                        const progress = Math.min(dist / maxDist, 1);
+                        const maxDist = viewH * 0.55;
+                        // Smooth easing curve instead of linear
+                        const raw = Math.min(dist / maxDist, 1);
+                        const progress = raw * raw; // quadratic ease — snappier focus
 
-                        const s = 1 - progress * 0.12;      // 1.0 → 0.88
-                        const opacity = 1 - progress * 0.6;  // 1.0 → 0.4
+                        const s = 1 - progress * 0.1;       // 1.0 → 0.90
+                        const opacity = 1 - progress * 0.7;  // 1.0 → 0.3
+                        const blur = progress * 1.5;          // 0 → 1.5px blur
 
                         p.style.transform = `scale(${s})`;
-                        p.style.opacity = Math.max(opacity, 0.15);
+                        p.style.opacity = Math.max(opacity, 0.1);
+                        p.style.filter = blur > 0.1 ? `blur(${blur}px)` : 'none';
                     });
 
                     ticking = false;
