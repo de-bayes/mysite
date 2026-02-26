@@ -488,32 +488,7 @@
             }
         })();
 
-        // 2. Hero shrink on scroll
-        (function initHeroShrink() {
-            const hero = document.getElementById('editorial-hero');
-            if (!hero) return;
-
-            const startH = hero.offsetHeight;
-            const endH = 140;
-            const scrollRange = startH * 1.2; // scroll distance to fully shrink
-            let ticking = false;
-
-            function onScroll() {
-                if (ticking) return;
-                ticking = true;
-                requestAnimationFrame(() => {
-                    const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
-
-                    const height = startH - progress * (startH - endH);
-                    hero.style.height = height + 'px';
-
-                    ticking = false;
-                });
-            }
-
-            window.addEventListener('scroll', onScroll, { passive: true });
-            onScroll();
-        })();
+        // 2. Hero shrink on scroll — removed (normal scroll)
 
         // 3. Manifold user ID (used by forecasting page chart)
         const MANIFOLD_USER_ID = 'rqyVlY3yvaZkXJ51lMa60NlqbOI3';

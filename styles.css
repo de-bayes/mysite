@@ -2505,11 +2505,7 @@ body.scrolled .site-nav { box-shadow: none; }
     color: #ffffff;
     padding: 0;
     margin-bottom: 3rem;
-    position: sticky;
-    top: 0;
-    z-index: 2;
     overflow: hidden;
-    will-change: transform, height;
 }
 
 .editorial-hero-content {
