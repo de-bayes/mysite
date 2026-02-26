@@ -2505,7 +2505,9 @@ body.scrolled .site-nav { box-shadow: none; }
     color: #ffffff;
     padding: 0;
     margin-bottom: 3rem;
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 2;
     overflow: hidden;
     will-change: transform, height;
 }
@@ -2696,7 +2698,7 @@ body.scrolled .site-nav { box-shadow: none; }
     background: #2244cc;
     color: #ffffff;
     border-top: none;
-    padding: 2rem;
+    padding: 4rem 2.5rem;
     margin-top: 4rem;
     width: 100vw;
     margin-left: calc(-50vw + 50%);
@@ -2940,6 +2942,9 @@ body.scrolled .site-nav { box-shadow: none; }
     }
     .editorial-name {
         font-size: 2.2rem;
+    }
+    .editorial-footer {
+        padding: 2.5rem 1.5rem;
     }
     .editorial-sitemap {
         gap: 0.3rem 0.8rem;
