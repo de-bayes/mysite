@@ -1821,6 +1821,70 @@ body.scrolled .site-nav { box-shadow: none; }
 
 
 /* =============================================
+   PRESS / MEDIA
+   ============================================= */
+.press-list {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.press-item {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s ease;
+}
+
+.press-item:last-child { border-bottom: none; }
+
+.press-outlet {
+    flex: 0 0 160px;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-top: 0.15rem;
+}
+
+.press-detail h3 {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.press-detail p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.press-detail .tl-link {
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+
+[data-theme="dark"] .press-outlet { color: #5c7cfa; }
+
+@media (max-width: 600px) {
+    .press-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .press-outlet {
+        flex: none;
+        font-size: 0.85rem;
+    }
+}
+
+
+/* =============================================
    INLINE TERMINAL SECTION
    ============================================= */
 .terminal-section {

@@ -61,7 +61,7 @@
 
                 <p class="scroll-reveal">I built <a href="https://il9.org" target="_blank"><strong>IL9.org</strong></a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm also a <strong>Student Fellow</strong> at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> doing race-call work and election modeling, and a <strong>Volunteer Finance Lead</strong> for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss congressional campaign</a>.</p>
 
-                <p class="scroll-reveal">I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
+                <p class="scroll-reveal">I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#writing" onclick="event.preventDefault();expandCard('writing')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been <a href="#press" onclick="event.preventDefault();expandCard('press')">featured</a> in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
 
                 <p class="scroll-reveal" style="margin-top: 1.5rem;"><a href="resume.html" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid #2244cc; padding: 0.5rem 1.2rem;">View Resume &rarr;</a></p>
             </main>
@@ -71,7 +71,8 @@
                 <nav class="editorial-sitemap">
                     <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Work</a>
                     <a href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
-                    <a href="#blog" onclick="event.preventDefault();expandCard('blog')">Writing</a>
+                    <a href="#writing" onclick="event.preventDefault();expandCard('writing')">Writing</a>
+                    <a href="#press" onclick="event.preventDefault();expandCard('press')">Press</a>
                     <a href="#photos" onclick="event.preventDefault();expandCard('photos')">Photos</a>
                     <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>
                     <a href="#hottakes" onclick="event.preventDefault();expandCard('hottakes')">Hot Takes</a>
@@ -1572,6 +1573,157 @@
                 </div>
                     <div class="countdown-grid" id="expand-countdown-grid">${renderCountdownCards(allCountdownsData)}</div>`;
             },
+            writing: () => `
+                <div class="tl-page">
+                    <div class="tl-hero" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+                        <h1 class="tl-title">Writing &amp; Papers</h1>
+                        <p class="tl-subtitle">Essays, articles, and research &mdash; everything I've published.</p>
+                    </div>
+
+                    <div class="tl-track" id="writing-tl-track">
+                        <div class="tl-line" id="writing-tl-line"></div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">May 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>People's Edict</h3>
+                                    <span class="tl-org">Essay</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>An on-demand essay on power and strife, exploring when and how authority should be challenged. Written in 50 minutes for English class.</p>
+                                    <a class="tl-link" onclick="event.stopPropagation();collapseCard();setTimeout(()=>{expandCard('blog');setTimeout(()=>openExpandedArticle('peoples-edict'),200)},200)">Read essay &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Jan 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
+                                    <span class="tl-org">Politics</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>How the Trump Campaign used an obscure political science concept to move the electorate and exploit Kamala Harris's 2020 primary positions.</p>
+                                    <a class="tl-link" onclick="event.stopPropagation();collapseCard();setTimeout(()=>{expandCard('blog');setTimeout(()=>openExpandedArticle('median-voter-theory'),200)},200)">Read essay &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">2024 &ndash; Present</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>The Evanstonian &mdash; Staff Writer</h3>
+                                    <span class="tl-org">Journalism</span>
+                                    <span class="tl-badge">Ongoing</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Covering local politics, ETHS, D65, and community issues for the news section. Informative journalism on things that matter to Evanston.</p>
+                                    <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="tl-link" onclick="event.stopPropagation()">Read articles &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Sep 2024</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Resolution on State Interception of Communications</h3>
+                                    <span class="tl-org">Essay</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Why the intentional censorship and oversight of private communications without a warrant is unconstitutional. Examining NSA surveillance, the Patriot Act, and FISA courts.</p>
+                                    <a class="tl-link" onclick="event.stopPropagation();collapseCard();setTimeout(()=>{expandCard('blog');setTimeout(()=>openExpandedArticle('nsa-surveillance'),200)},200)">Read essay &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">2024</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>IL9CAST Research &amp; Analysis</h3>
+                                    <span class="tl-org">Data Science</span>
+                                    <span class="tl-badge">Ongoing</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>Open-source political forecasting research for the Illinois 9th Congressional District. Polling aggregation methodology, fundamentals-based modeling, and probabilistic seat projections.</p>
+                                    <a href="https://il9.org" target="_blank" class="tl-link" onclick="event.stopPropagation()">il9.org &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">2024</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Project 2028 Podcast</h3>
+                                    <span class="tl-org">Media</span>
+                                    <span class="tl-badge">Ongoing</span>
+                                </div>
+                                <div class="tl-card-body">
+                                    <p>A podcast exploring political science and politics. Long-form discussions on elections, forecasting, and policy.</p>
+                                    <a href="https://podcasts.apple.com/us/podcast/project-2028/id1753137875" target="_blank" class="tl-link" onclick="event.stopPropagation()">Listen &#8599;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="writing-api-posts" style="margin-top:2rem;"></div>
+                </div>
+            `,
+            press: () => `
+                <div class="page-hero" style="background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);">
+                    <h1>Press &amp; Media</h1>
+                    <p>Features, mentions, and appearances.</p>
+                </div>
+                <div class="press-list">
+                    <div class="press-item">
+                        <div class="press-outlet">Capitol Fax</div>
+                        <div class="press-detail">
+                            <h3>IL9CAST Featured</h3>
+                            <p>IL9.org and its political forecasting model for the Illinois 9th Congressional District were featured in Capitol Fax, one of the most widely-read Illinois political newsletters.</p>
+                        </div>
+                    </div>
+                    <div class="press-item">
+                        <div class="press-outlet">Evanston Roundtable</div>
+                        <div class="press-detail">
+                            <h3>Prediction Markets &amp; Political Forecasting</h3>
+                            <p>Coverage of prediction market work and political forecasting projects in the Evanston Roundtable, Evanston's local news outlet.</p>
+                        </div>
+                    </div>
+                    <div class="press-item">
+                        <div class="press-outlet">Daily Northwestern</div>
+                        <div class="press-detail">
+                            <h3>Featured in Daily Northwestern</h3>
+                            <p>Work featured in the Daily Northwestern, Northwestern University's student newspaper covering Evanston and campus news.</p>
+                        </div>
+                    </div>
+                    <div class="press-item">
+                        <div class="press-outlet">The Evanstonian</div>
+                        <div class="press-detail">
+                            <h3>Staff Writer</h3>
+                            <p>Ongoing journalism covering local politics, ETHS, D65, and community issues for ETHS's award-winning student newspaper.</p>
+                            <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="tl-link">Read articles &#8599;</a>
+                        </div>
+                    </div>
+                    <div class="press-item">
+                        <div class="press-outlet">Project 2028</div>
+                        <div class="press-detail">
+                            <h3>Podcast Host</h3>
+                            <p>Host of the Project 2028 podcast, exploring political science, elections, and forecasting.</p>
+                            <a href="https://podcasts.apple.com/us/podcast/project-2028/id1753137875" target="_blank" class="tl-link">Listen &#8599;</a>
+                        </div>
+                    </div>
+                </div>
+            `,
             blog: () => {
                 return `<div class="blog-list" id="expand-blog-list">
                     <div class="page-hero">
@@ -1646,6 +1798,7 @@
 
             // Post-render hooks
             if (cardName === 'experience') initTimeline();
+            if (cardName === 'writing') initWritingTimeline();
             if (cardName === 'forecasting') { initProfitChart(); initForecastStats(); }
             if (cardName === 'hottakes') initExpandedTakesFilters();
             if (cardName === 'countdowns') startExpandedCountdownTick();
@@ -1671,6 +1824,28 @@
                     node.classList.add('visible');
                 }, 200 + i * 120);
             });
+        }
+
+        function initWritingTimeline() {
+            const line = document.getElementById('writing-tl-line');
+            const nodes = document.getElementById('writing-tl-track');
+            if (!line || !nodes) return;
+            const nodeEls = nodes.querySelectorAll('.tl-node');
+            requestAnimationFrame(() => { line.classList.add('drawn'); });
+            nodeEls.forEach((node, i) => {
+                setTimeout(() => { node.classList.add('visible'); }, 200 + i * 120);
+            });
+            // Also load API blog posts into writing timeline
+            fetch('/api/blogposts').then(r => r.json()).then(posts => {
+                const container = document.getElementById('writing-api-posts');
+                if (!container || !posts.length) return;
+                container.innerHTML = posts.map(p => {
+                    const d = new Date(p.date);
+                    const dateStr = d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                    const tags = (p.tags || []).join(', ') || 'Post';
+                    return '<div class="tl-node visible" onclick="this.classList.toggle(\'open\')" style="opacity:1;transform:none"><div class="tl-dot"><div class="tl-dot-ring"></div></div><div class="tl-date">' + dateStr + '</div><div class="tl-card"><div class="tl-card-head"><h3>' + escapeHtml(p.title) + '</h3><span class="tl-org">' + escapeHtml(tags) + '</span></div><div class="tl-card-body"><p>' + escapeHtml(p.summary || '') + '</p></div></div></div>';
+                }).join('');
+            }).catch(() => {});
         }
 
         function initForecastStats() {
