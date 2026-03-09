@@ -56,6 +56,16 @@
                     </div>
                 </div>
             </header>
+
+            <!-- DOMAIN PILLS — inspired by Chain Reaction design -->
+            <div class="domain-strip scroll-reveal">
+                <a class="domain-pill" href="#projects" onclick="event.preventDefault();expandCard('projects')">DATA &amp; FORECASTING</a>
+                <span class="domain-plus">+</span>
+                <a class="domain-pill" href="#writing" onclick="event.preventDefault();expandCard('writing')">WRITING &amp; RESEARCH</a>
+                <span class="domain-plus">+</span>
+                <a class="domain-pill" href="#experience" onclick="event.preventDefault();expandCard('experience')">CAMPAIGNS &amp; POLICY</a>
+            </div>
+
             <main class="editorial-body">
                 <p class="scroll-reveal">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p>
 
@@ -66,12 +76,36 @@
                 <p class="scroll-reveal" style="margin-top: 1.5rem;"><a href="resume.html" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid #2244cc; padding: 0.5rem 1.2rem;">View Resume &rarr;</a></p>
             </main>
 
+            <!-- BY THE NUMBERS -->
+            <div class="stats-strip scroll-reveal">
+                <div class="stats-strip-label">By the numbers</div>
+                <div class="stats-strip-grid">
+                    <div class="stats-strip-item">
+                        <span class="stats-strip-value" data-count="61">#61</span>
+                        <span class="stats-strip-desc">Manifold Markets<br>out of 160k traders</span>
+                    </div>
+                    <div class="stats-strip-item">
+                        <span class="stats-strip-value" data-count="3.98">3.98</span>
+                        <span class="stats-strip-desc">Unweighted GPA<br>4.41 weighted</span>
+                    </div>
+                    <div class="stats-strip-item">
+                        <span class="stats-strip-value" data-count="3">3+</span>
+                        <span class="stats-strip-desc">Press features<br>Capitol Fax, Roundtable, Daily NW</span>
+                    </div>
+                    <div class="stats-strip-item">
+                        <span class="stats-strip-value" data-count="6">6+</span>
+                        <span class="stats-strip-desc">Published works<br>essays, articles &amp; research</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Footer -->
             <footer class="editorial-footer">
                 <nav class="editorial-sitemap">
                     <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Work</a>
                     <a href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
                     <a href="#writing" onclick="event.preventDefault();expandCard('writing')">Writing</a>
+                    <a href="#blog" onclick="event.preventDefault();expandCard('blog')">Blog</a>
                     <a href="#press" onclick="event.preventDefault();expandCard('press')">Press</a>
                     <a href="#photos" onclick="event.preventDefault();expandCard('photos')">Photos</a>
                     <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>

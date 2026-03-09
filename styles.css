@@ -2523,6 +2523,114 @@ body.scrolled .site-nav { box-shadow: none; }
     border-radius: 2px;
 }
 
+/* --- Domain Pills (Chain Reaction inspired) --- */
+.domain-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2.5rem 0 2rem;
+    flex-wrap: wrap;
+}
+
+.domain-pill {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.55rem 1.1rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.domain-pill:hover {
+    color: #ffffff;
+    background: #2244cc;
+    border-color: #2244cc;
+    text-decoration: none;
+    padding-bottom: 0.55rem;
+}
+
+[data-theme="dark"] .domain-pill:hover {
+    background: #5c7cfa;
+    border-color: #5c7cfa;
+}
+
+.domain-plus {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 400;
+    user-select: none;
+}
+
+/* --- Stats Strip --- */
+.stats-strip {
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 2rem 0;
+    margin: 2rem 0 0;
+}
+
+.stats-strip-label {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+}
+
+.stats-strip-label::before {
+    content: '\25A0';
+    margin-right: 0.5em;
+    color: #2244cc;
+}
+
+[data-theme="dark"] .stats-strip-label::before { color: #5c7cfa; }
+
+.stats-strip-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.stats-strip-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.stats-strip-value {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2244cc;
+    line-height: 1;
+}
+
+[data-theme="dark"] .stats-strip-value { color: #5c7cfa; }
+
+.stats-strip-desc {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+    .domain-strip { gap: 0.5rem; }
+    .domain-pill { font-size: 0.6rem; padding: 0.4rem 0.7rem; }
+    .domain-plus { font-size: 0.75rem; }
+    .stats-strip-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .stats-strip-value { font-size: 1.5rem; }
+}
+
 /* --- Essay Body --- */
 .editorial-body {
     font-family: 'Times New Roman', Times, serif;
