@@ -27,8 +27,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+  color: var(--accent);
+  text-decoration: none;
+  text-decoration-skip-ink: auto;
+}
+a:hover {
+  text-decoration: underline wavy;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
 
 img { max-width: 100%; height: auto; display: block; }
 
@@ -79,7 +87,10 @@ h3 { font-size: 1.25rem; }
 
 .nav-links a:hover {
   color: var(--text);
-  text-decoration: none;
+  text-decoration: underline wavy;
+  text-decoration-color: var(--text-muted);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
 .nav-links a.active {
@@ -180,7 +191,7 @@ main {
 }
 
 .landing-intro .bio a {
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
 }
 
 .landing-viz {
@@ -603,6 +614,47 @@ main {
   font-size: 0.9rem;
   color: var(--text-light);
   margin-top: 0.2rem;
+}
+
+/* ========================================
+   Press Page
+   ======================================== */
+
+.press-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.press-list {
+  margin-bottom: 4rem;
+}
+
+.press-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.press-item:first-child {
+  padding-top: 0;
+}
+
+.press-item time {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.press-item h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.2rem;
+}
+
+.press-item .press-outlet {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: italic;
 }
 
 /* ========================================

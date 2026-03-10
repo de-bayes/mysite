@@ -19,7 +19,7 @@
     { name: 'Constitutional Law', proficiency: 6, passion: 9, years: 5, importance: 1.2 },
     { name: 'Campaign Finance', proficiency: 7, passion: 7.5, years: 2, importance: 1.0 },
     { name: 'Journalism', proficiency: 6.5, passion: 7, years: 2, importance: 0.9 },
-    { name: 'Competitive Swimming', proficiency: 7, passion: 8, years: 8, importance: 1.0 },
+    { name: 'Swimming', proficiency: 6, passion: 7, years: 8, importance: 1.0 },
     { name: 'Podcasting', proficiency: 6, passion: 7, years: 4, importance: 0.9 },
     { name: 'Adobe Lightroom', proficiency: 7, passion: 6, years: 3, importance: 0.7 },
     { name: 'Git', proficiency: 7, passion: 5, years: 3, importance: 0.7 },
@@ -28,6 +28,8 @@
     { name: 'Voting Theory', proficiency: 6.5, passion: 8, years: 4, importance: 1.0 },
     { name: 'Cloud Computing', proficiency: 5, passion: 6, years: 2, importance: 0.7 },
     { name: 'Game Theory', proficiency: 6, passion: 8, years: 3, importance: 0.9 },
+    { name: 'Hockey', proficiency: 4, passion: 5, years: 3, importance: 0.7 },
+    { name: 'Science', proficiency: 4, passion: 5, years: 4, importance: 0.7 },
   ];
 
   // ===== SCENE SETUP =====
@@ -82,7 +84,7 @@
   }
 
   // Grid lines on each plane (very subtle)
-  const gridMat = new THREE.LineBasicMaterial({ color: 0xeeeeee });
+  const gridMat = new THREE.LineBasicMaterial({ color: 0xf2f2f2 });
   for (let i = 0; i <= 10; i += 2) {
     // XY plane (z=0)
     const g1 = new THREE.BufferGeometry().setFromPoints([
@@ -218,7 +220,7 @@
   scene.add(planeMesh);
 
   // ===== PARTICLE DUST =====
-  const particleCount = 120;
+  const particleCount = 60;
   const particleGeo = new THREE.BufferGeometry();
   const particlePositions = new Float32Array(particleCount * 3);
   const particleVelocities = [];
@@ -228,17 +230,17 @@
     particlePositions[i * 3 + 1] = Math.random() * 14 - 2;
     particlePositions[i * 3 + 2] = Math.random() * 10 - 1;
     particleVelocities.push({
-      x: (Math.random() - 0.5) * 0.003,
-      y: (Math.random() - 0.5) * 0.003,
-      z: (Math.random() - 0.5) * 0.003,
+      x: (Math.random() - 0.5) * 0.002,
+      y: (Math.random() - 0.5) * 0.002,
+      z: (Math.random() - 0.5) * 0.002,
     });
   }
   particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
   const particleMat = new THREE.PointsMaterial({
-    color: 0xcccccc,
-    size: 0.06,
+    color: 0xdddddd,
+    size: 0.04,
     transparent: true,
-    opacity: 0.4,
+    opacity: 0.25,
   });
   const particles = new THREE.Points(particleGeo, particleMat);
   scene.add(particles);
