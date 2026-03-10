@@ -617,6 +617,47 @@ main {
 }
 
 /* ========================================
+   Press Page
+   ======================================== */
+
+.press-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.press-list {
+  margin-bottom: 4rem;
+}
+
+.press-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.press-item:first-child {
+  padding-top: 0;
+}
+
+.press-item time {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.press-item h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.2rem;
+}
+
+.press-item .press-outlet {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* ========================================
    Contact Page
    ======================================== */
 
