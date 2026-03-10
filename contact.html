@@ -1,13 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contact - Ryan McComb</title>
-    <link rel="icon" href="favicon.ico">
-    <script>window.location.replace('index.html#contact');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Ryan McComb</title>
+  <meta name="description" content="Get in touch with Ryan McComb. Contact information, interests, and skills.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico">
 </head>
 <body>
-    <p>Redirecting to <a href="index.html#contact">contact</a>&hellip;</p>
+
+  <nav class="site-nav">
+    <a href="/" class="nav-name">Ryan McComb</a>
+    <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
+    <div class="nav-links">
+      <a href="/experience">Experience</a>
+      <a href="/writing">Writing</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="contact-page">
+      <header class="page-header" style="padding-left:0; padding-right:0;">
+        <h1>Contact</h1>
+        <p>Get in touch or find me online.</p>
+      </header>
+
+      <div class="contact-grid">
+        <a href="mailto:rymccmcomb1@icloud.com" class="contact-item" data-copy="rymccmcomb1@icloud.com">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">rymccmcomb1@icloud.com</span>
+          <span class="copied-toast">Copied!</span>
+        </a>
+
+        <a href="https://rjmccomb.xyz" class="contact-item" target="_blank" rel="noopener">
+          <span class="contact-label">Website</span>
+          <span class="contact-value">rjmccomb.xyz</span>
+        </a>
+
+        <a href="https://github.com/de-bayes" class="contact-item" target="_blank" rel="noopener">
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">@de-bayes</span>
+        </a>
+
+        <a href="https://manifold.markets/JeromeHPowell" class="contact-item" target="_blank" rel="noopener">
+          <span class="contact-label">Manifold Markets</span>
+          <span class="contact-value">@JeromeHPowell</span>
+        </a>
+
+        <a href="https://www.metaculus.com/accounts/profile/238376/" class="contact-item" target="_blank" rel="noopener">
+          <span class="contact-label">Metaculus</span>
+          <span class="contact-value">Profile #238376</span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/ryan-mccomb" class="contact-item" target="_blank" rel="noopener">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">Ryan McComb</span>
+        </a>
+      </div>
+
+      <section class="passions-section">
+        <h2>Interests</h2>
+        <div class="passions-grid">
+          <div class="passion-card">Constitutional & Administrative Law</div>
+          <div class="passion-card">Election Forecasting</div>
+          <div class="passion-card">Probabilistic Reasoning</div>
+          <div class="passion-card">Political Photography</div>
+          <div class="passion-card">Prediction Markets</div>
+          <div class="passion-card">Competitive Swimming</div>
+        </div>
+      </section>
+
+      <section class="skills-section">
+        <h2>Skills</h2>
+        <div class="skills-list">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">Bayesian Analysis</span>
+          <span class="skill-tag">Monte Carlo Simulation</span>
+          <span class="skill-tag">Quantitative Forecasting</span>
+          <span class="skill-tag">Data Science</span>
+          <span class="skill-tag">Canon R8</span>
+          <span class="skill-tag">Adobe Lightroom</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Cloud Computing</span>
+          <span class="skill-tag">Manifold Markets API</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 Ryan McComb &middot; Evanston, IL
+  </footer>
+
+  <script src="js/nav.js"></script>
+  <script>
+    // Copy-to-clipboard on email click
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const text = el.dataset.copy;
+        navigator.clipboard.writeText(text).then(() => {
+          const toast = el.querySelector('.copied-toast');
+          if (toast) {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1500);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
