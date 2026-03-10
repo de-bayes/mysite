@@ -7,28 +7,13 @@
 
   // ===== DATA: Ryan's skills & interests =====
   const skills = [
-    { name: 'Python', proficiency: 8, passion: 9, years: 4, importance: 1.3 },
-    { name: 'JavaScript', proficiency: 7, passion: 7, years: 3, importance: 1.1 },
-    { name: 'Bayesian Analysis', proficiency: 7, passion: 9.5, years: 3, importance: 1.4 },
     { name: 'Election Forecasting', proficiency: 8.5, passion: 10, years: 4, importance: 1.5 },
-    { name: 'Prediction Markets', proficiency: 9, passion: 9, years: 3, importance: 1.3 },
     { name: 'Data Science', proficiency: 7.5, passion: 8.5, years: 3, importance: 1.2 },
-    { name: 'Monte Carlo Simulation', proficiency: 6.5, passion: 8, years: 2, importance: 1.0 },
-    { name: 'Photography', proficiency: 7, passion: 8, years: 3, importance: 1.1 },
-    { name: 'Constitutional Law', proficiency: 6, passion: 9, years: 5, importance: 1.2 },
-    { name: 'Campaign Finance', proficiency: 7, passion: 7.5, years: 2, importance: 1.0 },
-    { name: 'Journalism', proficiency: 6.5, passion: 7, years: 2, importance: 0.9 },
+    { name: 'Politics', proficiency: 8, passion: 9.5, years: 5, importance: 1.4 },
+    { name: 'Web Design', proficiency: 7, passion: 7, years: 3, importance: 1.1 },
+    { name: 'Hockey', proficiency: 4, passion: 7, years: 3, importance: 0.9 },
     { name: 'Swimming', proficiency: 6, passion: 7, years: 8, importance: 1.0 },
-    { name: 'Podcasting', proficiency: 6, passion: 7, years: 4, importance: 0.9 },
-    { name: 'Adobe Lightroom', proficiency: 7, passion: 6, years: 3, importance: 0.7 },
-    { name: 'Git', proficiency: 7, passion: 5, years: 3, importance: 0.7 },
-    { name: 'Kelly Criterion', proficiency: 7, passion: 8.5, years: 2, importance: 1.0 },
-    { name: 'Quantitative Forecasting', proficiency: 8, passion: 9.5, years: 3, importance: 1.3 },
-    { name: 'Voting Theory', proficiency: 6.5, passion: 8, years: 4, importance: 1.0 },
-    { name: 'Cloud Computing', proficiency: 5, passion: 6, years: 2, importance: 0.7 },
-    { name: 'Game Theory', proficiency: 6, passion: 8, years: 3, importance: 0.9 },
-    { name: 'Hockey', proficiency: 4, passion: 5, years: 3, importance: 0.7 },
-    { name: 'Science', proficiency: 4, passion: 5, years: 4, importance: 0.7 },
+    { name: 'Prediction Markets', proficiency: 9, passion: 9, years: 3, importance: 1.3 },
   ];
 
   // ===== Normalize data to fit a tight cube (0–8 range) =====
