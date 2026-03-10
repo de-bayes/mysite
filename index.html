@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ryan McComb</title>
   <meta name="description" content="Ryan McComb — data, politics, and forecasting. Student Fellow at VoteHub, competitive forecaster, and photographer.">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.ico">
 </head>
@@ -24,8 +26,8 @@
   <main class="landing">
     <section class="landing-intro">
       <h1>Ryan McComb</h1>
-      <p class="tagline">Data, politics, and forecasting.</p>
-      <img src="ddddd.jpg" alt="Ryan McComb" class="portrait">
+      <p class="tagline">\begin{<span class="rotating-word"></span>}</p>
+      <img src="portrait.webp" alt="Ryan McComb" class="portrait" width="600" height="400" loading="eager">
       <p class="bio">
         Student Fellow at <a href="https://votehub.com">VoteHub</a>, building election forecasting models
         and decision-desk type stuff :). Competitive prediction market trader ranked in the top 0.5% on
@@ -46,9 +48,10 @@
     &copy; 2026 Ryan McComb &middot; Evanston, IL
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script src="js/nav.js"></script>
-  <script src="js/three-scene.js"></script>
+  <script src="js/rotating-words.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js" defer></script>
+  <script src="js/three-scene.js" defer></script>
 </body>
 </html>
