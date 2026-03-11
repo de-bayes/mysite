@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ryan McComb</title>
-    <meta name="description" content="Ryan McComb -- student, data analyst, forecaster, and writer from Evanston, IL.">
+    <meta name="description" content="Ryan McComb — student, data analyst, forecaster, and writer from Evanston, IL.">
     <meta name="author" content="Ryan McComb">
     <meta property="og:title" content="Ryan McComb">
     <meta property="og:description" content="Data, politics, and forecasting.">
@@ -14,7 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="features.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 </head>
 <body>
     <!-- LOADER -->
@@ -26,105 +25,66 @@
     <div id="site-content">
 
         <!-- FIVEY FOX MASCOT -->
-        <div class="mascot-corner" id="mascot-corner">
-            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img">
+        <div class="mascot-corner" id="mascot-corner" style="position:fixed;bottom:80px;right:20px;">
+            <img src="538mascot.webp" alt="Fivey Fox" class="mascot-img" style="width:150px;cursor:grab;user-select:none;transition:transform 0.2s ease;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.15));">
             <div class="mascot-tooltip">
                 <p>My name is Fivey Fox! I was the mascot for 538 before Disney killed me. I sparked Ryan's interest in politics and prediction markets. Check out his <a href="#projects" onclick="event.preventDefault();expandCard('projects')">projects</a>!</p>
                 <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.7">Grab and throw me! I have real physics now.</p>
             </div>
         </div>
 
-        <!-- TERMINAL TOGGLE -->
-        <div class="terminal-button" onclick="openTerminal()" title="Open Terminal">&#9000;</div>
+        <!-- TERMINAL TOGGLE BUTTON (hidden) -->
+        <div class="terminal-button" onclick="openTerminal()" style="position:fixed;bottom:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border-color);border-radius:50%;cursor:pointer;z-index:999;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.06);" title="Open Terminal">&#9000;</div>
 
-        <!-- ========== HERO ========== -->
-        <section class="hero">
-            <div class="hero-left">
-                <h1 class="hero-name">Ryan McComb</h1>
-                <div class="hero-tagline" id="editorial-tagline"></div>
-            </div>
-            <div class="hero-right">
-                <canvas id="hero-3d"></canvas>
-            </div>
-        </section>
 
-        <!-- ========== GRADIENT TRANSITION TEXT ========== -->
-        <section class="transition-section">
-            <h2 class="transition-text">The future of <span class="gradient-text">understanding</span> depends on data, rigorous models, and calibrated thinking.</h2>
-            <span class="transition-scroll-label"><span class="label-dot"></span>Introduction</span>
-        </section>
-
-        <!-- ========== EDITORIAL (dark, two-column with geometric art) ========== -->
-        <section class="editorial-section">
-            <div class="editorial-grid">
-                <div class="editorial-art">
-                    <!-- Pixel-grid composition: blue gradient base, black overlapping squares, glowing dot -->
-                    <div class="geo-composition">
-                        <div class="geo-block geo-base"></div>
-                        <div class="geo-block geo-mid"></div>
-                        <div class="geo-block geo-dark1"></div>
-                        <div class="geo-block geo-dark2"></div>
-                        <div class="geo-block geo-dark3"></div>
-                        <div class="geo-block geo-fade1"></div>
-                        <div class="geo-block geo-fade2"></div>
-                        <div class="geo-block geo-fade3"></div>
-                        <div class="geo-block geo-glow"></div>
+        <!-- EDITORIAL LAYOUT -->
+        <div class="editorial-page">
+            <header class="editorial-hero" id="editorial-hero">
+                <div class="editorial-hero-content">
+                    <div class="editorial-hero-text">
+                        <h1 class="editorial-name">RYAN McCOMB</h1>
+                        <div class="editorial-tagline" id="editorial-tagline"></div>
+                    </div>
+                    <div class="editorial-hero-svg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="124" height="46" viewBox="0 0 124 46">
+                            <rect class="hero-svg-bg" x="0" y="0" width="124" height="46" rx="4" fill="transparent"/>
+                            <g fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" class="hero-svg-icon">
+                                <line x1="41" y1="12" x2="83" y2="12"/>
+                                <path d="M62 17 L44 33 M62 17 L80 33"/>
+                            </g>
+                        </svg>
                     </div>
                 </div>
-                <div class="editorial-text">
-                    <div class="editorial-text-head">
-                        <h3>Win the information race by<br>strengthening the models<br>that underpin forecasting.</h3>
-                    </div>
-                    <div class="editorial-text-body">
-                        <p class="scroll-reveal">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in data, prediction markets, politics, and the web.</p>
-                        <p class="scroll-reveal">I built <a href="https://il9.org" target="_blank"><strong>IL9.org</strong></a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm a <strong>Student Fellow</strong> at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> and <strong>Volunteer Finance Lead</strong> for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss campaign</a>. Featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
-                    </div>
-                    <a href="resume.html" class="resume-link scroll-reveal">Resume &rarr;</a>
-                </div>
-            </div>
-        </section>
+            </header>
+            <main class="editorial-body">
+                <p class="scroll-reveal">I'm <strong>Ryan McComb</strong>, a student at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Evanston Township High School</a> interested in <strong>data</strong>, <strong>prediction markets</strong>, <strong>politics</strong>, and the web. I like making things people can use and forming beliefs based on evidence.</p>
 
-        <!-- ========== IDENTITY (cream, pill+connector chain) ========== -->
-        <section class="identity-section">
-            <div class="identity-inner">
-                <span class="section-label"><span class="label-dot"></span>Operations</span>
-                <h2 class="identity-statement">Connect <span class="gradient-text">everything.</span><br>Embed data into decisions.</h2>
-                <div class="identity-chain">
-                    <span class="chain-pill" onclick="expandCard('forecasting')">DATA <span class="chain-bracket">[FORECASTING]</span></span>
-                    <span class="chain-plus"><svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="1.5"/></svg></span>
-                    <span class="chain-pill" onclick="expandCard('blog')">WRITING <span class="chain-bracket">[IDEAS]</span></span>
-                    <span class="chain-plus"><svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="1.5"/></svg></span>
-                    <span class="chain-pill" onclick="expandCard('projects')">CODE <span class="chain-bracket">[PROJECTS]</span></span>
-                </div>
-            </div>
-        </section>
+                <p class="scroll-reveal">I built <a href="https://il9.org" target="_blank"><strong>IL9.org</strong></a>, an open-source <a href="#projects" onclick="event.preventDefault();expandCard('projects')">political forecasting project</a>. I'm also a <strong>Student Fellow</strong> at <a href="#experience" onclick="event.preventDefault();expandCard('experience')">VoteHub</a> doing race-call work and election modeling, and a <strong>Volunteer Finance Lead</strong> for the <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Biss congressional campaign</a>.</p>
 
-        <!-- ========== NAV ========== -->
-        <section class="nav-section">
-            <div class="nav-inner">
-                <span class="section-label"><span class="label-dot"></span>Explore</span>
-                <h2 class="nav-statement">Go <span class="gradient-text">deeper.</span></h2>
-                <nav class="nav-pills">
-                    <a class="nav-pill" href="#experience" onclick="event.preventDefault();expandCard('experience')">Experience</a>
-                    <a class="nav-pill" href="#press" onclick="event.preventDefault();expandCard('press')">Press & Papers</a>
-                    <a class="nav-pill" href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
-                    <a class="nav-pill" href="#blog" onclick="event.preventDefault();expandCard('blog')">Writing</a>
-                    <a class="nav-pill" href="#photos" onclick="event.preventDefault();expandCard('photos')">Photos</a>
-                    <a class="nav-pill" href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>
-                    <a class="nav-pill" href="#hottakes" onclick="event.preventDefault();expandCard('hottakes')">Hot Takes</a>
-                    <a class="nav-pill" href="#countdowns" onclick="event.preventDefault();expandCard('countdowns')">Countdowns</a>
-                    <a class="nav-pill" href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
+                <p class="scroll-reveal">I trade on play-money <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">prediction markets</a>, <a href="#blog" onclick="event.preventDefault();expandCard('blog')">write essays</a> on politics and data, and shoot <a href="#photos" onclick="event.preventDefault();expandCard('photos')">film photography</a>. My work has been featured in the <em>Evanston Roundtable</em>, the <em>Daily Northwestern</em>, and <em>Capitol Fax</em>.</p>
+
+                <p class="scroll-reveal" style="margin-top: 1.5rem;"><a href="resume.html" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid #2244cc; padding: 0.5rem 1.2rem;">View Resume &rarr;</a></p>
+            </main>
+
+            <!-- Footer -->
+            <footer class="editorial-footer">
+                <nav class="editorial-sitemap">
+                    <a href="#experience" onclick="event.preventDefault();expandCard('experience')">Work</a>
+                    <a href="#projects" onclick="event.preventDefault();expandCard('projects')">Projects</a>
+                    <a href="#blog" onclick="event.preventDefault();expandCard('blog')">Writing</a>
+                    <a href="#photos" onclick="event.preventDefault();expandCard('photos')">Photos</a>
+                    <a href="#forecasting" onclick="event.preventDefault();expandCard('forecasting')">Forecasting</a>
+                    <a href="#hottakes" onclick="event.preventDefault();expandCard('hottakes')">Hot Takes</a>
+                    <a href="#countdowns" onclick="event.preventDefault();expandCard('countdowns')">Countdowns</a>
+                    <a href="#contact" onclick="event.preventDefault();expandCard('contact')">Contact</a>
+                    <a href="resume.html">Resume</a>
                 </nav>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <span>&copy; 2026 Ryan McComb &middot; Evanston, IL</span>
-                <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9790;</button>
-            </div>
-        </footer>
+                <div class="editorial-footer-bottom">
+                    <span>&copy; 2026 Ryan McComb &middot; Evanston, IL</span>
+                    <button class="minimal-theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">&#9790;</button>
+                </div>
+            </footer>
+        </div>
 
         <!-- EXPAND OVERLAY -->
         <div id="expand-overlay" class="expand-overlay">
@@ -133,39 +93,6 @@
         </div>
     </div>
 
-    <!-- TERMINAL OVERLAY -->
-    <div class="terminal-overlay" id="terminal-overlay">
-        <div class="terminal-window">
-            <div class="terminal-header">
-                <div class="terminal-controls">
-                    <button class="terminal-dot close" onclick="closeTerminal()"></button>
-                    <button class="terminal-dot minimize"></button>
-                    <button class="terminal-dot maximize"></button>
-                </div>
-                <span class="terminal-title">terminal</span>
-            </div>
-            <div class="terminal-body" id="terminal-body">
-                <div class="terminal-line terminal-welcome">Welcome to ryan@mccomb. Type <span class="terminal-command">/info</span> for commands.</div>
-                <div class="terminal-input-line">
-                    <span class="terminal-prompt">~$</span>
-                    <div class="terminal-input-wrap">
-                        <span class="terminal-autocomplete" id="terminal-autocomplete"></span>
-                        <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false">
-                    </div>
-                    <div class="terminal-suggestions" id="terminal-suggestions"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        </footer>
-
-        <!-- EXPAND OVERLAY -->
-        <div id="expand-overlay" class="expand-overlay">
-            <button class="expand-back" onclick="collapseCard()">&larr; Back</button>
-            <div class="expand-content" id="expand-content"></div>
-        </div>
-    </div>
 
     <!-- TERMINAL OVERLAY -->
     <div class="terminal-overlay" id="terminal-overlay">
@@ -1384,205 +1311,117 @@
                 </div>
             `,
             experience: () => `
-                <div class="cv-page">
-                    <div class="cv-hero">
-                        <h1>Experience</h1>
-                        <p>Jobs, fellowships, and things I've been doing.</p>
-                        <div class="cv-stat-row">
-                            <div class="cv-stat"><span class="cv-stat-num">6</span><span class="cv-stat-label">Positions</span></div>
-                            <div class="cv-stat"><span class="cv-stat-num">3</span><span class="cv-stat-label">Current</span></div>
-                        </div>
+                <div class="tl-page">
+                    <div class="tl-hero">
+                        <h1 class="tl-title">Experience</h1>
+                        <p class="tl-subtitle">What I've been working on.</p>
                     </div>
 
-                    <div class="cv-track" id="cv-track">
-                        <div class="cv-line" id="cv-line"></div>
+                    <div class="tl-track" id="tl-track">
+                        <div class="tl-line" id="tl-line"></div>
 
-                        <div class="cv-item" onclick="this.classList.toggle('open')">
-                            <div class="cv-item-dot"></div>
-                            <div class="cv-item-date">Mar 2026</div>
-                            <div class="cv-item-card">
-                                <div class="cv-item-head">
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Mar 2026</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
                                     <h3>Student Fellow</h3>
-                                    <span class="cv-item-org">VoteHub</span>
-                                    <span class="cv-item-badge">Current</span>
-                                    <span class="cv-item-type">Fellowship</span>
+                                    <span class="tl-org">VoteHub</span>
+                                    <span class="tl-badge">Current</span>
                                 </div>
-                                <div class="cv-item-body">
+                                <div class="tl-card-body">
                                     <p>Race-call work and election modeling with a team that cares deeply about political data. Building forecasting tools and analyzing real-time results.</p>
-                                    <a href="https://votehub.com" target="_blank" class="cv-item-link" onclick="event.stopPropagation()">votehub.com &#8599;</a>
+                                    <a href="https://votehub.com" target="_blank" class="tl-link">votehub.com &#8599;</a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="cv-item" onclick="this.classList.toggle('open')">
-                            <div class="cv-item-dot"></div>
-                            <div class="cv-item-date">Dec 2025</div>
-                            <div class="cv-item-card">
-                                <div class="cv-item-head">
-                                    <h3>Founder &amp; Data Analyst</h3>
-                                    <span class="cv-item-org">IL9CAST</span>
-                                    <span class="cv-item-badge">Current</span>
-                                    <span class="cv-item-type">Project</span>
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Dec 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
+                                    <h3>Data Analyst</h3>
+                                    <span class="tl-org">IL9CAST</span>
+                                    <span class="tl-badge">Current</span>
                                 </div>
-                                <div class="cv-item-body">
+                                <div class="tl-card-body">
                                     <p>Built <strong>IL9.org</strong>, an open-source political forecasting project modeling the Illinois 9th Congressional District. Polling aggregation, fundamentals modeling, and probabilistic projections.</p>
-                                    <a href="https://il9.org" target="_blank" class="cv-item-link" onclick="event.stopPropagation()">il9.org &#8599;</a>
+                                    <a href="https://il9.org" target="_blank" class="tl-link">il9.org &#8599;</a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="cv-item" onclick="this.classList.toggle('open')">
-                            <div class="cv-item-dot"></div>
-                            <div class="cv-item-date">Aug 2025</div>
-                            <div class="cv-item-card">
-                                <div class="cv-item-head">
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Aug 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
                                     <h3>Volunteer Finance Lead</h3>
-                                    <span class="cv-item-org">Biss for Congress</span>
-                                    <span class="cv-item-badge">Current</span>
-                                    <span class="cv-item-type">Campaign</span>
+                                    <span class="tl-org">Biss for Congress</span>
+                                    <span class="tl-badge">Current</span>
                                 </div>
-                                <div class="cv-item-body">
+                                <div class="tl-card-body">
                                     <p>Donor outreach, fundraising data, and community connections for the Biss congressional campaign.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="cv-item" onclick="this.classList.toggle('open')">
-                            <div class="cv-item-dot"></div>
-                            <div class="cv-item-date">Jun 2025</div>
-                            <div class="cv-item-card">
-                                <div class="cv-item-head">
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Jun 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
                                     <h3>Freelance Photographer</h3>
-                                    <span class="cv-item-org">Chicago Union</span>
-                                    <span class="cv-item-badge">Current</span>
-                                    <span class="cv-item-type">Freelance</span>
+                                    <span class="tl-org">Chicago Union</span>
+                                    <span class="tl-badge">Current</span>
                                 </div>
-                                <div class="cv-item-body">
+                                <div class="tl-card-body">
                                     <p>Game-day and event photography for the Chicago Union ultimate frisbee team.</p>
-                                    <a href="https://www.instagram.com/mccomb.photo/" target="_blank" class="cv-item-link" onclick="event.stopPropagation()">@mccomb.photo &#8599;</a>
+                                    <a href="https://www.instagram.com/mccomb.photo/" target="_blank" class="tl-link">@mccomb.photo &#8599;</a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="cv-item" onclick="this.classList.toggle('open')">
-                            <div class="cv-item-dot"></div>
-                            <div class="cv-item-date">Jun 2025</div>
-                            <div class="cv-item-card">
-                                <div class="cv-item-head">
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Jun 2025</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
                                     <h3>Swim Instructor</h3>
-                                    <span class="cv-item-org">YWCA USA</span>
-                                    <span class="cv-item-badge">Current</span>
+                                    <span class="tl-org">YWCA USA</span>
+                                    <span class="tl-badge">Current</span>
                                 </div>
-                                <div class="cv-item-body">
+                                <div class="tl-card-body">
                                     <p>Taught swimming to kids and adults. Need I say more?</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="cv-item" onclick="this.classList.toggle('open')">
-                            <div class="cv-item-dot"></div>
-                            <div class="cv-item-date">Aug 2024</div>
-                            <div class="cv-item-card">
-                                <div class="cv-item-head">
+                        <div class="tl-node" onclick="this.classList.toggle('open')">
+                            <div class="tl-dot"><div class="tl-dot-ring"></div></div>
+                            <div class="tl-date">Aug 2024</div>
+                            <div class="tl-card">
+                                <div class="tl-card-head">
                                     <h3>Staff Writer</h3>
-                                    <span class="cv-item-org">The Evanstonian</span>
-                                    <span class="cv-item-badge">Current</span>
-                                    <span class="cv-item-type">Journalism</span>
+                                    <span class="tl-org">The Evanstonian</span>
+                                    <span class="tl-badge">Current</span>
                                 </div>
-                                <div class="cv-item-body">
-                                    <p>Covered local politics, ETHS, D65, and community issues for the news section.</p>
-                                    <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="cv-item-link" onclick="event.stopPropagation()">Read articles &#8599;</a>
+                                <div class="tl-card-body">
+                                    <p>Covered local politics, ETHS, D65, and community issues for the news section. Informative journalism on things that matter to Evanston.</p>
+                                    <a href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank" class="tl-link">Read articles &#8599;</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="cv-edu">
-                        <div class="cv-edu-label">Education</div>
-                        <div class="cv-edu-card">
+                    <div class="tl-edu">
+                        <div class="tl-edu-label">Education</div>
+                        <div class="tl-edu-card">
                             <h3>Evanston Township High School</h3>
-                            <p class="cv-edu-meta">Class of 2028 &bull; Evanston, IL</p>
-                            <p class="cv-edu-detail">GPA: 3.98 UW / 4.41 W</p>
+                            <p class="tl-edu-meta">Class of 2026 &bull; Evanston, IL</p>
+                            <p class="tl-edu-detail">GPA: 3.98 UW / 4.41 W</p>
                         </div>
-                    </div>
-                </div>
-            `,
-            press: () => `
-                <div class="pw-page">
-                    <div class="pw-hero">
-                        <div class="pw-hero-label"><span class="label-dot"></span>Press &amp; Writing</div>
-                        <h1 class="pw-hero-title">Papers, essays,<br>and press coverage.</h1>
-                        <p class="pw-hero-sub">A collection of things I've written and places I've appeared.</p>
-                    </div>
-
-                    <div class="pw-section">
-                        <div class="pw-section-head">
-                            <h2 class="pw-section-title">Papers &amp; Essays</h2>
-                            <div class="pw-section-line"></div>
-                        </div>
-                        <div class="pw-papers">
-                            <article class="pw-paper" onclick="collapseCard();setTimeout(function(){expandCard('blog');setTimeout(function(){openExpandedArticle('peoples-edict')},200)},350)">
-                                <div class="pw-paper-number">01</div>
-                                <div class="pw-paper-content">
-                                    <div class="pw-paper-tags"><span>Essay</span><span>English</span></div>
-                                    <h3>People's Edict</h3>
-                                    <p>An on-demand essay on power and strife -- exploring when and how authority should be challenged, and the pragmatic case for picking winnable fights.</p>
-                                    <div class="pw-paper-meta">May 2025 &middot; 5 min read</div>
-                                </div>
-                                <div class="pw-paper-arrow">&rarr;</div>
-                            </article>
-                            <article class="pw-paper" onclick="collapseCard();setTimeout(function(){expandCard('blog');setTimeout(function(){openExpandedArticle('median-voter-theory')},200)},350)">
-                                <div class="pw-paper-number">02</div>
-                                <div class="pw-paper-content">
-                                    <div class="pw-paper-tags"><span>Politics</span><span>Analysis</span></div>
-                                    <h3>The Conflation Between Median Voter Theory and Trump's Win</h3>
-                                    <p>How the Trump campaign used an obscure political science concept to strategically reposition Kamala Harris in the eyes of swing voters.</p>
-                                    <div class="pw-paper-meta">Jan 2025 &middot; 6 min read</div>
-                                </div>
-                                <div class="pw-paper-arrow">&rarr;</div>
-                            </article>
-                            <article class="pw-paper" onclick="collapseCard();setTimeout(function(){expandCard('blog');setTimeout(function(){openExpandedArticle('nsa-surveillance')},200)},350)">
-                                <div class="pw-paper-number">03</div>
-                                <div class="pw-paper-content">
-                                    <div class="pw-paper-tags"><span>Essay</span><span>Civil Liberties</span></div>
-                                    <h3>Resolution on State Interception of Communications</h3>
-                                    <p>Why the intentional censorship and oversight of private communications without a warrant is unconstitutional -- examining PRISM, XKeyscore, and the Patriot Act.</p>
-                                    <div class="pw-paper-meta">Sep 2024 &middot; 7 min read</div>
-                                </div>
-                                <div class="pw-paper-arrow">&rarr;</div>
-                            </article>
-                        </div>
-                    </div>
-
-                    <div class="pw-section">
-                        <div class="pw-section-head">
-                            <h2 class="pw-section-title">Press &amp; Media</h2>
-                            <div class="pw-section-line"></div>
-                        </div>
-                        <div class="pw-press">
-                            <a class="pw-press-item" href="https://www.evanstonian.net/staff_name/ryan-mccomb/" target="_blank">
-                                <div class="pw-press-outlet">The Evanstonian</div>
-                                <div class="pw-press-title">Staff Writer -- News Section</div>
-                                <div class="pw-press-desc">Coverage of local politics, ETHS school board, District 65, and community issues in Evanston.</div>
-                                <div class="pw-press-date">Aug 2024 -- Present</div>
-                                <span class="pw-press-link">Read articles &#8599;</span>
-                            </a>
-                            <a class="pw-press-item" href="https://podcasts.apple.com/us/podcast/project-2028/id1753137875" target="_blank">
-                                <div class="pw-press-outlet">Apple Podcasts</div>
-                                <div class="pw-press-title">Project 2028 Podcast</div>
-                                <div class="pw-press-desc">A podcast exploring political science and politics, available on all major platforms.</div>
-                                <div class="pw-press-date">2025</div>
-                                <span class="pw-press-link">Listen &#8599;</span>
-                            </a>
-                            <a class="pw-press-item" href="https://il9.org" target="_blank">
-                                <div class="pw-press-outlet">IL9CAST</div>
-                                <div class="pw-press-title">Open-Source Congressional Forecast -- IL-9</div>
-                                <div class="pw-press-desc">Built and published a probabilistic forecasting model for the Illinois 9th Congressional District race.</div>
-                                <div class="pw-press-date">Dec 2025</div>
-                                <span class="pw-press-link">View project &#8599;</span>
-                            </a>
-                        </div>
-                        <p class="pw-cta">More press coming. If you've written about my work, <a href="#contact" onclick="event.preventDefault();collapseCard();setTimeout(function(){expandCard('contact')},350)">let me know</a>.</p>
                     </div>
                 </div>
             `,
@@ -1817,28 +1656,21 @@
         }
 
         function initTimeline() {
-            const line = document.getElementById('cv-line');
-            const items = document.querySelectorAll('.cv-item');
-            if (!line || !items.length) return;
+            const line = document.getElementById('tl-line');
+            const nodes = document.querySelectorAll('.tl-node');
+            if (!line || !nodes.length) return;
 
+            // Draw the line
             requestAnimationFrame(() => {
                 line.classList.add('drawn');
             });
 
-            items.forEach((item, i) => {
+            // Stagger-reveal each node
+            nodes.forEach((node, i) => {
                 setTimeout(() => {
-                    item.classList.add('visible');
+                    node.classList.add('visible');
                 }, 200 + i * 120);
             });
-        }
-
-        function switchCvTab(tab, btn) {
-            document.querySelectorAll('.cv-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.cv-panel').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            const panel = document.getElementById('cv-' + tab);
-            if (panel) panel.classList.add('active');
-            if (tab === 'exp') initTimeline();
         }
 
         function initForecastStats() {
@@ -2725,411 +2557,5 @@
     </script>
 
     <script src="scroll-hide.js"></script>
-    <script>
-    // 3D AXIS GRAPH — all 8 improvements
-    (function init3D() {
-        if (typeof THREE === 'undefined') { setTimeout(init3D, 100); return; }
-        const canvas = document.getElementById('hero-3d');
-        if (!canvas) return;
-
-        const container = canvas.parentElement;
-        const w = container.clientWidth;
-        const h = container.clientHeight || 400;
-
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-        renderer.setSize(w, h);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(30, w / h, 0.1, 100);
-        camera.position.set(6.2, 3.5, 6.2);
-        camera.lookAt(0.9, 0.5, 0.9);
-
-        // [2] Lighting for depth
-        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        dirLight.position.set(3, 5, 4);
-        scene.add(dirLight);
-        const pointLight = new THREE.PointLight(0x89b4fa, 0.4, 10);
-        pointLight.position.set(1, 2, 1);
-        scene.add(pointLight);
-
-        const root = new THREE.Group();
-        scene.add(root);
-        const axisLen = 2;
-
-        function getColors() {
-            const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-            return {
-                x: dark ? 0x5c8cfa : 0x2a6af5,
-                y: dark ? 0x66bb6a : 0x2e7d32,
-                z: dark ? 0xef5350 : 0xc62828,
-                grid: dark ? 0x333333 : 0xc8c0b4,
-                label: dark ? '#aaa' : '#666',
-                point: dark ? 0x5c8cfa : 0x2a6af5,
-                pointAlt: dark ? 0xa0c4ff : 0x7eb8ff,
-                regStart: dark ? 0x2e7d32 : 0x2e7d32,
-                regEnd: dark ? 0x5c8cfa : 0x2a6af5,
-                envelope: dark ? 0x89b4fa : 0x2a6af5,
-                vector: dark ? 0xfab387 : 0xe65100,
-            };
-        }
-        let colors = getColors();
-
-        // --- AXES ---
-        function makeAxis(dir, color) {
-            const mat = new THREE.LineBasicMaterial({ color });
-            return new THREE.Line(new THREE.BufferGeometry().setFromPoints([
-                new THREE.Vector3(0,0,0), dir.clone().multiplyScalar(axisLen)
-            ]), mat);
-        }
-        const xAxis = makeAxis(new THREE.Vector3(1,0,0), colors.x);
-        const yAxis = makeAxis(new THREE.Vector3(0,1,0), colors.y);
-        const zAxis = makeAxis(new THREE.Vector3(0,0,1), colors.z);
-        root.add(xAxis, yAxis, zAxis);
-
-        function makeArrowCone(dir, color) {
-            const cone = new THREE.Mesh(
-                new THREE.ConeGeometry(0.04, 0.14, 8),
-                new THREE.MeshPhongMaterial({ color, shininess: 60 })
-            );
-            cone.position.copy(dir.clone().multiplyScalar(axisLen));
-            cone.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir);
-            return cone;
-        }
-        root.add(makeArrowCone(new THREE.Vector3(1,0,0), colors.x));
-        root.add(makeArrowCone(new THREE.Vector3(0,1,0), colors.y));
-        root.add(makeArrowCone(new THREE.Vector3(0,0,1), colors.z));
-
-        // Ticks
-        const tickGroup = new THREE.Group();
-        const tickMat = new THREE.LineBasicMaterial({ color: colors.grid, transparent: true, opacity: 0.5 });
-        for (let i = 1; i <= 4; i++) {
-            const v = (i/4)*axisLen, s = 0.04;
-            tickGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(v,-s,0),new THREE.Vector3(v,s,0)]),tickMat));
-            tickGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-s,v,0),new THREE.Vector3(s,v,0)]),tickMat));
-            tickGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,-s,v),new THREE.Vector3(0,s,v)]),tickMat));
-        }
-        root.add(tickGroup);
-
-        // Labels
-        function makeLabel(text, pos, color) {
-            const c = document.createElement('canvas'); c.width = 64; c.height = 32;
-            const ctx = c.getContext('2d');
-            ctx.font = 'bold 24px Inter, sans-serif'; ctx.fillStyle = color;
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(text, 32, 16);
-            const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true }));
-            sprite.position.copy(pos); sprite.scale.set(0.35, 0.18, 1);
-            return sprite;
-        }
-        const labelGroup = new THREE.Group();
-        labelGroup.add(makeLabel('x\u2081', new THREE.Vector3(axisLen+0.18,-0.12,0), colors.label));
-        labelGroup.add(makeLabel('x\u2082', new THREE.Vector3(-0.12,axisLen+0.18,0), colors.label));
-        labelGroup.add(makeLabel('x\u2083', new THREE.Vector3(0,-0.12,axisLen+0.18), colors.label));
-        root.add(labelGroup);
-
-        // [4] GRIDS on all 3 planes (XZ, XY back wall, YZ back wall)
-        const gridGroup = new THREE.Group();
-        const gridMat = new THREE.LineBasicMaterial({ color: colors.grid, opacity: 0.2, transparent: true });
-        const gridBackMat = new THREE.LineBasicMaterial({ color: colors.grid, opacity: 0.1, transparent: true });
-        for (let i = 0; i <= 8; i++) {
-            const v = (i/8)*axisLen;
-            // XZ floor
-            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(v,0,0),new THREE.Vector3(v,0,axisLen)]),gridMat));
-            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,v),new THREE.Vector3(axisLen,0,v)]),gridMat));
-            // XY back wall (z=0)
-            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(v,0,0),new THREE.Vector3(v,axisLen,0)]),gridBackMat));
-            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,v,0),new THREE.Vector3(axisLen,v,0)]),gridBackMat));
-            // YZ back wall (x=0)
-            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,v,0),new THREE.Vector3(0,v,axisLen)]),gridBackMat));
-            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,v),new THREE.Vector3(0,axisLen,v)]),gridBackMat));
-        }
-        root.add(gridGroup);
-
-        // --- DATA ---
-        function seededRandom(s) { return function(){ s=Math.sin(s)*10000; return s-Math.floor(s); }; }
-        const rand = seededRandom(42);
-
-        const pointsGroup = new THREE.Group();
-        const dataPoints = [];
-        const numPoints = 35;
-        for (let i = 0; i < numPoints; i++) {
-            const t = rand()*1.7+0.15;
-            const noise = (rand()-0.5)*0.35, noiseZ = (rand()-0.5)*0.35;
-            dataPoints.push({
-                x: Math.max(0.05, Math.min(1.95, t)),
-                y: Math.max(0.05, Math.min(1.95, 0.25*t*t+0.15+noise)),
-                z: Math.max(0.05, Math.min(1.95, 0.5*t+0.25+noiseZ)),
-                // [3] size variation
-                size: 0.02 + rand()*0.025,
-            });
-        }
-
-        // --- QUADRATIC REGRESSION ---
-        const sorted = [...dataPoints].sort((a,b) => a.x-b.x);
-        const nPts = sorted.length;
-        let sx=0,sx2=0,sx3=0,sx4=0,sy=0,sxy=0,sx2y=0,sz=0,sxz=0,sx2z=0;
-        for (const p of sorted) {
-            const x2=p.x*p.x;
-            sx+=p.x;sx2+=x2;sx3+=x2*p.x;sx4+=x2*x2;
-            sy+=p.y;sxy+=p.x*p.y;sx2y+=x2*p.y;
-            sz+=p.z;sxz+=p.x*p.z;sx2z+=x2*p.z;
-        }
-        function solve3x3(m,v){const a=m.map((r,i)=>[...r,v[i]]);for(let c=0;c<3;c++){let mr=c;for(let r=c+1;r<3;r++)if(Math.abs(a[r][c])>Math.abs(a[mr][c]))mr=r;[a[c],a[mr]]=[a[mr],a[c]];for(let r=c+1;r<3;r++){const f=a[r][c]/a[c][c];for(let j=c;j<4;j++)a[r][j]-=f*a[c][j];}}const x=[0,0,0];for(let i=2;i>=0;i--){x[i]=a[i][3];for(let j=i+1;j<3;j++)x[i]-=a[i][j]*x[j];x[i]/=a[i][i];}return x;}
-        const yC = solve3x3([[nPts,sx,sx2],[sx,sx2,sx3],[sx2,sx3,sx4]],[sy,sxy,sx2y]);
-        const zC = solve3x3([[nPts,sx,sx2],[sx,sx2,sx3],[sx2,sx3,sx4]],[sz,sxz,sx2z]);
-        function regY(x){return yC[2]*x*x+yC[1]*x+yC[0];}
-        function regZ(x){return zC[2]*x*x+zC[1]*x+zC[0];}
-
-        // [7] Gradient curve — multiple colored segments
-        const curveSteps = 80;
-        const xMin = 0.05, xMax = 1.95;
-        const curveGroup = new THREE.Group();
-        const curvePtsAll = [];
-        for (let i = 0; i <= curveSteps; i++) {
-            const x = xMin+(xMax-xMin)*(i/curveSteps);
-            curvePtsAll.push(new THREE.Vector3(x, Math.max(0,Math.min(axisLen,regY(x))), Math.max(0,Math.min(axisLen,regZ(x)))));
-        }
-        const cStart = new THREE.Color(colors.regStart);
-        const cEnd = new THREE.Color(colors.regEnd);
-        for (let i = 0; i < curveSteps; i++) {
-            const t = i/curveSteps;
-            const col = cStart.clone().lerp(cEnd.clone(), t);
-            const segMat = new THREE.LineBasicMaterial({ color: col });
-            curveGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([curvePtsAll[i], curvePtsAll[i+1]]), segMat));
-        }
-        root.add(curveGroup);
-
-        // --- CONFIDENCE ENVELOPE ---
-        const residuals = dataPoints.map(p => Math.sqrt((p.y-regY(p.x))**2+(p.z-regZ(p.x))**2));
-        const stdErr = Math.sqrt(residuals.reduce((s,r)=>s+r*r,0)/nPts);
-        const xMean = sx/nPts;
-
-        function envPerps(x) {
-            const cy=Math.max(0,Math.min(axisLen,regY(x))), cz=Math.max(0,Math.min(axisLen,regZ(x)));
-            const pos = new THREE.Vector3(x,cy,cz);
-            const dx=0.01;
-            const tangent = new THREE.Vector3(dx,regY(x+dx)-cy,regZ(x+dx)-cz).normalize();
-            let up = new THREE.Vector3(0,1,0);
-            if(Math.abs(tangent.dot(up))>0.9) up.set(1,0,0);
-            const p1 = new THREE.Vector3().crossVectors(tangent,up).normalize();
-            const p2 = new THREE.Vector3().crossVectors(tangent,p1).normalize();
-            const norm = Math.abs(x-xMean)/(xMax-xMin)*2;
-            const n4 = norm*norm*norm*norm;
-            const r = Math.max(0.02, Math.min(stdErr*(0.12+1.2*n4), 0.35));
-            return {pos,p1,p2,r};
-        }
-
-        const tubeSeg=60, radSeg=20;
-        const tubeVerts=[], tubeIdx=[];
-        for(let i=0;i<=tubeSeg;i++){
-            const x=xMin+(xMax-xMin)*(i/tubeSeg);
-            const {pos,p1,p2,r}=envPerps(x);
-            for(let j=0;j<=radSeg;j++){
-                const th=(j/radSeg)*Math.PI*2;
-                const v=pos.clone().add(p1.clone().multiplyScalar(Math.cos(th)*r)).add(p2.clone().multiplyScalar(Math.sin(th)*r));
-                tubeVerts.push(v.x,v.y,v.z);
-            }
-        }
-        for(let i=0;i<tubeSeg;i++)for(let j=0;j<radSeg;j++){
-            const a=i*(radSeg+1)+j,b=a+radSeg+1;
-            tubeIdx.push(a,b,a+1,a+1,b,b+1);
-        }
-        const tubeGeo=new THREE.BufferGeometry();
-        tubeGeo.setAttribute('position',new THREE.Float32BufferAttribute(tubeVerts,3));
-        tubeGeo.setIndex(tubeIdx);tubeGeo.computeVertexNormals();
-        const tubeMat=new THREE.MeshBasicMaterial({color:colors.envelope,transparent:true,opacity:0.07,depthWrite:false,side:THREE.DoubleSide});
-        const tubeMesh=new THREE.Mesh(tubeGeo,tubeMat);
-        root.add(tubeMesh);
-
-        // [8] More wireframe rings (16)
-        const ringGroup = new THREE.Group();
-        for(let i=0;i<=16;i++){
-            const x=xMin+(xMax-xMin)*(i/16);
-            const {pos,p1,p2,r}=envPerps(x);
-            const pts=[];
-            for(let j=0;j<=40;j++){
-                const th=(j/40)*Math.PI*2;
-                pts.push(pos.clone().add(p1.clone().multiplyScalar(Math.cos(th)*r)).add(p2.clone().multiplyScalar(Math.sin(th)*r)));
-            }
-            ringGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
-                new THREE.LineBasicMaterial({color:colors.envelope,transparent:true,opacity:0.1})));
-        }
-        root.add(ringGroup);
-
-        // [6] VECTOR — tangent to regression at x=1.5 (gradient direction, tied to data)
-        const vx = 1.5;
-        const vStart = new THREE.Vector3(vx, regY(vx), regZ(vx));
-        const dxx = 0.001;
-        const vTangent = new THREE.Vector3(1, (regY(vx+dxx)-regY(vx))/dxx, (regZ(vx+dxx)-regZ(vx))/dxx).normalize();
-        const vEnd = vStart.clone().add(vTangent.clone().multiplyScalar(0.8));
-        const vecDirN = vTangent;
-
-        const vecMat = new THREE.LineBasicMaterial({color:colors.vector,linewidth:2});
-        const shaftEnd = vEnd.clone().sub(vecDirN.clone().multiplyScalar(0.12));
-        const vecShaft = new THREE.Line(new THREE.BufferGeometry().setFromPoints([vStart,shaftEnd]),vecMat);
-        root.add(vecShaft);
-        const vecCone=new THREE.Mesh(new THREE.ConeGeometry(0.045,0.15,8),new THREE.MeshPhongMaterial({color:colors.vector,shininess:80}));
-        vecCone.position.copy(vEnd.clone().sub(vecDirN.clone().multiplyScalar(0.07)));
-        vecCone.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),vecDirN);
-        root.add(vecCone);
-
-        const vecLabel=makeLabel('\u2207f',vEnd.clone().add(new THREE.Vector3(0.1,0.1,0)),colors.label);
-        root.add(vecLabel);
-
-        // Dashed projections
-        const dashMat=new THREE.LineDashedMaterial({color:colors.vector,transparent:true,opacity:0.25,dashSize:0.06,gapSize:0.04});
-        function addDash(a,b){const g=new THREE.BufferGeometry().setFromPoints([a,b]);const l=new THREE.Line(g,dashMat);l.computeLineDistances();root.add(l);}
-        addDash(vEnd, new THREE.Vector3(vEnd.x,0,vEnd.z));
-        addDash(new THREE.Vector3(vEnd.x,0,vEnd.z), new THREE.Vector3(vEnd.x,0,0));
-        addDash(new THREE.Vector3(vEnd.x,0,vEnd.z), new THREE.Vector3(0,0,vEnd.z));
-
-        // [2,3] DATA POINTS with Phong material + size variation
-        const sphereMeshes = [];
-        for (let i = 0; i < numPoints; i++) {
-            const p = dataPoints[i];
-            const pv = new THREE.Vector3(p.x, p.y, p.z);
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(p.size, 16, 16),
-                new THREE.MeshPhongMaterial({
-                    color: rand()>0.4 ? colors.point : colors.pointAlt,
-                    shininess: 100,
-                    transparent: true, opacity: 0
-                })
-            );
-            sphere.position.copy(pv);
-            sphere.scale.set(0,0,0);
-            pointsGroup.add(sphere);
-            sphereMeshes.push(sphere);
-        }
-        root.add(pointsGroup);
-
-        // [5] Hover tooltip
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        let hoveredSphere = null;
-        let tooltipEl = document.createElement('div');
-        tooltipEl.style.cssText = 'position:fixed;pointer-events:none;background:rgba(30,30,46,0.92);color:#cdd6f4;font-family:SF Mono,Fira Code,monospace;font-size:0.7rem;padding:0.35rem 0.6rem;border-radius:5px;border:1px solid rgba(255,255,255,0.1);display:none;z-index:99999;white-space:nowrap;';
-        document.body.appendChild(tooltipEl);
-
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = ((e.clientX-rect.left)/rect.width)*2-1;
-            mouse.y = -((e.clientY-rect.top)/rect.height)*2+1;
-            raycaster.setFromCamera(mouse,camera);
-            const hits = raycaster.intersectObjects(sphereMeshes);
-            if (hoveredSphere && hoveredSphere !== (hits[0]&&hits[0].object)) {
-                hoveredSphere.scale.set(1,1,1);
-                hoveredSphere = null;
-                tooltipEl.style.display = 'none';
-            }
-            if (hits.length) {
-                const obj = hits[0].object;
-                obj.scale.set(1.5,1.5,1.5);
-                hoveredSphere = obj;
-                const pos = obj.position;
-                tooltipEl.textContent = '('+pos.x.toFixed(2)+', '+pos.y.toFixed(2)+', '+pos.z.toFixed(2)+')';
-                tooltipEl.style.display = 'block';
-                tooltipEl.style.left = (e.clientX+12)+'px';
-                tooltipEl.style.top = (e.clientY-28)+'px';
-            }
-        });
-        canvas.addEventListener('mouseleave', () => {
-            if(hoveredSphere){hoveredSphere.scale.set(1,1,1);hoveredSphere=null;}
-            tooltipEl.style.display='none';
-        });
-
-        // [1] ENTRY ANIMATION — stagger everything in
-        // Hide all groups initially
-        const animGroups = [gridGroup, tickGroup, labelGroup, curveGroup, tubeMesh, ringGroup, vecShaft, vecCone, vecLabel];
-        animGroups.forEach(g => { g.visible = false; });
-        pointsGroup.visible = true; // points animate via scale
-
-        const t0 = performance.now();
-        const entryDuration = 2500;
-
-        // --- DRAG TO ROTATE ---
-        let isDragging3d = false, prevMX = 0, prevMY = 0;
-        let angle = 0.6, tilt = 0.35;
-        canvas.addEventListener('pointerdown',(e)=>{isDragging3d=true;prevMX=e.clientX;prevMY=e.clientY;canvas.style.cursor='grabbing';});
-        window.addEventListener('pointermove',(e)=>{if(!isDragging3d)return;angle+=(e.clientX-prevMX)*0.008;tilt+=(e.clientY-prevMY)*0.005;tilt=Math.max(-0.5,Math.min(1.0,tilt));prevMX=e.clientX;prevMY=e.clientY;});
-        window.addEventListener('pointerup',()=>{isDragging3d=false;canvas.style.cursor='grab';});
-        canvas.style.cursor='grab';
-
-        function animate() {
-            requestAnimationFrame(animate);
-            const elapsed = performance.now()-t0;
-            const prog = Math.min(elapsed/entryDuration, 1);
-
-            // [1] Staggered entry
-            // Grids at 0-30%
-            if(prog>0.05) gridGroup.visible=true;
-            if(prog>0.1) { tickGroup.visible=true; labelGroup.visible=true; }
-
-            // Points pop in 10%-60%
-            for(let i=0;i<sphereMeshes.length;i++){
-                const pStart = 0.1 + (i/sphereMeshes.length)*0.5;
-                const pProg = Math.max(0, Math.min((prog-pStart)/0.08, 1));
-                const ease = pProg<1 ? 1-Math.pow(1-pProg,3) : 1;
-                const s = ease;
-                sphereMeshes[i].scale.set(s,s,s);
-                sphereMeshes[i].material.opacity = ease*0.9;
-            }
-
-            // Curve draws in 30%-70%
-            if(prog>0.3) {
-                curveGroup.visible=true;
-                const curveProg = Math.min((prog-0.3)/0.4, 1);
-                const visSegs = Math.floor(curveProg*curveSteps);
-                curveGroup.children.forEach((seg,i)=>{ seg.visible = i<visSegs; });
-            }
-
-            // Envelope fades in 50%-80%
-            if(prog>0.5) {
-                tubeMesh.visible=true;
-                ringGroup.visible=true;
-                const envProg = Math.min((prog-0.5)/0.3, 1);
-                tubeMat.opacity = 0.07*envProg;
-                ringGroup.children.forEach(r=>{ r.material.opacity = 0.1*envProg; });
-            }
-
-            // Vector draws in 70%-100%
-            if(prog>0.7) {
-                vecShaft.visible=true;
-                vecCone.visible=true;
-                vecLabel.visible=true;
-            }
-
-            const r = 7;
-            camera.position.x = r*Math.sin(angle)*Math.cos(tilt);
-            camera.position.y = r*Math.sin(tilt)+0.8;
-            camera.position.z = r*Math.cos(angle)*Math.cos(tilt);
-            camera.lookAt(0.9,0.5,0.9);
-            renderer.render(scene,camera);
-        }
-        animate();
-
-        window.addEventListener('resize',()=>{
-            const nw=container.clientWidth,nh=container.clientHeight||400;
-            renderer.setSize(nw,nh);camera.aspect=nw/nh;camera.updateProjectionMatrix();
-        });
-
-        function updateColors(){
-            colors=getColors();
-            xAxis.material.color.set(colors.x);yAxis.material.color.set(colors.y);zAxis.material.color.set(colors.z);
-            gridMat.color.set(colors.grid);gridBackMat.color.set(colors.grid);tickMat.color.set(colors.grid);
-            tubeMat.color.set(colors.envelope);
-            vecMat.color.set(colors.vector);vecCone.material.color.set(colors.vector);dashMat.color.set(colors.vector);
-            ringGroup.children.forEach(r=>r.material.color.set(colors.envelope));
-            const cs=new THREE.Color(colors.regStart),ce=new THREE.Color(colors.regEnd);
-            curveGroup.children.forEach((seg,i)=>{seg.material.color.copy(cs.clone().lerp(ce.clone(),i/curveSteps));});
-            sphereMeshes.forEach(s=>{s.material.color.set(Math.random()>0.4?colors.point:colors.pointAlt);});
-            pointLight.color.set(colors.envelope);
-        }
-        updateColors();
-        new MutationObserver(updateColors).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-    })();
-    </script>
 </body>
 </html>
