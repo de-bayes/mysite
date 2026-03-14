@@ -10,25 +10,16 @@
 </head>
 <body>
 
-  <nav class="site-nav">
-    <a href="/" class="nav-name">Ryan McComb</a>
-    <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
-    <div class="nav-links">
-      <a href="/experience">Experience</a>
-      <a href="/writing">Writing</a>
-      <a href="/press">Press</a>
-      <a href="/contact">Contact</a>
-    </div>
-  </nav>
+  <nav class="site-nav" id="site-nav"></nav>
 
   <main>
     <div class="contact-page">
-      <header class="page-header" style="padding-left:0; padding-right:0;">
+      <header class="page-header" >
         <h1>Contact</h1>
         <p>Get in touch or find me online.</p>
       </header>
 
-      <div class="contact-grid">
+      <div class="contact-grid stagger-children">
         <a href="mailto:rymccmcomb1@icloud.com" class="contact-item" data-copy="rymccmcomb1@icloud.com">
           <span class="contact-label">Email</span>
           <span class="contact-value">rymccmcomb1@icloud.com</span>
@@ -63,7 +54,7 @@
 
       <section class="passions-section">
         <h2>Interests</h2>
-        <div class="passions-grid">
+        <div class="passions-grid stagger-children">
           <div class="passion-card">Constitutional & Administrative Law</div>
           <div class="passion-card">Election Forecasting</div>
           <div class="passion-card">Probabilistic Reasoning</div>
@@ -75,7 +66,7 @@
 
       <section class="skills-section">
         <h2>Skills</h2>
-        <div class="skills-list">
+        <div class="skills-list stagger-children">
           <span class="skill-tag">Python</span>
           <span class="skill-tag">JavaScript</span>
           <span class="skill-tag">Bayesian Analysis</span>
@@ -97,6 +88,8 @@
   </footer>
 
   <script src="js/nav.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/effects.js"></script>
   <script>
     // Copy-to-clipboard on email click
     document.querySelectorAll('[data-copy]').forEach(el => {
