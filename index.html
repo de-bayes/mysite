@@ -4,51 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ryan McComb</title>
-  <meta name="description" content="Ryan McComb — data, politics, and forecasting. Student Fellow at VoteHub, competitive forecaster, and photographer.">
+  <meta name="description" content="Ryan McComb — design, data, and forecasting.">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.ico">
+  <meta property="og:title" content="Ryan McComb">
+  <meta property="og:description" content="Design, data, and forecasting.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/SK-A-1892.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
 
-  <nav class="site-nav">
-    <a href="/" class="nav-name">Ryan McComb</a>
-    <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
-    <div class="nav-links">
-      <a href="/experience">Experience</a>
-      <a href="/writing">Writing</a>
-      <a href="/press">Press</a>
-      <a href="/contact">Contact</a>
-    </div>
-  </nav>
+  <nav class="site-nav" id="site-nav"></nav>
 
-  <main class="landing">
-    <section class="landing-intro">
-      <h1>Ryan McComb</h1>
-      <p class="tagline">Data, politics, and forecasting.</p>
-      <img src="ddddd.jpg" alt="Ryan McComb" class="portrait">
-      <p class="bio">
-        Student Fellow at <a href="https://votehub.com">VoteHub</a>, building election forecasting models
-        and decision-desk products. Competitive prediction market trader ranked in the top 0.5% on
-        <a href="https://manifold.markets">Manifold Markets</a>. Sports photographer for the
-        <a href="https://theaudl.com/teams/chicago-union">Chicago Union</a>.
-        Based in Evanston, IL.
-      </p>
-    </section>
+  <main>
+    <section class="hero">
+      <img src="SK-A-1892.jpg" alt="La Corniche near Monaco by Claude Monet, 1884" class="hero-img">
 
-    <section class="landing-viz" id="viz-container">
-      <canvas id="scatter-canvas"></canvas>
-      <div id="scatter-tooltip"></div>
-      <span class="viz-caption">Skills & interests in 3D — drag to explore</span>
+      <div class="hero-card">
+        <h1>Ryan McComb</h1>
+        <p>
+          Student at Evanston Township High School and Student Fellow at
+          <a href="https://votehub.com">VoteHub</a>, building election forecasting
+          models, decision-desk infrastructure, and prediction market data pipelines.
+        </p>
+        <span class="hero-cite">Claude Monet — <em>La Corniche near Monaco</em>, 1884</span>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    &copy; 2026 Ryan McComb &middot; Evanston, IL
+    &copy; 2026 Ryan McComb
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script src="js/nav.js"></script>
-  <script src="js/three-scene.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/effects.js"></script>
 </body>
 </html>

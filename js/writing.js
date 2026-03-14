@@ -34,6 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Bind click handlers on static cards
+  bindStaticCards();
+
+  function bindStaticCards() {
+    grid.querySelectorAll('.writing-card').forEach(card => {
+      // Skip cards that already have a click listener (dynamic cards)
+      if (card.dataset.id) return;
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        const title = card.querySelector('h3') ? card.querySelector('h3').textContent : '';
+        const body = card.dataset.body || (card.querySelector('.excerpt') ? card.querySelector('.excerpt').textContent : '');
+        const dateSpan = card.querySelector('.meta span');
+        const date = dateSpan ? dateSpan.textContent : '';
+        showArticle({ title, body, date, readTime: '' });
+      });
+    });
+  }
+
   // Load blog posts from API
   fetch('/api/blogposts')
     .then(r => r.json())
@@ -113,6 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
+    // Re-bind static card click handlers
+    bindStaticCards();
   }
 
   // ===== Guestbook =====
