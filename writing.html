@@ -10,20 +10,11 @@
 </head>
 <body>
 
-  <nav class="site-nav">
-    <a href="/" class="nav-name">Ryan McComb</a>
-    <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
-    <div class="nav-links">
-      <a href="/experience">Experience</a>
-      <a href="/writing">Writing</a>
-      <a href="/press">Press</a>
-      <a href="/contact">Contact</a>
-    </div>
-  </nav>
+  <nav class="site-nav" id="site-nav"></nav>
 
   <main>
     <div class="writing-page">
-      <header class="page-header" style="padding-left:0; padding-right:0;">
+      <header class="page-header" >
         <h1>Writing & Ideas</h1>
         <p>Essays, articles, and research papers.</p>
       </header>
@@ -42,9 +33,9 @@
         </select>
       </div>
 
-      <div class="writing-grid" id="writing-grid">
+      <div class="writing-grid stagger-children" id="writing-grid">
         <!-- Featured: People's Edict -->
-        <article class="writing-card featured" data-type="essay" data-date="2026-01">
+        <article class="writing-card featured" data-type="essay" data-date="2026-01" data-body="An essay on power, strife, and the arc of democratic governance in the modern era. Full text coming soon.">
           <h3>People's Edict</h3>
           <p class="excerpt">An essay on power, strife, and the arc of democratic governance in the modern era.</p>
           <div class="meta">
@@ -55,7 +46,7 @@
         </article>
 
         <!-- Median Voter Theory -->
-        <article class="writing-card" data-type="paper" data-date="2025-09">
+        <article class="writing-card" data-type="paper" data-date="2025-09" data-body="An exploration of how the median voter theorem breaks down in multi-dimensional policy spaces and polarized primaries. Full text coming soon.">
           <h3>Median Voter Theory and Its Discontents</h3>
           <p class="excerpt">An exploration of how the median voter theorem breaks down in multi-dimensional policy spaces and polarized primaries.</p>
           <div class="meta">
@@ -66,7 +57,7 @@
         </article>
 
         <!-- NSA Surveillance -->
-        <article class="writing-card" data-type="paper" data-date="2025-06">
+        <article class="writing-card" data-type="paper" data-date="2025-06" data-body="A deep dive into the tension between national security apparatus and Fourth Amendment protections in the digital age. Full text coming soon.">
           <h3>NSA Surveillance & Civil Liberties</h3>
           <p class="excerpt">A deep dive into the tension between national security apparatus and Fourth Amendment protections in the digital age.</p>
           <div class="meta">
@@ -77,7 +68,7 @@
         </article>
 
         <!-- IL9Cast writeup -->
-        <article class="writing-card" data-type="article" data-date="2025-11">
+        <article class="writing-card" data-type="article" data-date="2025-11" data-body="How I built a forecasting aggregator for a congressional primary, and what I learned about prediction markets, polling, and local politics. Full text coming soon.">
           <h3>Building IL9Cast: A Local Forecasting Experiment</h3>
           <p class="excerpt">How I built a forecasting aggregator for a congressional primary, and what I learned about prediction markets, polling, and local politics.</p>
           <div class="meta">
@@ -88,7 +79,7 @@
         </article>
 
         <!-- Game Theory & Voting -->
-        <article class="writing-card" data-type="essay" data-date="2024-03">
+        <article class="writing-card" data-type="essay" data-date="2024-03" data-body="Exploring how strategic voting, Arrow's impossibility theorem, and mechanism design shape electoral outcomes. Full text coming soon.">
           <h3>Game Theory and Voting Systems</h3>
           <p class="excerpt">Exploring how strategic voting, Arrow's impossibility theorem, and mechanism design shape electoral outcomes.</p>
           <div class="meta">
@@ -102,17 +93,6 @@
       </div>
     </div>
 
-    <!-- Guestbook -->
-    <section class="guestbook-section">
-      <h2>Guestbook</h2>
-      <p style="color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.95rem;">Leave a note, say hello.</p>
-      <form class="guestbook-form" id="guestbook-form">
-        <input type="text" name="name" placeholder="Your name" maxlength="40" required>
-        <textarea name="message" placeholder="Your message" maxlength="200" required></textarea>
-        <button type="submit">Sign</button>
-      </form>
-      <ul class="guestbook-entries" id="guestbook-list"></ul>
-    </section>
   </main>
 
   <footer class="site-footer">
@@ -120,6 +100,8 @@
   </footer>
 
   <script src="js/nav.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/effects.js"></script>
   <script src="js/writing.js"></script>
 </body>
 </html>
