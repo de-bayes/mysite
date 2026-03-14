@@ -1,7 +1,19 @@
 // Shared navigation logic
 document.addEventListener('DOMContentLoaded', () => {
-  const nav = document.querySelector('.site-nav');
+  const nav = document.getElementById('site-nav');
   if (!nav) return;
+
+  nav.innerHTML = `
+    <a href="/" class="nav-name">Ryan McComb</a>
+    <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/experience">Experience</a>
+      <a href="/writing">Writing</a>
+      <a href="/press">Press</a>
+      <a href="/contact">Contact</a>
+    </div>
+  `;
 
   // Highlight current page
   const path = window.location.pathname;
@@ -21,24 +33,41 @@ document.addEventListener('DOMContentLoaded', () => {
       links.classList.toggle('open');
     });
 
-    // Close menu when clicking a link
     links.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => links.classList.remove('open'));
     });
   }
 
-  // Smooth page transition on nav clicks
-  nav.querySelectorAll('a').forEach(a => {
+  // Scroll shadow on nav
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  // Smooth scroll for anchor links on same page
+  nav.querySelectorAll('a[href^="/#"]').forEach(a => {
     a.addEventListener('click', (e) => {
-      const href = a.getAttribute('href');
-      if (href.startsWith('/') || href.endsWith('.html')) {
+      const hash = a.getAttribute('href').replace('/', '');
+      const target = document.querySelector(hash);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Page transition on nav clicks (non-anchor links)
+  nav.querySelectorAll('a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href.startsWith('/#')) return; // handled above
+    if (href.startsWith('/') || href.endsWith('.html')) {
+      a.addEventListener('click', (e) => {
         e.preventDefault();
         document.body.style.opacity = '0';
         document.body.style.transition = 'opacity 0.2s ease';
         setTimeout(() => {
           window.location.href = href;
         }, 200);
-      }
-    });
+      });
+    }
   });
 });
