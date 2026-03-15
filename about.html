@@ -14,21 +14,46 @@
 
   <main>
     <div class="about-page">
-      <header class="page-header">
-        <h1>About</h1>
-      </header>
 
-      <div class="about-layout">
-        <div class="about-photo">
-          <img src="portrait.jpg" alt="Ryan McComb">
+      <section class="about-hero">
+        <div class="about-hero-text">
+          <span class="about-label">About</span>
+          <h1 class="about-name">Ryan<br>McComb</h1>
+        </div>
+        <div class="about-hero-photo">
+          <img src="portrait.jpg"
+               srcset="portrait-600.jpg 600w, portrait.jpg 1100w"
+               sizes="(max-width: 768px) 100vw, 480px"
+               alt="Ryan McComb"
+               width="1100" height="733"
+               fetchpriority="high" loading="eager">
+        </div>
+      </section>
+
+      <section class="about-details">
+        <div class="about-detail-col">
+          <span class="about-detail-label">Location</span>
+          <span class="about-detail-value">Evanston, IL</span>
+        </div>
+        <div class="about-detail-col">
+          <span class="about-detail-label">Focus</span>
+          <span class="about-detail-value">Data &amp; Forecasting</span>
+        </div>
+        <div class="about-detail-col">
+          <span class="about-detail-label">Role</span>
+          <span class="about-detail-value">Student Fellow, VoteHub</span>
+        </div>
+      </section>
+
+      <section class="about-body">
+        <div class="about-body-lead">
+          <p>
+            I'm a student at Evanston Township High School interested in
+            data, prediction markets, elections, and politics en general.
+          </p>
         </div>
 
-        <div class="about-content">
-          <p class="about-lead">
-            I'm Ryan McComb — a student at Evanston Township High School
-            interested in data, prediction markets, elections, and politics en general.
-          </p>
-
+        <div class="about-body-text">
           <p>
             I'm a Student Fellow at <a href="https://votehub.com">VoteHub</a>,
             where I contribute to decision-desk calls on primary night, work on
@@ -49,17 +74,16 @@
             Project 2028 Podcast, and a credentialled sports photographer
             for the Chicago Union.
           </p>
-
-          <p>
-            Based in Evanston, Illinois.
-          </p>
-
-          <div class="race-call-record">
-            <span class="race-call-label">VoteHub Race Call Record</span>
-            <span class="race-call-stat">0 / 0</span>
-          </div>
         </div>
-      </div>
+      </section>
+
+      <section class="about-footer-card">
+        <div class="race-call-record">
+          <span class="race-call-label">VoteHub Race Call Record</span>
+          <span class="race-call-stat">0 / 0</span>
+        </div>
+      </section>
+
     </div>
   </main>
 
