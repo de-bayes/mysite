@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.timeline-card').forEach(card => {
     card.addEventListener('click', () => {
       card.classList.toggle('expanded');
+      const hint = card.querySelector('.expand-hint');
+      if (hint) {
+        hint.textContent = card.classList.contains('expanded') ? 'Click to collapse' : 'Click to expand';
+      }
     });
   });
 
