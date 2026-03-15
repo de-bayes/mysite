@@ -147,6 +147,22 @@
       return { quality: 1, inTitle: titleFuzzy };
     }
 
+    // Strategy 4: typo in prefix of a longer word (e.g. "forcast" vs "forecasting")
+    for (var i = 0; i < entry._words.length; i++) {
+      var tw = entry._words[i];
+      if (tw.length <= qw.length) continue;
+      var prefix = tw.substring(0, qw.length);
+      if (editDist(qw, prefix) <= maxDist) {
+        var titlePrefix = false;
+        for (var t = 0; t < entry._titleWords.length; t++) {
+          var ttw = entry._titleWords[t];
+          if (ttw.length <= qw.length) continue;
+          if (editDist(qw, ttw.substring(0, qw.length)) <= maxDist) { titlePrefix = true; break; }
+        }
+        return { quality: 1, inTitle: titlePrefix };
+      }
+    }
+
     return null;
   }
 
