@@ -108,26 +108,40 @@ const articles = {
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('writing-grid');
   const filterTabs = document.querySelectorAll('.filter-tab');
+  const tagSelect = document.getElementById('tag-filter');
   if (!grid || !filterTabs.length) return;
 
   // Sort cards newest-first on load
   sortCardsNewest();
 
-  // Count items per type and update tab labels
+  // Count items per category and update tab labels
   updateFilterCounts();
 
-  // Filter by tag
+  function applyFilters() {
+    const activeTab = document.querySelector('.filter-tab.active');
+    const category = (activeTab && activeTab.dataset.category) ? activeTab.dataset.category : 'all';
+    const tag = tagSelect && tagSelect.value ? tagSelect.value : 'all';
+
+    document.querySelectorAll('.writing-card').forEach(card => {
+      const cardCategory = (card.dataset.category || '').trim();
+      const cardTags = (card.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+      const categoryMatch = category === 'all' || cardCategory === category;
+      const tagMatch = tag === 'all' || cardTags.includes(tag);
+      card.style.display = categoryMatch && tagMatch ? '' : 'none';
+    });
+  }
+
   filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      const tag = tab.dataset.tag;
-      document.querySelectorAll('.writing-card').forEach(card => {
-        const cardTags = (card.dataset.tags || '').split(',');
-        card.style.display = (tag === 'all' || cardTags.includes(tag)) ? '' : 'none';
-      });
+      applyFilters();
     });
   });
+
+  if (tagSelect) {
+    tagSelect.addEventListener('change', applyFilters);
+  }
 
   // Bind click handlers on static cards
   bindCardClicks();
@@ -140,7 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
       posts.forEach(post => {
         const card = document.createElement('article');
         card.className = 'writing-card';
-        card.dataset.type = (post.tags && post.tags[0]) ? post.tags[0].toLowerCase() : 'blog';
+        const category = (post.category && ['essays', 'articles', 'press'].includes(post.category)) ? post.category : 'articles';
+        const tagFromPost = (post.tags && post.tags[0]) ? String(post.tags[0]).trim().toLowerCase() : '';
+        card.dataset.category = category;
+        card.dataset.tags = tagFromPost || '';
         card.dataset.date = post.date || '';
         card.dataset.id = post.id;
 
@@ -148,14 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
           year: 'numeric', month: 'short'
         }) : '';
 
-        const typeLabel = card.dataset.type;
-
         card.innerHTML = `
           <h3>${escapeHtml(post.title)}</h3>
           <p class="excerpt">${escapeHtml((post.body || '').slice(0, 140))}${post.body && post.body.length > 140 ? '...' : ''}</p>
           <div class="meta">
             <span>${dateStr}</span>
-            <span class="tag">${escapeHtml(typeLabel)}</span>
           </div>
         `;
 
@@ -179,22 +193,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateFilterCounts() {
     const cards = Array.from(document.querySelectorAll('.writing-card'));
-    const counts = {};
+    const categoryCounts = { all: cards.length };
     cards.forEach(card => {
-      const cardTags = (card.dataset.tags || '').split(',');
-      cardTags.forEach(t => { counts[t] = (counts[t] || 0) + 1; });
+      const cat = (card.dataset.category || '').trim();
+      if (cat) categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
     });
 
-    filterTabs.forEach(tab => {
-      const tag = tab.dataset.tag;
-      if (tag === 'all') {
-        tab.textContent = `All (${cards.length})`;
-      } else {
-        const labels = { elections: 'Elections', education: 'Education', essays: 'Essays', sports: 'Sports', press: 'Press' };
-        const label = labels[tag] || tag;
-        const count = counts[tag] || 0;
-        tab.textContent = `${label} (${count})`;
-      }
+    const labels = { all: 'All', essays: 'Essays', articles: 'Articles', press: 'Press' };
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      const category = tab.dataset.category;
+      const label = labels[category] || category;
+      const count = categoryCounts[category] ?? 0;
+      tab.textContent = `${label} (${count})`;
     });
   }
 
@@ -205,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.cursor = 'pointer';
       card.addEventListener('click', () => {
         // Press cards open external link
-        if ((card.dataset.tags || '').includes('press') && card.dataset.href) {
+        if ((card.dataset.category || '') === 'press' && card.dataset.href) {
           window.open(card.dataset.href, '_blank', 'noopener');
           return;
         }
@@ -263,18 +273,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function rebindEvents() {
-    document.querySelectorAll('.filter-tab').forEach(tab => {
+    const tabs = document.querySelectorAll('.filter-tab');
+    const tagSelectEl = document.getElementById('tag-filter');
+    tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        const tag = tab.dataset.tag;
-        document.querySelectorAll('.writing-card').forEach(card => {
-          const cardTags = (card.dataset.tags || '').split(',');
-          card.style.display = (tag === 'all' || cardTags.includes(tag)) ? '' : 'none';
-        });
+        applyFilters();
       });
     });
-    // Re-bind card clicks — reset bound flag first
+    if (tagSelectEl) tagSelectEl.addEventListener('change', applyFilters);
     grid.querySelectorAll('.writing-card').forEach(card => delete card.dataset.bound);
     bindCardClicks();
   }
