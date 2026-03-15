@@ -169,10 +169,11 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   display: none;
   background: none;
   border: none;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   cursor: pointer;
   color: var(--text);
-  padding: 0.25rem;
+  padding: 0.5rem;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ========================================
@@ -1122,12 +1123,17 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
     padding: 0.75rem 1.25rem;
   }
 
+  .site-nav {
+    overflow: visible;
+  }
+
   .nav-links {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
+    z-index: 100;
     background: rgba(26, 26, 29, 0.98);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
