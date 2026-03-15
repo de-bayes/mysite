@@ -55,6 +55,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Page transitions — let the browser's View Transitions API handle the animation
-  // via @view-transition { navigation: auto } in CSS. No manual fade needed.
+  // Page transitions
+  // Browsers with cross-document View Transitions handle this via CSS @view-transition.
+  // For all others, fade out the content (not the nav) before navigating,
+  // and fade in on the new page.
+  const hasCrossDocVT = 'onpagereveal' in window;
+
+  if (!hasCrossDocVT) {
+    // Entry animation on page load
+    document.body.classList.add('page-enter');
+    setTimeout(() => document.body.classList.remove('page-enter'), 300);
+
+    // Exit animation on nav clicks
+    nav.querySelectorAll('a').forEach(a => {
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('/#') || href.startsWith('http')) return;
+      if (href.startsWith('/') || href.endsWith('.html')) {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.body.classList.add('page-exit');
+          setTimeout(() => { window.location.href = href; }, 160);
+        });
+      }
+    });
+  }
 });
