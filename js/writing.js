@@ -239,6 +239,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  let progressBar = null;
+  let progressHandler = null;
+
+  function addProgressBar() {
+    removeProgressBar();
+    progressBar = document.createElement('div');
+    progressBar.className = 'reading-progress';
+    document.body.appendChild(progressBar);
+
+    progressHandler = () => {
+      const article = document.querySelector('.article-view');
+      if (!article) return;
+      const scrollable = article.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) { progressBar.style.width = '100%'; return; }
+      const pct = Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100));
+      progressBar.style.width = pct + '%';
+    };
+
+    window.addEventListener('scroll', progressHandler, { passive: true });
+    progressHandler();
+  }
+
+  function removeProgressBar() {
+    if (progressHandler) {
+      window.removeEventListener('scroll', progressHandler);
+      progressHandler = null;
+    }
+    if (progressBar) {
+      progressBar.remove();
+      progressBar = null;
+    }
+  }
+
+  function performTransition(callback) {
+    if (document.startViewTransition) {
+      document.startViewTransition(callback);
+    } else {
+      callback();
+    }
+  }
+
   // Article detail view
   function showArticle(post) {
     const main = document.querySelector('.writing-page');
@@ -250,22 +291,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const bodyContent = post.isHtml ? post.body : formatBody(post.body || '');
 
-    main.innerHTML = `
-      <div class="article-view">
-        <a href="#" class="back-link" id="back-to-grid">&larr; Back to writing</a>
-        <h1>${escapeHtml(post.title)}</h1>
-        <div class="article-meta">${dateStr}${post.readTime ? ' &middot; ' + escapeHtml(post.readTime) : ''}</div>
-        <div class="article-body">${bodyContent}</div>
-      </div>
-    `;
+    performTransition(() => {
+      main.innerHTML = `
+        <div class="article-view">
+          <a href="#" class="back-link" id="back-to-grid">&larr; Back to writing</a>
+          <h1>${escapeHtml(post.title)}</h1>
+          <div class="article-meta">${dateStr}${post.readTime ? ' &middot; ' + escapeHtml(post.readTime) : ''}</div>
+          <div class="article-body">${bodyContent}</div>
+        </div>
+      `;
 
-    document.getElementById('back-to-grid').addEventListener('click', (e) => {
-      e.preventDefault();
-      main.innerHTML = prevHTML;
-      rebindEvents();
+      document.getElementById('back-to-grid').addEventListener('click', (e) => {
+        e.preventDefault();
+        performTransition(() => {
+          removeProgressBar();
+          main.innerHTML = prevHTML;
+          rebindEvents();
+        });
+      });
+
+      window.scrollTo({ top: 0 });
+      addProgressBar();
     });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function formatBody(text) {
