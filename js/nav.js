@@ -55,19 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Page transition on nav clicks (non-anchor links)
-  nav.querySelectorAll('a').forEach(a => {
-    const href = a.getAttribute('href');
-    if (href.startsWith('/#')) return; // handled above
-    if (href.startsWith('/') || href.endsWith('.html')) {
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.2s ease';
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
-      });
-    }
-  });
+  // Page transitions — let the browser's View Transitions API handle the animation
+  // via @view-transition { navigation: auto } in CSS. No manual fade needed.
 });
