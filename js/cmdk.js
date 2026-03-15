@@ -375,7 +375,7 @@
   }
 
   // --- Open / close ---
-  var overlay, input;
+  var overlay, input, hint;
   var isOpen = false;
 
   function open() {
@@ -383,6 +383,7 @@
     isOpen = true;
     overlay.classList.add('cmdk-open');
     document.body.classList.add('cmdk-body-lock');
+    if (hint) hint.classList.remove('cmdk-hint-visible');
     input.value = '';
     currentQuery = '';
     activeIndex = 0;
@@ -396,6 +397,7 @@
     isOpen = false;
     overlay.classList.remove('cmdk-open');
     document.body.classList.remove('cmdk-body-lock');
+    if (hint) hint.classList.add('cmdk-hint-visible');
   }
 
   function toggle() {
@@ -485,13 +487,12 @@
     // --- "Press ⌘K to search" hint (inside nav bar) ---
     var isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
     var shortcut = isMac ? '\u2318K' : 'Ctrl+K';
-    var hint = document.createElement('button');
+    hint = document.createElement('button');
     hint.className = 'cmdk-hint';
     hint.innerHTML = '<kbd>' + shortcut + '</kbd> Search';
     hint.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      hint.classList.remove('cmdk-hint-visible');
       open();
     });
 
