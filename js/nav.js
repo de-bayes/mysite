@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   nav.innerHTML = `
     <a href="/" class="nav-name"><span class="brace">{</span><span class="ni">R</span><span class="nx nx1">yan</span><span class="nx nx2"> </span><span class="ni">J</span><span class="nx nx3">.</span><span class="nx nx4"> </span><span class="ni">M</span><span class="nx nx5">c</span><span class="ni">C</span><span class="nx nx6">omb</span><span class="brace">}</span></a>
-    <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
+    <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     <div class="nav-links">
       <a href="/about">About</a>
       <a href="/experience">Experience</a>
@@ -31,10 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hamburger && links) {
     hamburger.addEventListener('click', () => {
       links.classList.toggle('open');
+      hamburger.classList.toggle('open');
     });
 
     links.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => links.classList.remove('open'));
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
     });
   }
 
