@@ -8,7 +8,6 @@
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --bg: #151515;
   --surface: #191919;
-  --surface-hover: #222;
   --text: #e8e8e8;
   --text-light: #999;
   --text-muted: #555;
@@ -19,7 +18,6 @@
   --border-hover: rgba(255,255,255,0.16);
   --highlight: #fff;
   --glow: rgba(255,255,255,0.05);
-  --shadow: rgba(0,0,0,0.5);
   --max-width: 1100px;
   --radius: 8px;
 }
@@ -707,12 +705,11 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   font-size: 0.65rem;
   color: var(--text-light);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0.15rem 0.6rem;
-  letter-spacing: 0.05em;
   font-weight: 400;
 }
 
@@ -766,7 +763,6 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 .article-view .article-body p {
   margin-bottom: 1.5rem;
 }
-
 
 /* ========================================
    Projects Page
@@ -822,7 +818,6 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   color: var(--text-light);
   line-height: 1.7;
 }
-
 
 /* ========================================
    Contact Page
@@ -884,58 +879,6 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 }
 
 .copied-toast.show { opacity: 1; }
-
-/* Interests & Skills */
-.passions-section,
-.skills-section {
-  margin-bottom: 5rem;
-}
-
-.passions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.25rem;
-  margin-top: 1.5rem;
-}
-
-.passion-card {
-  padding: 1.5rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 0.95rem;
-  text-align: center;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.passion-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
-  transform: translateY(-2px);
-}
-
-.skills-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 1.5rem;
-}
-
-.skill-tag {
-  font-size: 0.82rem;
-  padding: 0.4rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  color: var(--text-light);
-  transition: all 0.25s ease;
-}
-
-.skill-tag:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(99,102,241,0.08);
-}
 
 /* ========================================
    404 Page
@@ -1002,8 +945,6 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   to { opacity: 1; transform: translateY(0) rotateX(0); }
 }
 
-
-
 @view-transition {
   navigation: auto;
 }
@@ -1031,10 +972,6 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 @media (max-width: 768px) {
   .site-nav {
     padding: 0.75rem 1.25rem;
-  }
-
-  .site-nav::before {
-    height: 1px;
   }
 
   .nav-links {
@@ -1109,7 +1046,6 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   }
 
   .filter-tabs { gap: 1rem; overflow-x: auto; }
-  #cursor-light { display: none; }
 }
 
 /* ========================================
