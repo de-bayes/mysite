@@ -88,6 +88,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   align-items: center;
   z-index: 100;
   transition: background 0.5s, border-color 0.5s, box-shadow 0.5s;
+  view-transition-name: site-nav;
 
   background: rgba(21, 21, 21, 0.85);
   backdrop-filter: blur(20px);
@@ -181,9 +182,12 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .hero {
   position: relative;
-  width: 100%;
+  width: calc(100% - 2rem);
+  max-width: calc(100% - 2rem);
+  margin: 0 auto;
   height: 100vh;
   overflow: hidden;
+  border-radius: 12px;
 }
 
 .hero-img {
@@ -216,7 +220,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 /* Floating card */
 .hero-card {
   position: absolute;
-  bottom: 3rem;
+  bottom: 4.5rem;
   right: 3.5rem;
   max-width: 420px;
   z-index: 3;
@@ -971,19 +975,54 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 }
 
 ::view-transition-old(root) {
-  animation: vtOut 0.15s ease;
+  animation: vtOut 0.2s cubic-bezier(0.4, 0, 1, 1);
 }
 
 ::view-transition-new(root) {
-  animation: vtIn 0.25s ease;
+  animation: vtIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+::view-transition-group(site-nav) {
+  animation: none;
+}
+
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) {
+  animation: none;
 }
 
 @keyframes vtOut {
-  to { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 0; transform: translateY(-6px); }
 }
 
 @keyframes vtIn {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+/* ========================================
+   Reading Progress Bar
+   ======================================== */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.6), #fff);
+  z-index: 200;
+  pointer-events: none;
+  transition: width 80ms linear;
+}
+
+.reading-progress::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
 }
 
 /* ========================================
@@ -1017,6 +1056,8 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 
   .hero {
     height: 100svh;
+    width: calc(100% - 1rem);
+    max-width: calc(100% - 1rem);
   }
 
   .hero-img {
@@ -1024,7 +1065,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   }
 
   .hero-card {
-    bottom: 1.5rem;
+    bottom: 3rem;
     right: 1.25rem;
     left: 1.25rem;
     max-width: none;

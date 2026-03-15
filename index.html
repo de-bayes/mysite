@@ -19,7 +19,7 @@
 
   <main>
     <section class="hero">
-      <img src="SK-A-1892.jpg" alt="La Corniche near Monaco by Claude Monet, 1884" class="hero-img">
+      <img src="" alt="" class="hero-img" id="hero-img">
 
       <div class="hero-card">
         <h1>Ryan McComb</h1>
@@ -28,9 +28,23 @@
           <a href="https://votehub.com">VoteHub</a>, working on the decision desk
           and on forecasting models and prediction market integration.
         </p>
-        <span class="hero-cite">Claude Monet — <em>La Corniche near Monaco</em>, 1884</span>
+        <span class="hero-cite" id="hero-cite"></span>
       </div>
     </section>
+
+    <script>
+      (function() {
+        var paintings = [
+          { src: "SK-A-1892.jpg", alt: "La Corniche near Monaco by Claude Monet, 1884", cite: 'Claude Monet — <em>La Corniche near Monaco</em>, 1884' },
+          { src: "SK-A-5003.jpg", alt: "The Bend in the Herengracht by Gerrit Berckheyde, c. 1672", cite: 'Gerrit Berckheyde — <em>The Bend in the Herengracht</em>, c. 1672' },
+          { src: "SK-C-165.jpg", alt: "Winter Landscape by Barend Cornelis Koekkoek, 1835", cite: 'Barend Cornelis Koekkoek — <em>Winter Landscape</em>, 1835' }
+        ];
+        var pick = paintings[Math.floor(Math.random() * paintings.length)];
+        document.getElementById("hero-img").src = pick.src;
+        document.getElementById("hero-img").alt = pick.alt;
+        document.getElementById("hero-cite").innerHTML = pick.cite;
+      })();
+    </script>
   </main>
 
   <footer class="site-footer">
