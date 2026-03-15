@@ -4,13 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!nav) return;
 
   nav.innerHTML = `
-    <a href="/" class="nav-name">Ryan McComb</a>
+    <a href="/" class="nav-name"><span class="brace">{</span><span class="ni">R</span><span class="nx nx1">yan</span><span class="nx nx2"> </span><span class="ni">J</span><span class="nx nx3">.</span><span class="nx nx4"> </span><span class="ni">M</span><span class="nx nx5">c</span><span class="ni">C</span><span class="nx nx6">omb</span><span class="brace">}</span></a>
     <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
     <div class="nav-links">
-      <a href="/">Home</a>
+      <a href="/about">About</a>
       <a href="/experience">Experience</a>
+      <a href="/projects">Projects</a>
       <a href="/writing">Writing</a>
-      <a href="/press">Press</a>
       <a href="/contact">Contact</a>
     </div>
   `;
