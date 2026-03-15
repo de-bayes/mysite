@@ -21,7 +21,7 @@ Evanston, IL | [rjmccomb.xyz](https://rjmccomb.xyz)
 - Contributed to the 2026 midterms forecasting model: built a Kalshi market-scoring pipeline that ingests open-interest volume and liquidity data, computes daily percentile-rank scores, and automatically weights markets for inclusion in the aggregate forecast
 - Authored election briefings on primaries and special elections for VoteHub's client-facing decision-desk products
 
-**Volunteer Finance Lead** — *2024 – Present*
+**Volunteer Finance Lead** — *Sep 2025 – Mar 2026*
 *Daniel Biss for Congress (IL-9)*
 
 - Manage end-to-end campaign finance data for a competitive Democratic congressional primary
