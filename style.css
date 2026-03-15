@@ -1128,6 +1128,247 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 }
 
 /* ========================================
+   Command Palette (Cmd+K)
+   ======================================== */
+
+.cmdk-body-lock { overflow: hidden; }
+
+.cmdk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  padding-top: min(20vh, 160px);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.cmdk-overlay.cmdk-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cmdk-dialog {
+  width: 100%;
+  max-width: 620px;
+  max-height: min(60vh, 480px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 0, 0, 0.3);
+  transform: scale(0.96) translateY(-8px);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cmdk-open .cmdk-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.cmdk-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cmdk-search-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.cmdk-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  color: var(--text);
+  caret-color: var(--text);
+}
+
+.cmdk-input::placeholder {
+  color: var(--text-muted);
+}
+
+.cmdk-kbd {
+  font-family: var(--font-main);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.cmdk-results {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.cmdk-results::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cmdk-results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cmdk-results::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.cmdk-group {
+  margin-bottom: 0.25rem;
+}
+
+.cmdk-group-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  font-weight: 500;
+  padding: 0.6rem 0.75rem 0.35rem;
+}
+
+.cmdk-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.cmdk-item:hover,
+.cmdk-item.cmdk-active {
+  background: rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+}
+
+.cmdk-item-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.cmdk-item-title {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cmdk-item-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cmdk-item-arrow {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.cmdk-item.cmdk-active .cmdk-item-arrow,
+.cmdk-item:hover .cmdk-item-arrow {
+  opacity: 1;
+}
+
+.cmdk-match {
+  color: #fff;
+  font-weight: 700;
+}
+
+.cmdk-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.cmdk-footer {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 0.6rem 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.cmdk-footer kbd {
+  font-family: var(--font-main);
+  font-size: 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.1rem 0.35rem;
+  margin: 0 0.1rem;
+}
+
+/* --- Cmd+K Hint (inside nav bar) --- */
+
+.cmdk-hint {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem 0.9rem;
+  font-family: var(--font-main);
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.4s ease, background 0.2s;
+  white-space: nowrap;
+  margin-left: 0.25rem;
+}
+
+.cmdk-hint.cmdk-hint-visible {
+  opacity: 1;
+}
+
+.cmdk-hint:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+}
+
+.cmdk-hint kbd {
+  font-family: var(--font-main);
+  font-size: 0.65rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.08rem 0.3rem;
+  margin: 0 0.1rem;
+}
+
+/* ========================================
    Reading Progress Bar
    ======================================== */
 
@@ -1271,6 +1512,8 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   }
 
   .filter-tabs { gap: 1rem; overflow-x: auto; }
+
+  .cmdk-hint { display: none; }
 }
 
 /* ========================================
@@ -1279,7 +1522,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 
 @media print {
   .site-nav, .site-footer,
-  .writing-filters { display: none; }
+  .writing-filters, .cmdk-overlay, .cmdk-hint { display: none; }
 
   main { padding-top: 0; }
   body { font-size: 11pt; background: #fff; color: #000; }
@@ -1456,5 +1699,14 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   .now-grid {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
+  }
+
+  .cmdk-dialog {
+    max-width: calc(100% - 2rem);
+    max-height: 70vh;
+  }
+
+  .cmdk-footer {
+    display: none;
   }
 }

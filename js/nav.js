@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     <div class="nav-links">
       <a href="/about">About</a>
-      <a href="/now">Now</a>
       <a href="/experience">Experience</a>
       <a href="/projects">Projects</a>
       <a href="/writing">Writing</a>
+      <a href="/now">Now</a>
       <a href="/contact">Contact</a>
     </div>
   `;
