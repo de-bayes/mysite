@@ -1635,7 +1635,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 .now-grid .now-card-outline:nth-child(3) { animation-delay: 0.16s; }
 .now-grid .now-card-outline:nth-child(4) { animation-delay: 0.24s; }
 .now-grid .now-card-outline:nth-child(5) { animation-delay: 0.32s; }
-.now-grid .now-card-outline:nth-child(6) { animation-delay: 0.4s; }
+.now-grid .now-card-outline:nth-child(6) { animation-delay: 0.4125s; }
 
 .now-card-outline {
   opacity: 0;
