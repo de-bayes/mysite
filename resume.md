@@ -73,6 +73,6 @@ Evanston, IL | [rjmccomb.xyz](https://rjmccomb.xyz)
 
 **Technical:** Python, JavaScript, Bayesian analysis, Monte Carlo simulation, quantitative forecasting, prediction markets, data science
 
-**Tools:** Canon R8, Adobe Lightroom, Git, cloud computing, Manifold Markets API
+**Tools:** Canon R8, Adobe Lightroom, cloud computing, Manifold Markets API
 
 **Interests:** Constitutional & administrative law, election forecasting, probabilistic reasoning, political photography
