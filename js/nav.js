@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <a href="/experience">Experience</a>
       <a href="/projects">Projects</a>
       <a href="/writing">Writing</a>
+      <a href="/press">Press</a>
       <a href="/now">Now</a>
-      <a href="/contact">Contact</a>
     </div>
   `;
 

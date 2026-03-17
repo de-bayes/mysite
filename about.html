@@ -90,16 +90,57 @@
         </div>
       </section>
 
+      <section class="about-contact">
+        <h2>Contact</h2>
+        <div class="contact-grid stagger-children">
+          <a href="mailto:rymccomb1@icloud.com" class="contact-item" data-copy="rymccomb1@icloud.com">
+            <span class="contact-label">Email</span>
+            <span class="contact-value">rymccomb1@icloud.com</span>
+            <span class="copied-toast">Copied!</span>
+          </a>
+
+          <a href="https://github.com/de-bayes" class="contact-item" target="_blank" rel="noopener">
+            <span class="contact-label">GitHub</span>
+            <span class="contact-value">@de-bayes</span>
+          </a>
+
+          <a href="https://manifold.markets/JeromeHPowell" class="contact-item" target="_blank" rel="noopener">
+            <span class="contact-label">Manifold Markets</span>
+            <span class="contact-value">@JeromeHPowell</span>
+          </a>
+
+          <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370" class="contact-item" target="_blank" rel="noopener">
+            <span class="contact-label">LinkedIn</span>
+            <span class="contact-value">Ryan McComb</span>
+          </a>
+        </div>
+      </section>
+
     </div>
   </main>
 
   <footer class="site-footer">
-    &copy; 2026 Ryan McComb
+    &copy; 2026 Ryan McComb &middot; Evanston, IL &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a>
   </footer>
 
   <script src="js/nav.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/effects.js"></script>
   <script src="js/cmdk.js"></script>
+  <script>
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const text = el.dataset.copy;
+        navigator.clipboard.writeText(text).then(() => {
+          const toast = el.querySelector('.copied-toast');
+          if (toast) {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1500);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
