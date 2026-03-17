@@ -26,29 +26,35 @@
       </header>
 
       <div class="writing-grid stagger-children">
-        <article class="writing-card press-card" data-href="https://podcasts.apple.com/ru/podcast/the-open-seat-eths-sophomore-aims-to-predict/id1156168384?i=1000751106803">
-          <h3>The Open Seat: ETHS Sophomore Aims to Predict Congressional Race Using Betting Market Data</h3>
-          <p class="excerpt">The Daily Northwestern Podcast</p>
-          <div class="meta">
-            <span>Mar 2026</span>
-          </div>
-        </article>
+        <div class="writing-card-outline">
+          <article class="writing-card press-card" data-href="https://podcasts.apple.com/ru/podcast/the-open-seat-eths-sophomore-aims-to-predict/id1156168384?i=1000751106803">
+            <h3>The Open Seat: ETHS Sophomore Aims to Predict Congressional Race Using Betting Market Data</h3>
+            <p class="excerpt">The Daily Northwestern Podcast</p>
+            <div class="meta">
+              <span>Mar 2026</span>
+            </div>
+          </article>
+        </div>
 
-        <article class="writing-card press-card" data-href="https://capitolfax.com/2026/02/09/catching-up-with-the-federal-candidates-35/">
-          <h3>IL9Cast Featured as Novel Local Forecasting Tool</h3>
-          <p class="excerpt">Capitol Fax</p>
-          <div class="meta">
-            <span>Feb 2026</span>
-          </div>
-        </article>
+        <div class="writing-card-outline">
+          <article class="writing-card press-card" data-href="https://capitolfax.com/2026/02/09/catching-up-with-the-federal-candidates-35/">
+            <h3>IL9Cast Featured as Novel Local Forecasting Tool</h3>
+            <p class="excerpt">Capitol Fax</p>
+            <div class="meta">
+              <span>Feb 2026</span>
+            </div>
+          </article>
+        </div>
 
-        <article class="writing-card press-card" data-href="https://evanstonroundtable.com/2026/02/10/eths-student-aims-to-forecast-9th-district-congressional-race-using-betting-market-data/">
-          <h3>ETHS Student Aims to Forecast 9th District Congressional Race Using Betting Market Data</h3>
-          <p class="excerpt">Evanston Roundtable</p>
-          <div class="meta">
-            <span>Feb 2026</span>
-          </div>
-        </article>
+        <div class="writing-card-outline">
+          <article class="writing-card press-card" data-href="https://evanstonroundtable.com/2026/02/10/eths-student-aims-to-forecast-9th-district-congressional-race-using-betting-market-data/">
+            <h3>ETHS Student Aims to Forecast 9th District Congressional Race Using Betting Market Data</h3>
+            <p class="excerpt">Evanston Roundtable</p>
+            <div class="meta">
+              <span>Feb 2026</span>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
 
@@ -63,9 +69,11 @@
   <script src="js/effects.js"></script>
   <script src="js/cmdk.js"></script>
   <script>
-    document.querySelectorAll('.press-card[data-href]').forEach(card => {
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', () => {
+    document.querySelectorAll('.writing-card-outline').forEach(outline => {
+      const card = outline.querySelector('.press-card[data-href]');
+      if (!card) return;
+      outline.style.cursor = 'pointer';
+      outline.addEventListener('click', () => {
         window.open(card.dataset.href, '_blank', 'noopener');
       });
     });
