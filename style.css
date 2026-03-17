@@ -423,7 +423,15 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 /* --- Footer card --- */
 
 .about-footer-card {
+  padding-bottom: 2rem;
+}
+
+.about-contact {
   padding-bottom: 6rem;
+}
+
+.about-contact h2 {
+  margin-bottom: 1.5rem;
 }
 
 .race-call-record {
@@ -1484,7 +1492,15 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   }
 
   .about-footer-card {
+    padding-bottom: 2rem;
+  }
+
+  .about-contact {
     padding-bottom: 4rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
   }
 
   .page-header {

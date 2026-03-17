@@ -8,8 +8,8 @@
     { type: 'Pages', title: 'Now', desc: 'What I\'m up to right now', url: '/now', keys: '' },
     { type: 'Pages', title: 'Experience', desc: 'Professional experience and education', url: '/experience', keys: 'timeline resume work' },
     { type: 'Pages', title: 'Projects', desc: 'Things I\'ve built and worked on', url: '/projects', keys: '' },
-    { type: 'Pages', title: 'Writing', desc: 'Essays, articles, and press coverage', url: '/writing', keys: 'blog' },
-    { type: 'Pages', title: 'Contact', desc: 'Get in touch or find me online', url: '/contact', keys: 'email github linkedin' },
+    { type: 'Pages', title: 'Writing', desc: 'Essays and articles', url: '/writing', keys: 'blog' },
+    { type: 'Pages', title: 'Press', desc: 'Press coverage and features', url: '/press', keys: 'media news' },
     { type: 'Pages', title: 'Resume', desc: 'Resume', url: '/resume', keys: 'cv' },
 
     // Articles
