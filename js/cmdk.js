@@ -8,14 +8,16 @@
     { type: 'Pages', title: 'Now', desc: 'What I\'m up to right now', url: '/now', keys: '' },
     { type: 'Pages', title: 'Experience', desc: 'Professional experience and education', url: '/experience', keys: 'timeline resume work' },
     { type: 'Pages', title: 'Projects', desc: 'Things I\'ve built and worked on', url: '/projects', keys: '' },
-    { type: 'Pages', title: 'Writing', desc: 'Essays, articles, and press coverage', url: '/writing', keys: 'blog' },
-    { type: 'Pages', title: 'Contact', desc: 'Get in touch or find me online', url: '/contact', keys: 'email github linkedin' },
+    { type: 'Pages', title: 'Writing', desc: 'Essays and articles', url: '/writing', keys: 'blog' },
+    { type: 'Pages', title: 'Press', desc: 'Press coverage and features', url: '/press', keys: 'media news' },
     { type: 'Pages', title: 'Resume', desc: 'Resume', url: '/resume', keys: 'cv' },
 
     // Articles
     { type: 'Articles', title: 'People\'s Edict', desc: 'An essay on power, strife, and the arc of democratic governance', url: '/writing', keys: 'essays' },
     { type: 'Articles', title: 'The Conflation Between Median Voter Theory and Trump\'s Win', desc: 'How the Trump Campaign used an obscure political science concept', url: '/writing', keys: 'essays elections' },
     { type: 'Articles', title: 'Resolution on State Interception of Communications', desc: 'NSA surveillance and unconstitutional censorship', url: '/writing', keys: 'essays nsa' },
+    { type: 'Articles', title: 'March 17th Preview: Illinois Primary', desc: 'VoteHub', url: 'https://votehub.com/2026/03/17/march-17th-preview-illinois-primary/', keys: 'elections illinois primary' },
+    { type: 'Articles', title: 'Guest Post: ETHS Student on the IL-9 Election', desc: 'FOIAgras', url: 'https://foiagras.com/p/il9-org-guest-post', keys: 'elections il9 prediction markets' },
     { type: 'Articles', title: 'ETHS Students Reflect on Casting First Ballots', desc: 'The Daily Northwestern', url: 'https://dailynorthwestern.com/2026/03/11/top-stories/eths-students-reflect-on-casting-first-ballots-in-congressional-primary/', keys: 'elections voting' },
     { type: 'Articles', title: 'Students Reflect on Casting First Ballots in Congressional Primary', desc: 'The Evanstonian', url: 'https://www.evanstonian.net/news/2026/03/11/students-reflect-on-casting-first-ballots-in-congressional-primary/', keys: 'elections voting' },
     { type: 'Articles', title: 'D202 Board Confronts Deficit, Improves Sustainability', desc: 'The Evanstonian', url: 'https://www.evanstonian.net/news/2026/02/27/school-board-confronts-4-2-million-deficit-while-advancing-sustainability-initiatives/', keys: 'education' },
