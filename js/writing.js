@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cat) categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
     });
 
-    const labels = { all: 'All', essays: 'Essays', articles: 'Articles', press: 'Press' };
+    const labels = { all: 'All', essays: 'Essays', articles: 'Articles' };
     document.querySelectorAll('.filter-tab').forEach(tab => {
       const category = tab.dataset.category;
       const label = labels[category] || category;
