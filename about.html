@@ -76,12 +76,16 @@
             <span class="contact-value">@de-bayes</span>
           </a>
 
-          <a href="/racecalls" class="contact-item rc-preview" id="rc-preview-about">
-            <span class="contact-label">Race Call Record</span>
-            <span class="contact-value" id="rc-about-record">—</span>
-            <span class="rc-preview-pct" id="rc-about-pct" style="display:block;margin-top:0.2rem"></span>
-          </a>
         </div>
+      </section>
+
+      <section class="about-racecalls">
+        <a href="/racecalls" class="rc-preview" id="rc-preview-about">
+          <span class="rc-preview-label">Decision Desk</span>
+          <span class="rc-preview-record" id="rc-about-record">—</span>
+          <span class="rc-preview-pct" id="rc-about-pct"></span>
+          <span class="rc-preview-link">View race call record &rarr;</span>
+        </a>
       </section>
 
     </div>
@@ -105,7 +109,7 @@
         var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
         document.getElementById('rc-about-record').textContent = correct + '/' + calls.length + ' correct';
         if (decided > 0) {
-          document.getElementById('rc-about-pct').textContent = pct + '% accuracy \u2192 view all';
+          document.getElementById('rc-about-pct').textContent = pct + '% accuracy';
         }
       });
   </script>
