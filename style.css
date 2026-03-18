@@ -1649,3 +1649,355 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
     display: none;
   }
 }
+
+/* ========================================
+   Race Calls Page
+   ======================================== */
+
+.racecalls-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 3rem 6rem;
+}
+
+.racecalls-header {
+  padding: 10rem 0 3rem;
+}
+
+.racecalls-title {
+  font-size: 4.5rem;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+  margin-bottom: 1.5rem;
+}
+
+.racecalls-subtitle {
+  font-size: 1rem;
+  color: var(--text-light);
+  max-width: 420px;
+}
+
+/* Stats row */
+.rc-stats {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.rc-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.rc-stat-card:first-child {
+  flex-direction: row;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.rc-ring-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.rc-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.rc-ring-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.06);
+  stroke-width: 6;
+}
+
+.rc-ring-fill {
+  fill: none;
+  stroke: #4ade80;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 213.6;
+  stroke-dashoffset: 213.6;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rc-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.rc-stat-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.rc-stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+}
+
+.rc-stat-big {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: -0.03em;
+}
+
+.rc-stat-incorrect {
+  color: #f87171;
+}
+
+.rc-stat-pending {
+  color: var(--text-muted);
+}
+
+.rc-stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Filters */
+.rc-filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.rc-filter-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+  font-weight: 400;
+}
+
+.rc-filter-btn:hover {
+  color: var(--text-light);
+  background: rgba(255,255,255,0.04);
+}
+
+.rc-filter-btn.active {
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+  font-weight: 500;
+}
+
+/* Call cards */
+.rc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rc-call-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  opacity: 0;
+  animation: rcCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.rc-call-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+
+@keyframes rcCardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rc-call-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rc-call-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.rc-call-badge {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.rc-call-race {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.15rem;
+}
+
+.rc-call-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.rc-call-meta strong {
+  color: var(--text-light);
+}
+
+.rc-call-result {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.rc-result-correct {
+  color: #4ade80;
+  background: rgba(74,222,128,0.1);
+}
+
+.rc-result-incorrect {
+  color: #f87171;
+  background: rgba(248,113,113,0.1);
+}
+
+.rc-result-pending {
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.05);
+}
+
+.rc-call-notes {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.rc-empty {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.rc-empty p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Race Call Preview Widget (About & Now pages) */
+.rc-preview {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  color: var(--text);
+}
+
+.rc-preview:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.rc-preview-label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.rc-preview-record {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.rc-preview-pct {
+  font-size: 0.85rem;
+  color: #4ade80;
+  font-weight: 500;
+}
+
+.rc-preview-link {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  transition: color 0.2s;
+}
+
+.rc-preview:hover .rc-preview-link {
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  .racecalls-page {
+    padding: 0 1.5rem 4rem;
+  }
+
+  .racecalls-header {
+    padding: 7rem 0 2rem;
+  }
+
+  .racecalls-title {
+    font-size: 3rem;
+  }
+
+  .rc-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rc-stat-card:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .rc-filters {
+    overflow-x: auto;
+  }
+}
