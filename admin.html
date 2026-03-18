@@ -338,23 +338,70 @@
             <!-- RACE CALLS PANEL -->
             <div class="panel" id="panel-racecalls">
                 <div class="section-header">
-                    <span class="section-title">Add New Race Call</span>
+                    <span class="section-title" id="rc-form-title">Add New Race Call</span>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Race</label>
+                    <label class="form-label">Race Name</label>
                     <input class="form-input" id="rc-race" maxlength="200" placeholder="e.g. IL-09 Dem Primary">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
+                        <label class="form-label">Race Type</label>
+                        <select class="form-select" id="rc-racetype">
+                            <optgroup label="Federal">
+                                <option value="presidential">Presidential</option>
+                                <option value="senate">Senate</option>
+                                <option value="house">House</option>
+                            </optgroup>
+                            <optgroup label="State">
+                                <option value="governor">Governor</option>
+                                <option value="state_senate">State Senate</option>
+                                <option value="state_house">State House</option>
+                                <option value="other">Other</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-top:1.4rem">
+                            <input type="checkbox" id="rc-isprimary">
+                            <span class="form-label" style="margin:0">This is a primary</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" id="rc-state-group">
+                        <label class="form-label">State</label>
+                        <select class="form-select" id="rc-state">
+                            <option value="">Select state...</option>
+                            <option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option>
+                            <option value="AR">AR</option><option value="CA">CA</option><option value="CO">CO</option>
+                            <option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option>
+                            <option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option>
+                            <option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option>
+                            <option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option>
+                            <option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option>
+                            <option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option>
+                            <option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option>
+                            <option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option>
+                            <option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option>
+                            <option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option>
+                            <option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option>
+                            <option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option>
+                            <option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option>
+                            <option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option>
+                            <option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">Date</label>
                         <input class="form-input" id="rc-date" type="date">
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Called For</label>
                         <input class="form-input" id="rc-calledfor" maxlength="100" placeholder="e.g. Daniel Biss">
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Result</label>
                         <select class="form-select" id="rc-result">
@@ -363,13 +410,47 @@
                             <option value="pending">Pending</option>
                         </select>
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Notes (optional)</label>
-                        <input class="form-input" id="rc-notes" maxlength="500" placeholder="Any notes about the call">
+                        <label class="form-label">Margin (optional)</label>
+                        <input class="form-input" id="rc-margin" type="number" step="0.1" placeholder="e.g. 5.2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">First Caller</label>
+                        <select class="form-select" id="rc-firstcaller">
+                            <option value="">None</option>
+                            <option value="votehub">VoteHub</option>
+                            <option value="ap">AP</option>
+                            <option value="nyt">NYT</option>
+                            <option value="ddhq">DDHQ</option>
+                        </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="form-label">Other Callers</label>
+                    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.3rem">
+                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
+                            <input type="checkbox" id="rc-caller-ap"> AP
+                        </label>
+                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
+                            <input type="checkbox" id="rc-caller-nyt"> NYT
+                        </label>
+                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
+                            <input type="checkbox" id="rc-caller-ddhq"> DDHQ
+                        </label>
+                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
+                            <input type="checkbox" id="rc-caller-votehub"> VoteHub
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes (optional)</label>
+                    <input class="form-input" id="rc-notes" maxlength="500" placeholder="Any notes about the call">
+                </div>
                 <div class="form-actions">
-                    <button class="btn btn-primary" onclick="addRaceCall()">Add Race Call</button>
+                    <button class="btn btn-primary" id="rc-submit-btn" onclick="submitRaceCall()">Add Race Call</button>
+                    <button class="btn btn-ghost" id="rc-cancel-edit-btn" onclick="cancelEditRaceCall()" style="display:none">Cancel</button>
                 </div>
 
                 <div class="section-header" style="margin-top:2.5rem">
@@ -634,6 +715,73 @@
                 .catch(() => toast('Failed to delete', true));
         }
 
+        let rcEditingId = null;
+
+        // Toggle state dropdown visibility based on race type
+        document.getElementById('rc-racetype').addEventListener('change', function() {
+            document.getElementById('rc-state-group').style.display = this.value === 'presidential' ? 'none' : '';
+        });
+
+        // Auto-check first caller in Other Callers checkboxes
+        document.getElementById('rc-firstcaller').addEventListener('change', function() {
+            const val = this.value;
+            if (val) {
+                document.getElementById('rc-caller-' + val).checked = true;
+            }
+        });
+
+        function getRaceCallFormData() {
+            const race = document.getElementById('rc-race').value.trim();
+            const raceType = document.getElementById('rc-racetype').value;
+            const isPrimary = document.getElementById('rc-isprimary').checked;
+            const state = document.getElementById('rc-state').value;
+            const date = document.getElementById('rc-date').value;
+            const calledFor = document.getElementById('rc-calledfor').value.trim();
+            const result = document.getElementById('rc-result').value;
+            const marginVal = document.getElementById('rc-margin').value;
+            const margin = marginVal !== '' ? parseFloat(marginVal) : null;
+            const firstCaller = document.getElementById('rc-firstcaller').value;
+            const callers = {
+                ap: document.getElementById('rc-caller-ap').checked,
+                nyt: document.getElementById('rc-caller-nyt').checked,
+                ddhq: document.getElementById('rc-caller-ddhq').checked,
+                votehub: document.getElementById('rc-caller-votehub').checked
+            };
+            const notes = document.getElementById('rc-notes').value.trim();
+            return { race, raceType, isPrimary, state, date, calledFor, result, margin, firstCaller, callers, notes };
+        }
+
+        function clearRaceCallForm() {
+            document.getElementById('rc-race').value = '';
+            document.getElementById('rc-racetype').value = 'house';
+            document.getElementById('rc-isprimary').checked = false;
+            document.getElementById('rc-state').value = '';
+            document.getElementById('rc-state-group').style.display = '';
+            document.getElementById('rc-date').value = '';
+            document.getElementById('rc-calledfor').value = '';
+            document.getElementById('rc-result').value = 'correct';
+            document.getElementById('rc-margin').value = '';
+            document.getElementById('rc-firstcaller').value = '';
+            document.getElementById('rc-caller-ap').checked = false;
+            document.getElementById('rc-caller-nyt').checked = false;
+            document.getElementById('rc-caller-ddhq').checked = false;
+            document.getElementById('rc-caller-votehub').checked = false;
+            document.getElementById('rc-notes').value = '';
+        }
+
+        function submitRaceCall() {
+            if (rcEditingId) {
+                updateRaceCall();
+            } else {
+                addRaceCall();
+            }
+        }
+
+        function raceTypeLabel(rt) {
+            const map = { presidential: 'Presidential', senate: 'Senate', house: 'House', governor: 'Governor', state_senate: 'State Senate', state_house: 'State House', other: 'Other' };
+            return map[rt] || rt || '';
+        }
+
         function loadRaceCalls() {
             fetch('/api/racecalls').then(r => r.json()).then(calls => {
                 document.getElementById('rc-count').textContent = calls.length;
@@ -641,13 +789,17 @@
                 if (!calls.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No race calls yet.</div>'; return; }
                 list.innerHTML = calls.map(c => {
                     const badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
+                    const typePill = c.raceType ? ' <span style="font-size:0.7rem;background:var(--bg-secondary);padding:0.1rem 0.5rem;border-radius:8px;color:var(--text-muted)">' + esc(raceTypeLabel(c.raceType)) + '</span>' : '';
+                    const statePill = c.state ? ' <span style="font-size:0.7rem;background:var(--bg-secondary);padding:0.1rem 0.5rem;border-radius:8px;color:var(--text-muted)">' + esc(c.state) + '</span>' : '';
+                    const firstCallerStar = (c.firstCaller === 'votehub') ? ' <span style="color:#eab308" title="VoteHub first call">&#9733;</span>' : '';
                     return `
                     <div class="item-card">
                         <div class="item-card-body">
-                            <div class="item-card-title">${badge} ${esc(c.race)}</div>
-                            <div class="item-card-meta">Called for: ${esc(c.calledFor)} &middot; ${fmtDate(c.date)} &middot; ${c.result}${c.notes ? ' &middot; ' + esc(c.notes) : ''}</div>
+                            <div class="item-card-title">${badge} ${esc(c.race)}${firstCallerStar}${typePill}${statePill}</div>
+                            <div class="item-card-meta">Called for: ${esc(c.calledFor)} &middot; ${fmtDate(c.date)} &middot; ${c.result}${c.isPrimary ? ' &middot; Primary' : ''}${c.margin != null ? ' &middot; +' + c.margin + ' pts' : ''}${c.notes ? ' &middot; ' + esc(c.notes) : ''}</div>
                         </div>
                         <div class="item-card-actions">
+                            <button class="item-btn" onclick="editRaceCall('${c.id}')">Edit</button>
                             <button class="item-btn delete" onclick="deleteRaceCall('${c.id}')">Delete</button>
                         </div>
                     </div>`;
@@ -656,24 +808,78 @@
         }
 
         function addRaceCall() {
-            const race = document.getElementById('rc-race').value.trim();
-            const date = document.getElementById('rc-date').value;
-            const calledFor = document.getElementById('rc-calledfor').value.trim();
-            const result = document.getElementById('rc-result').value;
-            const notes = document.getElementById('rc-notes').value.trim();
-            if (!race || !date || !calledFor) { toast('Race, date, and candidate required', true); return; }
+            const data = getRaceCallFormData();
+            if (!data.race || !data.date || !data.calledFor) { toast('Race, date, and candidate required', true); return; }
             fetch('/api/racecalls', {
                 method: 'POST', headers: authHeaders(),
-                body: JSON.stringify({ race, date: new Date(date).toISOString(), calledFor, result, notes })
+                body: JSON.stringify({
+                    race: data.race, date: new Date(data.date).toISOString(), calledFor: data.calledFor,
+                    result: data.result, notes: data.notes, raceType: data.raceType, isPrimary: data.isPrimary,
+                    state: data.state, margin: data.margin, callers: data.callers, firstCaller: data.firstCaller
+                })
             }).then(r => {
                 if (!r.ok) throw new Error();
-                document.getElementById('rc-race').value = '';
-                document.getElementById('rc-date').value = '';
-                document.getElementById('rc-calledfor').value = '';
-                document.getElementById('rc-notes').value = '';
+                clearRaceCallForm();
                 toast('Race call added!');
                 loadRaceCalls();
             }).catch(() => toast('Failed to add', true));
+        }
+
+        function editRaceCall(id) {
+            fetch('/api/racecalls').then(r => r.json()).then(calls => {
+                const c = calls.find(x => x.id === id);
+                if (!c) return toast('Not found', true);
+                rcEditingId = id;
+                document.getElementById('rc-race').value = c.race || '';
+                document.getElementById('rc-racetype').value = c.raceType || 'other';
+                document.getElementById('rc-isprimary').checked = !!c.isPrimary;
+                document.getElementById('rc-state').value = c.state || '';
+                document.getElementById('rc-state-group').style.display = (c.raceType === 'presidential') ? 'none' : '';
+                // Parse date from ISO string
+                const dateVal = c.date ? c.date.split('T')[0] : '';
+                document.getElementById('rc-date').value = dateVal;
+                document.getElementById('rc-calledfor').value = c.calledFor || '';
+                document.getElementById('rc-result').value = c.result || 'pending';
+                document.getElementById('rc-margin').value = c.margin != null ? c.margin : '';
+                document.getElementById('rc-firstcaller').value = c.firstCaller || '';
+                document.getElementById('rc-caller-ap').checked = !!(c.callers && c.callers.ap);
+                document.getElementById('rc-caller-nyt').checked = !!(c.callers && c.callers.nyt);
+                document.getElementById('rc-caller-ddhq').checked = !!(c.callers && c.callers.ddhq);
+                document.getElementById('rc-caller-votehub').checked = !!(c.callers && c.callers.votehub);
+                document.getElementById('rc-notes').value = c.notes || '';
+                document.getElementById('rc-submit-btn').textContent = 'Update Race Call';
+                document.getElementById('rc-cancel-edit-btn').style.display = '';
+                document.getElementById('rc-form-title').textContent = 'Edit Race Call';
+                // Scroll to form
+                document.getElementById('panel-racecalls').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        function updateRaceCall() {
+            if (!rcEditingId) return;
+            const data = getRaceCallFormData();
+            if (!data.race || !data.date || !data.calledFor) { toast('Race, date, and candidate required', true); return; }
+            fetch('/api/racecalls/' + rcEditingId, {
+                method: 'PUT', headers: authHeaders(),
+                body: JSON.stringify({
+                    race: data.race, date: new Date(data.date).toISOString(), calledFor: data.calledFor,
+                    result: data.result, notes: data.notes, raceType: data.raceType, isPrimary: data.isPrimary,
+                    state: data.state, margin: data.margin, callers: data.callers, firstCaller: data.firstCaller
+                })
+            }).then(r => {
+                if (!r.ok) throw new Error();
+                cancelEditRaceCall();
+                toast('Race call updated!');
+                loadRaceCalls();
+            }).catch(() => toast('Failed to update', true));
+        }
+
+        function cancelEditRaceCall() {
+            rcEditingId = null;
+            clearRaceCallForm();
+            document.getElementById('rc-submit-btn').textContent = 'Add Race Call';
+            document.getElementById('rc-cancel-edit-btn').style.display = 'none';
+            document.getElementById('rc-form-title').textContent = 'Add New Race Call';
         }
 
         function deleteRaceCall(id) {

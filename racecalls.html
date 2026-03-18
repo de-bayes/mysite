@@ -64,6 +64,9 @@
         </div>
       </div>
 
+      <!-- Race type breakdown -->
+      <div class="rc-type-breakdown" id="rc-type-breakdown"></div>
+
       <!-- Filters -->
       <div class="rc-filters" id="rc-filters">
         <button class="rc-filter-btn active" data-filter="all">All</button>
@@ -72,11 +75,22 @@
         <button class="rc-filter-btn" data-filter="pending">Pending</button>
       </div>
 
-      <!-- Race call list -->
+      <!-- Race type filter row -->
+      <div class="rc-filters rc-type-filters" id="rc-type-filters">
+        <button class="rc-filter-btn active" data-type-filter="all">All Types</button>
+        <button class="rc-filter-btn" data-type-filter="federal">Federal</button>
+        <button class="rc-filter-btn" data-type-filter="state">State</button>
+      </div>
+
+      <!-- Race call list (grouped by date) -->
       <div class="rc-list" id="rc-list"></div>
 
       <div class="rc-empty" id="rc-empty" style="display:none">
         <p>No race calls match this filter.</p>
+      </div>
+
+      <div class="rc-footnote" id="rc-footnote" style="display:none">
+        <p>*Major decision desks: AP, NYT, VoteHub, DDHQ</p>
       </div>
 
     </div>
@@ -90,6 +104,15 @@
     (function() {
       var allCalls = [];
       var currentFilter = 'all';
+      var currentTypeFilter = 'all';
+
+      var raceTypeLabels = {
+        presidential: 'Presidential', senate: 'Senate', house: 'House',
+        governor: 'Governor', state_senate: 'State Senate', state_house: 'State House', other: 'Other'
+      };
+
+      var federalTypes = ['presidential', 'senate', 'house'];
+      var stateTypes = ['governor', 'state_senate', 'state_house', 'other'];
 
       function esc(s) {
         var d = document.createElement('div');
@@ -108,8 +131,8 @@
         document.getElementById('rc-incorrect').textContent = incorrect;
         document.getElementById('rc-pending').textContent = pending;
         document.getElementById('rc-total').textContent = calls.length;
-        document.getElementById('rc-accuracy').textContent = decided > 0 ? pct + '%' : '—';
-        document.getElementById('rc-ring-label').textContent = decided > 0 ? pct + '%' : '—';
+        document.getElementById('rc-accuracy').textContent = decided > 0 ? pct + '%' : '\u2014';
+        document.getElementById('rc-ring-label').textContent = decided > 0 ? pct + '%' : '\u2014';
 
         // Animate ring
         var ring = document.getElementById('rc-ring-fill');
@@ -121,14 +144,53 @@
         }, 100);
       }
 
+      function renderTypeBreakdown(calls) {
+        var types = {};
+        calls.forEach(function(c) {
+          var rt = c.raceType || 'other';
+          if (!types[rt]) types[rt] = { correct: 0, total: 0 };
+          types[rt].total++;
+          if (c.result === 'correct') types[rt].correct++;
+        });
+
+        var container = document.getElementById('rc-type-breakdown');
+        var html = '';
+        Object.keys(types).forEach(function(rt) {
+          var t = types[rt];
+          var pct = t.total > 0 ? Math.round((t.correct / t.total) * 100) : 0;
+          var label = raceTypeLabels[rt] || rt;
+          html += '<span class="rc-type-pill">' + esc(label) + ': ' + t.correct + '/' + t.total + ' (' + pct + '%)</span>';
+        });
+        container.innerHTML = html;
+      }
+
+      function getFilteredCalls(calls) {
+        var filtered = calls;
+        if (currentFilter !== 'all') {
+          filtered = filtered.filter(function(c) { return c.result === currentFilter; });
+        }
+        if (currentTypeFilter !== 'all') {
+          if (currentTypeFilter === 'federal') {
+            filtered = filtered.filter(function(c) { return federalTypes.indexOf(c.raceType || 'other') !== -1; });
+          } else if (currentTypeFilter === 'state') {
+            filtered = filtered.filter(function(c) { return stateTypes.indexOf(c.raceType || 'other') !== -1; });
+          } else {
+            filtered = filtered.filter(function(c) { return (c.raceType || 'other') === currentTypeFilter; });
+          }
+        }
+        return filtered;
+      }
+
       function renderList(calls) {
-        var filtered = currentFilter === 'all' ? calls : calls.filter(function(c) { return c.result === currentFilter; });
+        var filtered = getFilteredCalls(calls);
         var list = document.getElementById('rc-list');
         var empty = document.getElementById('rc-empty');
+        var footnote = document.getElementById('rc-footnote');
 
         if (!filtered.length) {
           list.innerHTML = '';
           empty.style.display = 'block';
+          footnote.style.display = 'none';
           return;
         }
 
@@ -137,34 +199,103 @@
         // Sort by date descending
         filtered.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
 
-        list.innerHTML = filtered.map(function(c, i) {
-          var badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
-          var d = new Date(c.date);
-          var dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-          var resultClass = c.result === 'correct' ? 'rc-result-correct' : c.result === 'incorrect' ? 'rc-result-incorrect' : 'rc-result-pending';
+        // Group by date (YYYY-MM-DD)
+        var groups = {};
+        var groupOrder = [];
+        filtered.forEach(function(c) {
+          var dateKey = c.date ? c.date.split('T')[0] : 'unknown';
+          if (!groups[dateKey]) {
+            groups[dateKey] = [];
+            groupOrder.push(dateKey);
+          }
+          groups[dateKey].push(c);
+        });
 
-          return '<div class="rc-call-card" style="animation-delay:' + (i * 0.05) + 's">' +
-            '<div class="rc-call-top">' +
-              '<div class="rc-call-info">' +
-                '<span class="rc-call-badge">' + badge + '</span>' +
-                '<div>' +
-                  '<h3 class="rc-call-race">' + esc(c.race) + '</h3>' +
-                  '<p class="rc-call-meta">Called for <strong>' + esc(c.calledFor) + '</strong> &middot; ' + dateStr + '</p>' +
-                '</div>' +
-              '</div>' +
-              '<span class="rc-call-result ' + resultClass + '">' + c.result + '</span>' +
-            '</div>' +
-            (c.notes ? '<p class="rc-call-notes">' + esc(c.notes) + '</p>' : '') +
-          '</div>';
-        }).join('');
+        var hasFirstCall = false;
+        var cardIndex = 0;
+        var html = '';
+
+        groupOrder.forEach(function(dateKey) {
+          var groupCalls = groups[dateKey];
+          var d = new Date(dateKey + 'T12:00:00');
+          var dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+          html += '<div class="rc-date-group">';
+          html += '<div class="rc-date-header">';
+          html += '<span class="rc-date-label">' + dateStr + '</span>';
+          html += '<span class="rc-date-count">' + groupCalls.length + ' call' + (groupCalls.length !== 1 ? 's' : '') + '</span>';
+          html += '</div>';
+
+          groupCalls.forEach(function(c) {
+            var badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
+            var resultClass = c.result === 'correct' ? 'rc-result-correct' : c.result === 'incorrect' ? 'rc-result-incorrect' : 'rc-result-pending';
+
+            // First call badge
+            var firstCallBadge = '';
+            if (c.firstCaller === 'votehub') {
+              firstCallBadge = ' <span class="rc-first-call-badge">First Call</span>';
+              hasFirstCall = true;
+            }
+
+            // Race type pills
+            var pills = '';
+            if (c.raceType && raceTypeLabels[c.raceType]) {
+              pills += '<span class="rc-pill">' + esc(raceTypeLabels[c.raceType]) + '</span>';
+            }
+            if (c.isPrimary) {
+              pills += '<span class="rc-pill">Primary</span>';
+            }
+            if (c.state) {
+              pills += '<span class="rc-pill">' + esc(c.state) + '</span>';
+            }
+
+            // Margin display
+            var marginHtml = '';
+            if (c.margin != null) {
+              marginHtml = '<span class="rc-margin">+' + c.margin + ' pts</span>';
+            }
+
+            html += '<div class="rc-call-card" style="animation-delay:' + (cardIndex * 0.05) + 's">';
+            html += '<div class="rc-call-top">';
+            html += '<div class="rc-call-info">';
+            html += '<span class="rc-call-badge">' + badge + '</span>';
+            html += '<div>';
+            html += '<h3 class="rc-call-race">' + esc(c.race) + firstCallBadge + '</h3>';
+            html += '<p class="rc-call-meta">Called for <strong>' + esc(c.calledFor) + '</strong>' + (marginHtml ? ' ' + marginHtml : '') + '</p>';
+            if (pills) html += '<div class="rc-pills">' + pills + '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '<span class="rc-call-result ' + resultClass + '">' + c.result + '</span>';
+            html += '</div>';
+            if (c.notes) html += '<p class="rc-call-notes">' + esc(c.notes) + '</p>';
+            html += '</div>';
+
+            cardIndex++;
+          });
+
+          html += '</div>';
+        });
+
+        list.innerHTML = html;
+        footnote.style.display = hasFirstCall ? 'block' : 'none';
       }
 
-      // Filter buttons
+      // Result filter buttons
       document.getElementById('rc-filters').addEventListener('click', function(e) {
         var btn = e.target.closest('.rc-filter-btn');
-        if (!btn) return;
+        if (!btn || !btn.dataset.filter) return;
         currentFilter = btn.dataset.filter;
-        document.querySelectorAll('.rc-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('#rc-filters .rc-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderList(allCalls);
+      });
+
+      // Type filter buttons
+      document.getElementById('rc-type-filters').addEventListener('click', function(e) {
+        var btn = e.target.closest('.rc-filter-btn');
+        if (!btn || !btn.dataset.typeFilter) return;
+        currentTypeFilter = btn.dataset.typeFilter;
+        document.querySelectorAll('#rc-type-filters .rc-filter-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         renderList(allCalls);
       });
@@ -175,6 +306,7 @@
         .then(function(calls) {
           allCalls = calls;
           renderStats(calls);
+          renderTypeBreakdown(calls);
           renderList(calls);
         });
     })();
