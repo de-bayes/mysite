@@ -222,6 +222,7 @@
             <button class="dash-tab active" data-panel="hottakes">Hot Takes</button>
             <button class="dash-tab" data-panel="blog">Blog Posts</button>
             <button class="dash-tab" data-panel="countdowns">Countdowns</button>
+            <button class="dash-tab" data-panel="racecalls">Race Calls</button>
             <button class="dash-tab" data-panel="guestbook">Guestbook</button>
             <button class="dash-tab" data-panel="resume">Resume</button>
         </div>
@@ -332,6 +333,50 @@
                     <span class="item-count" id="cd-count">0</span>
                 </div>
                 <div class="item-list" id="cd-list"></div>
+            </div>
+
+            <!-- RACE CALLS PANEL -->
+            <div class="panel" id="panel-racecalls">
+                <div class="section-header">
+                    <span class="section-title">Add New Race Call</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Race</label>
+                    <input class="form-input" id="rc-race" maxlength="200" placeholder="e.g. IL-09 Dem Primary">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input class="form-input" id="rc-date" type="date">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Called For</label>
+                        <input class="form-input" id="rc-calledfor" maxlength="100" placeholder="e.g. Daniel Biss">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Result</label>
+                        <select class="form-select" id="rc-result">
+                            <option value="correct">Correct</option>
+                            <option value="incorrect">Incorrect</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes (optional)</label>
+                        <input class="form-input" id="rc-notes" maxlength="500" placeholder="Any notes about the call">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addRaceCall()">Add Race Call</button>
+                </div>
+
+                <div class="section-header" style="margin-top:2.5rem">
+                    <span class="section-title">All Race Calls</span>
+                    <span class="item-count" id="rc-count">0</span>
+                </div>
+                <div class="item-list" id="rc-list"></div>
             </div>
 
             <!-- GUESTBOOK PANEL -->
@@ -452,7 +497,7 @@
             setTimeout(() => t.className = 'toast', 2500);
         }
 
-        function loadAll() { loadHotTakes(); loadBlogPosts(); loadCountdowns(); loadGuestbook(); loadResume(); }
+        function loadAll() { loadHotTakes(); loadBlogPosts(); loadCountdowns(); loadRaceCalls(); loadGuestbook(); loadResume(); }
 
         function loadHotTakes() {
             fetch('/api/hottakes').then(r => r.json()).then(takes => {
@@ -586,6 +631,55 @@
             if (!confirm('Delete this countdown?')) return;
             fetch('/api/countdowns/' + id, { method: 'DELETE', headers: authHeaders() })
                 .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadCountdowns(); })
+                .catch(() => toast('Failed to delete', true));
+        }
+
+        function loadRaceCalls() {
+            fetch('/api/racecalls').then(r => r.json()).then(calls => {
+                document.getElementById('rc-count').textContent = calls.length;
+                const list = document.getElementById('rc-list');
+                if (!calls.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No race calls yet.</div>'; return; }
+                list.innerHTML = calls.map(c => {
+                    const badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
+                    return `
+                    <div class="item-card">
+                        <div class="item-card-body">
+                            <div class="item-card-title">${badge} ${esc(c.race)}</div>
+                            <div class="item-card-meta">Called for: ${esc(c.calledFor)} &middot; ${fmtDate(c.date)} &middot; ${c.result}${c.notes ? ' &middot; ' + esc(c.notes) : ''}</div>
+                        </div>
+                        <div class="item-card-actions">
+                            <button class="item-btn delete" onclick="deleteRaceCall('${c.id}')">Delete</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            });
+        }
+
+        function addRaceCall() {
+            const race = document.getElementById('rc-race').value.trim();
+            const date = document.getElementById('rc-date').value;
+            const calledFor = document.getElementById('rc-calledfor').value.trim();
+            const result = document.getElementById('rc-result').value;
+            const notes = document.getElementById('rc-notes').value.trim();
+            if (!race || !date || !calledFor) { toast('Race, date, and candidate required', true); return; }
+            fetch('/api/racecalls', {
+                method: 'POST', headers: authHeaders(),
+                body: JSON.stringify({ race, date: new Date(date).toISOString(), calledFor, result, notes })
+            }).then(r => {
+                if (!r.ok) throw new Error();
+                document.getElementById('rc-race').value = '';
+                document.getElementById('rc-date').value = '';
+                document.getElementById('rc-calledfor').value = '';
+                document.getElementById('rc-notes').value = '';
+                toast('Race call added!');
+                loadRaceCalls();
+            }).catch(() => toast('Failed to add', true));
+        }
+
+        function deleteRaceCall(id) {
+            if (!confirm('Delete this race call?')) return;
+            fetch('/api/racecalls/' + id, { method: 'DELETE', headers: authHeaders() })
+                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadRaceCalls(); })
                 .catch(() => toast('Failed to delete', true));
         }
 
