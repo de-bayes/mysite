@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Race Calls — Ryan McComb</title>
+  <meta name="description" content="Ryan McComb's election race call record — tracking predictions and accuracy.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:title" content="Race Calls — Ryan McComb">
+  <meta property="og:description" content="Election race call record — tracking predictions and accuracy.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/portrait.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+  <nav class="site-nav" id="site-nav"></nav>
+
+  <main>
+    <div class="racecalls-page">
+
+      <header class="racecalls-header">
+        <span class="about-label">Decision Desk</span>
+        <h1 class="racecalls-title">Race Call<br>Record</h1>
+        <p class="racecalls-subtitle">Tracking my election race calls from VoteHub's decision desk.</p>
+      </header>
+
+      <!-- Stats row -->
+      <div class="rc-stats" id="rc-stats">
+        <div class="rc-stat-card">
+          <div class="rc-ring-wrap">
+            <svg class="rc-ring" viewBox="0 0 80 80">
+              <circle class="rc-ring-bg" cx="40" cy="40" r="34" />
+              <circle class="rc-ring-fill" id="rc-ring-fill" cx="40" cy="40" r="34" />
+            </svg>
+            <span class="rc-ring-label" id="rc-ring-label">—</span>
+          </div>
+          <div class="rc-stat-text">
+            <span class="rc-stat-value" id="rc-accuracy">—</span>
+            <span class="rc-stat-label">Accuracy</span>
+          </div>
+        </div>
+
+        <div class="rc-stat-card">
+          <span class="rc-stat-big" id="rc-correct">0</span>
+          <span class="rc-stat-label">Correct</span>
+        </div>
+
+        <div class="rc-stat-card">
+          <span class="rc-stat-big rc-stat-incorrect" id="rc-incorrect">0</span>
+          <span class="rc-stat-label">Incorrect</span>
+        </div>
+
+        <div class="rc-stat-card">
+          <span class="rc-stat-big rc-stat-pending" id="rc-pending">0</span>
+          <span class="rc-stat-label">Pending</span>
+        </div>
+
+        <div class="rc-stat-card">
+          <span class="rc-stat-big" id="rc-total">0</span>
+          <span class="rc-stat-label">Total Calls</span>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="rc-filters" id="rc-filters">
+        <button class="rc-filter-btn active" data-filter="all">All</button>
+        <button class="rc-filter-btn" data-filter="correct">Correct</button>
+        <button class="rc-filter-btn" data-filter="incorrect">Incorrect</button>
+        <button class="rc-filter-btn" data-filter="pending">Pending</button>
+      </div>
+
+      <!-- Race call list -->
+      <div class="rc-list" id="rc-list"></div>
+
+      <div class="rc-empty" id="rc-empty" style="display:none">
+        <p>No race calls match this filter.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 Ryan McComb &middot; Evanston, IL &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a>
+  </footer>
+
+  <script>
+    (function() {
+      var allCalls = [];
+      var currentFilter = 'all';
+
+      function esc(s) {
+        var d = document.createElement('div');
+        d.textContent = s || '';
+        return d.innerHTML;
+      }
+
+      function renderStats(calls) {
+        var correct = calls.filter(function(c) { return c.result === 'correct'; }).length;
+        var incorrect = calls.filter(function(c) { return c.result === 'incorrect'; }).length;
+        var pending = calls.filter(function(c) { return c.result === 'pending'; }).length;
+        var decided = correct + incorrect;
+        var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
+
+        document.getElementById('rc-correct').textContent = correct;
+        document.getElementById('rc-incorrect').textContent = incorrect;
+        document.getElementById('rc-pending').textContent = pending;
+        document.getElementById('rc-total').textContent = calls.length;
+        document.getElementById('rc-accuracy').textContent = decided > 0 ? pct + '%' : '—';
+        document.getElementById('rc-ring-label').textContent = decided > 0 ? pct + '%' : '—';
+
+        // Animate ring
+        var ring = document.getElementById('rc-ring-fill');
+        var circumference = 2 * Math.PI * 34;
+        ring.style.strokeDasharray = circumference;
+        var offset = circumference - (circumference * (decided > 0 ? pct / 100 : 0));
+        setTimeout(function() {
+          ring.style.strokeDashoffset = offset;
+        }, 100);
+      }
+
+      function renderList(calls) {
+        var filtered = currentFilter === 'all' ? calls : calls.filter(function(c) { return c.result === currentFilter; });
+        var list = document.getElementById('rc-list');
+        var empty = document.getElementById('rc-empty');
+
+        if (!filtered.length) {
+          list.innerHTML = '';
+          empty.style.display = 'block';
+          return;
+        }
+
+        empty.style.display = 'none';
+
+        // Sort by date descending
+        filtered.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+
+        list.innerHTML = filtered.map(function(c, i) {
+          var badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
+          var d = new Date(c.date);
+          var dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+          var resultClass = c.result === 'correct' ? 'rc-result-correct' : c.result === 'incorrect' ? 'rc-result-incorrect' : 'rc-result-pending';
+
+          return '<div class="rc-call-card" style="animation-delay:' + (i * 0.05) + 's">' +
+            '<div class="rc-call-top">' +
+              '<div class="rc-call-info">' +
+                '<span class="rc-call-badge">' + badge + '</span>' +
+                '<div>' +
+                  '<h3 class="rc-call-race">' + esc(c.race) + '</h3>' +
+                  '<p class="rc-call-meta">Called for <strong>' + esc(c.calledFor) + '</strong> &middot; ' + dateStr + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<span class="rc-call-result ' + resultClass + '">' + c.result + '</span>' +
+            '</div>' +
+            (c.notes ? '<p class="rc-call-notes">' + esc(c.notes) + '</p>' : '') +
+          '</div>';
+        }).join('');
+      }
+
+      // Filter buttons
+      document.getElementById('rc-filters').addEventListener('click', function(e) {
+        var btn = e.target.closest('.rc-filter-btn');
+        if (!btn) return;
+        currentFilter = btn.dataset.filter;
+        document.querySelectorAll('.rc-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderList(allCalls);
+      });
+
+      // Fetch data
+      fetch('/api/racecalls')
+        .then(function(r) { return r.json(); })
+        .then(function(calls) {
+          allCalls = calls;
+          renderStats(calls);
+          renderList(calls);
+        });
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/cmdk.js"></script>
+</body>
+</html>

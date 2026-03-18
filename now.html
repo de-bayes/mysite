@@ -97,18 +97,14 @@
 
       </div>
 
-      <!-- Race Call Records -->
-      <div class="race-calls-section" style="margin-bottom:4rem">
-        <div class="race-calls-header" id="race-calls-header" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.08)">
-          <div>
-            <h2 style="font-size:1.4rem;margin-bottom:0.2rem">Race Call Record</h2>
-            <span id="race-calls-record" style="font-size:0.85rem;color:var(--text-light)"></span>
-          </div>
-          <span id="race-calls-toggle" style="font-size:1.2rem;color:var(--text-muted);transition:transform 0.3s">&plus;</span>
-        </div>
-        <div id="race-calls-list" style="max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0.16,1,0.3,1)">
-          <div id="race-calls-items" style="padding:1rem 0"></div>
-        </div>
+      <!-- Race Call Preview -->
+      <div style="margin-bottom:4rem">
+        <a href="/racecalls" class="rc-preview" id="rc-preview-now">
+          <span class="rc-preview-label">Race Call Record</span>
+          <span class="rc-preview-record" id="rc-now-record">—/— correct</span>
+          <span class="rc-preview-pct" id="rc-now-pct"></span>
+          <span class="rc-preview-link">View full record &rarr;</span>
+        </a>
       </div>
 
       <div class="now-footer-note">
@@ -127,61 +123,19 @@
 
   <script>
     (function() {
-      var list = document.getElementById('race-calls-list');
-      var toggle = document.getElementById('race-calls-toggle');
-      var header = document.getElementById('race-calls-header');
-      var open = false;
-
-      header.addEventListener('click', function() {
-        open = !open;
-        if (open) {
-          list.style.maxHeight = list.scrollHeight + 'px';
-          toggle.innerHTML = '&minus;';
-        } else {
-          list.style.maxHeight = '0';
-          toggle.innerHTML = '&plus;';
-        }
-      });
-
       fetch('/api/racecalls')
         .then(function(r) { return r.json(); })
         .then(function(calls) {
           var correct = calls.filter(function(c) { return c.result === 'correct'; }).length;
-          var total = calls.length;
-          document.getElementById('race-calls-record').textContent = correct + '/' + total + (total === 1 ? ' call' : ' calls') + ' correct';
+          var incorrect = calls.filter(function(c) { return c.result === 'incorrect'; }).length;
+          var decided = correct + incorrect;
+          var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
 
-          var items = document.getElementById('race-calls-items');
-          if (!calls.length) {
-            items.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem">No race calls yet.</p>';
-            return;
+          document.getElementById('rc-now-record').textContent = correct + '/' + calls.length + ' calls correct';
+          if (decided > 0) {
+            document.getElementById('rc-now-pct').textContent = pct + '% accuracy';
           }
-          items.innerHTML = calls.map(function(c) {
-            var badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
-            var d = new Date(c.date);
-            var dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            return '<div style="padding:0.75rem 1rem;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-bottom:0.5rem;background:var(--surface)">' +
-              '<div style="display:flex;justify-content:space-between;align-items:center">' +
-                '<div>' +
-                  '<span style="font-weight:500;font-size:0.95rem;color:#fff">' + badge + ' ' + esc(c.race) + '</span>' +
-                  '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.2rem">Called for <strong style="color:var(--text-light)">' + esc(c.calledFor) + '</strong> &middot; ' + dateStr + '</div>' +
-                '</div>' +
-                '<span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;padding:0.2rem 0.6rem;border-radius:4px;font-weight:500;' +
-                  (c.result === 'correct' ? 'color:#4ade80;background:rgba(74,222,128,0.1)' : c.result === 'incorrect' ? 'color:#f87171;background:rgba(248,113,113,0.1)' : 'color:var(--text-muted);background:rgba(255,255,255,0.05)') +
-                '">' + c.result + '</span>' +
-              '</div>' +
-              (c.notes ? '<div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.4rem">' + esc(c.notes) + '</div>' : '') +
-            '</div>';
-          }).join('');
-
-          // Re-measure after content loads
-          if (open) list.style.maxHeight = list.scrollHeight + 'px';
         });
-
-      function esc(s) {
-        var d = document.createElement('div');
-        d.textContent = s || '';
-        return d.innerHTML;
-      }
     })();
   </script>
   <script src="js/nav.js"></script>
