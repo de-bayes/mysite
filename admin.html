@@ -6,202 +6,254 @@
     <link rel="icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css">
-    <title>Admin - Ryan McComb</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Admin — Race Calls</title>
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        ::selection { background: #e06b1f; color: #fff; }
+
+        :root {
+            --bg: #151515;
+            --surface: #191919;
+            --surface-2: #1e1e1e;
+            --text: #e8e8e8;
+            --text-light: #999;
+            --text-muted: #555;
+            --border: rgba(255,255,255,0.08);
+            --border-hover: rgba(255,255,255,0.16);
+            --accent: #fff;
+            --radius: 8px;
+            --gold: #eab308;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
         /* LOGIN */
         .login-overlay {
-            position: fixed; inset: 0; background: var(--bg-primary);
+            position: fixed; inset: 0; background: var(--bg);
             display: flex; align-items: center; justify-content: center;
             z-index: 1000; transition: opacity 0.3s;
         }
         .login-overlay.hidden { opacity: 0; pointer-events: none; }
-        .login-box { text-align: center; max-width: 360px; padding: 2rem; }
+        .login-box { text-align: center; max-width: 340px; padding: 2rem; }
         .login-box h1 {
-            font-family: var(--font-serif);
-            font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;
-            color: #2244cc;
+            font-size: 1.8rem; font-weight: 600; margin-bottom: 0.3rem;
+            color: #fff; letter-spacing: -0.03em;
         }
-        [data-theme="dark"] .login-box h1 { color: #5c7cfa; }
-        .login-box p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .login-box p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem; }
         .login-input {
-            width: 100%; padding: 0.75rem 1rem; border: var(--border-weight) solid var(--border-color);
-            font-size: 0.9rem; background: var(--bg-secondary);
-            color: var(--text-primary); outline: none; margin-bottom: 1rem;
-            font-family: var(--font-sans);
+            width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--border);
+            border-radius: var(--radius); font-size: 0.85rem; background: var(--surface);
+            color: var(--text); outline: none; margin-bottom: 0.75rem;
+            font-family: inherit; transition: border-color 0.2s;
         }
-        .login-input:focus { border-color: #2244cc; }
+        .login-input:focus { border-color: rgba(255,255,255,0.3); }
         .login-btn {
-            width: 100%; padding: 0.75rem; background: #2244cc; color: #fff;
-            border: none; font-size: 0.85rem; font-weight: 500;
-            cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase;
-            font-family: var(--font-sans);
+            width: 100%; padding: 0.7rem; background: #fff; color: #151515;
+            border: none; border-radius: var(--radius); font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; font-family: inherit; letter-spacing: 0.02em;
+            transition: opacity 0.2s;
         }
-        [data-theme="dark"] .login-btn { background: #0000DD; }
-        .login-btn:hover { opacity: 0.9; }
-        .login-error { color: #b07070; font-size: 0.8rem; margin-top: 0.5rem; }
+        .login-btn:hover { opacity: 0.85; }
+        .login-error { color: #ef4444; font-size: 0.75rem; margin-top: 0.5rem; }
 
-        /* DASHBOARD */
+        /* LAYOUT */
         .dashboard { display: none; }
         .dashboard.active { display: block; }
 
         .dash-header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 1rem 2rem; background: #2244cc;
+            padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);
+            max-width: 960px; margin: 0 auto;
         }
-        [data-theme="dark"] .dash-header { background: #0000DD; }
         .dash-header h1 {
-            font-family: var(--font-serif);
-            font-size: 1.3rem; font-weight: 700; color: #ffffff;
+            font-size: 1.1rem; font-weight: 600; color: #fff;
+            letter-spacing: -0.02em;
         }
         .dash-header-actions { display: flex; gap: 0.75rem; align-items: center; }
         .dash-header a {
-            font-size: 0.75rem; color: rgba(255,255,255,0.7); text-decoration: none;
+            font-size: 0.75rem; color: var(--text-muted); text-decoration: none;
+            transition: color 0.2s;
         }
-        .dash-header a:hover { color: #ffffff; text-decoration: none; }
-
-        .dash-tabs {
-            display: flex; gap: 0; border-bottom: var(--border-weight) solid var(--border-color);
-            padding: 0 2rem;
+        .dash-header a:hover { color: #fff; }
+        .dash-logout {
+            font-size: 0.7rem; color: var(--text-muted); background: none;
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 0.35rem 0.75rem; cursor: pointer; font-family: inherit;
+            transition: all 0.2s;
         }
-        .dash-tab {
-            padding: 1rem 1.5rem; font-size: 0.8rem; font-weight: 500;
-            color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent;
-            text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.2s;
-            background: none; border-top: none; border-left: none; border-right: none;
-            font-family: var(--font-sans);
+        .dash-logout:hover { border-color: var(--border-hover); color: var(--text); }
+
+        .dash-content { max-width: 960px; margin: 0 auto; padding: 2rem; }
+
+        /* QUICK ADD FORM */
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
         }
-        .dash-tab:hover { color: var(--text-primary); }
-        .dash-tab.active { color: #2244cc; border-bottom-color: #2244cc; }
-        [data-theme="dark"] .dash-tab.active { color: #5c7cfa; border-bottom-color: #5c7cfa; }
+        .form-card-title {
+            font-size: 0.7rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1.25rem;
+        }
 
-        .dash-content { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .form-grid .span-2 { grid-column: span 2; }
+        .form-grid .span-3 { grid-column: span 3; }
 
-        .panel { display: none; }
-        .panel.active { display: block; }
-
-        /* FORMS */
-        .form-group { margin-bottom: 1.25rem; }
+        .form-group { display: flex; flex-direction: column; }
         .form-label {
-            display: block; font-size: 0.7rem; font-weight: 500;
-            text-transform: uppercase; letter-spacing: 0.08em;
-            color: var(--text-muted); margin-bottom: 0.4rem;
+            font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.3rem;
         }
-        .form-input, .form-select, .form-textarea {
-            width: 100%; padding: 0.65rem 0.9rem; border: var(--border-weight) solid var(--border-color);
-            font-size: 0.85rem; background: var(--bg-secondary);
-            color: var(--text-primary); font-family: inherit; outline: none;
+        .form-input, .form-select {
+            width: 100%; padding: 0.55rem 0.75rem; border: 1px solid var(--border);
+            border-radius: 6px; font-size: 0.82rem; background: var(--surface-2);
+            color: var(--text); font-family: inherit; outline: none;
+            transition: border-color 0.2s;
         }
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: #2244cc;
-        }
-        [data-theme="dark"] .form-input:focus, [data-theme="dark"] .form-select:focus, [data-theme="dark"] .form-textarea:focus {
-            border-color: #5c7cfa;
-        }
-        .form-textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
-        .form-row { display: flex; gap: 1rem; }
-        .form-row > * { flex: 1; }
-        .form-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .form-input:focus, .form-select:focus { border-color: rgba(255,255,255,0.25); }
+        .form-input::placeholder { color: var(--text-muted); }
+        .form-select option { background: var(--surface-2); }
+        .form-select optgroup { color: var(--text-light); }
 
+        .form-check {
+            display: flex; align-items: center; gap: 0.4rem;
+            cursor: pointer; font-size: 0.8rem; color: var(--text-light);
+            margin-top: 0.2rem;
+        }
+        .form-check input { accent-color: #fff; }
+
+        /* Separator */
+        .form-sep {
+            grid-column: span 3;
+            border: none; border-top: 1px solid var(--border);
+            margin: 0.25rem 0;
+        }
+
+        .form-actions {
+            display: flex; gap: 0.5rem; margin-top: 1rem;
+        }
         .btn {
-            padding: 0.6rem 1.2rem; border: none;
+            padding: 0.55rem 1.25rem; border: none; border-radius: 6px;
             font-size: 0.8rem; font-weight: 500; cursor: pointer;
-            letter-spacing: 0.04em; transition: opacity 0.2s;
-            font-family: var(--font-sans);
+            font-family: inherit; transition: all 0.2s;
         }
-        .btn:hover { opacity: 0.85; }
-        .btn-primary { background: #2244cc; color: #fff; }
-        [data-theme="dark"] .btn-primary { background: #0000DD; }
-        .btn-danger { background: #b07070; color: #fff; }
+        .btn-primary { background: #fff; color: #151515; }
+        .btn-primary:hover { opacity: 0.85; }
         .btn-ghost {
-            background: transparent; color: var(--text-muted);
-            border: var(--border-weight) solid var(--border-color);
+            background: none; color: var(--text-muted);
+            border: 1px solid var(--border);
         }
-        .btn-ghost:hover { color: var(--text-primary); border-color: var(--text-primary); }
+        .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
 
-        .form-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
-
-        /* ITEMS LIST */
-        .item-list { margin-top: 1.5rem; }
-        .item-card {
-            display: flex; align-items: flex-start; gap: 1rem;
-            padding: 1rem 1.25rem; border: var(--border-weight) solid var(--border-color);
-            margin-bottom: 0.75rem; background: var(--bg-card);
-        }
-        .item-card-body { flex: 1; min-width: 0; }
-        .item-card-title {
-            font-weight: 500; font-size: 0.9rem; margin-bottom: 0.2rem;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .item-card-meta { font-size: 0.75rem; color: var(--text-muted); }
-        .item-card-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
-        .item-btn {
-            padding: 0.35rem 0.7rem; font-size: 0.7rem;
-            border: var(--border-weight) solid var(--border-color); background: transparent;
-            color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-            font-family: var(--font-sans);
-        }
-        .item-btn:hover { border-color: var(--text-primary); color: var(--text-primary); }
-        .item-btn.delete:hover { border-color: #b07070; color: #b07070; }
-
-        .section-header {
+        /* RACE CALL LIST */
+        .list-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
-        .section-title {
-            font-size: 0.75rem; font-weight: 500; text-transform: uppercase;
+        .list-title {
+            font-size: 0.7rem; font-weight: 500; text-transform: uppercase;
             letter-spacing: 0.1em; color: var(--text-muted);
         }
-        .item-count {
+        .list-count {
             font-size: 0.7rem; color: var(--text-muted);
-            background: var(--bg-secondary); padding: 0.2rem 0.6rem; border-radius: 10px;
+            background: var(--surface); padding: 0.15rem 0.6rem;
+            border-radius: 10px; border: 1px solid var(--border);
         }
 
+        .rc-card {
+            display: flex; align-items: flex-start; gap: 0.75rem;
+            padding: 0.9rem 1rem; border: 1px solid var(--border);
+            border-radius: var(--radius); margin-bottom: 0.5rem;
+            background: var(--surface); transition: border-color 0.2s;
+        }
+        .rc-card:hover { border-color: var(--border-hover); }
+
+        .rc-card-badge {
+            font-size: 1.1rem; flex-shrink: 0; line-height: 1;
+            margin-top: 0.15rem;
+        }
+        .rc-card-body { flex: 1; min-width: 0; }
+        .rc-card-title {
+            font-size: 0.88rem; font-weight: 500; color: #fff;
+            display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;
+        }
+        .rc-card-title .pill {
+            font-size: 0.62rem; font-weight: 500; padding: 0.1rem 0.45rem;
+            border-radius: 4px; background: rgba(255,255,255,0.06);
+            color: var(--text-light); text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .rc-card-title .first-star {
+            color: var(--gold); font-size: 0.85rem;
+        }
+        .rc-card-meta {
+            font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .rc-card-actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
+        .rc-card-btn {
+            padding: 0.3rem 0.6rem; font-size: 0.65rem;
+            border: 1px solid var(--border); border-radius: 5px;
+            background: none; color: var(--text-muted); cursor: pointer;
+            font-family: inherit; transition: all 0.2s;
+        }
+        .rc-card-btn:hover { border-color: var(--border-hover); color: var(--text); }
+        .rc-card-btn.delete:hover { border-color: #ef4444; color: #ef4444; }
+
+        .empty-state {
+            text-align: center; padding: 2rem; color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* TOAST */
         .toast {
-            position: fixed; bottom: 2rem; right: 2rem; padding: 0.8rem 1.5rem;
-            background: #70907a; color: #fff;
-            font-size: 0.85rem; opacity: 0; transform: translateY(10px);
-            transition: all 0.3s; z-index: 2000; pointer-events: none;
-            font-family: var(--font-sans);
+            position: fixed; bottom: 1.5rem; right: 1.5rem; padding: 0.7rem 1.25rem;
+            background: #22c55e; color: #fff; border-radius: var(--radius);
+            font-size: 0.8rem; font-weight: 500; opacity: 0;
+            transform: translateY(8px); transition: all 0.3s;
+            z-index: 2000; pointer-events: none; font-family: inherit;
         }
         .toast.show { opacity: 1; transform: translateY(0); }
-        .toast.error { background: #b07070; }
+        .toast.error { background: #ef4444; }
 
-        /* Spiciness selector */
-        .spice-selector { display: flex; gap: 0.3rem; }
-        .spice-btn {
-            width: 32px; height: 32px; border: var(--border-weight) solid var(--border-color);
-            background: var(--bg-secondary); cursor: pointer;
-            font-size: 1rem; display: flex; align-items: center; justify-content: center;
-            transition: all 0.15s;
+        @media (max-width: 700px) {
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .form-grid .span-2 { grid-column: span 2; }
+            .form-grid .span-3 { grid-column: span 2; }
+            .dash-header { padding: 1rem; }
+            .dash-content { padding: 1rem; }
+            .rc-card { flex-direction: column; }
+            .rc-card-actions { align-self: flex-end; }
         }
-        .spice-btn.active { border-color: #2244cc; background: #2244cc; filter: none; }
-        [data-theme="dark"] .spice-btn.active { border-color: #0000DD; background: #0000DD; }
-        .spice-btn:not(.active) { filter: grayscale(1); opacity: 0.4; }
-
-        @media (max-width: 600px) {
-            .form-row { flex-direction: column; gap: 0; }
-            .dash-tabs { overflow-x: auto; }
-            .item-card { flex-direction: column; }
-            .item-card-actions { align-self: flex-end; }
+        @media (max-width: 420px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-grid .span-2, .form-grid .span-3 { grid-column: span 1; }
         }
     </style>
 </head>
 <body>
-    <script>
-        (function() {
-            const saved = localStorage.getItem('theme');
-            if (saved === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            }
-        })();
-    </script>
 
     <!-- LOGIN -->
     <div class="login-overlay" id="login-overlay">
         <div class="login-box">
-            <h1>Admin</h1>
-            <p>Enter the site password to continue.</p>
+            <h1>Decision Desk</h1>
+            <p>Enter password to manage race calls.</p>
             <input type="password" class="login-input" id="login-pw" placeholder="Password" autofocus>
             <button class="login-btn" onclick="attemptLogin()">Unlock</button>
             <div class="login-error" id="login-error"></div>
@@ -211,147 +263,33 @@
     <!-- DASHBOARD -->
     <div class="dashboard" id="dashboard">
         <div class="dash-header">
-            <h1>Admin Dashboard</h1>
+            <h1>Race Calls</h1>
             <div class="dash-header-actions">
-                <a href="index.html">Back to site</a>
-                <button class="btn btn-ghost" onclick="logout()" style="font-size:0.75rem;color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.4)">Logout</button>
+                <a href="racecalls">View page</a>
+                <a href="index.html">Site</a>
+                <button class="dash-logout" onclick="logout()">Logout</button>
             </div>
-        </div>
-
-        <div class="dash-tabs">
-            <button class="dash-tab active" data-panel="hottakes">Hot Takes</button>
-            <button class="dash-tab" data-panel="blog">Blog Posts</button>
-            <button class="dash-tab" data-panel="countdowns">Countdowns</button>
-            <button class="dash-tab" data-panel="racecalls">Race Calls</button>
-            <button class="dash-tab" data-panel="guestbook">Guestbook</button>
-            <button class="dash-tab" data-panel="resume">Resume</button>
         </div>
 
         <div class="dash-content">
-            <!-- HOT TAKES PANEL -->
-            <div class="panel active" id="panel-hottakes">
-                <div class="section-header">
-                    <span class="section-title">Add New Hot Take</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Your take</label>
-                    <textarea class="form-textarea" id="ht-text" rows="3" maxlength="300" placeholder="Type your hottest take..." style="min-height:80px"></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <input class="form-input" id="ht-category" placeholder="e.g. Politics, Sports, Life" maxlength="30">
+
+            <!-- QUICK ADD FORM -->
+            <div class="form-card">
+                <div class="form-card-title" id="rc-form-title">New Race Call</div>
+
+                <div class="form-grid">
+                    <!-- Row 1: Race name + type + primary -->
+                    <div class="form-group span-2">
+                        <label class="form-label">Race</label>
+                        <input class="form-input" id="rc-race" maxlength="200" placeholder="e.g. IL-09 Dem Primary">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Spiciness</label>
-                        <div class="spice-selector" id="spice-selector">
-                            <button class="spice-btn" data-val="1">&#x1F336;</button>
-                            <button class="spice-btn" data-val="2">&#x1F336;</button>
-                            <button class="spice-btn active" data-val="3">&#x1F336;</button>
-                            <button class="spice-btn" data-val="4">&#x1F336;</button>
-                            <button class="spice-btn" data-val="5">&#x1F336;</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" onclick="addHotTake()">Post Take</button>
-                </div>
-
-                <div class="section-header" style="margin-top:2.5rem">
-                    <span class="section-title">All Takes</span>
-                    <span class="item-count" id="ht-count">0</span>
-                </div>
-                <div class="item-list" id="ht-list"></div>
-            </div>
-
-            <!-- BLOG PANEL -->
-            <div class="panel" id="panel-blog">
-                <div class="section-header">
-                    <span class="section-title">New Blog Post</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Title</label>
-                    <input class="form-input" id="bp-title" maxlength="200" placeholder="Post title">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Tags (comma-separated)</label>
-                        <input class="form-input" id="bp-tags" placeholder="e.g. Politics, Data">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Read Time</label>
-                        <input class="form-input" id="bp-readtime" placeholder="e.g. 5 min read" value="5 min read">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Body (HTML)</label>
-                    <textarea class="form-textarea" id="bp-body" rows="10" placeholder="<p>Write your post here...</p>&#10;&#10;<h2>Subheading</h2>&#10;<p>More content...</p>"></textarea>
-                    <div class="form-hint">Use HTML tags: &lt;p&gt;, &lt;h2&gt;, &lt;blockquote&gt;, &lt;ul&gt;&lt;li&gt;, &lt;a href&gt;, &lt;code&gt;</div>
-                </div>
-                <div class="form-group">
-                    <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-                        <input type="checkbox" id="bp-featured">
-                        <span class="form-label" style="margin:0">Featured post</span>
-                    </label>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" onclick="addBlogPost()">Publish Post</button>
-                </div>
-
-                <div class="section-header" style="margin-top:2.5rem">
-                    <span class="section-title">All Posts</span>
-                    <span class="item-count" id="bp-count">0</span>
-                </div>
-                <div class="item-list" id="bp-list"></div>
-            </div>
-
-            <!-- COUNTDOWNS PANEL -->
-            <div class="panel" id="panel-countdowns">
-                <div class="section-header">
-                    <span class="section-title">Add New Countdown</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Event Name</label>
-                    <input class="form-input" id="cd-title" maxlength="100" placeholder="e.g. Graduation, Election Day, Trip to Japan">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Date</label>
-                        <input class="form-input" id="cd-date" type="datetime-local">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Emoji</label>
-                        <input class="form-input" id="cd-emoji" maxlength="4" placeholder="e.g. &#127891;" value="&#127881;" style="font-size:1.2rem;text-align:center;width:80px">
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" onclick="addCountdown()">Add Countdown</button>
-                </div>
-
-                <div class="section-header" style="margin-top:2.5rem">
-                    <span class="section-title">All Countdowns</span>
-                    <span class="item-count" id="cd-count">0</span>
-                </div>
-                <div class="item-list" id="cd-list"></div>
-            </div>
-
-            <!-- RACE CALLS PANEL -->
-            <div class="panel" id="panel-racecalls">
-                <div class="section-header">
-                    <span class="section-title" id="rc-form-title">Add New Race Call</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Race Name</label>
-                    <input class="form-input" id="rc-race" maxlength="200" placeholder="e.g. IL-09 Dem Primary">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Race Type</label>
+                        <label class="form-label">Type</label>
                         <select class="form-select" id="rc-racetype">
                             <optgroup label="Federal">
                                 <option value="presidential">Presidential</option>
                                 <option value="senate">Senate</option>
-                                <option value="house">House</option>
+                                <option value="house" selected>House</option>
                             </optgroup>
                             <optgroup label="State">
                                 <option value="governor">Governor</option>
@@ -361,18 +299,12 @@
                             </optgroup>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-top:1.4rem">
-                            <input type="checkbox" id="rc-isprimary">
-                            <span class="form-label" style="margin:0">This is a primary</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-row">
+
+                    <!-- Row 2: State + Date + Called For -->
                     <div class="form-group" id="rc-state-group">
                         <label class="form-label">State</label>
                         <select class="form-select" id="rc-state">
-                            <option value="">Select state...</option>
+                            <option value="">--</option>
                             <option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option>
                             <option value="AR">AR</option><option value="CA">CA</option><option value="CO">CO</option>
                             <option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option>
@@ -396,95 +328,58 @@
                         <label class="form-label">Date</label>
                         <input class="form-input" id="rc-date" type="date">
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Called For</label>
                         <input class="form-input" id="rc-calledfor" maxlength="100" placeholder="e.g. Daniel Biss">
                     </div>
+
+                    <!-- Row 3: Result + Margin + Primary -->
                     <div class="form-group">
                         <label class="form-label">Result</label>
                         <select class="form-select" id="rc-result">
                             <option value="correct">Correct</option>
                             <option value="incorrect">Incorrect</option>
-                            <option value="pending">Pending</option>
+                            <option value="pending" selected>Pending</option>
                         </select>
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Margin (optional)</label>
+                        <label class="form-label">Margin</label>
                         <input class="form-input" id="rc-margin" type="number" step="0.1" placeholder="e.g. 5.2">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">First Caller</label>
-                        <select class="form-select" id="rc-firstcaller">
-                            <option value="">None</option>
-                            <option value="votehub">VoteHub</option>
-                            <option value="ap">AP</option>
-                            <option value="nyt">NYT</option>
-                            <option value="ddhq">DDHQ</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Other Callers</label>
-                    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.3rem">
-                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
-                            <input type="checkbox" id="rc-caller-ap"> AP
-                        </label>
-                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
-                            <input type="checkbox" id="rc-caller-nyt"> NYT
-                        </label>
-                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
-                            <input type="checkbox" id="rc-caller-ddhq"> DDHQ
-                        </label>
-                        <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.85rem;color:var(--text-primary)">
-                            <input type="checkbox" id="rc-caller-votehub"> VoteHub
+                    <div class="form-group" style="justify-content:flex-end">
+                        <label class="form-check">
+                            <input type="checkbox" id="rc-isprimary">
+                            Primary
                         </label>
                     </div>
+
+                    <!-- Row 4: VoteHub first call -->
+                    <div class="form-group span-3" style="justify-content:flex-start">
+                        <label class="form-check">
+                            <input type="checkbox" id="rc-vhfirst" checked>
+                            VoteHub called first
+                        </label>
+                    </div>
+
+                    <!-- Row 5: Notes -->
+                    <div class="form-group span-3">
+                        <label class="form-label">Notes</label>
+                        <input class="form-input" id="rc-notes" maxlength="500" placeholder="Optional notes">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Notes (optional)</label>
-                    <input class="form-input" id="rc-notes" maxlength="500" placeholder="Any notes about the call">
-                </div>
+
                 <div class="form-actions">
-                    <button class="btn btn-primary" id="rc-submit-btn" onclick="submitRaceCall()">Add Race Call</button>
-                    <button class="btn btn-ghost" id="rc-cancel-edit-btn" onclick="cancelEditRaceCall()" style="display:none">Cancel</button>
-                </div>
-
-                <div class="section-header" style="margin-top:2.5rem">
-                    <span class="section-title">All Race Calls</span>
-                    <span class="item-count" id="rc-count">0</span>
-                </div>
-                <div class="item-list" id="rc-list"></div>
-            </div>
-
-            <!-- GUESTBOOK PANEL -->
-            <div class="panel" id="panel-guestbook">
-                <div class="section-header">
-                    <span class="section-title">Guestbook Entries</span>
-                    <span class="item-count" id="gb-count">0</span>
-                </div>
-                <div class="item-list" id="gb-list"></div>
-            </div>
-
-            <!-- RESUME PANEL -->
-            <div class="panel" id="panel-resume">
-                <div class="section-header">
-                    <span class="section-title">Edit Resume</span>
-                    <a href="resume.html" target="_blank" style="font-size:0.7rem;color:var(--text-muted)">Preview &rarr;</a>
-                </div>
-                <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem">Edit the HTML content inside the resume page. Use the resume's existing class names (<code>resume-section</code>, <code>resume-item</code>, <code>resume-item-row</code>, etc.).</p>
-                <div class="form-group">
-                    <label class="form-label">Resume HTML Content</label>
-                    <textarea class="form-textarea" id="resume-content" rows="25" style="min-height:400px;font-family:var(--font-mono);font-size:0.8rem;line-height:1.5;tab-size:4"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" onclick="saveResume()">Save Resume</button>
-                    <button class="btn btn-ghost" onclick="loadResume()">Reload</button>
+                    <button class="btn btn-primary" id="rc-submit-btn" onclick="submitRaceCall()">Add Call</button>
+                    <button class="btn btn-ghost" id="rc-cancel-edit-btn" onclick="cancelEdit()" style="display:none">Cancel</button>
                 </div>
             </div>
+
+            <!-- LIST -->
+            <div class="list-header">
+                <span class="list-title">All Race Calls</span>
+                <span class="list-count" id="rc-count">0</span>
+            </div>
+            <div id="rc-list"></div>
         </div>
     </div>
 
@@ -492,7 +387,7 @@
 
     <script>
         let token = sessionStorage.getItem('admin_token') || '';
-        let htSpiciness = 3;
+        let editingId = null;
 
         function authHeaders() {
             return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
@@ -509,19 +404,16 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password: pw })
             })
-            .then(r => {
-                if (!r.ok) throw new Error('Wrong password');
-                return r.json();
-            })
+            .then(r => { if (!r.ok) throw new Error(); return r.json(); })
             .then(() => {
                 token = pw;
                 sessionStorage.setItem('admin_token', pw);
                 document.getElementById('login-overlay').classList.add('hidden');
                 document.getElementById('dashboard').classList.add('active');
-                loadAll();
+                loadRaceCalls();
             })
             .catch(() => {
-                document.getElementById('login-error').textContent = 'Wrong password. Try again.';
+                document.getElementById('login-error').textContent = 'Wrong password.';
             });
         }
 
@@ -540,7 +432,7 @@
                 if (r.ok) {
                     document.getElementById('login-overlay').classList.add('hidden');
                     document.getElementById('dashboard').classList.add('active');
-                    loadAll();
+                    loadRaceCalls();
                 } else {
                     sessionStorage.removeItem('admin_token');
                     token = '';
@@ -548,27 +440,20 @@
             });
         }
 
-        // Tabs
-        document.querySelectorAll('.dash-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
-            });
+        // Smart defaults on load
+        document.getElementById('rc-date').value = new Date().toISOString().split('T')[0];
+
+        // Toggle state visibility
+        document.getElementById('rc-racetype').addEventListener('change', function() {
+            document.getElementById('rc-state-group').style.display = this.value === 'presidential' ? 'none' : '';
         });
 
-        // Spice selector
-        document.querySelectorAll('.spice-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                htSpiciness = parseInt(btn.dataset.val);
-                document.querySelectorAll('.spice-btn').forEach((b, i) => {
-                    b.classList.toggle('active', i < htSpiciness);
-                });
-            });
-        });
-        document.querySelectorAll('.spice-btn').forEach((b, i) => {
-            b.classList.toggle('active', i < 3);
+        // Cmd/Ctrl+Enter to submit from anywhere in the form
+        document.querySelector('.form-card').addEventListener('keydown', function(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                e.preventDefault();
+                submitRaceCall();
+            }
         });
 
         function toast(msg, isError) {
@@ -578,308 +463,120 @@
             setTimeout(() => t.className = 'toast', 2500);
         }
 
-        function loadAll() { loadHotTakes(); loadBlogPosts(); loadCountdowns(); loadRaceCalls(); loadGuestbook(); loadResume(); }
-
-        function loadHotTakes() {
-            fetch('/api/hottakes').then(r => r.json()).then(takes => {
-                document.getElementById('ht-count').textContent = takes.length;
-                const list = document.getElementById('ht-list');
-                if (!takes.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No takes yet.</div>'; return; }
-                list.innerHTML = takes.map(t => `
-                    <div class="item-card">
-                        <div class="item-card-body">
-                            <div class="item-card-title">${esc(t.text)}</div>
-                            <div class="item-card-meta">${esc(t.category)} &middot; ${'&#x1F336;'.repeat(t.spiciness)} &middot; ${fmtDate(t.date)}</div>
-                        </div>
-                        <div class="item-card-actions">
-                            <button class="item-btn delete" onclick="deleteHotTake('${t.id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            });
+        function esc(s) {
+            const d = document.createElement('div');
+            d.textContent = s || '';
+            return d.innerHTML;
         }
 
-        function addHotTake() {
-            const text = document.getElementById('ht-text').value.trim();
-            const category = document.getElementById('ht-category').value.trim() || 'General';
-            if (!text) { toast('Write a take first!', true); return; }
-            fetch('/api/hottakes', {
-                method: 'POST', headers: authHeaders(),
-                body: JSON.stringify({ text, category, spiciness: htSpiciness })
-            }).then(r => {
-                if (!r.ok) throw new Error();
-                document.getElementById('ht-text').value = '';
-                document.getElementById('ht-category').value = '';
-                toast('Take posted!');
-                loadHotTakes();
-            }).catch(() => toast('Failed to post', true));
+        function fmtDate(d) {
+            if (!d) return '';
+            return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        function deleteHotTake(id) {
-            if (!confirm('Delete this take?')) return;
-            fetch('/api/hottakes/' + id, { method: 'DELETE', headers: authHeaders() })
-                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadHotTakes(); })
-                .catch(() => toast('Failed to delete', true));
-        }
+        const typeLabels = {
+            presidential: 'Pres', senate: 'Senate', house: 'House',
+            governor: 'Gov', state_senate: 'St. Senate', state_house: 'St. House', other: 'Other'
+        };
 
-        function loadBlogPosts() {
-            fetch('/api/blogposts').then(r => r.json()).then(posts => {
-                document.getElementById('bp-count').textContent = posts.length;
-                const list = document.getElementById('bp-list');
-                if (!posts.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No posts yet.</div>'; return; }
-                list.innerHTML = posts.map(p => `
-                    <div class="item-card">
-                        <div class="item-card-body">
-                            <div class="item-card-title">${p.featured ? '<span style="color:var(--accent)">&#9733;</span> ' : ''}${esc(p.title)}</div>
-                            <div class="item-card-meta">${(p.tags||[]).join(', ')} &middot; ${p.readTime} &middot; ${fmtDate(p.date)}</div>
-                        </div>
-                        <div class="item-card-actions">
-                            <button class="item-btn delete" onclick="deleteBlogPost('${p.id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            });
-        }
-
-        function addBlogPost() {
-            const title = document.getElementById('bp-title').value.trim();
-            const body = document.getElementById('bp-body').value.trim();
-            const tags = document.getElementById('bp-tags').value.split(',').map(t => t.trim()).filter(Boolean);
-            const readTime = document.getElementById('bp-readtime').value.trim() || '5 min read';
-            const featured = document.getElementById('bp-featured').checked;
-            if (!title || !body) { toast('Title and body required', true); return; }
-            fetch('/api/blogposts', {
-                method: 'POST', headers: authHeaders(),
-                body: JSON.stringify({ title, body, tags, readTime, featured })
-            }).then(r => {
-                if (!r.ok) throw new Error();
-                document.getElementById('bp-title').value = '';
-                document.getElementById('bp-body').value = '';
-                document.getElementById('bp-tags').value = '';
-                document.getElementById('bp-featured').checked = false;
-                toast('Post published!');
-                loadBlogPosts();
-            }).catch(() => toast('Failed to publish', true));
-        }
-
-        function deleteBlogPost(id) {
-            if (!confirm('Delete this blog post?')) return;
-            fetch('/api/blogposts/' + id, { method: 'DELETE', headers: authHeaders() })
-                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadBlogPosts(); })
-                .catch(() => toast('Failed to delete', true));
-        }
-
-        function loadCountdowns() {
-            fetch('/api/countdowns').then(r => r.json()).then(cds => {
-                document.getElementById('cd-count').textContent = cds.length;
-                const list = document.getElementById('cd-list');
-                if (!cds.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No countdowns yet.</div>'; return; }
-                list.innerHTML = cds.map(c => {
-                    const d = new Date(c.date);
-                    const isPast = d.getTime() < Date.now();
-                    return `
-                    <div class="item-card" style="${isPast ? 'opacity:0.5' : ''}">
-                        <div class="item-card-body">
-                            <div class="item-card-title">${c.emoji} ${esc(c.title)}</div>
-                            <div class="item-card-meta">${d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}${isPast ? ' &middot; Passed' : ''}</div>
-                        </div>
-                        <div class="item-card-actions">
-                            <button class="item-btn delete" onclick="deleteCountdown('${c.id}')">Delete</button>
-                        </div>
-                    </div>`;
-                }).join('');
-            });
-        }
-
-        function addCountdown() {
-            const title = document.getElementById('cd-title').value.trim();
-            const date = document.getElementById('cd-date').value;
-            const emoji = document.getElementById('cd-emoji').value.trim() || '\u{1F389}';
-            if (!title || !date) { toast('Title and date required', true); return; }
-            fetch('/api/countdowns', {
-                method: 'POST', headers: authHeaders(),
-                body: JSON.stringify({ title, date: new Date(date).toISOString(), emoji })
-            }).then(r => {
-                if (!r.ok) throw new Error();
-                document.getElementById('cd-title').value = '';
-                document.getElementById('cd-date').value = '';
-                toast('Countdown added!');
-                loadCountdowns();
-            }).catch(() => toast('Failed to add', true));
-        }
-
-        function deleteCountdown(id) {
-            if (!confirm('Delete this countdown?')) return;
-            fetch('/api/countdowns/' + id, { method: 'DELETE', headers: authHeaders() })
-                .then(r => { if (!r.ok) throw new Error(); toast('Deleted'); loadCountdowns(); })
-                .catch(() => toast('Failed to delete', true));
-        }
-
-        let rcEditingId = null;
-
-        // Toggle state dropdown visibility based on race type
-        document.getElementById('rc-racetype').addEventListener('change', function() {
-            document.getElementById('rc-state-group').style.display = this.value === 'presidential' ? 'none' : '';
-        });
-
-        // Auto-check first caller in Other Callers checkboxes
-        document.getElementById('rc-firstcaller').addEventListener('change', function() {
-            const val = this.value;
-            if (val) {
-                document.getElementById('rc-caller-' + val).checked = true;
-            }
-        });
-
-        function getRaceCallFormData() {
-            const race = document.getElementById('rc-race').value.trim();
-            const raceType = document.getElementById('rc-racetype').value;
-            const isPrimary = document.getElementById('rc-isprimary').checked;
-            const state = document.getElementById('rc-state').value;
-            const date = document.getElementById('rc-date').value;
-            const calledFor = document.getElementById('rc-calledfor').value.trim();
-            const result = document.getElementById('rc-result').value;
-            const marginVal = document.getElementById('rc-margin').value;
-            const margin = marginVal !== '' ? parseFloat(marginVal) : null;
-            const firstCaller = document.getElementById('rc-firstcaller').value;
-            const callers = {
-                ap: document.getElementById('rc-caller-ap').checked,
-                nyt: document.getElementById('rc-caller-nyt').checked,
-                ddhq: document.getElementById('rc-caller-ddhq').checked,
-                votehub: document.getElementById('rc-caller-votehub').checked
+        function getFormData() {
+            return {
+                race: document.getElementById('rc-race').value.trim(),
+                raceType: document.getElementById('rc-racetype').value,
+                isPrimary: document.getElementById('rc-isprimary').checked,
+                state: document.getElementById('rc-state').value,
+                date: document.getElementById('rc-date').value,
+                calledFor: document.getElementById('rc-calledfor').value.trim(),
+                result: document.getElementById('rc-result').value,
+                margin: document.getElementById('rc-margin').value !== '' ? parseFloat(document.getElementById('rc-margin').value) : null,
+                firstCaller: document.getElementById('rc-vhfirst').checked ? 'votehub' : '',
+                callers: { votehub: document.getElementById('rc-vhfirst').checked, ap: false, nyt: false, ddhq: false },
+                notes: document.getElementById('rc-notes').value.trim()
             };
-            const notes = document.getElementById('rc-notes').value.trim();
-            return { race, raceType, isPrimary, state, date, calledFor, result, margin, firstCaller, callers, notes };
         }
 
-        function clearRaceCallForm() {
+        function clearForm() {
             document.getElementById('rc-race').value = '';
             document.getElementById('rc-racetype').value = 'house';
             document.getElementById('rc-isprimary').checked = false;
-            document.getElementById('rc-state').value = '';
+            // Keep state from last entry (likely same election night)
             document.getElementById('rc-state-group').style.display = '';
-            document.getElementById('rc-date').value = '';
+            document.getElementById('rc-date').value = new Date().toISOString().split('T')[0];
             document.getElementById('rc-calledfor').value = '';
-            document.getElementById('rc-result').value = 'correct';
+            document.getElementById('rc-result').value = 'pending';
             document.getElementById('rc-margin').value = '';
-            document.getElementById('rc-firstcaller').value = '';
-            document.getElementById('rc-caller-ap').checked = false;
-            document.getElementById('rc-caller-nyt').checked = false;
-            document.getElementById('rc-caller-ddhq').checked = false;
-            document.getElementById('rc-caller-votehub').checked = false;
+            document.getElementById('rc-vhfirst').checked = true;
             document.getElementById('rc-notes').value = '';
+            document.getElementById('rc-race').focus();
         }
 
         function submitRaceCall() {
-            if (rcEditingId) {
-                updateRaceCall();
-            } else {
-                addRaceCall();
+            const data = getFormData();
+            if (!data.race || !data.date || !data.calledFor) {
+                toast('Race, date, and candidate required', true);
+                return;
             }
-        }
 
-        function raceTypeLabel(rt) {
-            const map = { presidential: 'Presidential', senate: 'Senate', house: 'House', governor: 'Governor', state_senate: 'State Senate', state_house: 'State House', other: 'Other' };
-            return map[rt] || rt || '';
-        }
+            const payload = {
+                race: data.race, date: new Date(data.date).toISOString(),
+                calledFor: data.calledFor, result: data.result, notes: data.notes,
+                raceType: data.raceType, isPrimary: data.isPrimary, state: data.state,
+                margin: data.margin, callers: data.callers, firstCaller: data.firstCaller
+            };
 
-        function loadRaceCalls() {
-            fetch('/api/racecalls').then(r => r.json()).then(calls => {
-                document.getElementById('rc-count').textContent = calls.length;
-                const list = document.getElementById('rc-list');
-                if (!calls.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No race calls yet.</div>'; return; }
-                list.innerHTML = calls.map(c => {
-                    const badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
-                    const typePill = c.raceType ? ' <span style="font-size:0.7rem;background:var(--bg-secondary);padding:0.1rem 0.5rem;border-radius:8px;color:var(--text-muted)">' + esc(raceTypeLabel(c.raceType)) + '</span>' : '';
-                    const statePill = c.state ? ' <span style="font-size:0.7rem;background:var(--bg-secondary);padding:0.1rem 0.5rem;border-radius:8px;color:var(--text-muted)">' + esc(c.state) + '</span>' : '';
-                    const firstCallerStar = (c.firstCaller === 'votehub') ? ' <span style="color:#eab308" title="VoteHub first call">&#9733;</span>' : '';
-                    return `
-                    <div class="item-card">
-                        <div class="item-card-body">
-                            <div class="item-card-title">${badge} ${esc(c.race)}${firstCallerStar}${typePill}${statePill}</div>
-                            <div class="item-card-meta">Called for: ${esc(c.calledFor)} &middot; ${fmtDate(c.date)} &middot; ${c.result}${c.isPrimary ? ' &middot; Primary' : ''}${c.margin != null ? ' &middot; +' + c.margin + ' pts' : ''}${c.notes ? ' &middot; ' + esc(c.notes) : ''}</div>
-                        </div>
-                        <div class="item-card-actions">
-                            <button class="item-btn" onclick="editRaceCall('${c.id}')">Edit</button>
-                            <button class="item-btn delete" onclick="deleteRaceCall('${c.id}')">Delete</button>
-                        </div>
-                    </div>`;
-                }).join('');
-            });
-        }
-
-        function addRaceCall() {
-            const data = getRaceCallFormData();
-            if (!data.race || !data.date || !data.calledFor) { toast('Race, date, and candidate required', true); return; }
-            fetch('/api/racecalls', {
-                method: 'POST', headers: authHeaders(),
-                body: JSON.stringify({
-                    race: data.race, date: new Date(data.date).toISOString(), calledFor: data.calledFor,
-                    result: data.result, notes: data.notes, raceType: data.raceType, isPrimary: data.isPrimary,
-                    state: data.state, margin: data.margin, callers: data.callers, firstCaller: data.firstCaller
-                })
-            }).then(r => {
-                if (!r.ok) throw new Error();
-                clearRaceCallForm();
-                toast('Race call added!');
-                loadRaceCalls();
-            }).catch(() => toast('Failed to add', true));
+            if (editingId) {
+                fetch('/api/racecalls/' + editingId, {
+                    method: 'PUT', headers: authHeaders(),
+                    body: JSON.stringify(payload)
+                }).then(r => {
+                    if (!r.ok) throw new Error();
+                    cancelEdit();
+                    toast('Updated!');
+                    loadRaceCalls();
+                }).catch(() => toast('Failed to update', true));
+            } else {
+                fetch('/api/racecalls', {
+                    method: 'POST', headers: authHeaders(),
+                    body: JSON.stringify(payload)
+                }).then(r => {
+                    if (!r.ok) throw new Error();
+                    clearForm();
+                    toast('Race call added!');
+                    loadRaceCalls();
+                }).catch(() => toast('Failed to add', true));
+            }
         }
 
         function editRaceCall(id) {
             fetch('/api/racecalls').then(r => r.json()).then(calls => {
                 const c = calls.find(x => x.id === id);
                 if (!c) return toast('Not found', true);
-                rcEditingId = id;
+                editingId = id;
                 document.getElementById('rc-race').value = c.race || '';
                 document.getElementById('rc-racetype').value = c.raceType || 'other';
                 document.getElementById('rc-isprimary').checked = !!c.isPrimary;
                 document.getElementById('rc-state').value = c.state || '';
                 document.getElementById('rc-state-group').style.display = (c.raceType === 'presidential') ? 'none' : '';
-                // Parse date from ISO string
-                const dateVal = c.date ? c.date.split('T')[0] : '';
-                document.getElementById('rc-date').value = dateVal;
+                document.getElementById('rc-date').value = c.date ? c.date.split('T')[0] : '';
                 document.getElementById('rc-calledfor').value = c.calledFor || '';
                 document.getElementById('rc-result').value = c.result || 'pending';
                 document.getElementById('rc-margin').value = c.margin != null ? c.margin : '';
-                document.getElementById('rc-firstcaller').value = c.firstCaller || '';
-                document.getElementById('rc-caller-ap').checked = !!(c.callers && c.callers.ap);
-                document.getElementById('rc-caller-nyt').checked = !!(c.callers && c.callers.nyt);
-                document.getElementById('rc-caller-ddhq').checked = !!(c.callers && c.callers.ddhq);
-                document.getElementById('rc-caller-votehub').checked = !!(c.callers && c.callers.votehub);
+                document.getElementById('rc-vhfirst').checked = c.firstCaller === 'votehub';
                 document.getElementById('rc-notes').value = c.notes || '';
-                document.getElementById('rc-submit-btn').textContent = 'Update Race Call';
+
+                document.getElementById('rc-submit-btn').textContent = 'Update Call';
                 document.getElementById('rc-cancel-edit-btn').style.display = '';
-                document.getElementById('rc-form-title').textContent = 'Edit Race Call';
-                // Scroll to form
-                document.getElementById('panel-racecalls').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('rc-form-title').textContent = 'Editing Race Call';
+                document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
             });
         }
 
-        function updateRaceCall() {
-            if (!rcEditingId) return;
-            const data = getRaceCallFormData();
-            if (!data.race || !data.date || !data.calledFor) { toast('Race, date, and candidate required', true); return; }
-            fetch('/api/racecalls/' + rcEditingId, {
-                method: 'PUT', headers: authHeaders(),
-                body: JSON.stringify({
-                    race: data.race, date: new Date(data.date).toISOString(), calledFor: data.calledFor,
-                    result: data.result, notes: data.notes, raceType: data.raceType, isPrimary: data.isPrimary,
-                    state: data.state, margin: data.margin, callers: data.callers, firstCaller: data.firstCaller
-                })
-            }).then(r => {
-                if (!r.ok) throw new Error();
-                cancelEditRaceCall();
-                toast('Race call updated!');
-                loadRaceCalls();
-            }).catch(() => toast('Failed to update', true));
-        }
-
-        function cancelEditRaceCall() {
-            rcEditingId = null;
-            clearRaceCallForm();
-            document.getElementById('rc-submit-btn').textContent = 'Add Race Call';
+        function cancelEdit() {
+            editingId = null;
+            clearForm();
+            document.getElementById('rc-submit-btn').textContent = 'Add Call';
             document.getElementById('rc-cancel-edit-btn').style.display = 'none';
-            document.getElementById('rc-form-title').textContent = 'Add New Race Call';
+            document.getElementById('rc-form-title').textContent = 'New Race Call';
         }
 
         function deleteRaceCall(id) {
@@ -889,52 +586,40 @@
                 .catch(() => toast('Failed to delete', true));
         }
 
-        function loadGuestbook() {
-            fetch('/api/guestbook').then(r => r.json()).then(entries => {
-                document.getElementById('gb-count').textContent = entries.length;
-                const list = document.getElementById('gb-list');
-                if (!entries.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:1rem 0">No entries yet.</div>'; return; }
-                list.innerHTML = entries.map(e => `
-                    <div class="item-card">
-                        <div class="item-card-body">
-                            <div class="item-card-title">${esc(e.name)}</div>
-                            <div class="item-card-meta">${esc(e.message)} &middot; ${fmtDate(e.date)}</div>
+        function loadRaceCalls() {
+            fetch('/api/racecalls').then(r => r.json()).then(calls => {
+                document.getElementById('rc-count').textContent = calls.length;
+                const list = document.getElementById('rc-list');
+                if (!calls.length) {
+                    list.innerHTML = '<div class="empty-state">No race calls yet.</div>';
+                    return;
+                }
+
+                list.innerHTML = calls.map(c => {
+                    const badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
+                    const typePill = c.raceType ? '<span class="pill">' + esc(typeLabels[c.raceType] || c.raceType) + '</span>' : '';
+                    const statePill = c.state ? '<span class="pill">' + esc(c.state) + '</span>' : '';
+                    const primaryPill = c.isPrimary ? '<span class="pill">Primary</span>' : '';
+                    const firstStar = (c.firstCaller === 'votehub') ? '<span class="first-star" title="VoteHub first call">\u2605</span>' : '';
+                    const marginText = c.margin != null ? ' \u00b7 +' + c.margin + ' pts' : '';
+
+                    return `<div class="rc-card">
+                        <span class="rc-card-badge">${badge}</span>
+                        <div class="rc-card-body">
+                            <div class="rc-card-title">
+                                ${esc(c.race)}${firstStar}${typePill}${statePill}${primaryPill}
+                            </div>
+                            <div class="rc-card-meta">
+                                ${esc(c.calledFor)} \u00b7 ${fmtDate(c.date)} \u00b7 ${c.result}${marginText}${c.notes ? ' \u00b7 ' + esc(c.notes) : ''}
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                        <div class="rc-card-actions">
+                            <button class="rc-card-btn" onclick="editRaceCall('${c.id}')">Edit</button>
+                            <button class="rc-card-btn delete" onclick="deleteRaceCall('${c.id}')">Delete</button>
+                        </div>
+                    </div>`;
+                }).join('');
             });
-        }
-
-        function loadResume() {
-            fetch('/api/resume', { headers: authHeaders() })
-                .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-                .then(data => {
-                    document.getElementById('resume-content').value = data.content || '';
-                })
-                .catch(() => toast('Failed to load resume', true));
-        }
-
-        function saveResume() {
-            const content = document.getElementById('resume-content').value.trim();
-            if (!content) { toast('Resume content cannot be empty', true); return; }
-            fetch('/api/resume', {
-                method: 'PUT', headers: authHeaders(),
-                body: JSON.stringify({ content })
-            }).then(r => {
-                if (!r.ok) throw new Error();
-                toast('Resume saved!');
-            }).catch(() => toast('Failed to save resume', true));
-        }
-
-        function esc(s) {
-            const d = document.createElement('div');
-            d.textContent = s || '';
-            return d.innerHTML;
-        }
-        function fmtDate(d) {
-            if (!d) return '';
-            const dt = new Date(d);
-            return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
     </script>
 </body>

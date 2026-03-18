@@ -27,60 +27,59 @@
         <p class="racecalls-subtitle">Tracking my election race calls from VoteHub's decision desk.</p>
       </header>
 
-      <!-- Stats row -->
-      <div class="rc-stats" id="rc-stats">
-        <div class="rc-stat-card">
-          <div class="rc-ring-wrap">
-            <svg class="rc-ring" viewBox="0 0 80 80">
-              <circle class="rc-ring-bg" cx="40" cy="40" r="34" />
-              <circle class="rc-ring-fill" id="rc-ring-fill" cx="40" cy="40" r="34" />
-            </svg>
-            <span class="rc-ring-label" id="rc-ring-label">—</span>
+      <!-- Hero stats -->
+      <div class="rc-hero-stats" id="rc-stats">
+        <div class="rc-ring-wrap">
+          <svg class="rc-ring" viewBox="0 0 80 80">
+            <circle class="rc-ring-bg" cx="40" cy="40" r="34" />
+            <circle class="rc-ring-fill" id="rc-ring-fill" cx="40" cy="40" r="34" />
+          </svg>
+          <span class="rc-ring-label" id="rc-ring-label">&mdash;</span>
+        </div>
+        <div class="rc-stat-text">
+          <span class="rc-stat-value" id="rc-accuracy">&mdash;</span>
+          <span class="rc-stat-label">Accuracy</span>
+        </div>
+        <div class="rc-stat-strip">
+          <div class="rc-stat-item">
+            <span class="rc-stat-item-value rc-stat-correct" id="rc-correct">0</span>
+            <span class="rc-stat-item-label">Correct</span>
           </div>
-          <div class="rc-stat-text">
-            <span class="rc-stat-value" id="rc-accuracy">—</span>
-            <span class="rc-stat-label">Accuracy</span>
+          <span class="rc-stat-divider"></span>
+          <div class="rc-stat-item">
+            <span class="rc-stat-item-value rc-stat-pending" id="rc-pending">0</span>
+            <span class="rc-stat-item-label">Pending</span>
+          </div>
+          <span class="rc-stat-divider"></span>
+          <div class="rc-stat-item">
+            <span class="rc-stat-item-value" id="rc-total">0</span>
+            <span class="rc-stat-item-label">Total</span>
+          </div>
+          <span class="rc-stat-divider"></span>
+          <div class="rc-stat-item">
+            <span class="rc-stat-item-value rc-stat-first" id="rc-first-pct">&mdash;</span>
+            <span class="rc-stat-item-label">Called First*</span>
           </div>
         </div>
+      </div>
 
-        <div class="rc-stat-card">
-          <span class="rc-stat-big" id="rc-correct">0</span>
-          <span class="rc-stat-label">Correct</span>
+      <!-- Merged filter row -->
+      <div class="rc-filter-row">
+        <div class="rc-filters" id="rc-filters">
+          <button class="rc-filter-btn active" data-filter="all">All</button>
+          <button class="rc-filter-btn" data-filter="correct">Correct</button>
+          <button class="rc-filter-btn" data-filter="pending">Pending</button>
         </div>
-
-        <div class="rc-stat-card">
-          <span class="rc-stat-big rc-stat-incorrect" id="rc-incorrect">0</span>
-          <span class="rc-stat-label">Incorrect</span>
-        </div>
-
-        <div class="rc-stat-card">
-          <span class="rc-stat-big rc-stat-pending" id="rc-pending">0</span>
-          <span class="rc-stat-label">Pending</span>
-        </div>
-
-        <div class="rc-stat-card">
-          <span class="rc-stat-big" id="rc-total">0</span>
-          <span class="rc-stat-label">Total Calls</span>
+        <span class="rc-filter-divider"></span>
+        <div class="rc-filters rc-type-filters" id="rc-type-filters">
+          <button class="rc-filter-btn active" data-type-filter="all">All Types</button>
+          <button class="rc-filter-btn" data-type-filter="federal">Federal</button>
+          <button class="rc-filter-btn" data-type-filter="state">State</button>
         </div>
       </div>
 
-      <!-- Race type breakdown -->
-      <div class="rc-type-breakdown" id="rc-type-breakdown"></div>
-
-      <!-- Filters -->
-      <div class="rc-filters" id="rc-filters">
-        <button class="rc-filter-btn active" data-filter="all">All</button>
-        <button class="rc-filter-btn" data-filter="correct">Correct</button>
-        <button class="rc-filter-btn" data-filter="incorrect">Incorrect</button>
-        <button class="rc-filter-btn" data-filter="pending">Pending</button>
-      </div>
-
-      <!-- Race type filter row -->
-      <div class="rc-filters rc-type-filters" id="rc-type-filters">
-        <button class="rc-filter-btn active" data-type-filter="all">All Types</button>
-        <button class="rc-filter-btn" data-type-filter="federal">Federal</button>
-        <button class="rc-filter-btn" data-type-filter="state">State</button>
-      </div>
+      <!-- Type breakdown (compact inline) -->
+      <div class="rc-type-summary" id="rc-type-breakdown"></div>
 
       <!-- Race call list (grouped by date) -->
       <div class="rc-list" id="rc-list"></div>
@@ -89,7 +88,7 @@
         <p>No race calls match this filter.</p>
       </div>
 
-      <div class="rc-footnote" id="rc-footnote" style="display:none">
+      <div class="rc-footnote" id="rc-footnote">
         <p>*Major decision desks: AP, NYT, VoteHub, DDHQ</p>
       </div>
 
@@ -127,12 +126,17 @@
         var decided = correct + incorrect;
         var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
 
+        // Called first: % of decided races where VoteHub was first caller
+        var withFirstCaller = calls.filter(function(c) { return c.firstCaller; });
+        var vhFirst = withFirstCaller.filter(function(c) { return c.firstCaller === 'votehub'; }).length;
+        var firstPct = withFirstCaller.length > 0 ? Math.round((vhFirst / withFirstCaller.length) * 100) : 0;
+
         document.getElementById('rc-correct').textContent = correct;
-        document.getElementById('rc-incorrect').textContent = incorrect;
         document.getElementById('rc-pending').textContent = pending;
         document.getElementById('rc-total').textContent = calls.length;
         document.getElementById('rc-accuracy').textContent = decided > 0 ? pct + '%' : '\u2014';
         document.getElementById('rc-ring-label').textContent = decided > 0 ? pct + '%' : '\u2014';
+        document.getElementById('rc-first-pct').textContent = withFirstCaller.length > 0 ? firstPct + '%' : '\u2014';
 
         // Animate ring
         var ring = document.getElementById('rc-ring-fill');
@@ -154,14 +158,13 @@
         });
 
         var container = document.getElementById('rc-type-breakdown');
-        var html = '';
+        var parts = [];
         Object.keys(types).forEach(function(rt) {
           var t = types[rt];
-          var pct = t.total > 0 ? Math.round((t.correct / t.total) * 100) : 0;
           var label = raceTypeLabels[rt] || rt;
-          html += '<span class="rc-type-pill">' + esc(label) + ': ' + t.correct + '/' + t.total + ' (' + pct + '%)</span>';
+          parts.push(esc(label) + ' ' + t.correct + '/' + t.total);
         });
-        container.innerHTML = html;
+        container.innerHTML = parts.join(' &middot; ');
       }
 
       function getFilteredCalls(calls) {
@@ -227,7 +230,6 @@
           html += '</div>';
 
           groupCalls.forEach(function(c) {
-            var badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
             var resultClass = c.result === 'correct' ? 'rc-result-correct' : c.result === 'incorrect' ? 'rc-result-incorrect' : 'rc-result-pending';
 
             // First call badge
@@ -237,16 +239,16 @@
               hasFirstCall = true;
             }
 
-            // Race type pills
+            // Race type pills (inline with race name)
             var pills = '';
             if (c.raceType && raceTypeLabels[c.raceType]) {
-              pills += '<span class="rc-pill">' + esc(raceTypeLabels[c.raceType]) + '</span>';
+              pills += ' <span class="rc-pill">' + esc(raceTypeLabels[c.raceType]) + '</span>';
             }
             if (c.isPrimary) {
-              pills += '<span class="rc-pill">Primary</span>';
+              pills += ' <span class="rc-pill">Primary</span>';
             }
             if (c.state) {
-              pills += '<span class="rc-pill">' + esc(c.state) + '</span>';
+              pills += ' <span class="rc-pill">' + esc(c.state) + '</span>';
             }
 
             // Margin display
@@ -255,19 +257,27 @@
               marginHtml = '<span class="rc-margin">+' + c.margin + ' pts</span>';
             }
 
-            html += '<div class="rc-call-card" style="animation-delay:' + (cardIndex * 0.05) + 's">';
+            // Build detail rows
+            var details = [];
+            if (c.calledFor) details.push('<span class="rc-detail-label">Called for</span> <strong>' + esc(c.calledFor) + '</strong>');
+            if (c.margin != null) details.push('<span class="rc-detail-label">Margin</span> +' + c.margin + ' pts');
+            if (c.notes) details.push('<span class="rc-detail-label">Notes</span> ' + esc(c.notes));
+
+            html += '<div class="rc-call-card" style="animation-delay:' + (cardIndex * 0.05) + 's" onclick="this.classList.toggle(\'expanded\')">';
             html += '<div class="rc-call-top">';
             html += '<div class="rc-call-info">';
-            html += '<span class="rc-call-badge">' + badge + '</span>';
             html += '<div>';
-            html += '<h3 class="rc-call-race">' + esc(c.race) + firstCallBadge + '</h3>';
+            html += '<h3 class="rc-call-race">' + esc(c.race) + (pills ? ' ' + pills : '') + firstCallBadge + '</h3>';
             html += '<p class="rc-call-meta">Called for <strong>' + esc(c.calledFor) + '</strong>' + (marginHtml ? ' ' + marginHtml : '') + '</p>';
-            if (pills) html += '<div class="rc-pills">' + pills + '</div>';
             html += '</div>';
             html += '</div>';
             html += '<span class="rc-call-result ' + resultClass + '">' + c.result + '</span>';
             html += '</div>';
-            if (c.notes) html += '<p class="rc-call-notes">' + esc(c.notes) + '</p>';
+            if (details.length) {
+              html += '<div class="rc-call-details">';
+              html += details.map(function(d) { return '<div class="rc-detail-row">' + d + '</div>'; }).join('');
+              html += '</div>';
+            }
             html += '</div>';
 
             cardIndex++;
@@ -277,7 +287,6 @@
         });
 
         list.innerHTML = html;
-        footnote.style.display = hasFirstCall ? 'block' : 'none';
       }
 
       // Result filter buttons

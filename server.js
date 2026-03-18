@@ -49,7 +49,13 @@ function writeJSON(filePath, data) {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
+const isLocalhost = (req) => {
+    const host = req.hostname || req.headers.host || '';
+    return host === 'localhost' || host === '127.0.0.1' || host.startsWith('localhost:') || host.startsWith('127.0.0.1:');
+};
+
 function requireAuth(req, res, next) {
+    if (!CLOUD_PASSWORD && isLocalhost(req)) return next();
     if (!CLOUD_PASSWORD) {
         return res.status(503).json({ error: 'Cloud storage not configured' });
     }
@@ -158,6 +164,9 @@ const upload = multer({
 app.use(express.json());
 
 app.post('/api/auth', (req, res) => {
+    if (!CLOUD_PASSWORD && isLocalhost(req)) {
+        return res.json({ ok: true });
+    }
     if (!CLOUD_PASSWORD) {
         return res.status(503).json({ error: 'Cloud storage not configured' });
     }
