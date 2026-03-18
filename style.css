@@ -901,69 +901,8 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 }
 
 /* ========================================
-   Projects Page
+   Contact Section (used in About)
    ======================================== */
-
-.projects-page {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 3rem 8rem;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 1.25rem;
-}
-
-.project-card {
-  display: block;
-  padding: 2rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text);
-  text-decoration: none;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.project-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
-  transform: translateY(-3px);
-  text-decoration: none;
-}
-
-.project-card time {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.project-card h3 {
-  font-size: 1.15rem;
-  margin-bottom: 0.5rem;
-}
-
-.project-card .project-desc {
-  font-size: 0.88rem;
-  color: var(--text-light);
-  line-height: 1.7;
-}
-
-/* ========================================
-   Contact Page
-   ======================================== */
-
-.contact-page {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 3rem;
-}
 
 .contact-grid {
   display: grid;
