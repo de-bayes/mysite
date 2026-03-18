@@ -75,6 +75,12 @@
             <span class="contact-label">GitHub</span>
             <span class="contact-value">@de-bayes</span>
           </a>
+
+          <a href="/racecalls" class="contact-item rc-preview" id="rc-preview-about">
+            <span class="contact-label">Race Call Record</span>
+            <span class="contact-value" id="rc-about-record">—</span>
+            <span class="rc-preview-pct" id="rc-about-pct" style="display:block;margin-top:0.2rem"></span>
+          </a>
         </div>
       </section>
 
@@ -89,6 +95,20 @@
   <script src="js/animations.js"></script>
   <script src="js/effects.js"></script>
   <script src="js/cmdk.js"></script>
+  <script>
+    fetch('/api/racecalls')
+      .then(function(r) { return r.json(); })
+      .then(function(calls) {
+        var correct = calls.filter(function(c) { return c.result === 'correct'; }).length;
+        var incorrect = calls.filter(function(c) { return c.result === 'incorrect'; }).length;
+        var decided = correct + incorrect;
+        var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
+        document.getElementById('rc-about-record').textContent = correct + '/' + calls.length + ' correct';
+        if (decided > 0) {
+          document.getElementById('rc-about-pct').textContent = pct + '% accuracy \u2192 view all';
+        }
+      });
+  </script>
   <script>
     document.querySelectorAll('[data-copy]').forEach(el => {
       el.addEventListener('click', (e) => {
