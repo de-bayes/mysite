@@ -19,6 +19,19 @@ const RACECALLS_FILE = path.join(DATA_DIR, 'racecalls.json');
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
+// Seed race calls if file doesn't exist
+if (!fs.existsSync(RACECALLS_FILE)) {
+    writeJSON(RACECALLS_FILE, [{
+        id: 'm7x8k1a2b3',
+        race: 'IL-09 Dem Primary',
+        date: '2026-03-17T00:00:00.000Z',
+        calledFor: 'Daniel Biss',
+        result: 'correct',
+        notes: '',
+        created: '2026-03-17T00:00:00.000Z'
+    }]);
+}
+
 function readJSON(filePath, fallback) {
     try {
         if (fs.existsSync(filePath)) return JSON.parse(fs.readFileSync(filePath, 'utf8'));
