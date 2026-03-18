@@ -15,6 +15,7 @@ const TYPING_SCORES_FILE = path.join(DATA_DIR, 'typing-scores.json');
 const HOTTAKES_FILE = path.join(DATA_DIR, 'hottakes.json');
 const BLOGPOSTS_FILE = path.join(DATA_DIR, 'blogposts.json');
 const COUNTDOWNS_FILE = path.join(DATA_DIR, 'countdowns.json');
+const RACECALLS_FILE = path.join(DATA_DIR, 'racecalls.json');
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
@@ -528,6 +529,57 @@ app.put('/api/resume', requireAuth, (req, res) => {
     } catch (err) {
         return res.status(500).json({ error: 'Failed to save resume' });
     }
+});
+
+// =============================================
+// RACE CALL RECORDS
+// =============================================
+app.get('/api/racecalls', (req, res) => {
+    const calls = readJSON(RACECALLS_FILE, []);
+    return res.json(calls);
+});
+
+app.post('/api/racecalls', requireAuth, (req, res) => {
+    const race = String(req.body.race || '').trim().slice(0, 200);
+    const date = String(req.body.date || '').trim();
+    const calledFor = String(req.body.calledFor || '').trim().slice(0, 100);
+    const result = String(req.body.result || '').trim().slice(0, 20);
+    const notes = String(req.body.notes || '').trim().slice(0, 500);
+    if (!race || !date || !calledFor) return res.status(400).json({ error: 'Race, date, and called-for candidate required' });
+    if (isNaN(new Date(date).getTime())) return res.status(400).json({ error: 'Invalid date' });
+    if (!['correct', 'incorrect', 'pending'].includes(result)) return res.status(400).json({ error: 'Result must be correct, incorrect, or pending' });
+
+    const calls = readJSON(RACECALLS_FILE, []);
+    calls.unshift({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        race, date, calledFor, result, notes,
+        created: new Date().toISOString()
+    });
+    calls.sort((a, b) => new Date(b.date) - new Date(a.date));
+    writeJSON(RACECALLS_FILE, calls);
+    return res.json({ ok: true });
+});
+
+app.put('/api/racecalls/:id', requireAuth, (req, res) => {
+    const calls = readJSON(RACECALLS_FILE, []);
+    const idx = calls.findIndex(c => c.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: 'Not found' });
+
+    if (req.body.race) calls[idx].race = String(req.body.race).trim().slice(0, 200);
+    if (req.body.date) calls[idx].date = String(req.body.date).trim();
+    if (req.body.calledFor) calls[idx].calledFor = String(req.body.calledFor).trim().slice(0, 100);
+    if (req.body.result) calls[idx].result = String(req.body.result).trim().slice(0, 20);
+    if (req.body.notes !== undefined) calls[idx].notes = String(req.body.notes).trim().slice(0, 500);
+    writeJSON(RACECALLS_FILE, calls);
+    return res.json({ ok: true });
+});
+
+app.delete('/api/racecalls/:id', requireAuth, (req, res) => {
+    const calls = readJSON(RACECALLS_FILE, []);
+    const filtered = calls.filter(c => c.id !== req.params.id);
+    if (filtered.length === calls.length) return res.status(404).json({ error: 'Not found' });
+    writeJSON(RACECALLS_FILE, filtered);
+    return res.json({ ok: true });
 });
 
 app.use(express.static(__dirname, { extensions: ['html'] }));
