@@ -28,6 +28,12 @@ if (!fs.existsSync(RACECALLS_FILE)) {
         calledFor: 'Daniel Biss',
         result: 'correct',
         notes: '',
+        raceType: 'house',
+        isPrimary: true,
+        state: 'IL',
+        margin: null,
+        callers: { votehub: true, ap: false, nyt: false, ddhq: false },
+        firstCaller: 'votehub',
         created: '2026-03-17T00:00:00.000Z'
     }]);
 }
@@ -562,10 +568,23 @@ app.post('/api/racecalls', requireAuth, (req, res) => {
     if (isNaN(new Date(date).getTime())) return res.status(400).json({ error: 'Invalid date' });
     if (!['correct', 'incorrect', 'pending'].includes(result)) return res.status(400).json({ error: 'Result must be correct, incorrect, or pending' });
 
+    // New fields
+    const validRaceTypes = ['presidential', 'senate', 'house', 'governor', 'state_senate', 'state_house', 'other'];
+    const raceType = validRaceTypes.includes(req.body.raceType) ? req.body.raceType : 'other';
+    const isPrimary = !!req.body.isPrimary;
+    const state = String(req.body.state || '').trim().slice(0, 2).toUpperCase();
+    if (raceType !== 'presidential' && !state) return res.status(400).json({ error: 'State is required for non-presidential races' });
+    const margin = req.body.margin !== null && req.body.margin !== undefined && req.body.margin !== '' ? parseFloat(req.body.margin) : null;
+    const validCallerKeys = ['ap', 'nyt', 'ddhq', 'votehub'];
+    const callers = {};
+    validCallerKeys.forEach(k => { callers[k] = !!(req.body.callers && req.body.callers[k]); });
+    const firstCaller = validCallerKeys.includes(req.body.firstCaller) ? req.body.firstCaller : '';
+
     const calls = readJSON(RACECALLS_FILE, []);
     calls.unshift({
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         race, date, calledFor, result, notes,
+        raceType, isPrimary, state, margin, callers, firstCaller,
         created: new Date().toISOString()
     });
     calls.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -583,6 +602,28 @@ app.put('/api/racecalls/:id', requireAuth, (req, res) => {
     if (req.body.calledFor) calls[idx].calledFor = String(req.body.calledFor).trim().slice(0, 100);
     if (req.body.result) calls[idx].result = String(req.body.result).trim().slice(0, 20);
     if (req.body.notes !== undefined) calls[idx].notes = String(req.body.notes).trim().slice(0, 500);
+
+    // New fields
+    const validRaceTypes = ['presidential', 'senate', 'house', 'governor', 'state_senate', 'state_house', 'other'];
+    if (req.body.raceType !== undefined && validRaceTypes.includes(req.body.raceType)) {
+        calls[idx].raceType = req.body.raceType;
+    }
+    if (req.body.isPrimary !== undefined) calls[idx].isPrimary = !!req.body.isPrimary;
+    if (req.body.state !== undefined) calls[idx].state = String(req.body.state).trim().slice(0, 2).toUpperCase();
+    if (req.body.margin !== undefined) {
+        calls[idx].margin = req.body.margin !== null && req.body.margin !== '' ? parseFloat(req.body.margin) : null;
+    }
+    if (req.body.callers !== undefined) {
+        const validCallerKeys = ['ap', 'nyt', 'ddhq', 'votehub'];
+        const callers = {};
+        validCallerKeys.forEach(k => { callers[k] = !!(req.body.callers && req.body.callers[k]); });
+        calls[idx].callers = callers;
+    }
+    if (req.body.firstCaller !== undefined) {
+        const validCallerKeys = ['ap', 'nyt', 'ddhq', 'votehub'];
+        calls[idx].firstCaller = validCallerKeys.includes(req.body.firstCaller) ? req.body.firstCaller : '';
+    }
+
     writeJSON(RACECALLS_FILE, calls);
     return res.json({ ok: true });
 });
