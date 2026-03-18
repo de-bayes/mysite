@@ -122,12 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const category = (activeTab && activeTab.dataset.category) ? activeTab.dataset.category : 'all';
     const tag = tagSelect && tagSelect.value ? tagSelect.value : 'all';
 
-    document.querySelectorAll('.writing-card').forEach(card => {
+    document.querySelectorAll('.writing-card-outline').forEach(outline => {
+      const card = outline.querySelector('.writing-card');
+      if (!card) return;
       const cardCategory = (card.dataset.category || '').trim();
       const cardTags = (card.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
       const categoryMatch = category === 'all' || cardCategory === category;
       const tagMatch = tag === 'all' || cardTags.includes(tag);
-      card.style.display = categoryMatch && tagMatch ? '' : 'none';
+      outline.style.display = categoryMatch && tagMatch ? '' : 'none';
     });
   }
 
@@ -152,6 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(posts => {
       if (!Array.isArray(posts) || !posts.length) return;
       posts.forEach(post => {
+        const outline = document.createElement('div');
+        outline.className = 'writing-card-outline';
         const card = document.createElement('article');
         card.className = 'writing-card';
         const category = (post.category && ['essays', 'articles', 'press'].includes(post.category)) ? post.category : 'articles';
@@ -174,7 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         card.addEventListener('click', () => showArticle(post));
-        grid.appendChild(card);
+        outline.appendChild(card);
+        grid.appendChild(outline);
       });
       sortCardsNewest();
       updateFilterCounts();
@@ -182,13 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(() => {}); // silently fail if API unavailable
 
   function sortCardsNewest() {
-    const cards = Array.from(grid.querySelectorAll('.writing-card'));
-    cards.sort((a, b) => {
-      const da = new Date(a.dataset.date);
-      const db = new Date(b.dataset.date);
+    const outlines = Array.from(grid.querySelectorAll('.writing-card-outline'));
+    outlines.sort((a, b) => {
+      const cardA = a.querySelector('.writing-card');
+      const cardB = b.querySelector('.writing-card');
+      const da = new Date(cardA.dataset.date);
+      const db = new Date(cardB.dataset.date);
       return db - da;
     });
-    cards.forEach(card => grid.appendChild(card));
+    outlines.forEach(outline => grid.appendChild(outline));
   }
 
   function updateFilterCounts() {
