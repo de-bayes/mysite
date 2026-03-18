@@ -7,7 +7,6 @@
     { type: 'Pages', title: 'About', desc: 'About Ryan McComb', url: '/about', keys: '' },
     { type: 'Pages', title: 'Now', desc: 'What I\'m up to right now', url: '/now', keys: '' },
     { type: 'Pages', title: 'Experience', desc: 'Professional experience and education', url: '/experience', keys: 'timeline resume work' },
-    { type: 'Pages', title: 'Projects', desc: 'Things I\'ve built and worked on', url: '/projects', keys: '' },
     { type: 'Pages', title: 'Writing', desc: 'Essays and articles', url: '/writing', keys: 'blog' },
     { type: 'Pages', title: 'Press', desc: 'Press coverage and features', url: '/press', keys: 'media news' },
     { type: 'Pages', title: 'Race Calls', desc: 'Election race call record and accuracy', url: '/racecalls', keys: 'decision desk predictions' },
@@ -41,13 +40,14 @@
     { type: 'Projects', title: 'IL9Cast', desc: 'Forecasting aggregator for the IL-9 Democratic primary', url: 'https://il9.org', keys: 'prediction markets polling elections' },
     { type: 'Projects', title: 'Project 2028 Podcast', desc: 'Politics and policy podcast reaching 50+ countries', url: 'https://podcasts.apple.com/us/podcast/project-2028/id1753137875', keys: 'podcast politics' },
     { type: 'Projects', title: 'ManiFed Markets & Manifold Trading', desc: 'Play-money peer-to-peer lending platform with trading bots', url: 'https://manifold.markets/JeromeHPowell', keys: 'prediction markets trading kelly criterion' },
-    { type: 'Projects', title: 'Political Science & Policy Project', desc: 'Blog covering game theory, constitutional law, and voting theory', url: '/projects', keys: 'blog pspp' },
+    { type: 'Projects', title: 'Political Science & Policy Project', desc: 'Blog covering game theory, constitutional law, and voting theory', url: '/experience', keys: 'blog pspp' },
 
     // Experience
     { type: 'Experience', title: 'Student Fellow — Data Science & Decision Desk', desc: 'VoteHub', url: '/experience', keys: 'kalshi forecasting midterms' },
     { type: 'Experience', title: 'Founder & Data Scientist', desc: 'IL9Cast', url: '/experience', keys: 'forecasting prediction markets polling' },
     { type: 'Experience', title: 'Volunteer Finance Lead', desc: 'Daniel Biss for Congress (IL-9)', url: '/experience', keys: 'campaign finance' },
     { type: 'Experience', title: 'Sports Photographer', desc: 'Chicago Union (UFA)', url: '/experience', keys: 'photography ultimate frisbee canon' },
+    { type: 'Experience', title: 'ManiFed Markets & Manifold Trading', desc: 'Play-money lending platform with trading bots', url: '/experience', keys: 'prediction markets trading kelly criterion' },
     { type: 'Experience', title: 'Founder & Host', desc: 'Project 2028 Podcast', url: '/experience', keys: 'podcast politics' },
   ];
 

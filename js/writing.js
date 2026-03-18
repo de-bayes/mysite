@@ -148,43 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Bind click handlers on static cards
   bindCardClicks();
 
-  // Load blog posts from API
-  fetch('/api/blogposts')
-    .then(r => r.json())
-    .then(posts => {
-      if (!Array.isArray(posts) || !posts.length) return;
-      posts.forEach(post => {
-        const outline = document.createElement('div');
-        outline.className = 'writing-card-outline';
-        const card = document.createElement('article');
-        card.className = 'writing-card';
-        const category = (post.category && ['essays', 'articles', 'press'].includes(post.category)) ? post.category : 'articles';
-        const tagFromPost = (post.tags && post.tags[0]) ? String(post.tags[0]).trim().toLowerCase() : '';
-        card.dataset.category = category;
-        card.dataset.tags = tagFromPost || '';
-        card.dataset.date = post.date || '';
-        card.dataset.id = post.id;
-
-        const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-US', {
-          year: 'numeric', month: 'short'
-        }) : '';
-
-        card.innerHTML = `
-          <h3>${escapeHtml(post.title)}</h3>
-          <p class="excerpt">${escapeHtml((post.body || '').slice(0, 140))}${post.body && post.body.length > 140 ? '...' : ''}</p>
-          <div class="meta">
-            <span>${dateStr}</span>
-          </div>
-        `;
-
-        card.addEventListener('click', () => showArticle(post));
-        outline.appendChild(card);
-        grid.appendChild(outline);
-      });
-      sortCardsNewest();
-      updateFilterCounts();
-    })
-    .catch(() => {}); // silently fail if API unavailable
 
   function sortCardsNewest() {
     const outlines = Array.from(grid.querySelectorAll('.writing-card-outline'));
