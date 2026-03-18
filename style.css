@@ -1678,37 +1678,22 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   max-width: 420px;
 }
 
-/* Stats row */
-.rc-stats {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 3rem;
-}
-
-.rc-stat-card {
+/* Hero stats */
+.rc-hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  text-align: center;
-}
-
-.rc-stat-card:first-child {
-  flex-direction: row;
-  gap: 1.5rem;
-  justify-content: center;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .rc-ring-wrap {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 64px;
+  height: 64px;
   flex-shrink: 0;
 }
 
@@ -1740,7 +1725,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: #fff;
 }
@@ -1749,55 +1734,110 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   display: flex;
   flex-direction: column;
   text-align: left;
+  margin-right: 0.5rem;
 }
 
 .rc-stat-value {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.03em;
-}
-
-.rc-stat-big {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #4ade80;
-  letter-spacing: -0.03em;
-}
-
-.rc-stat-incorrect {
-  color: #f87171;
-}
-
-.rc-stat-pending {
-  color: var(--text-muted);
+  line-height: 1.1;
 }
 
 .rc-stat-label {
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-muted);
   font-weight: 500;
 }
 
-/* Filters */
-.rc-filters {
+.rc-stat-strip {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.rc-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.rc-stat-item-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.rc-stat-item-value.rc-stat-correct {
+  color: #4ade80;
+}
+
+.rc-stat-item-value.rc-stat-pending {
+  color: var(--text-muted);
+}
+
+.rc-stat-item-value.rc-stat-first {
+  color: #eab308;
+}
+
+.rc-stat-item-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.rc-stat-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Merged filter row */
+.rc-filter-row {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   border-bottom: 1px solid var(--border);
   padding-bottom: 1rem;
+}
+
+.rc-filter-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-hover);
+  flex-shrink: 0;
+  margin: 0 0.25rem;
+}
+
+.rc-filters {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.rc-type-filters {
+  /* no extra overrides needed */
 }
 
 .rc-filter-btn {
   background: none;
   border: none;
   font-family: var(--font-main);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 0.4rem 1rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 6px;
   transition: color 0.2s, background 0.2s;
   font-weight: 400;
@@ -1814,6 +1854,13 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   font-weight: 500;
 }
 
+/* Type breakdown (compact inline text) */
+.rc-type-summary {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
 /* Call cards */
 .rc-list {
   display: flex;
@@ -1825,7 +1872,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem 1.5rem;
+  padding: 1rem;
   transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
   opacity: 0;
   animation: rcCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -1852,13 +1899,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 .rc-call-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   min-width: 0;
-}
-
-.rc-call-badge {
-  font-size: 1.3rem;
-  flex-shrink: 0;
 }
 
 .rc-call-race {
@@ -1902,12 +1943,39 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   background: rgba(255,255,255,0.05);
 }
 
-.rc-call-notes {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
+.rc-call-card {
+  cursor: pointer;
+}
+
+.rc-call-details {
+  display: none;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--border);
+}
+
+.rc-call-card.expanded .rc-call-details {
+  display: block;
+}
+
+.rc-detail-row {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  padding: 0.2rem 0;
+}
+
+.rc-detail-row strong {
+  color: #fff;
+}
+
+.rc-detail-label {
+  display: inline-block;
+  width: 100px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .rc-empty {
@@ -1920,32 +1988,6 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   font-size: 0.9rem;
 }
 
-/* Race type breakdown */
-.rc-type-breakdown {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-}
-
-.rc-type-pill {
-  display: inline-block;
-  font-size: 0.78rem;
-  color: var(--text-light);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 0.3rem 0.9rem;
-  font-weight: 500;
-}
-
-/* Type filter row */
-.rc-type-filters {
-  border-bottom: none;
-  padding-bottom: 0;
-  margin-bottom: 2rem;
-  margin-top: -1rem;
-}
 
 /* Date group headers */
 .rc-date-group {
@@ -1994,23 +2036,18 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   vertical-align: middle;
 }
 
-/* Race type / state pills on cards */
-.rc-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.35rem;
-}
-
+/* Race type / state pills on cards (inline with race name) */
 .rc-pill {
   display: inline-block;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   color: var(--text-muted);
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.1rem 0.5rem;
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
   font-weight: 500;
+  vertical-align: middle;
+  margin-left: 0.15rem;
 }
 
 /* Margin display */
@@ -2102,12 +2139,26 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
     font-size: 3rem;
   }
 
-  .rc-stats {
-    grid-template-columns: 1fr 1fr;
+  .rc-hero-stats {
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
-  .rc-stat-card:first-child {
-    grid-column: 1 / -1;
+  .rc-stat-strip {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-around;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .rc-filter-row {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .rc-filter-divider {
+    display: none;
   }
 
   .rc-filters {
