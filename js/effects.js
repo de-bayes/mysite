@@ -8,12 +8,18 @@
   function initCounters() {
     const els = document.querySelectorAll('[data-count]');
     if (!els.length) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const obs = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
         const target = parseFloat(el.dataset.count);
         const dec = (el.dataset.count.split('.')[1] || '').length;
+        if (reduceMotion) {
+          el.textContent = target.toFixed(dec);
+          obs.unobserve(el);
+          return;
+        }
         const start = performance.now();
         const dur = 1400;
         (function tick(now) {

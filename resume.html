@@ -1,501 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Resume - Ryan McComb</title>
-    <link rel="icon" href="favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* --- Top Bar: Blue editorial header --- */
-        .top-bar {
-            background: #2244cc;
-            padding: 0.7rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        [data-theme="dark"] .top-bar {
-            background: #0000DD;
-        }
-
-        .top-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-        }
-
-        .top-bar-name {
-            font-family: var(--font-serif);
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.04em;
-        }
-
-        .top-bar a {
-            font-family: var(--font-sans);
-            font-size: 0.78rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .top-bar a:hover {
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .top-bar-actions {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-        }
-
-        .btn-download {
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 0.45rem 1.2rem;
-            background: #ffffff;
-            color: #2244cc;
-            border: none;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            letter-spacing: 0.02em;
-        }
-
-        .btn-download:hover { opacity: 0.85; }
-
-        .btn-print {
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 0.45rem 1.2rem;
-            background: transparent;
-            color: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            transition: all 0.2s;
-            letter-spacing: 0.02em;
-        }
-
-        .btn-print:hover {
-            border-color: #ffffff;
-            color: #ffffff;
-        }
-
-        a.btn-print {
-            text-decoration: none;
-            display: inline-block;
-            line-height: 1;
-        }
-
-        /* RESUME PAPER */
-        .resume-wrap { padding: 2rem; }
-
-        .resume-page {
-            max-width: 8.5in;
-            margin: 0 auto;
-            background: #fff;
-            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
-            position: relative;
-            overflow: hidden;
-            border-top: 3px solid #2244cc;
-        }
-
-        [data-theme="dark"] .resume-page {
-            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .resume-corner-tile {
-            position: absolute;
-            top: 0.35in;
-            right: 0.45in;
-            width: 52px;
-            height: 52px;
-            background: #2244cc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease;
-        }
-
-        .resume-corner-tile svg {
-            width: 34px;
-            height: auto;
-            transition: stroke 0.2s ease;
-        }
-
-        .resume-corner-tile:hover {
-            background: #1a1a1a;
-        }
-
-        .resume-inner { padding: 0.5in 0.6in; }
-
-        /* HEADER */
-        .resume-header {
-            text-align: left;
-            margin-bottom: 0.18in;
-            padding-bottom: 0.1in;
-            border-bottom: 2px solid #2244cc;
-        }
-
-        .resume-header h1 {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-size: 1.85rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 0.06rem;
-            color: #1a1a1a;
-        }
-
-        .resume-contact-line {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-size: 0.78rem;
-            color: #444;
-        }
-
-        .resume-contact-line a {
-            color: #444;
-            text-decoration: none;
-        }
-
-        /* SECTIONS */
-        .resume-section { margin-bottom: 0.15in; }
-
-        .resume-section h2 {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: #1a1a1a;
-            border-bottom: 1.5px solid #2244cc;
-            padding-bottom: 0.05in;
-            margin-bottom: 0.08in;
-        }
-
-        /* ITEMS */
-        .resume-item { margin-bottom: 0.08in; }
-
-        .resume-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        .resume-item-title {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-weight: 700;
-            font-size: 0.84rem;
-            color: #1a1a1a;
-        }
-
-        .resume-item-date {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-size: 0.76rem;
-            color: #555;
-            white-space: nowrap;
-            font-style: italic;
-        }
-
-        .resume-item-org {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-size: 0.8rem;
-            color: #555;
-            font-style: italic;
-        }
-
-        .resume-item ul {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            padding-left: 1.1rem;
-            margin-top: 0.02in;
-            font-size: 0.8rem;
-            color: #333;
-            line-height: 1.4;
-        }
-
-        .resume-item li { margin-bottom: 0.015in; }
-
-        .edu-details {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-size: 0.8rem;
-            color: #333;
-            padding-left: 1.1rem;
-            margin-top: 0.02in;
-            line-height: 1.45;
-        }
-
-        .edu-details li { margin-bottom: 0.015in; }
-
-        .activities-list {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            font-size: 0.8rem;
-            color: #333;
-            padding-left: 1.1rem;
-            line-height: 1.45;
-        }
-
-        .activities-list li { margin-bottom: 0.015in; }
-
-        .resume-skills {
-            font-family: 'Times New Roman', Times, Georgia, serif;
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 0.025in 0.2in;
-            font-size: 0.8rem;
-        }
-
-        .resume-skills dt { font-weight: 700; color: #333; }
-        .resume-skills dd { color: #555; }
-
-        .flag-footer { width: 100%; }
-        .flag-footer img { width: 100%; height: auto; display: block; }
-
-        /* --- Editorial Footer --- */
-        .resume-editorial-footer {
-            border-top: 1px solid var(--border-color);
-            padding: 2rem;
-            text-align: center;
-            max-width: 8.5in;
-            margin: 0 auto;
-        }
-
-        .resume-editorial-footer nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .resume-editorial-footer nav a {
-            font-family: var(--font-sans);
-            font-size: 0.72rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: color 0.2s ease;
-        }
-
-        .resume-editorial-footer nav a:hover {
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .resume-editorial-footer .footer-copy {
-            font-family: var(--font-sans);
-            font-size: 0.7rem;
-            color: var(--text-light);
-            letter-spacing: 0.03em;
-        }
-
-        /* PRINT */
-        @media print {
-            body { background: #fff; }
-            .top-bar, .flag-footer, .resume-editorial-footer, .resume-corner-tile { display: none; }
-            .resume-wrap { padding: 0; }
-            .resume-page { box-shadow: none; margin: 0; max-width: none; border-top: none; }
-            .resume-inner { padding: 0.4in 0.5in; }
-            .resume-header { border-bottom-color: #1a1a1a; }
-            .resume-section h2 { border-bottom-color: #bbb; }
-            a { color: inherit !important; text-decoration: none !important; }
-        }
-
-        @media (max-width: 600px) {
-            .top-bar { padding: 0.6rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
-            .resume-wrap { padding: 0.75rem; }
-            .resume-inner { padding: 1.25rem; }
-            .resume-header h1 { font-size: 1.5rem; }
-            .resume-item-row { flex-direction: column; }
-            .resume-skills { grid-template-columns: 1fr; gap: 0.04in 0; }
-            .resume-skills dt { margin-top: 0.04in; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume - Ryan McComb</title>
+  <meta name="description" content="Resume for Ryan McComb: student, VoteHub fellow, forecasting and data work.">
+  <link rel="canonical" href="https://ryanjmccomb.com/resume">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:title" content="Resume - Ryan McComb">
+  <meta property="og:description" content="Resume for Ryan McComb.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ryanjmccomb.com/resume">
+  <meta property="og:image" content="https://ryanjmccomb.com/portrait.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ryanjmccomb.com/portrait.jpg">
 </head>
 <body>
-    <script>
-        (function() {
-            const saved = localStorage.getItem('theme');
-            if (saved === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            }
-        })();
-    </script>
 
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <span class="top-bar-name">RYAN McCOMB</span>
-            <a href="index.html">&larr; Back to site</a>
-        </div>
-        <div class="top-bar-actions">
-            <a class="btn-print" href="resume.md" download="Ryan_McComb_Resume.md">Download .md</a>
-            <button class="btn-print" onclick="window.print()">Print</button>
-            <button class="btn-download" onclick="window.print()">Download PDF</button>
-        </div>
-    </div>
+  <nav class="site-nav" id="site-nav"></nav>
 
-    <div class="resume-wrap">
-        <div class="resume-page">
-            <div class="resume-corner-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="36 6 52 32">
-                    <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="41" y1="12" x2="83" y2="12"/>
-                        <path d="M62 17 L44 33 M62 17 L80 33"/>
-                    </g>
-                </svg>
-            </div>
-            <div class="resume-inner">
+  <main class="resume-main">
+    <header class="resume-page-header">
+      <div class="resume-page-header-inner">
+        <h1 class="resume-page-title">Resume</h1>
+        <p class="resume-page-sub">Print-friendly CV, same look as the rest of the site.</p>
+        <div class="resume-toolbar">
+          <button type="button" class="resume-toolbar-btn" onclick="window.print()">Print / Save as PDF</button>
+          <a href="resume.md" class="resume-toolbar-link" download="Ryan_McComb_Resume.md">Download Markdown</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="resume-shell">
+      <div class="resume-paper">
+        <div class="resume-inner">
                 <div class="resume-header">
-                    <h1>Ryan McComb</h1>
-                    <div class="resume-contact-line">Evanston, IL &#9632; <a href="https://rjmccomb.xyz">rjmccomb.xyz</a></div>
+                    <h2 class="resume-name">Ryan McComb</h2>
+                    <p class="resume-tagline">Student, data, forecasting, elections</p>
+                    <div class="resume-contact-line">
+                      Evanston, IL
+                      &middot; <a href="https://ryanjmccomb.com">ryanjmccomb.com</a>
+                      &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a>
+                      &middot; <a href="https://github.com/de-bayes">github.com/de-bayes</a>
+                      &middot; <a href="https://www.linkedin.com/in/ryan-mccomb-30b029370">LinkedIn</a>
+                    </div>
                 </div>
 
                 <div class="resume-section">
-                    <h2>Education</h2>
+                    <h3 class="resume-section-title">Education</h3>
                     <div class="resume-item">
                         <div class="resume-item-row">
                             <div class="resume-item-title">Evanston Township High School</div>
                             <div class="resume-item-date">Expected May 2028</div>
                         </div>
                         <ul class="edu-details">
-                            <li>3.98 unweighted GPA, 4.47 weighted GPA &mdash; National Freshman Honour Society</li>
-                            <li>Chem/Phys (concurrent enrolment, 3 years); AP Government</li>
+                            <li>3.98 unweighted GPA, 4.47 weighted GPA; National Freshman Honour Society</li>
+                            <li>Chem/Phys (concurrent enrollment, 3 years); AP Government</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="resume-section">
-                    <h2>Experience</h2>
+                    <h3 class="resume-section-title">Experience</h3>
                     <div class="resume-item">
                         <div class="resume-item-row">
-                            <div class="resume-item-title">Student Fellow &mdash; Data Science &amp; Decision Desk</div>
-                            <div class="resume-item-date">2025 &ndash; Present</div>
+                            <div class="resume-item-title">Student Fellow, Data Science &amp; Decision Desk</div>
+                            <div class="resume-item-date">2025 - Present</div>
                         </div>
                         <div class="resume-item-org">VoteHub</div>
                         <ul>
-                            <li>Contributed to the 2026 midterms forecasting model: built a Kalshi market-scoring pipeline that ingests open-interest volume and liquidity data, computes daily percentile-rank scores, and automatically weights markets for inclusion in the aggregate forecast</li>
-                            <li>Authored election briefings on primaries and special elections for VoteHub's client-facing decision-desk products</li>
+                            <li>Contributed to the 2026 midterms forecasting model: built a Kalshi market-scoring pipeline that ingests open-interest volume and liquidity data, computes daily percentile-rank scores, and automatically weights markets for inclusion in the aggregate forecast.</li>
+                            <li>Authored election briefings on primaries and special elections for VoteHub client-facing decision-desk products.</li>
+                            <li>Decision-desk race calls on primary night; election data pipelines and prediction market integration.</li>
+                        </ul>
+                    </div>
+                    <div class="resume-item">
+                        <div class="resume-item-row">
+                            <div class="resume-item-title">Founder &amp; Data Scientist</div>
+                            <div class="resume-item-date">Jan 2026 - Mar 2026</div>
+                        </div>
+                        <div class="resume-item-org">IL9Cast</div>
+                        <ul>
+                            <li>Built a forecasting aggregator for the IL-9 Democratic primary that synthesizes prediction-market probabilities, polling averages, and FEC filings into a single probability estimate, updated daily.</li>
+                            <li>Covered in Capitol Fax, the Evanston Roundtable, and the Daily Northwestern.</li>
                         </ul>
                     </div>
                     <div class="resume-item">
                         <div class="resume-item-row">
                             <div class="resume-item-title">Volunteer Finance Lead</div>
-                            <div class="resume-item-date">Sep 2025 &ndash; Mar 2026</div>
+                            <div class="resume-item-date">Sep 2025 - Mar 2026</div>
                         </div>
                         <div class="resume-item-org">Daniel Biss for Congress (IL-9)</div>
                         <ul>
-                            <li>Manage end-to-end campaign finance data for a competitive Democratic congressional primary</li>
-                            <li>Researched donor information for candidate call-time and prospecting, along with very occasional data help</li>
+                            <li>Managed end-to-end campaign finance data for a competitive Democratic congressional primary.</li>
+                            <li>Researched donor information for call-time and prospecting; occasional data support.</li>
                         </ul>
                     </div>
                     <div class="resume-item">
                         <div class="resume-item-row">
                             <div class="resume-item-title">Sports Photographer</div>
-                            <div class="resume-item-date">2024 &ndash; Present</div>
+                            <div class="resume-item-date">2024 - Present</div>
                         </div>
                         <div class="resume-item-org">Chicago Union (UFA)</div>
                         <ul>
-                            <li>Credentialed photographer covering professional ultimate frisbee; deliver game-day photo packages on 24-hour turnaround</li>
-                            <li>Shoot with Canon R8 system; images used across team social media and press channels</li>
+                            <li>Credentialed photographer covering professional ultimate; game-day photo packages on 24-hour turnaround.</li>
+                            <li>Canon R8; images used on team social and press channels.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="resume-section">
-                    <h2>Projects</h2>
-                    <div class="resume-item">
-                        <div class="resume-item-row">
-                            <div class="resume-item-title">IL9Cast</div>
-                            <div class="resume-item-date">2025</div>
-                        </div>
-                        <ul>
-                            <li>Built a forecasting aggregator for the IL-9 Democratic primary that synthesises prediction-market probabilities, polling averages, and FEC fundraising filings into a single probability estimate, updated daily</li>
-                            <li>Featured in Capitol Fax, the Evanston Roundtable, and the Daily Northwestern as a novel local forecasting tool</li>
-                        </ul>
-                    </div>
+                    <h3 class="resume-section-title">Projects</h3>
                     <div class="resume-item">
                         <div class="resume-item-row">
                             <div class="resume-item-title">Project 2028 Podcast</div>
-                            <div class="resume-item-date">2022 &ndash; Present</div>
+                            <div class="resume-item-date">2022 - Present</div>
                         </div>
                         <ul>
-                            <li>Founded and host a politics-and-policy podcast reaching listeners in 50+ countries; produce, edit, and distribute all episodes</li>
+                            <li>Founder and host; politics and policy; produce, edit, and distribute episodes. Listeners in 50+ countries.</li>
                         </ul>
                     </div>
                     <div class="resume-item">
                         <div class="resume-item-row">
-                            <div class="resume-item-title">ManiFed Markets</div>
-                            <div class="resume-item-date">2024 &ndash; Present</div>
+                            <div class="resume-item-title">ManiFed Markets &amp; Manifold Trading</div>
+                            <div class="resume-item-date">2023 - Present</div>
                         </div>
                         <ul>
-                            <li>Co-founded a peer-to-peer lending platform built on prediction market infrastructure; develop automated trading bots using mean-reversion strategies and Kelly-criterion position sizing</li>
-                        </ul>
-                    </div>
-                    <div class="resume-item">
-                        <div class="resume-item-row">
-                            <div class="resume-item-title">Manifold Markets Trading</div>
-                            <div class="resume-item-date">2023 &ndash; Present</div>
-                        </div>
-                        <ul>
-                            <li>Ranked #50 out of ~160,000 traders by volume; top 0.5% in profit across the platform</li>
+                            <li>Co-founded ManiFed, a play-money peer-to-peer lending flow on Manifold Markets with bots using mean-reversion and Kelly-style sizing.</li>
+                            <li>Ranked #50 out of ~160,000 traders by volume; top 0.5% in profit.</li>
                         </ul>
                     </div>
                     <div class="resume-item">
                         <div class="resume-item-row">
                             <div class="resume-item-title">Political Science &amp; Policy Project (PSPP)</div>
-                            <div class="resume-item-date">2020 &ndash; 2024</div>
+                            <div class="resume-item-date">2020 - 2024</div>
                         </div>
                         <ul>
-                            <li>Published a political-science blog for four years covering game theory, constitutional law, and voting theory</li>
+                            <li>Political-science blog for four years: game theory, constitutional law, voting theory.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="resume-section">
-                    <h2>Activities &amp; Leadership</h2>
+                    <h3 class="resume-section-title">Activities &amp; leadership</h3>
                     <ul class="activities-list">
-                        <li>The Evanstonian &mdash; Staff Writer &amp; Photographer</li>
-                        <li>Competitive Swimming &mdash; Year-round; ETHS Swim Team &amp; Flying Fish Swim Club (7&ndash;9 sessions/week)</li>
-                        <li>Federalist Society &mdash; Member</li>
-                        <li>ETHS Student Ambassador</li>
+                        <li>The Evanstonian: staff writer and photographer</li>
+                        <li>Competitive swimming: ETHS swim team and Flying Fish Swim Club (7-9 sessions per week)</li>
+                        <li>Federalist Society member</li>
+                        <li>ETHS student ambassador</li>
                     </ul>
                 </div>
 
                 <div class="resume-section">
-                    <h2>Skills &amp; Interests</h2>
+                    <h3 class="resume-section-title">Skills &amp; interests</h3>
                     <dl class="resume-skills">
                         <dt>Technical</dt>
                         <dd>Python, JavaScript, Bayesian analysis, Monte Carlo simulation, quantitative forecasting, prediction markets, data science</dd>
                         <dt>Tools</dt>
-                        <dd>Canon R8, Adobe Lightroom, Git, cloud computing, Manifold Markets API</dd>
+                        <dd>Canon R8, Adobe Lightroom, Git, cloud hosting, Manifold Markets API</dd>
                         <dt>Interests</dt>
-                        <dd>Constitutional &amp; administrative law, election forecasting, probabilistic reasoning, political photography</dd>
+                        <dd>Constitutional and administrative law, election forecasting, probabilistic reasoning, political photography</dd>
                     </dl>
                 </div>
-            </div>
         </div>
+      </div>
     </div>
+  </main>
 
-    <footer class="resume-editorial-footer">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="index.html#experience">Work</a>
-            <a href="index.html#projects">Projects</a>
-            <a href="index.html#blog">Writing</a>
-            <a href="index.html#contact">Contact</a>
-        </nav>
-        <div class="footer-copy">&copy; 2026 Ryan McComb &middot; Evanston, IL &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a></div>
-    </footer>
+  <div class="flag-footer"></div>
+
+  <footer class="site-footer">
+    &copy; 2026 Ryan McComb &middot; Evanston, IL &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a>
+  </footer>
+
+  <script src="js/nav.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/cmdk.js"></script>
 </body>
 </html>
