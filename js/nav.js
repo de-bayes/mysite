@@ -3,12 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.getElementById('site-nav');
   if (!nav) return;
 
+  const prefersReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   nav.innerHTML = `
     <a href="/" class="nav-name"><span class="brace">{</span><span class="ni">R</span><span class="nx nx1">yan</span><span class="nx nx2"> </span><span class="ni">J</span><span class="nx nx3">.</span><span class="nx nx4"> </span><span class="ni">M</span><span class="nx nx5">c</span><span class="ni">C</span><span class="nx nx6">omb</span><span class="brace">}</span></a>
-    <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-    <div class="nav-links">
+    <button type="button" class="nav-hamburger" aria-label="Open menu" aria-controls="nav-menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="nav-menu" role="navigation" aria-label="Site">
       <a href="/about">About</a>
       <a href="/experience">Experience</a>
+      <a href="/resume">Resume</a>
       <a href="/writing">Writing</a>
       <a href="/press">Press</a>
       <a href="/now">Now</a>
@@ -25,19 +28,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Mobile hamburger toggle
+  // Mobile hamburger toggle (accessible disclosure pattern)
   const hamburger = nav.querySelector('.nav-hamburger');
   const links = nav.querySelector('.nav-links');
+  const navLinks = () => Array.from(links.querySelectorAll('a'));
+
+  function setMenuOpen(open) {
+    if (!hamburger || !links) return;
+    links.classList.toggle('open', open);
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (!open) {
+      document.removeEventListener('keydown', onMenuKeydown);
+    }
+  }
+
+  function focusTrap(e) {
+    if (!links.classList.contains('open')) return;
+    const focusables = [hamburger, ...navLinks()];
+    const i = focusables.indexOf(document.activeElement);
+    if (i < 0) return;
+    if (e.key === 'Tab') {
+      if (e.shiftKey && i === 0) {
+        e.preventDefault();
+        focusables[focusables.length - 1].focus();
+      } else if (!e.shiftKey && i === focusables.length - 1) {
+        e.preventDefault();
+        focusables[0].focus();
+      }
+    }
+  }
+
+  function onMenuKeydown(e) {
+    if (e.key === 'Escape') {
+      setMenuOpen(false);
+      hamburger.focus();
+      return;
+    }
+    focusTrap(e);
+  }
+
   if (hamburger && links) {
     hamburger.addEventListener('click', () => {
-      links.classList.toggle('open');
-      hamburger.classList.toggle('open');
+      const willOpen = !links.classList.contains('open');
+      setMenuOpen(willOpen);
+      if (willOpen) {
+        document.addEventListener('keydown', onMenuKeydown);
+        const first = navLinks()[0];
+        if (first) first.focus();
+      }
     });
 
     links.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
-        links.classList.remove('open');
-        hamburger.classList.remove('open');
+        setMenuOpen(false);
       });
     });
   }
@@ -54,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = document.querySelector(hash);
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
+        target.scrollIntoView({ behavior: prefersReduceMotion ? 'auto' : 'smooth' });
       }
     });
   });
@@ -65,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // and fade in on the new page.
   const hasCrossDocVT = 'onpagereveal' in window;
 
-  if (!hasCrossDocVT) {
+  if (!hasCrossDocVT && !prefersReduceMotion) {
     // Entry animation on page load
     document.body.classList.add('page-enter');
     setTimeout(() => document.body.classList.remove('page-enter'), 300);

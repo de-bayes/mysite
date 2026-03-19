@@ -1,8 +1,15 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const TRUST_LOCALHOST_AUTH = process.env.TRUST_LOCALHOST_AUTH === 'true';
 const app = express();
+if (NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
 const PORT = process.env.PORT || 3000;
 const CLOUD_PASSWORD = process.env.CLOUD_PASSWORD;
 const DATA_DIR = fs.existsSync('/data') ? '/data' : path.join(__dirname, 'data');
@@ -45,8 +52,13 @@ const isLocalhost = (req) => {
     return host === 'localhost' || host === '127.0.0.1' || host.startsWith('localhost:') || host.startsWith('127.0.0.1:');
 };
 
+/** In production, localhost-only auth bypass requires TRUST_LOCALHOST_AUTH=true */
+function allowLocalhostAuthBypass(req) {
+    return isLocalhost(req) && (NODE_ENV !== 'production' || TRUST_LOCALHOST_AUTH);
+}
+
 function requireAuth(req, res, next) {
-    if (!CLOUD_PASSWORD && isLocalhost(req)) return next();
+    if (!CLOUD_PASSWORD && allowLocalhostAuthBypass(req)) return next();
     if (!CLOUD_PASSWORD) {
         return res.status(503).json({ error: 'Cloud storage not configured' });
     }
@@ -57,10 +69,40 @@ function requireAuth(req, res, next) {
     next();
 }
 
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false
+}));
+
 app.use(express.json());
 
-app.post('/api/auth', (req, res) => {
-    if (!CLOUD_PASSWORD && isLocalhost(req)) {
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 300,
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+const authLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 50,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many login attempts, try again later' }
+});
+
+const apiWriteLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 120,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many write requests, try again later' }
+});
+
+app.use('/api/', apiLimiter);
+
+app.post('/api/auth', authLimiter, (req, res) => {
+    if (!CLOUD_PASSWORD && allowLocalhostAuthBypass(req)) {
         return res.json({ ok: true });
     }
     if (!CLOUD_PASSWORD) {
@@ -81,7 +123,9 @@ app.get('/api/resume', requireAuth, (req, res) => {
     try {
         const html = fs.readFileSync(RESUME_FILE, 'utf8');
         // Extract just the resume-inner content
-        const match = html.match(/<div class="resume-inner">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>\s*<div class="flag-footer">/);
+        // resume-inner closes, then resume-paper + resume-shell; optional </main> before flag-footer (site chrome)
+        const resumeInnerEnd = /<div class="resume-inner">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>\s*(?:<\/main>\s*)?<div class="flag-footer">/;
+        const match = html.match(resumeInnerEnd);
         if (match) {
             return res.json({ content: match[1].trim() });
         }
@@ -91,15 +135,13 @@ app.get('/api/resume', requireAuth, (req, res) => {
     }
 });
 
-app.put('/api/resume', requireAuth, (req, res) => {
+app.put('/api/resume', apiWriteLimiter, requireAuth, (req, res) => {
     const content = String(req.body.content || '').trim();
     if (!content) return res.status(400).json({ error: 'Content required' });
     try {
         let html = fs.readFileSync(RESUME_FILE, 'utf8');
-        html = html.replace(
-            /(<div class="resume-inner">)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>\s*<div class="flag-footer">)/,
-            '$1\n' + content + '\n            $3'
-        );
+        const resumePutRe = /(<div class="resume-inner">)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>\s*(?:<\/main>\s*)?<div class="flag-footer">)/;
+        html = html.replace(resumePutRe, '$1\n' + content + '\n            $3');
         fs.writeFileSync(RESUME_FILE, html);
         return res.json({ ok: true });
     } catch (err) {
@@ -115,7 +157,7 @@ app.get('/api/racecalls', (req, res) => {
     return res.json(calls);
 });
 
-app.post('/api/racecalls', requireAuth, (req, res) => {
+app.post('/api/racecalls', apiWriteLimiter, requireAuth, (req, res) => {
     const race = String(req.body.race || '').trim().slice(0, 200);
     const date = String(req.body.date || '').trim();
     const calledFor = String(req.body.calledFor || '').trim().slice(0, 100);
@@ -149,7 +191,7 @@ app.post('/api/racecalls', requireAuth, (req, res) => {
     return res.json({ ok: true });
 });
 
-app.put('/api/racecalls/:id', requireAuth, (req, res) => {
+app.put('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
     const calls = readJSON(RACECALLS_FILE, []);
     const idx = calls.findIndex(c => c.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
@@ -185,7 +227,7 @@ app.put('/api/racecalls/:id', requireAuth, (req, res) => {
     return res.json({ ok: true });
 });
 
-app.delete('/api/racecalls/:id', requireAuth, (req, res) => {
+app.delete('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
     const calls = readJSON(RACECALLS_FILE, []);
     const filtered = calls.filter(c => c.id !== req.params.id);
     if (filtered.length === calls.length) return res.status(404).json({ error: 'Not found' });

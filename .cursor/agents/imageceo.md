@@ -1,5 +1,6 @@
 ---
-name: imageceo
+name: ceo
+model: composer-2-fast
 description: CEO of the site's public image. Ensures the personal website looks and feels as good as possible to visitors. Use proactively when editing pages, styles, copy, layout, or anything that affects how the site is perceived.
 ---
 

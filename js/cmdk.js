@@ -43,7 +43,7 @@
     { type: 'Projects', title: 'Political Science & Policy Project', desc: 'Blog covering game theory, constitutional law, and voting theory', url: '/experience', keys: 'blog pspp' },
 
     // Experience
-    { type: 'Experience', title: 'Student Fellow — Data Science & Decision Desk', desc: 'VoteHub', url: '/experience', keys: 'kalshi forecasting midterms' },
+    { type: 'Experience', title: 'Student Fellow, Data Science & Decision Desk', desc: 'VoteHub', url: '/experience', keys: 'kalshi forecasting midterms' },
     { type: 'Experience', title: 'Founder & Data Scientist', desc: 'IL9Cast', url: '/experience', keys: 'forecasting prediction markets polling' },
     { type: 'Experience', title: 'Volunteer Finance Lead', desc: 'Daniel Biss for Congress (IL-9)', url: '/experience', keys: 'campaign finance' },
     { type: 'Experience', title: 'Sports Photographer', desc: 'Chicago Union (UFA)', url: '/experience', keys: 'photography ultimate frisbee canon' },
