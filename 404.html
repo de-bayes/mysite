@@ -3,23 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 — Ryan McComb</title>
+  <title>404 - Page not found | Ryan McComb</title>
+  <meta name="description" content="Page not found. Bayes' rule toy: is Ryan a good programmer? Move the sliders to update the posterior.">
+  <link rel="canonical" href="https://ryanjmccomb.com/">
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:title" content="404 - Page not found | Ryan McComb">
+  <meta property="og:description" content="Bayes theorem toy with sliders.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ryanjmccomb.com/">
+  <meta property="og:image" content="https://ryanjmccomb.com/portrait.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ryanjmccomb.com/portrait.jpg">
 </head>
 <body>
 
   <nav class="site-nav" id="site-nav"></nav>
 
-  <main class="not-found">
-    <h1>404</h1>
-    <p>This page doesn't exist.</p>
-    <a href="/">Go home</a>
+  <main class="not-found bayes-404-page" id="main-content">
+    <header class="bayes-404-header">
+      <p class="bayes-404-code" aria-hidden="true">404</p>
+      <h1>Page not found</h1>
+      <p class="bayes-404-lead">That URL is not on this site. Here is a small <strong>Bayes</strong> calculator instead.</p>
+    </header>
+
+    <section class="bayes-404" aria-labelledby="bayes-heading">
+      <h2 id="bayes-heading">Is Ryan a good programmer?</h2>
+      <p class="bayes-404-copy">
+        Let <strong>G</strong> mean &ldquo;Ryan is a good programmer,&rdquo; and <strong>E</strong> the evidence (you opened this 404). Bayes&rsquo; rule maps your <em>prior</em> on <strong>G</strong> to a <em>posterior</em> after <strong>E</strong>:
+      </p>
+      <p class="bayes-formula" lang="en">
+        <span class="bayes-formula-main"><i>P</i>(<i>G</i> | <i>E</i>) = <i>P</i>(<i>E</i> | <i>G</i>) · <i>P</i>(<i>G</i>) / <i>P</i>(<i>E</i>)</span><br>
+        <span class="bayes-formula-sub">with <i>P</i>(<i>E</i>) = <i>P</i>(<i>E</i> | <i>G</i>)<i>P</i>(<i>G</i>) + <i>P</i>(<i>E</i> | ¬<i>G</i>)(1 − <i>P</i>(<i>G</i>))</span>
+      </p>
+      <p class="bayes-404-copy">
+        Each slider is 0 to 100%. The posterior and <i>P</i>(<i>E</i>) update as you move them.
+      </p>
+
+      <div class="bayes-sliders">
+        <div class="bayes-field">
+          <label for="bayes-prior">Prior <i>P</i>(<i>G</i>): how likely is it, before this page, that Ryan is a good programmer?</label>
+          <input type="range" id="bayes-prior" name="prior" min="0" max="100" value="30" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" aria-valuetext="30%">
+        </div>
+        <div class="bayes-field">
+          <label for="bayes-peg">Likelihood <i>P</i>(<i>E</i> | <i>G</i>): if Ryan is a good programmer, how plausible is this 404?</label>
+          <input type="range" id="bayes-peg" name="peg" min="0" max="100" value="40" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-valuetext="40%">
+        </div>
+        <div class="bayes-field">
+          <label for="bayes-peng">Likelihood <i>P</i>(<i>E</i> | ¬<i>G</i>): if Ryan is not a good programmer, how plausible is this evidence?</label>
+          <input type="range" id="bayes-peng" name="peng" min="0" max="100" value="15" aria-valuemin="0" aria-valuemax="100" aria-valuenow="15" aria-valuetext="15%">
+        </div>
+      </div>
+
+      <div class="bayes-results">
+        <p class="bayes-result-line"><strong>Posterior <i>P</i>(<i>G</i> | <i>E</i>):</strong> <span id="bayes-posterior">…</span></p>
+        <p class="bayes-result-line"><strong>Marginal <i>P</i>(<i>E</i>):</strong> <span id="bayes-pe">…</span></p>
+        <p id="bayes-live" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+      </div>
+
+      <p class="bayes-404-cta"><a href="/">Back to home</a></p>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    &copy; 2026 Ryan McComb &middot; Evanston, IL &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a>
+  </footer>
 
   <script src="js/nav.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/effects.js"></script>
   <script src="js/cmdk.js"></script>
+  <script src="js/bayes-404.js"></script>
 </body>
 </html>
