@@ -985,6 +985,122 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .copied-toast.show { opacity: 1; }
 
+/* Contact cards: brand primary colour washes in on hover */
+.contact-item--twitter,
+.contact-item--linkedin,
+.contact-item--manifold {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.contact-item--twitter {
+  --contact-brand: #1da1f2;
+}
+
+.contact-item--linkedin {
+  --contact-brand: #0a66c2;
+}
+
+/* Manifold card wash (brand purple) */
+.contact-item--manifold {
+  --contact-brand: #7032e2;
+}
+
+.contact-item--twitter::before,
+.contact-item--linkedin::before,
+.contact-item--manifold::before {
+  content: '';
+  position: absolute;
+  top: -5%;
+  left: -25%;
+  width: 150%;
+  height: 110%;
+  background: var(--contact-brand);
+  transform: translate3d(-100%, 0, 0) skewX(-14deg);
+  transform-origin: 0 50%;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contact-item--twitter .contact-label,
+.contact-item--twitter .contact-value,
+.contact-item--linkedin .contact-label,
+.contact-item--linkedin .contact-value,
+.contact-item--manifold .contact-label,
+.contact-item--manifold .contact-value {
+  position: relative;
+  z-index: 1;
+  transition: color 0.35s ease 0.12s;
+}
+
+.contact-item--twitter:hover,
+.contact-item--twitter:focus-visible,
+.contact-item--linkedin:hover,
+.contact-item--linkedin:focus-visible,
+.contact-item--manifold:hover,
+.contact-item--manifold:focus-visible {
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.28);
+  transform: translateY(-3px);
+  text-decoration: none;
+}
+
+.contact-item--twitter:hover::before,
+.contact-item--twitter:focus-visible::before,
+.contact-item--linkedin:hover::before,
+.contact-item--linkedin:focus-visible::before,
+.contact-item--manifold:hover::before,
+.contact-item--manifold:focus-visible::before {
+  transform: translate3d(0, 0, 0) skewX(-14deg);
+}
+
+.contact-item--twitter:hover .contact-label,
+.contact-item--twitter:focus-visible .contact-label,
+.contact-item--linkedin:hover .contact-label,
+.contact-item--linkedin:focus-visible .contact-label,
+.contact-item--manifold:hover .contact-label,
+.contact-item--manifold:focus-visible .contact-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.contact-item--twitter:hover .contact-value,
+.contact-item--twitter:focus-visible .contact-value,
+.contact-item--linkedin:hover .contact-value,
+.contact-item--linkedin:focus-visible .contact-value,
+.contact-item--manifold:hover .contact-value,
+.contact-item--manifold:focus-visible .contact-value {
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-item--twitter::before,
+  .contact-item--linkedin::before,
+  .contact-item--manifold::before {
+    transition: none;
+    transform: translate3d(-100%, 0, 0) skewX(-14deg);
+  }
+
+  .contact-item--twitter:hover::before,
+  .contact-item--twitter:focus-visible::before,
+  .contact-item--linkedin:hover::before,
+  .contact-item--linkedin:focus-visible::before,
+  .contact-item--manifold:hover::before,
+  .contact-item--manifold:focus-visible::before {
+    transform: translate3d(0, 0, 0) skewX(-14deg);
+  }
+
+  .contact-item--twitter .contact-label,
+  .contact-item--twitter .contact-value,
+  .contact-item--linkedin .contact-label,
+  .contact-item--linkedin .contact-value,
+  .contact-item--manifold .contact-label,
+  .contact-item--manifold .contact-value {
+    transition: none;
+  }
+}
+
 /* ========================================
    404 Page
    ======================================== */
