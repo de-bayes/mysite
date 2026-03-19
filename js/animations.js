@@ -1,5 +1,11 @@
 // Scroll-triggered animations
 document.addEventListener('DOMContentLoaded', () => {
+  const els = document.querySelectorAll('.animate-in, .stagger-children');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    els.forEach((el) => el.classList.add('visible'));
+    return;
+  }
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -11,7 +17,5 @@ document.addEventListener('DOMContentLoaded', () => {
     rootMargin: '0px 0px -30px 0px'
   });
 
-  document.querySelectorAll('.animate-in, .stagger-children').forEach(el => {
-    observer.observe(el);
-  });
+  els.forEach((el) => observer.observe(el));
 });

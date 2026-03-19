@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap');
+/* Fonts load via <link> in HTML (preconnect + stylesheet) for better performance */
 
 /* ========================================
    Tokens
@@ -359,38 +359,67 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   z-index: 1;
 }
 
-/* --- Body --- */
+/* --- Body (bio blocks) --- */
 
-.about-body--single {
-  max-width: 600px;
-  padding: 4rem 0;
+.about-body {
+  max-width: 38rem;
+  padding: 3.5rem 0 2rem;
 }
 
-.about-body--single .about-lead {
-  font-size: 1.15rem;
+.about-body > p {
+  font-size: 0.92rem;
+  color: var(--text-light);
+  line-height: 1.8;
+  margin: 0 0 1.25rem;
+}
+
+.about-body .about-lead {
+  font-size: 1.12rem;
   font-weight: 500;
   color: #fff;
   line-height: 1.65;
-  margin-bottom: 2rem;
+  margin: 0 0 1.35rem;
 }
 
-.about-body--single p {
-  font-size: 0.92rem;
-  color: var(--text-light);
-  line-height: 1.85;
-  margin-bottom: 1.5rem;
+.about-body .about-resume-link {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 1.5rem 0 0;
 }
 
-.about-body--single p:last-child {
+.about-body > p:last-child {
   margin-bottom: 0;
 }
 
+.about-resume-link a {
+  color: var(--text-light);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.25);
+  text-underline-offset: 3px;
+}
+
+.about-resume-link a:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
 .about-contact {
-  padding-bottom: 6rem;
+  padding: 0 0 1rem;
 }
 
 .about-contact h2 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.35rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.about-racecalls {
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+  padding-bottom: 4rem;
 }
 
 /* ========================================
@@ -906,9 +935,10 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-bottom: 6rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.1rem;
+  margin-bottom: 0;
+  max-width: 42rem;
 }
 
 .contact-item {
@@ -959,6 +989,18 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
    404 Page
    ======================================== */
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .not-found {
   display: flex;
   flex-direction: column;
@@ -1000,6 +1042,162 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   text-decoration: none;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(255,255,255,0.1);
+}
+
+/* Bayes-themed 404 */
+.not-found.bayes-404-page {
+  align-items: stretch;
+  justify-content: flex-start;
+  text-align: left;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 6.5rem 1.5rem 4rem;
+  min-height: min-content;
+}
+
+.bayes-404-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.bayes-404-code {
+  font-size: clamp(4rem, 14vw, 8rem);
+  font-weight: 700;
+  color: var(--text-muted);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  opacity: 0.35;
+  margin: 0 0 0.5rem;
+}
+
+.not-found.bayes-404-page h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 600;
+  color: var(--text);
+  opacity: 1;
+  margin: 0;
+}
+
+.bayes-404-lead {
+  color: var(--text-light);
+  margin: 1rem auto 0;
+  max-width: 36rem;
+  font-size: 1.05rem;
+}
+
+.bayes-404 {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 1.5rem 2rem;
+}
+
+.bayes-404 h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.35rem;
+}
+
+.bayes-404-copy {
+  color: var(--text-light);
+  font-size: 0.98rem;
+  margin: 0 0 1rem;
+  line-height: 1.65;
+}
+
+.bayes-formula {
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--border-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+}
+
+.bayes-formula-main {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+}
+
+.bayes-formula-sub {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.bayes-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  margin: 1.5rem 0;
+}
+
+.bayes-field label {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.bayes-field input[type="range"] {
+  width: 100%;
+  max-width: 100%;
+  height: 0.5rem;
+  accent-color: #e06b1f;
+  cursor: pointer;
+}
+
+.bayes-field input[type="range"]:focus-visible {
+  outline: 2px solid #e06b1f;
+  outline-offset: 3px;
+}
+
+.bayes-results {
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+}
+
+.bayes-result-line {
+  margin: 0.35rem 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.bayes-result-line:first-child {
+  margin-top: 0;
+}
+
+.bayes-404-cta {
+  text-align: center;
+  margin: 1.25rem 0 0;
+  font-size: 0.95rem;
+}
+
+.not-found.bayes-404-page .bayes-404-cta a {
+  display: inline;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.25);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.not-found.bayes-404-page .bayes-404-cta a:hover {
+  background: none;
+  text-decoration-color: #fff;
+  transform: none;
+  box-shadow: none;
 }
 
 /* ========================================
@@ -1056,6 +1254,36 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 @keyframes pageEnter {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .page-exit main,
+  .page-exit .site-footer,
+  .page-enter main,
+  .page-enter .site-footer {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  .animate-in,
+  .animate-in.visible,
+  .stagger-children > *,
+  .stagger-children.visible > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ========================================
@@ -1330,6 +1558,10 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
    ======================================== */
 
 @media (max-width: 768px) {
+  .about-page {
+    padding: 0 1.25rem;
+  }
+
   .site-nav {
     padding: 0.75rem 1.25rem;
   }
@@ -1397,12 +1629,18 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
     inset: 8px -8px -8px 8px;
   }
 
-  .about-body--single {
-    padding: 2.5rem 0 3rem;
+  .about-body {
+    padding: 2.25rem 0 1.5rem;
+  }
+
+  .about-racecalls {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
   }
 
   .about-contact {
-    padding-bottom: 4rem;
+    padding-bottom: 0;
   }
 
   .contact-grid {
@@ -2157,5 +2395,291 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
 
   .rc-filters {
     overflow-x: auto;
+  }
+}
+
+/* ========================================
+   Resume page (matches site chrome + print)
+   ======================================== */
+
+.resume-main {
+  padding: 5.75rem 1.5rem 4rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.resume-page-header {
+  margin-bottom: 2rem;
+}
+
+.resume-page-header-inner {
+  max-width: 42rem;
+}
+
+.resume-page-title {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
+}
+
+.resume-page-sub {
+  color: var(--text-light);
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
+
+.resume-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.resume-toolbar-btn {
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-hover);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.resume-toolbar-btn:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.resume-toolbar-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-light);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.25);
+  text-underline-offset: 3px;
+}
+
+.resume-toolbar-link:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+.resume-shell {
+  margin-top: 0.5rem;
+}
+
+.resume-paper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.resume-inner {
+  padding: 2rem 2.25rem;
+  color: var(--text);
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.resume-inner .resume-header {
+  margin-bottom: 1.35rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(224, 107, 31, 0.65);
+}
+
+.resume-inner .resume-name {
+  font-family: 'DM Sans', var(--font-main);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem;
+}
+
+.resume-inner .resume-tagline {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin: 0 0 0.65rem;
+}
+
+.resume-inner .resume-contact-line {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.65;
+}
+
+.resume-inner .resume-contact-line a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+  text-underline-offset: 2px;
+}
+
+.resume-inner .resume-contact-line a:hover {
+  text-decoration-color: #fff;
+}
+
+.resume-inner .resume-section {
+  margin-bottom: 1.15rem;
+}
+
+.resume-inner .resume-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.35rem;
+  margin: 0 0 0.65rem;
+}
+
+.resume-inner .resume-item {
+  margin-bottom: 0.85rem;
+}
+
+.resume-inner .resume-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.resume-inner .resume-item-title {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.resume-inner .resume-item-date {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.resume-inner .resume-item-org {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin-top: 0.15rem;
+}
+
+.resume-inner .resume-item ul,
+.resume-inner .edu-details,
+.resume-inner .activities-list {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--text-light);
+  font-size: 0.88rem;
+}
+
+.resume-inner .resume-item li,
+.resume-inner .edu-details li,
+.resume-inner .activities-list li {
+  margin-bottom: 0.2rem;
+}
+
+.resume-inner .resume-skills {
+  display: grid;
+  grid-template-columns: minmax(5rem, 7rem) 1fr;
+  gap: 0.35rem 1rem;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.resume-inner .resume-skills dt {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.resume-inner .resume-skills dd {
+  margin: 0;
+  color: var(--text-light);
+}
+
+@media (max-width: 640px) {
+  .resume-inner {
+    padding: 1.35rem 1.15rem;
+  }
+
+  .resume-inner .resume-skills {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-inner .resume-skills dt {
+    margin-top: 0.5rem;
+  }
+
+  .resume-inner .resume-skills dt:first-child {
+    margin-top: 0;
+  }
+}
+
+/* Marker for resume API (server.js); no visual */
+.flag-footer {
+  display: none;
+}
+
+@media print {
+  .site-nav,
+  .site-footer,
+  .resume-page-header,
+  .flag-footer {
+    display: none !important;
+  }
+
+  .resume-main {
+    padding: 0;
+    max-width: none;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  .resume-paper {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fff;
+  }
+
+  .resume-inner,
+  .resume-inner .resume-contact-line,
+  .resume-inner .resume-item ul,
+  .resume-inner .edu-details,
+  .resume-inner .activities-list,
+  .resume-inner .resume-skills dd {
+    color: #222 !important;
+  }
+
+  .resume-inner .resume-name,
+  .resume-inner .resume-item-title {
+    color: #111 !important;
+  }
+
+  .resume-inner .resume-section-title {
+    color: #333 !important;
+    border-bottom-color: #ccc !important;
+  }
+
+  .resume-inner .resume-header {
+    border-bottom-color: #e06b1f !important;
+  }
+
+  .resume-inner a {
+    color: #111 !important;
+    text-decoration: none !important;
   }
 }
