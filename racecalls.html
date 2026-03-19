@@ -66,8 +66,8 @@
             <span class="rc-stat-item-value" id="rc-total">0</span>
             <span class="rc-stat-item-label">Total</span>
           </div>
-          <span class="rc-stat-divider"></span>
-          <div class="rc-stat-item">
+          <span class="rc-stat-divider rc-first-stat-divider" id="rc-first-divider" hidden></span>
+          <div class="rc-stat-item rc-first-stat-item" id="rc-first-wrap" hidden>
             <span class="rc-stat-item-value rc-stat-first" id="rc-first-pct">&mdash;</span>
             <span class="rc-stat-item-label">Called First*</span>
           </div>
@@ -79,6 +79,7 @@
         <div class="rc-filters" id="rc-filters">
           <button class="rc-filter-btn active" data-filter="all">All</button>
           <button class="rc-filter-btn" data-filter="correct">Correct</button>
+          <button class="rc-filter-btn" data-filter="incorrect">Incorrect</button>
           <button class="rc-filter-btn" data-filter="pending">Pending</button>
         </div>
         <span class="rc-filter-divider"></span>
@@ -100,7 +101,7 @@
       </div>
 
       <div class="rc-footnote" id="rc-footnote">
-        <p>*Major decision desks: AP, NYT, VoteHub, DDHQ</p>
+        <p id="rc-footnote-line">*Major decision desks: AP, NYT, VoteHub, DDHQ. “Called first” appears when you track it on a call.</p>
       </div>
 
     </div>
@@ -115,6 +116,14 @@
       var allCalls = [];
       var currentFilter = 'all';
       var currentTypeFilter = 'all';
+      var MIN_FIRST_CALLER_SAMPLES = 3;
+
+      var firstCallerLabels = {
+        votehub: 'VoteHub first',
+        ap: 'AP first',
+        nyt: 'NYT first',
+        ddhq: 'DDHQ first'
+      };
 
       var raceTypeLabels = {
         presidential: 'Presidential', senate: 'Senate', house: 'House',
@@ -128,6 +137,15 @@
         var d = document.createElement('div');
         d.textContent = s || '';
         return d.innerHTML;
+      }
+
+      function safeHttpUrl(s) {
+        if (!s || typeof s !== 'string') return null;
+        try {
+          var u = new URL(s.trim());
+          if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+        } catch (e) {}
+        return null;
       }
 
       function renderStats(calls) {
@@ -147,7 +165,17 @@
         document.getElementById('rc-total').textContent = calls.length;
         document.getElementById('rc-accuracy').textContent = decided > 0 ? pct + '%' : '\u2014';
         document.getElementById('rc-ring-label').textContent = decided > 0 ? pct + '%' : '\u2014';
-        document.getElementById('rc-first-pct').textContent = withFirstCaller.length > 0 ? firstPct + '%' : '\u2014';
+
+        var firstWrap = document.getElementById('rc-first-wrap');
+        var firstDivider = document.getElementById('rc-first-divider');
+        if (withFirstCaller.length >= MIN_FIRST_CALLER_SAMPLES) {
+          firstWrap.hidden = false;
+          firstDivider.hidden = false;
+          document.getElementById('rc-first-pct').textContent = firstPct + '%';
+        } else {
+          firstWrap.hidden = true;
+          firstDivider.hidden = true;
+        }
 
         // Animate ring
         var ring = document.getElementById('rc-ring-fill');
@@ -225,7 +253,6 @@
           groups[dateKey].push(c);
         });
 
-        var hasFirstCall = false;
         var cardIndex = 0;
         var html = '';
 
@@ -243,38 +270,47 @@
           groupCalls.forEach(function(c) {
             var resultClass = c.result === 'correct' ? 'rc-result-correct' : c.result === 'incorrect' ? 'rc-result-incorrect' : 'rc-result-pending';
 
-            // First call badge
             var firstCallBadge = '';
-            if (c.firstCaller === 'votehub') {
-              firstCallBadge = ' <span class="rc-first-call-badge">First Call</span>';
-              hasFirstCall = true;
+            if (c.firstCaller && firstCallerLabels[c.firstCaller]) {
+              firstCallBadge = ' <span class="rc-first-call-badge">' + esc(firstCallerLabels[c.firstCaller]) + '</span>';
             }
 
-            // Race type pills (inline with race name)
             var pills = '';
             if (c.raceType && raceTypeLabels[c.raceType]) {
               pills += ' <span class="rc-pill">' + esc(raceTypeLabels[c.raceType]) + '</span>';
             }
-            if (c.isPrimary) {
+            if (c.primaryParty === 'dem') {
+              pills += ' <span class="rc-pill">Dem primary</span>';
+            } else if (c.primaryParty === 'rep') {
+              pills += ' <span class="rc-pill">GOP primary</span>';
+            } else if (c.isPrimary) {
               pills += ' <span class="rc-pill">Primary</span>';
             }
             if (c.state) {
               pills += ' <span class="rc-pill">' + esc(c.state) + '</span>';
             }
 
-            // Margin display
             var marginHtml = '';
             if (c.margin != null) {
               marginHtml = '<span class="rc-margin">+' + c.margin + ' pts</span>';
             }
 
-            // Build detail rows
             var details = [];
-            if (c.calledFor) details.push('<span class="rc-detail-label">Called for</span> <strong>' + esc(c.calledFor) + '</strong>');
-            if (c.margin != null) details.push('<span class="rc-detail-label">Margin</span> +' + c.margin + ' pts');
             if (c.notes) details.push('<span class="rc-detail-label">Notes</span> ' + esc(c.notes));
+            if (c.sourceUrl) {
+              var srcHref = safeHttpUrl(c.sourceUrl);
+              if (srcHref) {
+                details.push('<span class="rc-detail-label">Source</span> <a class="rc-source-link" href="' + esc(srcHref) + '" target="_blank" rel="noopener noreferrer">Open link</a>');
+              } else {
+                details.push('<span class="rc-detail-label">Source</span> ' + esc(c.sourceUrl));
+              }
+            }
 
-            html += '<div class="rc-call-card" style="animation-delay:' + (cardIndex * 0.05) + 's" onclick="this.classList.toggle(\'expanded\')">';
+            var hasDetails = details.length > 0;
+            var cardClick = hasDetails ? ' onclick="this.classList.toggle(\'expanded\')"' : '';
+            var cardClass = 'rc-call-card' + (hasDetails ? '' : ' rc-call-card--compact');
+
+            html += '<div class="' + cardClass + '" style="animation-delay:' + (cardIndex * 0.05) + 's"' + cardClick + '>';
             html += '<div class="rc-call-top">';
             html += '<div class="rc-call-info">';
             html += '<div>';
@@ -284,9 +320,9 @@
             html += '</div>';
             html += '<span class="rc-call-result ' + resultClass + '">' + c.result + '</span>';
             html += '</div>';
-            if (details.length) {
+            if (hasDetails) {
               html += '<div class="rc-call-details">';
-              html += details.map(function(d) { return '<div class="rc-detail-row">' + d + '</div>'; }).join('');
+              html += details.map(function(row) { return '<div class="rc-detail-row">' + row + '</div>'; }).join('');
               html += '</div>';
             }
             html += '</div>';
