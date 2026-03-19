@@ -65,7 +65,8 @@ All routes under `/api/` are rate-limited (general limiter). **`POST /api/auth`*
 **Data directory**
 
 - Race calls persist to `data/racecalls.json` in the repo, or **`/data/racecalls.json`** if a `/data` directory exists (typical for a mounted volume in production).
-- Each call may include optional fields such as `firstCaller` (`votehub` \| `ap` \| `nyt` \| `ddhq` or empty), `sourceUrl` (paste a post or article URL for a public “Open link”—nothing is fetched automatically), and `primaryParty` (`dem` \| `rep` or empty; used with congressional primaries from `XX-C-##-DP` / `-RP` in admin).
+- Rows are meant to be **assigned** VoteHub decision-desk calls (a subset of what the organization projects), not the full desk slate. Public copy on `/racecalls` states this for readers.
+- Each call may include optional fields such as `firstCaller` (`votehub` when VoteHub's decision desk called the race before AP, NYT, and DDHQ; otherwise empty; legacy rows may still have `ap` \| `nyt` \| `ddhq`), `sourceUrl` (paste a post or article URL for a public “Open link”: nothing is fetched automatically), and `primaryParty` (`dem` \| `rep` or empty; used with congressional primaries from `XX-C-##-DP` / `-RP` in admin).
 
 ---
 
