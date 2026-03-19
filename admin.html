@@ -155,6 +155,65 @@
             margin: 0.25rem 0;
         }
 
+        .form-details-optional {
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+        .form-details-optional summary {
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            user-select: none;
+            list-style: none;
+        }
+        .form-details-optional summary::-webkit-details-marker { display: none; }
+        .form-details-optional[open] summary { color: var(--text-light); margin-bottom: 0.5rem; }
+        .form-details-hint {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+            line-height: 1.4;
+        }
+        .form-race-hint {
+            font-size: 0.68rem;
+            color: #eab308;
+            margin-top: 0.35rem;
+            line-height: 1.4;
+            display: none;
+        }
+        .form-race-syntax {
+            margin-top: 0.65rem;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+        }
+        .form-race-syntax summary {
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            letter-spacing: 0.04em;
+        }
+        .form-race-syntax summary::-webkit-details-marker { display: none; }
+        .form-race-syntax-body {
+            margin-top: 0.5rem;
+            padding: 0.65rem 0.75rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            line-height: 1.55;
+            font-size: 0.66rem;
+        }
+        .form-race-syntax-body code {
+            font-size: 0.62rem;
+            color: var(--text-light);
+            background: rgba(255,255,255,0.06);
+            padding: 0.08rem 0.28rem;
+            border-radius: 3px;
+        }
+
         .form-actions {
             display: flex; gap: 0.5rem; margin-top: 1rem;
         }
@@ -208,8 +267,11 @@
             border-radius: 4px; background: rgba(255,255,255,0.06);
             color: var(--text-light); text-transform: uppercase; letter-spacing: 0.04em;
         }
-        .rc-card-title .first-star {
-            color: var(--gold); font-size: 0.85rem;
+        .rc-card-title .first-desk {
+            font-size: 0.62rem; font-weight: 500;
+            padding: 0.1rem 0.4rem; border-radius: 4px;
+            background: rgba(234, 179, 8, 0.12); color: var(--gold);
+            text-transform: uppercase; letter-spacing: 0.04em;
         }
         .rc-card-meta {
             font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;
@@ -287,29 +349,38 @@
                 <div class="form-card-title" id="rc-form-title">New Race Call</div>
 
                 <div class="form-grid">
-                    <!-- Row 1: Race name + type + primary -->
-                    <div class="form-group span-2">
+                    <div class="form-group span-3">
                         <label class="form-label">Race</label>
-                        <input class="form-input" id="rc-race" maxlength="200" placeholder="e.g. IL-09 Dem Primary">
+                        <input class="form-input" id="rc-race" maxlength="200" placeholder="e.g. IL-C-09-DP or IL-SD-14 — or use Type / State manually">
+                        <p class="form-race-hint" id="rc-race-hint" role="status"></p>
+                        <details class="form-race-syntax">
+                            <summary>Race string syntax (optional)</summary>
+                            <div class="form-race-syntax-body">
+                                <strong>State prefix</strong> <code>XX</code> = USPS state. You can always ignore this and set Type + State below instead.<br><br>
+                                <code>XX-C-09</code> U.S. House · <code>XX-C-09-DP</code> Dem primary · <code>XX-C-09-RP</code> GOP primary<br>
+                                <code>XX-SD-14</code> or <code>XX-SH-14</code> state house district<br>
+                                <code>XX-S-14</code> or <code>XX-S-III</code> state senate seat (any label after <code>S-</code>)<br><br>
+                                <strong>Shorthand</strong> (no state in the string): <code>SD-14</code> = state senate dist. · <code>SH-62</code> = state house — then pick State.<br>
+                                <strong>Legacy:</strong> <code>IL-09</code> = congressional (same as <code>IL-C-09</code>).
+                            </div>
+                        </details>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Type</label>
-                        <select class="form-select" id="rc-racetype">
-                            <optgroup label="Federal">
-                                <option value="presidential">Presidential</option>
-                                <option value="senate">Senate</option>
-                                <option value="house" selected>House</option>
-                            </optgroup>
-                            <optgroup label="State">
-                                <option value="governor">Governor</option>
-                                <option value="state_senate">State Senate</option>
-                                <option value="state_house">State House</option>
-                                <option value="other">Other</option>
-                            </optgroup>
+                        <label class="form-label">Date</label>
+                        <input class="form-input" id="rc-date" type="date">
+                    </div>
+                    <div class="form-group span-2">
+                        <label class="form-label">Called For</label>
+                        <input class="form-input" id="rc-calledfor" maxlength="100" placeholder="e.g. Daniel Biss">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Result</label>
+                        <select class="form-select" id="rc-result">
+                            <option value="correct">Correct</option>
+                            <option value="incorrect">Incorrect</option>
+                            <option value="pending" selected>Pending</option>
                         </select>
                     </div>
-
-                    <!-- Row 2: State + Date + Called For -->
                     <div class="form-group" id="rc-state-group">
                         <label class="form-label">State</label>
                         <select class="form-select" id="rc-state">
@@ -333,49 +404,58 @@
                             <option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Date</label>
-                        <input class="form-input" id="rc-date" type="date">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Called For</label>
-                        <input class="form-input" id="rc-calledfor" maxlength="100" placeholder="e.g. Daniel Biss">
-                    </div>
-
-                    <!-- Row 3: Result + Margin + Primary -->
-                    <div class="form-group">
-                        <label class="form-label">Result</label>
-                        <select class="form-select" id="rc-result">
-                            <option value="correct">Correct</option>
-                            <option value="incorrect">Incorrect</option>
-                            <option value="pending" selected>Pending</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Margin</label>
-                        <input class="form-input" id="rc-margin" type="number" step="0.1" placeholder="e.g. 5.2">
-                    </div>
-                    <div class="form-group" style="justify-content:flex-end">
-                        <label class="form-check">
-                            <input type="checkbox" id="rc-isprimary">
-                            Primary
-                        </label>
-                    </div>
-
-                    <!-- Row 4: VoteHub first call -->
-                    <div class="form-group span-3" style="justify-content:flex-start">
-                        <label class="form-check">
-                            <input type="checkbox" id="rc-vhfirst" checked>
-                            VoteHub called first
-                        </label>
-                    </div>
-
-                    <!-- Row 5: Notes -->
-                    <div class="form-group span-3">
-                        <label class="form-label">Notes</label>
-                        <input class="form-input" id="rc-notes" maxlength="500" placeholder="Optional notes">
-                    </div>
                 </div>
+
+                <details class="form-details-optional" id="rc-optional-details">
+                    <summary>Optional details</summary>
+                    <div class="form-grid" style="margin-top:0.75rem">
+                        <div class="form-group">
+                            <label class="form-label">Type</label>
+                            <select class="form-select" id="rc-racetype">
+                                <optgroup label="Federal">
+                                    <option value="presidential">Presidential</option>
+                                    <option value="senate">Senate</option>
+                                    <option value="house" selected>House</option>
+                                </optgroup>
+                                <optgroup label="State">
+                                    <option value="governor">Governor</option>
+                                    <option value="state_senate">State Senate</option>
+                                    <option value="state_house">State House</option>
+                                    <option value="other">Other</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Margin (pts)</label>
+                            <input class="form-input" id="rc-margin" type="number" step="0.1" placeholder="e.g. 5.2">
+                        </div>
+                        <div class="form-group" style="justify-content:flex-end">
+                            <label class="form-check">
+                                <input type="checkbox" id="rc-isprimary">
+                                Primary
+                            </label>
+                        </div>
+                        <div class="form-group span-3">
+                            <label class="form-label">Called first by</label>
+                            <select class="form-select" id="rc-firstcaller">
+                                <option value="" selected>Not tracking</option>
+                                <option value="votehub">VoteHub</option>
+                                <option value="ap">AP</option>
+                                <option value="nyt">NYT</option>
+                                <option value="ddhq">DDHQ</option>
+                            </select>
+                        </div>
+                        <div class="form-group span-3">
+                            <label class="form-label">Source link</label>
+                            <input class="form-input" id="rc-sourceurl" type="text" maxlength="500" placeholder="https://x.com/… or any proof URL">
+                            <p class="form-details-hint">Paste a post URL if you want a public link. The site does not log into X or read email—there is no automatic fill.</p>
+                        </div>
+                        <div class="form-group span-3">
+                            <label class="form-label">Notes</label>
+                            <input class="form-input" id="rc-notes" maxlength="500" placeholder="Optional notes">
+                        </div>
+                    </div>
+                </details>
 
                 <div class="form-actions">
                     <button class="btn btn-primary" id="rc-submit-btn" onclick="submitRaceCall()">Add Call</button>
@@ -397,6 +477,7 @@
     <script>
         let token = sessionStorage.getItem('admin_token') || '';
         let editingId = null;
+        let editingPrimaryParty = '';
 
         function authHeaders() {
             return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
@@ -452,10 +533,116 @@
         // Smart defaults on load
         document.getElementById('rc-date').value = new Date().toISOString().split('T')[0];
 
-        // Toggle state visibility
-        document.getElementById('rc-racetype').addEventListener('change', function() {
-            document.getElementById('rc-state-group').style.display = this.value === 'presidential' ? 'none' : '';
-        });
+        const US_STATE_SET = new Set(['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']);
+
+        function syncPresidentialStateUI() {
+            const rt = document.getElementById('rc-racetype');
+            document.getElementById('rc-state-group').style.display = rt.value === 'presidential' ? 'none' : '';
+        }
+
+        document.getElementById('rc-racetype').addEventListener('change', syncPresidentialStateUI);
+
+        function setRaceHint(msg) {
+            const el = document.getElementById('rc-race-hint');
+            el.textContent = msg || '';
+            el.style.display = msg ? 'block' : 'none';
+        }
+
+        /**
+         * Structured: XX-C-09[-DP|-RP], XX-SH-dd, XX-SD-dd (state house), XX-S-* (senate).
+         * Returns { raceType, state, isPrimary, primaryParty } or null.
+         */
+        function parseStructuredRace(race) {
+            const t = race.trim();
+            let m = t.match(/^([A-Za-z]{2})-C-(\d{1,3})(?:-(DP|RP))?(?:\s+|$)/i);
+            if (m && US_STATE_SET.has(m[1].toUpperCase())) {
+                const suf = (m[3] || '').toUpperCase();
+                return {
+                    raceType: 'house',
+                    state: m[1].toUpperCase(),
+                    isPrimary: suf === 'DP' || suf === 'RP',
+                    primaryParty: suf === 'DP' ? 'dem' : suf === 'RP' ? 'rep' : ''
+                };
+            }
+            m = t.match(/^([A-Za-z]{2})-SH-(\d+)\b(?:\s+|$)/i);
+            if (m && US_STATE_SET.has(m[1].toUpperCase())) {
+                return { raceType: 'state_house', state: m[1].toUpperCase(), isPrimary: false, primaryParty: '' };
+            }
+            m = t.match(/^([A-Za-z]{2})-SD-(\d+)\b(?:\s+|$)/i);
+            if (m && US_STATE_SET.has(m[1].toUpperCase())) {
+                return { raceType: 'state_house', state: m[1].toUpperCase(), isPrimary: false, primaryParty: '' };
+            }
+            m = t.match(/^([A-Za-z]{2})-S-([^\s-]+)(?=\s|$)/i);
+            if (m && US_STATE_SET.has(m[1].toUpperCase())) {
+                const seat = m[2];
+                if (/^(H|D|SH|SD)$/i.test(seat)) return null;
+                return { raceType: 'state_senate', state: m[1].toUpperCase(), isPrimary: false, primaryParty: '' };
+            }
+            return null;
+        }
+
+        /** Legacy + structured: SD-/SH- shorthand, structured XX-*, or XX-## congress. */
+        function inferRaceFromInput() {
+            const race = document.getElementById('rc-race').value.trim();
+            const rt = document.getElementById('rc-racetype');
+            const st = document.getElementById('rc-state');
+            const optional = document.getElementById('rc-optional-details');
+            const prim = document.getElementById('rc-isprimary');
+            setRaceHint('');
+
+            const structured = parseStructuredRace(race);
+            if (structured) {
+                rt.value = structured.raceType;
+                st.value = structured.state;
+                if (structured.isPrimary) prim.checked = true;
+                syncPresidentialStateUI();
+                optional.open = true;
+                const bits = [];
+                if (structured.raceType === 'house') bits.push('Congressional');
+                if (structured.raceType === 'state_house') bits.push('State house');
+                if (structured.raceType === 'state_senate') bits.push('State senate');
+                if (structured.primaryParty === 'dem') bits.push('Dem primary');
+                if (structured.primaryParty === 'rep') bits.push('GOP primary');
+                setRaceHint(bits.join(' · '));
+                return;
+            }
+
+            if (/^\s*SH-\d+/i.test(race) || /^\s*SH\s*$/i.test(race)) {
+                rt.value = 'state_house';
+                syncPresidentialStateUI();
+                optional.open = true;
+                if (!st.value) setRaceHint('Shorthand state house (SH-##). Choose the state.');
+                return;
+            }
+            if (/^\s*SD-\d+/i.test(race) || /^\s*SD\s*$/i.test(race)) {
+                rt.value = 'state_senate';
+                syncPresidentialStateUI();
+                optional.open = true;
+                if (!st.value) setRaceHint('Shorthand state senate (SD-## here means senate district, not the state SD). Choose the state.');
+                return;
+            }
+
+            const cd = race.match(/^\s*([A-Za-z]{2})-(\d{1,3})\b/i);
+            if (cd) {
+                const abbr = cd[1].toUpperCase();
+                if (US_STATE_SET.has(abbr) && abbr !== 'SD') {
+                    rt.value = 'house';
+                    st.value = abbr;
+                    syncPresidentialStateUI();
+                    setRaceHint('Congressional (legacy XX-##)');
+                    return;
+                }
+            }
+
+            if (!/^\s*SD-\d/i.test(race) && !/^\s*SD\s*$/i.test(race) && !/^\s*SH-\d/i.test(race) && !/^\s*SH\s*$/i.test(race)) {
+                const m = race.match(/^\s*([A-Za-z]{2})(?:[-\s]|\s*$)/);
+                if (m && US_STATE_SET.has(m[1].toUpperCase()) && !st.value) {
+                    st.value = m[1].toUpperCase();
+                }
+            }
+        }
+
+        document.getElementById('rc-race').addEventListener('input', inferRaceFromInput);
 
         // Cmd/Ctrl+Enter to submit from anywhere in the form
         document.querySelector('.form-card').addEventListener('keydown', function(e) {
@@ -488,19 +675,34 @@
             governor: 'Gov', state_senate: 'St. Senate', state_house: 'St. House', other: 'Other'
         };
 
+        const firstLabels = {
+            votehub: 'VH first', ap: 'AP first', nyt: 'NYT first', ddhq: 'DDHQ first'
+        };
+
         function getFormData() {
+            const race = document.getElementById('rc-race').value.trim();
+            const parsed = parseStructuredRace(race);
+            let isPrimary = document.getElementById('rc-isprimary').checked;
+            let primaryParty = '';
+            if (parsed && (parsed.primaryParty === 'dem' || parsed.primaryParty === 'rep')) {
+                isPrimary = true;
+                primaryParty = parsed.primaryParty;
+            } else if (editingId && (editingPrimaryParty === 'dem' || editingPrimaryParty === 'rep')) {
+                primaryParty = editingPrimaryParty;
+            }
             return {
-                race: document.getElementById('rc-race').value.trim(),
+                race,
                 raceType: document.getElementById('rc-racetype').value,
-                isPrimary: document.getElementById('rc-isprimary').checked,
+                isPrimary,
+                primaryParty,
                 state: document.getElementById('rc-state').value,
                 date: document.getElementById('rc-date').value,
                 calledFor: document.getElementById('rc-calledfor').value.trim(),
                 result: document.getElementById('rc-result').value,
                 margin: document.getElementById('rc-margin').value !== '' ? parseFloat(document.getElementById('rc-margin').value) : null,
-                firstCaller: document.getElementById('rc-vhfirst').checked ? 'votehub' : '',
-                callers: { votehub: document.getElementById('rc-vhfirst').checked, ap: false, nyt: false, ddhq: false },
-                notes: document.getElementById('rc-notes').value.trim()
+                firstCaller: document.getElementById('rc-firstcaller').value,
+                notes: document.getElementById('rc-notes').value.trim(),
+                sourceUrl: document.getElementById('rc-sourceurl').value.trim()
             };
         }
 
@@ -508,14 +710,16 @@
             document.getElementById('rc-race').value = '';
             document.getElementById('rc-racetype').value = 'house';
             document.getElementById('rc-isprimary').checked = false;
-            // Keep state from last entry (likely same election night)
             document.getElementById('rc-state-group').style.display = '';
             document.getElementById('rc-date').value = new Date().toISOString().split('T')[0];
             document.getElementById('rc-calledfor').value = '';
             document.getElementById('rc-result').value = 'pending';
             document.getElementById('rc-margin').value = '';
-            document.getElementById('rc-vhfirst').checked = true;
+            document.getElementById('rc-firstcaller').value = '';
+            document.getElementById('rc-sourceurl').value = '';
             document.getElementById('rc-notes').value = '';
+            document.getElementById('rc-optional-details').open = false;
+            setRaceHint('');
             document.getElementById('rc-race').focus();
         }
 
@@ -529,8 +733,10 @@
             const payload = {
                 race: data.race, date: new Date(data.date).toISOString(),
                 calledFor: data.calledFor, result: data.result, notes: data.notes,
-                raceType: data.raceType, isPrimary: data.isPrimary, state: data.state,
-                margin: data.margin, callers: data.callers, firstCaller: data.firstCaller
+                raceType: data.raceType, isPrimary: data.isPrimary, primaryParty: data.primaryParty || '',
+                state: data.state,
+                margin: data.margin, firstCaller: data.firstCaller,
+                sourceUrl: data.sourceUrl
             };
 
             if (editingId) {
@@ -561,6 +767,7 @@
                 const c = calls.find(x => x.id === id);
                 if (!c) return toast('Not found', true);
                 editingId = id;
+                editingPrimaryParty = (c.primaryParty === 'dem' || c.primaryParty === 'rep') ? c.primaryParty : '';
                 document.getElementById('rc-race').value = c.race || '';
                 document.getElementById('rc-racetype').value = c.raceType || 'other';
                 document.getElementById('rc-isprimary').checked = !!c.isPrimary;
@@ -570,8 +777,12 @@
                 document.getElementById('rc-calledfor').value = c.calledFor || '';
                 document.getElementById('rc-result').value = c.result || 'pending';
                 document.getElementById('rc-margin').value = c.margin != null ? c.margin : '';
-                document.getElementById('rc-vhfirst').checked = c.firstCaller === 'votehub';
+                const fc = c.firstCaller;
+                document.getElementById('rc-firstcaller').value = (fc === 'votehub' || fc === 'ap' || fc === 'nyt' || fc === 'ddhq') ? fc : '';
+                document.getElementById('rc-sourceurl').value = c.sourceUrl || '';
                 document.getElementById('rc-notes').value = c.notes || '';
+                document.getElementById('rc-optional-details').open = true;
+                inferRaceFromInput();
 
                 document.getElementById('rc-submit-btn').textContent = 'Update Call';
                 document.getElementById('rc-cancel-edit-btn').style.display = '';
@@ -582,6 +793,7 @@
 
         function cancelEdit() {
             editingId = null;
+            editingPrimaryParty = '';
             clearForm();
             document.getElementById('rc-submit-btn').textContent = 'Add Call';
             document.getElementById('rc-cancel-edit-btn').style.display = 'none';
@@ -608,15 +820,18 @@
                     const badge = c.result === 'correct' ? '\u2705' : c.result === 'incorrect' ? '\u274C' : '\u23F3';
                     const typePill = c.raceType ? '<span class="pill">' + esc(typeLabels[c.raceType] || c.raceType) + '</span>' : '';
                     const statePill = c.state ? '<span class="pill">' + esc(c.state) + '</span>' : '';
-                    const primaryPill = c.isPrimary ? '<span class="pill">Primary</span>' : '';
-                    const firstStar = (c.firstCaller === 'votehub') ? '<span class="first-star" title="VoteHub first call">\u2605</span>' : '';
+                    const primaryPill = (c.primaryParty === 'dem') ? '<span class="pill">Dem primary</span>'
+                        : (c.primaryParty === 'rep') ? '<span class="pill">GOP primary</span>'
+                        : (c.isPrimary ? '<span class="pill">Primary</span>' : '');
+                    const fc = c.firstCaller;
+                    const firstDesk = (fc && firstLabels[fc]) ? '<span class="first-desk" title="Called first">' + esc(firstLabels[fc]) + '</span>' : '';
                     const marginText = c.margin != null ? ' \u00b7 +' + c.margin + ' pts' : '';
 
                     return `<div class="rc-card">
                         <span class="rc-card-badge">${badge}</span>
                         <div class="rc-card-body">
                             <div class="rc-card-title">
-                                ${esc(c.race)}${firstStar}${typePill}${statePill}${primaryPill}
+                                ${esc(c.race)}${firstDesk}${typePill}${statePill}${primaryPill}
                             </div>
                             <div class="rc-card-meta">
                                 ${esc(c.calledFor)} \u00b7 ${fmtDate(c.date)} \u00b7 ${c.result}${marginText}${c.notes ? ' \u00b7 ' + esc(c.notes) : ''}
