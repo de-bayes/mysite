@@ -436,14 +436,11 @@
                             </label>
                         </div>
                         <div class="form-group span-3">
-                            <label class="form-label">Called first by</label>
-                            <select class="form-select" id="rc-firstcaller">
-                                <option value="" selected>Not tracking</option>
-                                <option value="votehub">VoteHub</option>
-                                <option value="ap">AP</option>
-                                <option value="nyt">NYT</option>
-                                <option value="ddhq">DDHQ</option>
-                            </select>
+                            <label class="form-check" style="align-items:flex-start">
+                                <input type="checkbox" id="rc-vh-first">
+                                <span>VoteHub called first (before AP, NYT, DDHQ)</span>
+                            </label>
+                            <p class="form-details-hint" style="margin-top:0.35rem;margin-bottom:0">Only add races you were assigned to call. Check when VoteHub called this race before AP, NYT, and DDHQ; leave unchecked otherwise (no need to log desk order on every assignment).</p>
                         </div>
                         <div class="form-group span-3">
                             <label class="form-label">Source link</label>
@@ -676,7 +673,7 @@
         };
 
         const firstLabels = {
-            votehub: 'VH first', ap: 'AP first', nyt: 'NYT first', ddhq: 'DDHQ first'
+            votehub: 'VH called first', ap: 'AP first', nyt: 'NYT first', ddhq: 'DDHQ first'
         };
 
         function getFormData() {
@@ -700,7 +697,7 @@
                 calledFor: document.getElementById('rc-calledfor').value.trim(),
                 result: document.getElementById('rc-result').value,
                 margin: document.getElementById('rc-margin').value !== '' ? parseFloat(document.getElementById('rc-margin').value) : null,
-                firstCaller: document.getElementById('rc-firstcaller').value,
+                firstCaller: document.getElementById('rc-vh-first').checked ? 'votehub' : '',
                 notes: document.getElementById('rc-notes').value.trim(),
                 sourceUrl: document.getElementById('rc-sourceurl').value.trim()
             };
@@ -715,7 +712,7 @@
             document.getElementById('rc-calledfor').value = '';
             document.getElementById('rc-result').value = 'pending';
             document.getElementById('rc-margin').value = '';
-            document.getElementById('rc-firstcaller').value = '';
+            document.getElementById('rc-vh-first').checked = false;
             document.getElementById('rc-sourceurl').value = '';
             document.getElementById('rc-notes').value = '';
             document.getElementById('rc-optional-details').open = false;
@@ -777,8 +774,7 @@
                 document.getElementById('rc-calledfor').value = c.calledFor || '';
                 document.getElementById('rc-result').value = c.result || 'pending';
                 document.getElementById('rc-margin').value = c.margin != null ? c.margin : '';
-                const fc = c.firstCaller;
-                document.getElementById('rc-firstcaller').value = (fc === 'votehub' || fc === 'ap' || fc === 'nyt' || fc === 'ddhq') ? fc : '';
+                document.getElementById('rc-vh-first').checked = c.firstCaller === 'votehub';
                 document.getElementById('rc-sourceurl').value = c.sourceUrl || '';
                 document.getElementById('rc-notes').value = c.notes || '';
                 document.getElementById('rc-optional-details').open = true;
@@ -824,7 +820,7 @@
                         : (c.primaryParty === 'rep') ? '<span class="pill">GOP primary</span>'
                         : (c.isPrimary ? '<span class="pill">Primary</span>' : '');
                     const fc = c.firstCaller;
-                    const firstDesk = (fc && firstLabels[fc]) ? '<span class="first-desk" title="Called first">' + esc(firstLabels[fc]) + '</span>' : '';
+                    const firstDesk = (fc && firstLabels[fc]) ? '<span class="first-desk" title="Among major decision desks: who called the race first">' + esc(firstLabels[fc]) + '</span>' : '';
                     const marginText = c.margin != null ? ' \u00b7 +' + c.margin + ' pts' : '';
 
                     return `<div class="rc-card">
