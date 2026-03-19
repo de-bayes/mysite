@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Race Calls — Ryan McComb</title>
-  <meta name="description" content="Ryan McComb's election race call record — tracking predictions and accuracy.">
+  <meta name="description" content="Ryan McComb's assigned race calls at VoteHub's decision desk: accuracy on the subset of races I call, not the full organization slate.">
   <link rel="canonical" href="https://ryanjmccomb.com/racecalls">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
   <link rel="icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta property="og:title" content="Race Calls — Ryan McComb">
-  <meta property="og:description" content="Election race call record — tracking predictions and accuracy.">
+  <meta property="og:description" content="Assigned race calls at VoteHub's decision desk: the subset of races I call, with accuracy tracking.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ryanjmccomb.com/racecalls">
   <meta property="og:image" content="https://ryanjmccomb.com/portrait.jpg">
@@ -31,7 +31,7 @@
         <div class="page-hero-text">
           <span class="about-label">Decision Desk</span>
           <h1 class="racecalls-title">Race Call<br>Record</h1>
-          <p class="racecalls-subtitle">Tracking my election race calls from VoteHub's decision desk.</p>
+          <p class="racecalls-subtitle">Race calls for elections I was assigned at VoteHub's decision desk. The organization projects many races; I only call a share of them, and this page is the subset I keep here.</p>
         </div>
         <div class="page-hero-photo">
           <img src="portrait-press.jpg" alt="Ryan McComb being interviewed" width="1024" height="768" loading="eager">
@@ -69,7 +69,7 @@
           <span class="rc-stat-divider rc-first-stat-divider" id="rc-first-divider" hidden></span>
           <div class="rc-stat-item rc-first-stat-item" id="rc-first-wrap" hidden>
             <span class="rc-stat-item-value rc-stat-first" id="rc-first-pct">&mdash;</span>
-            <span class="rc-stat-item-label">Called First*</span>
+            <span class="rc-stat-item-label">VH called first*</span>
           </div>
         </div>
       </div>
@@ -101,7 +101,8 @@
       </div>
 
       <div class="rc-footnote" id="rc-footnote">
-        <p id="rc-footnote-line">*Major decision desks: AP, NYT, VoteHub, DDHQ. “Called first” appears when you track it on a call.</p>
+        <p>Counts and accuracy apply only to races I was assigned to call at VoteHub. They are not a census of every race the desk projects.</p>
+        <p id="rc-footnote-line">*Among decided calls in this list (correct or incorrect): the share where I recorded that VoteHub called the race before AP, NYT, and DDHQ. Unmarked rows are not counted as &ldquo;VoteHub was not first.&rdquo;</p>
       </div>
 
     </div>
@@ -116,10 +117,10 @@
       var allCalls = [];
       var currentFilter = 'all';
       var currentTypeFilter = 'all';
-      var MIN_FIRST_CALLER_SAMPLES = 3;
+      var MIN_DECIDED_FOR_VH_STAT = 3;
 
       var firstCallerLabels = {
-        votehub: 'VoteHub first',
+        votehub: 'VH called first',
         ap: 'AP first',
         nyt: 'NYT first',
         ddhq: 'DDHQ first'
@@ -155,10 +156,9 @@
         var decided = correct + incorrect;
         var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
 
-        // Called first: % of decided races where VoteHub was first caller
-        var withFirstCaller = calls.filter(function(c) { return c.firstCaller; });
-        var vhFirst = withFirstCaller.filter(function(c) { return c.firstCaller === 'votehub'; }).length;
-        var firstPct = withFirstCaller.length > 0 ? Math.round((vhFirst / withFirstCaller.length) * 100) : 0;
+        // % of decided assigned calls where VoteHub called before AP, NYT, DDHQ (admin checkbox)
+        var vhFirst = calls.filter(function(c) { return c.firstCaller === 'votehub'; }).length;
+        var firstPct = decided > 0 ? Math.round((vhFirst / decided) * 100) : 0;
 
         document.getElementById('rc-correct').textContent = correct;
         document.getElementById('rc-pending').textContent = pending;
@@ -168,7 +168,7 @@
 
         var firstWrap = document.getElementById('rc-first-wrap');
         var firstDivider = document.getElementById('rc-first-divider');
-        if (withFirstCaller.length >= MIN_FIRST_CALLER_SAMPLES) {
+        if (decided >= MIN_DECIDED_FOR_VH_STAT) {
           firstWrap.hidden = false;
           firstDivider.hidden = false;
           document.getElementById('rc-first-pct').textContent = firstPct + '%';
