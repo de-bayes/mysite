@@ -149,13 +149,19 @@ document.addEventListener('DOMContentLoaded', () => {
   bindCardClicks();
 
 
+  function parseCardDate(str) {
+    if (!str) return new Date(0);
+    if (/^\d{4}-\d{2}$/.test(str)) str = str + '-01';
+    return new Date(str);
+  }
+
   function sortCardsNewest() {
     const outlines = Array.from(grid.querySelectorAll('.writing-card-outline'));
     outlines.sort((a, b) => {
       const cardA = a.querySelector('.writing-card');
       const cardB = b.querySelector('.writing-card');
-      const da = new Date(cardA.dataset.date);
-      const db = new Date(cardB.dataset.date);
+      const da = parseCardDate(cardA.dataset.date);
+      const db = parseCardDate(cardB.dataset.date);
       return db - da;
     });
     outlines.forEach(outline => grid.appendChild(outline));
