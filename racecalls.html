@@ -229,6 +229,9 @@
         var empty = document.getElementById('rc-empty');
         var footnote = document.getElementById('rc-footnote');
 
+        renderStats(filtered);
+        renderTypeBreakdown(filtered);
+
         if (!filtered.length) {
           list.innerHTML = '';
           empty.style.display = 'block';
@@ -361,8 +364,6 @@
         .then(function(r) { return r.json(); })
         .then(function(calls) {
           allCalls = calls;
-          renderStats(calls);
-          renderTypeBreakdown(calls);
           renderList(calls);
         });
     })();
