@@ -567,7 +567,7 @@
             }
             m = t.match(/^([A-Za-z]{2})-SD-(\d+)\b(?:\s+|$)/i);
             if (m && US_STATE_SET.has(m[1].toUpperCase())) {
-                return { raceType: 'state_house', state: m[1].toUpperCase(), isPrimary: false, primaryParty: '' };
+                return { raceType: 'state_senate', state: m[1].toUpperCase(), isPrimary: false, primaryParty: '' };
             }
             m = t.match(/^([A-Za-z]{2})-S-([^\s-]+)(?=\s|$)/i);
             if (m && US_STATE_SET.has(m[1].toUpperCase())) {

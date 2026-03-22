@@ -39,34 +39,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Education section stats counter
-  const statEls = document.querySelectorAll('[data-count]');
-  if (statEls.length) {
-    const statObserver = new IntersectionObserver((items) => {
-      items.forEach(item => {
-        if (item.isIntersecting) {
-          animateCount(item.target);
-          statObserver.unobserve(item.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    statEls.forEach(el => statObserver.observe(el));
-  }
-
-  function animateCount(el) {
-    const target = parseFloat(el.dataset.count);
-    const decimals = (target % 1 !== 0) ? 2 : 0;
-    const duration = 1200;
-    const start = performance.now();
-
-    function step(now) {
-      const t = Math.min((now - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - t, 3); // ease-out cubic
-      const val = (target * ease).toFixed(decimals);
-      el.textContent = val;
-      if (t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
 });
+// [data-count] animation is handled by effects.js to avoid duplicate observers

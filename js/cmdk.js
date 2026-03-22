@@ -504,7 +504,8 @@
     });
 
     // --- "Press ⌘K to search" hint (inside nav bar) ---
-    var isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+    var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent;
+    var isMac = /Mac|iPhone|iPad|iPod/i.test(platform);
     var shortcut = isMac ? '\u2318K' : 'Ctrl+K';
     hint = document.createElement('button');
     hint.className = 'cmdk-hint';
