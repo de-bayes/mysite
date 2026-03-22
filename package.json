@@ -15,6 +15,7 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "dotenv": "^17.3.1",
     "jimp": "^1.6.0"
   }
 }
