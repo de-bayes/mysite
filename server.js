@@ -30,8 +30,8 @@ if (!fs.existsSync(RACECALLS_FILE)) {
         isPrimary: true,
         state: 'IL',
         margin: null,
-        callers: { votehub: true, ap: false, nyt: false, ddhq: false },
-        firstCaller: 'votehub',
+        callers: { votehub: false, ap: true, nyt: true, ddhq: true },
+        firstCaller: 'ap',
         sourceUrl: '',
         primaryParty: '',
         created: '2026-03-17T00:00:00.000Z'
@@ -250,6 +250,13 @@ app.delete('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
     if (filtered.length === calls.length) return res.status(404).json({ error: 'Not found' });
     writeJSON(RACECALLS_FILE, filtered);
     return res.json({ ok: true });
+});
+
+const BLOCKED_FILES = new Set(['server.js', 'package.json', 'package-lock.json', 'resume.md', 'style.md', '.env']);
+app.use((req, res, next) => {
+    const base = req.path.replace(/^\//, '').split('/')[0];
+    if (BLOCKED_FILES.has(base) || base.startsWith('.')) return res.status(404).sendFile(path.join(__dirname, '404.html'));
+    next();
 });
 
 app.use(express.static(__dirname, { extensions: ['html'] }));
