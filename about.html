@@ -131,7 +131,8 @@
         if (decided > 0) {
           document.getElementById('rc-about-pct').textContent = pct + '% accuracy';
         }
-      });
+      })
+      .catch(function() {});
   </script>
   <script>
     document.querySelectorAll('[data-copy]').forEach(el => {
@@ -144,6 +145,8 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 1500);
           }
+        }).catch(() => {
+          window.location.href = 'mailto:' + text;
         });
       });
     });

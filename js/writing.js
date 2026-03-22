@@ -164,7 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyFilters() {
     const activeTab = document.querySelector('.filter-tab.active');
     const category = (activeTab && activeTab.dataset.category) ? activeTab.dataset.category : 'all';
-    const tag = tagSelect && tagSelect.value ? tagSelect.value : 'all';
+    const currentTagSelect = document.getElementById('tag-filter');
+    const tag = currentTagSelect && currentTagSelect.value ? currentTagSelect.value : 'all';
 
     document.querySelectorAll('.writing-card-outline').forEach(outline => {
       const card = outline.querySelector('.writing-card');
@@ -204,8 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
     outlines.sort((a, b) => {
       const cardA = a.querySelector('.writing-card');
       const cardB = b.querySelector('.writing-card');
-      const da = parseCardDate(cardA.dataset.date);
-      const db = parseCardDate(cardB.dataset.date);
+      const da = parseCardDate(cardA && cardA.dataset.date);
+      const db = parseCardDate(cardB && cardB.dataset.date);
       return db - da;
     });
     outlines.forEach(outline => grid.appendChild(outline));
@@ -269,9 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(progressBar);
 
     progressHandler = () => {
-      const article = document.querySelector('.article-view');
-      if (!article) return;
-      const scrollable = article.offsetHeight - window.innerHeight;
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       if (scrollable <= 0) { progressBar.style.width = '100%'; return; }
       const pct = Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100));
       progressBar.style.width = pct + '%';
