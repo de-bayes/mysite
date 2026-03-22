@@ -229,7 +229,7 @@
         var empty = document.getElementById('rc-empty');
         var footnote = document.getElementById('rc-footnote');
 
-        renderStats(filtered);
+        renderStats(calls);
         renderTypeBreakdown(filtered);
 
         if (!filtered.length) {
@@ -365,6 +365,10 @@
         .then(function(calls) {
           allCalls = calls;
           renderList(calls);
+        })
+        .catch(function() {
+          document.getElementById('rc-list').innerHTML = '<p style="color:var(--text-muted);padding:2rem 0">Could not load race calls. Try refreshing.</p>';
+          document.getElementById('rc-empty').style.display = 'none';
         });
     })();
   </script>

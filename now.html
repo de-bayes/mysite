@@ -139,7 +139,8 @@
           if (decided > 0) {
             document.getElementById('rc-now-pct').textContent = pct + '% accuracy';
           }
-        });
+        })
+        .catch(function() {});
     })();
   </script>
   <script src="js/nav.js"></script>

@@ -85,6 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
         setMenuOpen(false);
       });
     });
+
+    document.addEventListener('click', (e) => {
+      if (links.classList.contains('open') && !nav.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    });
   }
 
   // Scroll shadow on nav
