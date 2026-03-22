@@ -491,13 +491,81 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 .site-footer {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 3rem 3rem;
+  padding: 3rem 3rem 2.5rem;
   margin-top: 4rem;
   border-top: 1px solid var(--border);
   color: var(--text-muted);
-  font-size: 0.78rem;
-  text-align: center;
-  letter-spacing: 0.02em;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  margin-bottom: 0.35rem;
+}
+
+.footer-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-meta a {
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-meta a:hover {
+  color: var(--text);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.footer-links a {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--text);
+}
+
+.footer-copy {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.5rem;
+}
+
+@media (max-width: 560px) {
+  .footer-inner {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .footer-links {
+    justify-content: flex-start;
+    gap: 1.25rem;
+  }
 }
 
 /* ========================================
@@ -822,6 +890,8 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .writing-card-outline {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .writing-card-outline::before {
@@ -850,6 +920,9 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   padding: 2rem;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .writing-card-outline:hover .writing-card {
@@ -876,6 +949,8 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   display: flex;
   gap: 1rem;
   align-items: center;
+  margin-top: auto;
+  padding-top: 1rem;
 }
 
 .writing-card.press-card .excerpt {

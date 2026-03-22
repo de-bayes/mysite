@@ -1,5 +1,49 @@
 // Full essay content
 const articles = {
+  'il9cast-postmortem': {
+    title: "IL9Cast Post-Mortem: What We Got Right, and What the Markets Saw First",
+    date: 'March 22, 2026',
+    readTime: '5 min read',
+    body: `
+      <p>The IL-9 Democratic primary is over. Daniel Biss won. And on most of the numbers that mattered, IL9Cast got it right.</p>
+
+      <p>That's the short version. The longer version is more interesting, because the two separate models I ran told different stories at different points in the campaign, and looking at how each one performed is the most instructive thing I can take away from the whole project.</p>
+
+      <h2>What IL9Cast Was</h2>
+
+      <p>IL9Cast was a forecasting site for the Illinois 9th Congressional District Democratic primary, which took place on March 17, 2026. The district, anchored in Evanston and the North Shore, was an open seat after Jan Schakowsky's retirement, and it drew a crowded field of 16 candidates. I built and published two completely separate models: one based purely on prediction market probabilities (primarily Kalshi and Manifold), and one based purely on fundamentals (fundraising, endorsements, structural factors). They never fed into each other. The site updated daily and showed each model's probability estimates side by side.</p>
+
+      <p>I launched in January 2026, roughly two months out from election day. By then Biss, Kat Abughazaleh, and Laura Fine had separated themselves from the rest of the field on fundraising. The prediction markets were thin but present. Polls were sparse.</p>
+
+      <h2>The Fundamentals Model</h2>
+
+      <p>The fundamentals model was built entirely on fundraising totals, endorsement weight, and structural factors like name recognition and prior electoral history. It forecast vote shares for the top three candidates within a percentage point of the final results for the winner, and was close across the board for the top three. Biss finished at 29.5%, Abughazaleh at 25.9%, Fine at 20.2%. That's a level of accuracy I'm genuinely proud of, especially given how little reliable polling there was to work with in a low-salience primary.</p>
+
+      <p>What it captured well was Biss's structural dominance: the endorsement from Schakowsky herself, the fundraising lead, the name recognition from his prior statewide runs. In a primary electorate that skews toward party-engaged voters, those factors matter enormously, and the model reflected that from early on.</p>
+
+      <p>Where it was less reliable was in accounting for late momentum. Fundamentals models are by nature backward-looking. They're better at telling you where a race has been than where it's going in the final stretch.</p>
+
+      <h2>The Prediction Markets Model</h2>
+
+      <p>The markets model ran completely independently, ingesting raw contract prices from Kalshi and Manifold and converting them to probability estimates daily. It told a more dynamic story. In the weeks before March 17th, it showed Biss consolidating support, with his probability climbing steadily and peaking above 80% in the hours just before polls closed. That late-breaking signal reflected something real: voters making up their minds, undecideds breaking toward the frontrunner, the classic late consolidation pattern in primaries with one established candidate.</p>
+
+      <p>The markets caught the momentum that the fundamentals model couldn't see. Each one had something the other lacked: fundamentals gave you the structural baseline, markets gave you the live pulse. Running them separately made the contrast legible in a way that combining them would have obscured.</p>
+
+      <h2>What I'd Do Differently</h2>
+
+      <p>A few things stand out in retrospect. First, liquidity. Prediction markets for a congressional primary in a single Illinois district are thin. On some days, total open interest on the key contracts was low enough that a small number of traders could move prices meaningfully. I tried to account for this with a liquidity-weighting function in the markets model, but in a future version I'd want to be more aggressive about discounting low-volume days, and building in a credibility interval that widens as liquidity drops.</p>
+
+      <p>Second, the polling gap. There were stretches of the campaign where we had almost no polling to work with. In a primary with a more robust polling environment, both models would have had better calibration inputs, and the uncertainty bands would have been more meaningful. Finding ways to incorporate quasi-polling signals (social media engagement, search volume, canvassing data) could partially fill that gap in future low-poll environments.</p>
+
+      <p>Third, and most honestly: I underestimated how much the Schakowsky endorsement of Biss would move late-deciding voters. It was in the fundamentals model, but its marginal impact in the final two weeks was larger than I'd weighted. That's a calibration issue worth revisiting.</p>
+
+      <h2>An Election Worth Remembering</h2>
+
+      <p>Beyond the numbers, this was just a genuinely interesting race to cover. A competitive, high-quality field in a district that cares deeply about governance, in a cycle where the national stakes felt unusually high. The Evanstonian coverage, the VoteHub briefings, the FOIAgras guest post, the Capitol Fax citations, all of it was a reminder that local forecasting, done carefully, has an audience.</p>
+
+      <p>IL9Cast was a proof of concept. The model worked. The next version will be better.</p>
+    `
+  },
   'peoples-edict': {
     title: "People's Edict",
     date: 'May 23, 2025',
