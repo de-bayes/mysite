@@ -101,17 +101,6 @@
 
       </div>
 
-      <!-- Recent Tweets -->
-      <section class="now-tweets">
-        <span class="about-label">Recent Posts</span>
-        <div class="tweet-list" id="tweet-list">
-          <div class="tweet-skeleton"></div>
-          <div class="tweet-skeleton"></div>
-          <div class="tweet-skeleton"></div>
-        </div>
-        <a href="https://x.com/de_bayes" class="tweet-see-all" target="_blank" rel="noopener noreferrer">All posts on X &rarr;</a>
-      </section>
-
       <!-- Race Call Preview -->
       <div style="margin-bottom:4rem">
         <a href="/racecalls" class="rc-preview" id="rc-preview-now">
@@ -135,46 +124,6 @@
   <footer class="site-footer">
     &copy; 2026 Ryan McComb &middot; Evanston, IL &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a>
   </footer>
-
-  <script>
-    (function() {
-      function escapeHtml(s) {
-        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-      }
-      function relativeTime(iso) {
-        var ms = Date.now() - new Date(iso).getTime();
-        if (ms < 3600000)   return Math.max(1, Math.floor(ms / 60000)) + 'm ago';
-        if (ms < 86400000)  return Math.floor(ms / 3600000) + 'h ago';
-        if (ms < 604800000) return Math.floor(ms / 86400000) + 'd ago';
-        return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      }
-      fetch('/api/tweets')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          var list = document.getElementById('tweet-list');
-          if (!data.data || !data.data.length) {
-            list.innerHTML = '<p class="tweet-empty">No recent posts found.</p>';
-            return;
-          }
-          list.innerHTML = data.data.map(function(t) {
-            var text = escapeHtml(t.text.replace(/https?:\/\/\S+/g, '').trim());
-            var m = t.public_metrics || {};
-            var likes = m.like_count || 0;
-            var rts   = m.retweet_count || 0;
-            var stats = '';
-            if (likes) stats += '<span class="tweet-stat"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' + likes + '</span>';
-            if (rts)   stats += '<span class="tweet-stat"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>' + rts + '</span>';
-            return '<a class="tweet-card" href="https://x.com/de_bayes/status/' + t.id + '" target="_blank" rel="noopener noreferrer">'
-              + '<p class="tweet-text">' + text + '</p>'
-              + '<div class="tweet-meta"><span class="tweet-time">' + relativeTime(t.created_at) + '</span>' + stats + '</div>'
-              + '</a>';
-          }).join('');
-        })
-        .catch(function() {
-          document.getElementById('tweet-list').innerHTML = '<p class="tweet-empty">Could not load posts.</p>';
-        });
-    })();
-  </script>
 
   <script>
     (function() {
