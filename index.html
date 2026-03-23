@@ -40,12 +40,13 @@
 
     <script>
       (function() {
-        var paintings = [
+        var heroImages = [
           { src: "SK-A-1892.webp", alt: "La Corniche near Monaco by Claude Monet, 1884", cite: 'Claude Monet -- <em>La Corniche near Monaco</em>, 1884' },
           { src: "SK-A-5003.webp", alt: "The Bend in the Herengracht by Gerrit Berckheyde, c. 1672", cite: 'Gerrit Berckheyde -- <em>The Bend in the Herengracht</em>, c. 1672' },
-          { src: "SK-C-165.webp", alt: "Winter Landscape by Barend Cornelis Koekkoek, 1835", cite: 'Barend Cornelis Koekkoek -- <em>Winter Landscape</em>, 1835' }
+          { src: "SK-C-165.webp", alt: "Winter Landscape by Barend Cornelis Koekkoek, 1835", cite: 'Barend Cornelis Koekkoek -- <em>Winter Landscape</em>, 1835' },
+          { src: "IMG_0134.png", alt: "Coastal path in Monterey, California photographed by Ryan McComb in 2025 on a Canon R8", cite: 'Ryan McComb -- Monterey, California, 2025 <em>(Canon R8)</em>' }
         ];
-        var pick = paintings[Math.floor(Math.random() * paintings.length)];
+        var pick = heroImages[Math.floor(Math.random() * heroImages.length)];
         document.getElementById("hero-img").src = pick.src;
         document.getElementById("hero-img").alt = pick.alt;
         document.getElementById("hero-cite").innerHTML = pick.cite;
