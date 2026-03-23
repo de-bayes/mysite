@@ -841,11 +841,18 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   margin-bottom: -1px;
 }
 
+.filter-selects {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
 .tag-filter-wrap {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-left: auto;
 }
 
 .tag-filter-label {
@@ -1875,6 +1882,10 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   }
 
   .filter-tabs { gap: 1rem; overflow-x: auto; }
+  .filter-selects {
+    width: 100%;
+    margin-left: 0;
+  }
 
   .cmdk-hint { display: none; }
 }
