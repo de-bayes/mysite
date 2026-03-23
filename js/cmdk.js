@@ -10,7 +10,6 @@
     { type: 'Pages', title: 'Writing', desc: 'Essays and articles', url: '/writing', keys: 'blog' },
     { type: 'Pages', title: 'Press', desc: 'Press coverage and features', url: '/press', keys: 'media news' },
     { type: 'Pages', title: 'Race Calls', desc: 'Election race call record and accuracy', url: '/racecalls', keys: 'decision desk predictions' },
-    { type: 'Pages', title: 'Resume', desc: 'Resume', url: '/resume', keys: 'cv' },
 
     // Articles
     { type: 'Articles', title: 'People\'s Edict', desc: 'An essay on power, strife, and the arc of democratic governance', url: '/writing', keys: 'essays' },
