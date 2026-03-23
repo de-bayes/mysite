@@ -1,20 +1,78 @@
 (function () {
   'use strict';
 
+  var DEFAULT_NAV_LINKS = [
+    { href: '/about', label: 'About', desc: 'About Ryan McComb', keys: '' },
+    { href: '/experience', label: 'Experience', desc: 'Professional experience and education', keys: 'timeline resume work' },
+    { href: '/writing', label: 'Writing', desc: 'Essays and articles', keys: 'blog' },
+    { href: '/press', label: 'Press', desc: 'Press coverage and features', keys: 'media news' },
+    { href: '/now', label: 'Now', desc: "What I'm up to right now", keys: '' },
+    { href: '/resume', label: 'Resume', desc: 'Printable resume and CV', keys: 'cv pdf' },
+    { href: '/racecalls', label: 'Race Calls', desc: 'Election race call record and accuracy', keys: 'decision desk predictions' }
+  ];
+  var DEFAULT_HOSTED_ESSAYS = [
+    {
+      slug: 'il9cast-postmortem',
+      title: 'IL9Cast Post-Mortem: What We Got Right, and What the Markets Saw First',
+      desc: "A look back at the IL-9 forecast: where the fundamentals model landed, what the prediction markets saw first, and what I'd do differently.",
+      url: '/writing/il9cast-postmortem/',
+      keys: 'essays elections forecasting il9cast'
+    },
+    {
+      slug: 'peoples-edict',
+      title: "People's Edict",
+      desc: 'An essay on power, strife, and the arc of democratic governance in the modern era.',
+      url: '/writing/peoples-edict/',
+      keys: 'essays power governance'
+    },
+    {
+      slug: 'median-voter-theory',
+      title: "The Conflation Between Median Voter Theory and Trump's Win",
+      desc: 'How the Trump campaign used an obscure political science concept to move the electorate.',
+      url: '/writing/median-voter-theory/',
+      keys: 'essays elections median voter theory'
+    },
+    {
+      slug: 'nsa-surveillance',
+      title: 'Resolution on State Interception of Communications',
+      desc: 'NSA surveillance and unconstitutional censorship.',
+      url: '/writing/nsa-surveillance/',
+      keys: 'essays nsa surveillance privacy'
+    }
+  ];
+  var siteData = window.SITE_DATA || {};
+  var navLinks = Array.isArray(siteData.navLinks) && siteData.navLinks.length ? siteData.navLinks : DEFAULT_NAV_LINKS;
+  var hostedEssays = Array.isArray(siteData.hostedEssays) && siteData.hostedEssays.length ? siteData.hostedEssays : DEFAULT_HOSTED_ESSAYS;
+  var pageEntries = [
+    { type: 'Pages', title: 'Home', desc: 'Design, data, and forecasting', url: '/', keys: '' }
+  ];
+
+  for (var n = 0; n < navLinks.length; n++) {
+    pageEntries.push({
+      type: 'Pages',
+      title: navLinks[n].label,
+      desc: navLinks[n].desc || '',
+      url: navLinks[n].href,
+      keys: navLinks[n].keys || ''
+    });
+  }
+
+  var hostedEssayEntries = hostedEssays.map(function (essay) {
+    return {
+      type: 'Articles',
+      title: essay.title,
+      desc: essay.desc,
+      url: essay.url,
+      keys: essay.keys || 'essays'
+    };
+  });
+
   var INDEX = [
     // Pages
-    { type: 'Pages', title: 'Home', desc: 'Design, data, and forecasting', url: '/', keys: '' },
-    { type: 'Pages', title: 'About', desc: 'About Ryan McComb', url: '/about', keys: '' },
-    { type: 'Pages', title: 'Now', desc: 'What I\'m up to right now', url: '/now', keys: '' },
-    { type: 'Pages', title: 'Experience', desc: 'Professional experience and education', url: '/experience', keys: 'timeline resume work' },
-    { type: 'Pages', title: 'Writing', desc: 'Essays and articles', url: '/writing', keys: 'blog' },
-    { type: 'Pages', title: 'Press', desc: 'Press coverage and features', url: '/press', keys: 'media news' },
-    { type: 'Pages', title: 'Race Calls', desc: 'Election race call record and accuracy', url: '/racecalls', keys: 'decision desk predictions' },
+    ...pageEntries,
 
     // Articles
-    { type: 'Articles', title: 'People\'s Edict', desc: 'An essay on power, strife, and the arc of democratic governance', url: '/writing', keys: 'essays' },
-    { type: 'Articles', title: 'The Conflation Between Median Voter Theory and Trump\'s Win', desc: 'How the Trump Campaign used an obscure political science concept', url: '/writing', keys: 'essays elections' },
-    { type: 'Articles', title: 'Resolution on State Interception of Communications', desc: 'NSA surveillance and unconstitutional censorship', url: '/writing', keys: 'essays nsa' },
+    ...hostedEssayEntries,
     { type: 'Articles', title: 'March 17th Preview: Illinois Primary', desc: 'VoteHub', url: 'https://votehub.com/2026/03/17/march-17th-preview-illinois-primary/', keys: 'elections illinois primary' },
     { type: 'Articles', title: 'Guest Post: ETHS Student on the IL-9 Election', desc: 'FOIAgras', url: 'https://foiagras.com/p/il9-org-guest-post', keys: 'elections il9 prediction markets' },
     { type: 'Articles', title: 'ETHS Students Reflect on Casting First Ballots', desc: 'The Daily Northwestern', url: 'https://dailynorthwestern.com/2026/03/11/top-stories/eths-students-reflect-on-casting-first-ballots-in-congressional-primary/', keys: 'elections voting' },
