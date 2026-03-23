@@ -27,7 +27,8 @@ Open `http://localhost:3000/` — extensionless URLs work (e.g. `/about`) becaus
 | `/about` | `about.html` | Bio, contact grid (email copy, GitHub, LinkedIn, X/Twitter, Manifold), race-call preview |
 | `/experience` | `experience.html` | Work and projects |
 | `/resume` | `resume.html` | Printable resume layout |
-| `/writing` | `writing.html` | Writing index; full essay HTML lives in [`js/writing.js`](js/writing.js) |
+| `/writing` | `writing.html` | Writing index |
+| `/writing/:slug` | `writing/*.html` | Hosted essay pages with shareable, indexable URLs |
 | `/press` | `press.html` | Press coverage |
 | `/now` | `now.html` | “Now” page |
 | `/racecalls` | `racecalls.html` | Public race-call record; reads `GET /api/racecalls` |
@@ -36,7 +37,7 @@ Open `http://localhost:3000/` — extensionless URLs work (e.g. `/about`) becaus
 
 Shared UI: [`style.css`](style.css), [`js/nav.js`](js/nav.js) (site nav, mobile menu, hash scroll), [`js/animations.js`](js/animations.js), [`js/effects.js`](js/effects.js), [`js/cmdk.js`](js/cmdk.js) (⌘K / Ctrl+K command palette).
 
-Other JS: [`js/timeline.js`](js/timeline.js) (experience timeline, if used on that page), [`js/writing.js`](js/writing.js).
+Other JS: [`js/timeline.js`](js/timeline.js) (experience timeline, if used on that page), [`js/writing.js`](js/writing.js), [`js/article.js`](js/article.js), [`js/site-data.js`](js/site-data.js).
 
 Assets include `favicon.ico`, `apple-touch-icon.png`, `portrait.jpg` (and responsive variants), hero art (`SK-A-1892.webp`), etc.
 
@@ -113,7 +114,7 @@ Editorial rules for copy (including **no em dashes**) are in [`style.md`](style.
 
 ## Dependencies
 
-From [`package.json`](package.json): **express**, **express-rate-limit**, **helmet**, **multer** (declared; not wired in `server.js` at present). Requires **Node ≥ 18**.
+From [`package.json`](package.json): **express**, **express-rate-limit**, **helmet**. Requires **Node ≥ 18**.
 
 ---
 
