@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="nav-links" id="nav-menu" role="navigation" aria-label="Site">
       <a href="/about">About</a>
       <a href="/experience">Experience</a>
-      <a href="/resume">Resume</a>
       <a href="/writing">Writing</a>
       <a href="/press">Press</a>
       <a href="/now">Now</a>
