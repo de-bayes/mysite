@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('writing-grid');
   const filterTabs = document.querySelectorAll('.filter-tab');
   const tagSelect = document.getElementById('tag-filter');
+  const publicationSelect = document.getElementById('publication-filter');
   if (!grid || !filterTabs.length) return;
 
   // Sort cards newest-first on load
@@ -160,21 +161,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Count items per category and update tab labels
   updateFilterCounts();
+  populatePublicationOptions();
 
   function applyFilters() {
     const activeTab = document.querySelector('.filter-tab.active');
     const category = (activeTab && activeTab.dataset.category) ? activeTab.dataset.category : 'all';
     const currentTagSelect = document.getElementById('tag-filter');
+    const currentPublicationSelect = document.getElementById('publication-filter');
     const tag = currentTagSelect && currentTagSelect.value ? currentTagSelect.value : 'all';
+    const publication = currentPublicationSelect && currentPublicationSelect.value ? currentPublicationSelect.value : 'all';
 
     document.querySelectorAll('.writing-card-outline').forEach(outline => {
       const card = outline.querySelector('.writing-card');
       if (!card) return;
       const cardCategory = (card.dataset.category || '').trim();
       const cardTags = (card.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+      const cardPublication = (card.dataset.publication || '').trim();
       const categoryMatch = category === 'all' || cardCategory === category;
       const tagMatch = tag === 'all' || cardTags.includes(tag);
-      outline.style.display = categoryMatch && tagMatch ? '' : 'none';
+      const publicationMatch = publication === 'all' || cardPublication === publication;
+      outline.style.display = categoryMatch && tagMatch && publicationMatch ? '' : 'none';
     });
   }
 
@@ -188,6 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (tagSelect) {
     tagSelect.addEventListener('change', applyFilters);
+  }
+
+  if (publicationSelect) {
+    publicationSelect.addEventListener('change', applyFilters);
   }
 
   // Bind click handlers on static cards
@@ -227,6 +237,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const count = categoryCounts[category] ?? 0;
       tab.textContent = `${label} (${count})`;
     });
+  }
+
+  function populatePublicationOptions() {
+    const select = document.getElementById('publication-filter');
+    if (!select) return;
+
+    const currentValue = select.value || 'all';
+    const publications = Array.from(document.querySelectorAll('.writing-card'))
+      .map(card => (card.dataset.publication || '').trim())
+      .filter(Boolean);
+
+    const uniquePublications = Array.from(new Set(publications)).sort((a, b) => {
+      if (a === 'Personal Site') return -1;
+      if (b === 'Personal Site') return 1;
+      return a.localeCompare(b);
+    });
+
+    select.innerHTML = '<option value="all">All publications</option>';
+    uniquePublications.forEach(publication => {
+      const option = document.createElement('option');
+      option.value = publication;
+      option.textContent = publication;
+      select.appendChild(option);
+    });
+
+    select.value = uniquePublications.includes(currentValue) ? currentValue : 'all';
   }
 
   function bindCardClicks() {
@@ -341,6 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function rebindEvents() {
     const tabs = document.querySelectorAll('.filter-tab');
     const tagSelectEl = document.getElementById('tag-filter');
+    const publicationSelectEl = document.getElementById('publication-filter');
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.classList.remove('active'));
@@ -349,6 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     if (tagSelectEl) tagSelectEl.addEventListener('change', applyFilters);
+    if (publicationSelectEl) publicationSelectEl.addEventListener('change', applyFilters);
     grid.querySelectorAll('.writing-card').forEach(card => delete card.dataset.bound);
     bindCardClicks();
   }
