@@ -254,47 +254,6 @@ app.delete('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
     return res.json({ ok: true });
 });
 
-// =============================================
-// TWEETS PROXY (caches for 15 min)
-// =============================================
-let tweetsCache = { userId: null, data: null, fetchedAt: 0 };
-const TWEETS_CACHE_TTL = 15 * 60 * 1000;
-
-app.get('/api/tweets', async (req, res) => {
-    const BEARER = process.env.TWITTER_BEARER_TOKEN;
-    if (!BEARER) return res.status(503).json({ error: 'Twitter not configured' });
-
-    const now = Date.now();
-    if (tweetsCache.data && now - tweetsCache.fetchedAt < TWEETS_CACHE_TTL) {
-        return res.json(tweetsCache.data);
-    }
-
-    try {
-        if (!tweetsCache.userId) {
-            const userRes = await fetch('https://api.twitter.com/2/users/by/username/de_bayes', {
-                headers: { Authorization: `Bearer ${BEARER}` }
-            });
-            if (!userRes.ok) return res.status(502).json({ error: 'Could not resolve user', detail: await userRes.json() });
-            const userData = await userRes.json();
-            tweetsCache.userId = userData.data?.id;
-        }
-
-        if (!tweetsCache.userId) return res.status(502).json({ error: 'Could not resolve user ID' });
-
-        const tweetsRes = await fetch(
-            `https://api.twitter.com/2/users/${tweetsCache.userId}/tweets?max_results=5&exclude=retweets,replies&tweet.fields=created_at,public_metrics`,
-            { headers: { Authorization: `Bearer ${BEARER}` } }
-        );
-        if (!tweetsRes.ok) return res.status(502).json({ error: 'Could not fetch tweets', detail: await tweetsRes.json() });
-
-        const tweetsData = await tweetsRes.json();
-        tweetsCache = { ...tweetsCache, data: tweetsData, fetchedAt: now };
-        return res.json(tweetsData);
-    } catch (err) {
-        return res.status(502).json({ error: 'Failed to fetch tweets', detail: err.message });
-    }
-});
-
 const BLOCKED_FILES = new Set(['server.js', 'package.json', 'package-lock.json', 'resume.md', 'style.md', '.env']);
 app.use((req, res, next) => {
     const base = req.path.replace(/^\//, '').split('/')[0];
