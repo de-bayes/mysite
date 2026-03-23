@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 const CLOUD_PASSWORD = process.env.CLOUD_PASSWORD;
 const DATA_DIR = fs.existsSync('/data') ? '/data' : path.join(__dirname, 'data');
 const RACECALLS_FILE = path.join(DATA_DIR, 'racecalls.json');
+const WRITING_DIR = path.join(__dirname, 'writing');
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -52,6 +53,19 @@ function writeJSON(filePath, data) {
 }
 
 const CALLER_DESKS = ['ap', 'nyt', 'ddhq', 'votehub'];
+const CANONICAL_TOP_LEVEL_PATHS = new Set(['/about', '/experience', '/writing', '/press', '/now', '/racecalls', '/resume', '/admin']);
+
+function getWritingPages() {
+    if (!fs.existsSync(WRITING_DIR)) return new Map();
+    return new Map(
+        fs.readdirSync(WRITING_DIR, { withFileTypes: true })
+            .filter((entry) => entry.isDirectory())
+            .map((entry) => [entry.name, path.join(WRITING_DIR, entry.name, 'index.html')])
+            .filter(([, filePath]) => fs.existsSync(filePath))
+    );
+}
+
+const WRITING_PAGES = getWritingPages();
 
 function callersFromFirstCaller(firstCaller) {
     const callers = { ap: false, nyt: false, ddhq: false, votehub: false };
@@ -261,12 +275,72 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+
+    const withQuery = (targetPath) => {
+        const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+        return targetPath + query;
+    };
+
+    if (req.path === '/index.html') {
+        return res.redirect(301, withQuery('/'));
+    }
+
+    if (req.path.endsWith('/index.html')) {
+        return res.redirect(301, withQuery(req.path.slice(0, -'index.html'.length)));
+    }
+
+    const writingHtmlMatch = req.path.match(/^\/writing\/([^/]+)\.html$/);
+    if (writingHtmlMatch && WRITING_PAGES.has(writingHtmlMatch[1])) {
+        return res.redirect(301, withQuery(`/writing/${writingHtmlMatch[1]}/`));
+    }
+
+    if (/^\/writing\/[^/]+$/.test(req.path)) {
+        const slug = req.path.split('/')[2];
+        if (WRITING_PAGES.has(slug)) {
+            return res.redirect(301, withQuery(`${req.path}/`));
+        }
+    }
+
+    if (req.path.endsWith('/') && req.path.length > 1) {
+        const withoutSlash = req.path.slice(0, -1);
+        if (CANONICAL_TOP_LEVEL_PATHS.has(withoutSlash)) {
+            return res.redirect(301, withQuery(withoutSlash));
+        }
+    }
+
+    if (req.path.endsWith('.html')) {
+        const withoutExt = req.path.slice(0, -5);
+        if (CANONICAL_TOP_LEVEL_PATHS.has(withoutExt)) {
+            return res.redirect(301, withQuery(withoutExt));
+        }
+    }
+
+    next();
+});
+
+app.get(['/writing', '/writing/'], (_req, res) => {
+    res.sendFile(path.join(__dirname, 'writing.html'));
+});
+
+app.get(/^\/writing\/([^/]+)\/?$/, (req, res, next) => {
+    const slug = req.params[0];
+    const pagePath = WRITING_PAGES.get(slug);
+    if (!pagePath) return next();
+    return res.sendFile(pagePath);
+});
+
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;

@@ -2,34 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ryanjmccomb.com/</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ryanjmccomb.com/about</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ryanjmccomb.com/experience</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ryanjmccomb.com/writing</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ryanjmccomb.com/press</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ryanjmccomb.com/now</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ryanjmccomb.com/racecalls</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ryanjmccomb.com/resume</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://ryanjmccomb.com/writing/il9cast-postmortem/</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://ryanjmccomb.com/writing/median-voter-theory/</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://ryanjmccomb.com/writing/nsa-surveillance/</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://ryanjmccomb.com/writing/peoples-edict/</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
   </url>
 </urlset>
