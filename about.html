@@ -153,16 +153,12 @@
             <span class="contact-value">@JeromeHPowell</span>
           </a>
 
-        </div>
-      </section>
+          <a href="/racecalls" class="contact-item">
+            <span class="contact-label">VoteHub Race Calls</span>
+            <span class="contact-value" id="rc-about-contact-value">Decision desk record</span>
+          </a>
 
-      <section class="about-racecalls">
-        <a href="/racecalls" class="rc-preview" id="rc-preview-about">
-          <span class="rc-preview-label">Decision Desk</span>
-          <span class="rc-preview-record" id="rc-about-record">&hellip;</span>
-          <span class="rc-preview-pct" id="rc-about-pct"></span>
-          <span class="rc-preview-link">View race call record &rarr;</span>
-        </a>
+        </div>
       </section>
 
     </div>
@@ -185,9 +181,8 @@
         var incorrect = calls.filter(function(c) { return c.result === 'incorrect'; }).length;
         var decided = correct + incorrect;
         var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
-        document.getElementById('rc-about-record').textContent = correct + '/' + calls.length + ' correct';
         if (decided > 0) {
-          document.getElementById('rc-about-pct').textContent = pct + '% accuracy';
+          document.getElementById('rc-about-contact-value').textContent = correct + '/' + calls.length + ' correct (' + pct + '%)';
         }
       })
       .catch(function() {});
