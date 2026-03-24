@@ -111,6 +111,13 @@
           write and photograph for them. I host the Project 2028 podcast and served
           as Volunteer Finance Lead on the Daniel Biss congressional campaign.
         </p>
+        <p>
+          Most of my work lives at the intersection of elections, decision-desk
+          coverage, forecasting, and local political reporting. If you are looking for
+          my VoteHub work, start with <a href="/experience">Experience</a>, see the
+          public subset of my assigned calls on <a href="/racecalls">Race Calls</a>,
+          or read my <a href="/writing">writing on elections and forecasting</a>.
+        </p>
         <p class="about-resume-link">
           <a href="/resume">Resume</a> if you want the formal CV (print or PDF). I
           also post online as <a href="https://x.com/bayes_pr" target="_blank" rel="noopener noreferrer">@bayes_pr</a>.
@@ -144,6 +151,11 @@
           <a href="https://manifold.markets/JeromeHPowell" class="contact-item contact-item--manifold" target="_blank" rel="noopener noreferrer">
             <span class="contact-label">Manifold Markets</span>
             <span class="contact-value">@JeromeHPowell</span>
+          </a>
+
+          <a href="/racecalls" class="contact-item">
+            <span class="contact-label">VoteHub Race Calls</span>
+            <span class="contact-value" id="rc-about-contact-value">Decision desk record</span>
           </a>
 
         </div>
@@ -181,6 +193,7 @@
         document.getElementById('rc-about-record').textContent = correct + '/' + calls.length + ' correct';
         if (decided > 0) {
           document.getElementById('rc-about-pct').textContent = pct + '% accuracy';
+          document.getElementById('rc-about-contact-value').textContent = correct + '/' + calls.length + ' correct (' + pct + '%)';
         }
       })
       .catch(function() {});
