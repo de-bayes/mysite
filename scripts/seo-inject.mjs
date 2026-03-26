@@ -19,6 +19,22 @@ if (!origin || typeof origin !== 'string' || !origin.startsWith('http')) {
   process.exit(1);
 }
 const originNoSlash = origin.replace(/\/$/, '');
+const SITE_NAME = 'Ryan McComb';
+const TWITTER_HANDLE = '@bayes_pr';
+const writingDir = path.join(root, 'writing');
+
+function getEssayPaths() {
+  if (!fs.existsSync(writingDir)) return [];
+  return fs.readdirSync(writingDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => ({
+      file: `writing/${entry.name}/index.html`,
+      publicPath: `/writing/${entry.name}/`
+    }))
+    .filter((entry) => fs.existsSync(path.join(root, entry.file)));
+}
+
+const essayPages = getEssayPaths();
 
 const PAGE_PATHS = {
   'index.html': '/',
@@ -31,6 +47,7 @@ const PAGE_PATHS = {
   'admin.html': '/admin',
   'resume.html': '/resume',
   '404.html': '/',
+  ...Object.fromEntries(essayPages.map((entry) => [entry.file, entry.publicPath]))
 };
 
 function ensureCanonical(html, canonical) {
@@ -88,16 +105,52 @@ function ensureTwitterImage(html, ogImage) {
   );
 }
 
+function ensureMetaByName(html, name, content, anchorPattern) {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const tagRe = new RegExp(`<meta name="${escapedName}" content="[^"]*">`);
+  if (tagRe.test(html)) {
+    return html.replace(tagRe, `<meta name="${name}" content="${content}">`);
+  }
+  return html.replace(anchorPattern, `$1\n  <meta name="${name}" content="${content}">`);
+}
+
+function ensureMetaByProperty(html, property, content, anchorPattern) {
+  const escapedProperty = property.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const tagRe = new RegExp(`<meta property="${escapedProperty}" content="[^"]*">`);
+  if (tagRe.test(html)) {
+    return html.replace(tagRe, `<meta property="${property}" content="${content}">`);
+  }
+  return html.replace(anchorPattern, `$1\n  <meta property="${property}" content="${content}">`);
+}
+
+function getTitle(html) {
+  const match = html.match(/<title>([^<]*)<\/title>/);
+  return match ? match[1] : SITE_NAME;
+}
+
+function getDescription(html) {
+  const match = html.match(/<meta name="description" content="([^"]*)">/);
+  return match ? match[1] : '';
+}
+
 function injectHtml(file) {
   const fp = path.join(root, file);
   if (!fs.existsSync(fp)) return;
   const canonical = originNoSlash + PAGE_PATHS[file];
   const ogImage = `${originNoSlash}/portrait.jpg`;
   let s = fs.readFileSync(fp, 'utf8');
+  const title = getTitle(s);
+  const description = getDescription(s);
   s = ensureCanonical(s, canonical);
   s = ensureOgUrl(s, canonical);
   s = ensureOgImage(s, ogImage);
   s = ensureTwitterImage(s, ogImage);
+  s = ensureMetaByProperty(s, 'og:site_name', SITE_NAME, /(<meta property="og:image"[^>]*>)/);
+  s = ensureMetaByName(s, 'twitter:title', title, /(<meta name="twitter:card"[^>]*>)/);
+  s = ensureMetaByName(s, 'twitter:description', description, /(<meta name="twitter:title"[^>]*>)/);
+  s = ensureMetaByName(s, 'twitter:creator', TWITTER_HANDLE, /(<meta name="twitter:description"[^>]*>)/);
+  s = ensureMetaByName(s, 'twitter:site', TWITTER_HANDLE, /(<meta name="twitter:creator"[^>]*>)/);
+  s = ensureMetaByName(s, 'author', SITE_NAME, /(<link rel="apple-touch-icon"[^>]*>)/);
   fs.writeFileSync(fp, s);
 }
 
@@ -105,15 +158,34 @@ for (const file of Object.keys(PAGE_PATHS)) {
   injectHtml(file);
 }
 
-const publicPaths = ['/', '/about', '/experience', '/writing', '/press', '/now', '/racecalls', '/resume'];
+const publicPaths = [
+  '/',
+  '/about',
+  '/experience',
+  '/writing',
+  '/press',
+  '/now',
+  '/racecalls',
+  '/resume',
+  ...essayPages.map((entry) => entry.publicPath)
+];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${publicPaths
   .map((p) => {
     const loc = p === '/' ? `${originNoSlash}/` : `${originNoSlash}${p}`;
+    const filePath = p === '/'
+      ? path.join(root, 'index.html')
+      : path.join(root, p.replace(/^\//, ''), 'index.html');
+    const fallbackPath = p === '/'
+      ? path.join(root, 'index.html')
+      : path.join(root, p.replace(/^\//, '') + '.html');
+    const statPath = fs.existsSync(filePath) ? filePath : fallbackPath;
+    const lastmod = fs.statSync(statPath).mtime.toISOString().slice(0, 10);
     return `  <url>
     <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
   </url>`;
   })
