@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IL9Cast Post-Mortem: What We Got Right, and What the Markets Saw First - Ryan McComb</title>
+  <meta name="description" content="A look back at the IL-9 forecast: where the fundamentals model landed, what the prediction markets saw first, and what I'd do differently.">
+  <link rel="canonical" href="https://ryanjmccomb.com/writing/il9cast-postmortem/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:title" content="IL9Cast Post-Mortem: What We Got Right, and What the Markets Saw First - Ryan McComb">
+  <meta property="og:description" content="A look back at the IL-9 forecast: where the fundamentals model landed, what the prediction markets saw first, and what I'd do differently.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ryanjmccomb.com/writing/il9cast-postmortem/">
+  <meta property="og:image" content="https://ryanjmccomb.com/portrait.jpg">
+  <meta property="og:site_name" content="Ryan McComb">
+  <meta property="article:author" content="Ryan McComb">
+  <meta property="article:published_time" content="2026-03-22">
+  <meta property="article:modified_time" content="2026-03-22">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="IL9Cast Post-Mortem: What We Got Right, and What the Markets Saw First - Ryan McComb">
+  <meta name="twitter:description" content="A look back at the IL-9 forecast: where the fundamentals model landed, what the prediction markets saw first, and what I'd do differently.">
+  <meta name="twitter:creator" content="@bayes_pr">
+  <meta name="twitter:site" content="@bayes_pr">
+  <meta name="twitter:image" content="https://ryanjmccomb.com/portrait.jpg">
+  <meta name="author" content="Ryan McComb">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://ryanjmccomb.com/writing/il9cast-postmortem/#article",
+      "headline": "IL9Cast Post-Mortem: What We Got Right, and What the Markets Saw First",
+      "description": "A look back at the IL-9 forecast: where the fundamentals model landed, what the prediction markets saw first, and what I'd do differently.",
+      "datePublished": "2026-03-22",
+      "dateModified": "2026-03-22",
+      "author": {
+        "@type": "Person",
+        "name": "Ryan McComb",
+        "url": "https://ryanjmccomb.com/about"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ryan McComb",
+        "url": "https://ryanjmccomb.com/"
+      },
+      "mainEntityOfPage": "https://ryanjmccomb.com/writing/il9cast-postmortem/",
+      "image": "https://ryanjmccomb.com/portrait.jpg"
+    }
+  </script>
+</head>
+<body>
+  <nav class="site-nav" id="site-nav"></nav>
+
+  <main>
+    <div class="writing-page">
+      <article class="article-view">
+        <a href="/writing" class="back-link">&larr; Back to writing</a>
+        <h1>IL9Cast Post-Mortem: What We Got Right, and What the Markets Saw First</h1>
+        <div class="article-meta">March 22, 2026 &middot; 5 min read</div>
+        <div class="article-body">
+          <p>The IL-9 Democratic primary is over. Daniel Biss won. And on most of the numbers that mattered, IL9Cast got it right.</p>
+
+          <p>That's the short version. The longer version is more interesting, because the two separate models I ran told different stories at different points in the campaign, and looking at how each one performed is the most instructive thing I can take away from the whole project.</p>
+
+          <h2>What IL9Cast Was</h2>
+
+          <p>IL9Cast was a forecasting site for the Illinois 9th Congressional District Democratic primary, which took place on March 17, 2026. The district, anchored in Evanston and the North Shore, was an open seat after Jan Schakowsky's retirement, and it drew a crowded field of 16 candidates. I built and published two completely separate models: one based purely on prediction market probabilities, primarily Kalshi and Manifold, and one based purely on fundamentals, fundraising, endorsements, structural factors. They never fed into each other. The site updated daily and showed each model's probability estimates side by side.</p>
+
+          <p>I launched in January 2026, roughly two months out from election day. By then Biss, Kat Abughazaleh, and Laura Fine had separated themselves from the rest of the field on fundraising. The prediction markets were thin but present. Polls were sparse.</p>
+
+          <h2>The Fundamentals Model</h2>
+
+          <p>The fundamentals model was built entirely on fundraising totals, endorsement weight, and structural factors like name recognition and prior electoral history. It forecast vote shares for the top three candidates within a percentage point of the final results for the winner, and was close across the board for the top three. Biss finished at 29.5%, Abughazaleh at 25.9%, Fine at 20.2%. That's a level of accuracy I'm genuinely proud of, especially given how little reliable polling there was to work with in a low-salience primary.</p>
+
+          <p>What it captured well was Biss's structural dominance: the endorsement from Schakowsky herself, the fundraising lead, the name recognition from his prior statewide runs. In a primary electorate that skews toward party-engaged voters, those factors matter enormously, and the model reflected that from early on.</p>
+
+          <p>Where it was less reliable was in accounting for late momentum. Fundamentals models are by nature backward-looking. They're better at telling you where a race has been than where it's going in the final stretch.</p>
+
+          <h2>The Prediction Markets Model</h2>
+
+          <p>The markets model ran completely independently, ingesting raw contract prices from Kalshi and Manifold and converting them to probability estimates daily. It told a more dynamic story. In the weeks before March 17th, it showed Biss consolidating support, with his probability climbing steadily and peaking above 80% in the hours just before polls closed. That late-breaking signal reflected something real: voters making up their minds, undecideds breaking toward the frontrunner, the classic late consolidation pattern in primaries with one established candidate.</p>
+
+          <p>The markets caught the momentum that the fundamentals model couldn't see. Each one had something the other lacked: fundamentals gave you the structural baseline, markets gave you the live pulse. Running them separately made the contrast legible in a way that combining them would have obscured.</p>
+
+          <h2>What I'd Do Differently</h2>
+
+          <p>A few things stand out in retrospect. First, liquidity. Prediction markets for a congressional primary in a single Illinois district are thin. On some days, total open interest on the key contracts was low enough that a small number of traders could move prices meaningfully. I tried to account for this with a liquidity-weighting function in the markets model, but in a future version I'd want to be more aggressive about discounting low-volume days, and building in a credibility interval that widens as liquidity drops.</p>
+
+          <p>Second, the polling gap. There were stretches of the campaign where we had almost no polling to work with. In a primary with a more robust polling environment, both models would have had better calibration inputs, and the uncertainty bands would have been more meaningful. Finding ways to incorporate quasi-polling signals, social media engagement, search volume, canvassing data, could partially fill that gap in future low-poll environments.</p>
+
+          <p>Third, and most honestly: I underestimated how much the Schakowsky endorsement of Biss would move late-deciding voters. It was in the fundamentals model, but its marginal impact in the final two weeks was larger than I'd weighted. That's a calibration issue worth revisiting.</p>
+
+          <h2>An Election Worth Remembering</h2>
+
+          <p>Beyond the numbers, this was just a genuinely interesting race to cover. A competitive, high-quality field in a district that cares deeply about governance, in a cycle where the national stakes felt unusually high. The Evanstonian coverage, the VoteHub briefings, the FOIAgras guest post, the Capitol Fax citations, all of it was a reminder that local forecasting, done carefully, has an audience.</p>
+
+          <p>IL9Cast was a proof of concept. The model worked. The next version will be better.</p>
+
+          <section class="article-context" aria-labelledby="article-context-heading">
+            <h2 id="article-context-heading">More from Ryan McComb</h2>
+            <p>For more on my elections work, forecasting, and VoteHub background, start with these pages.</p>
+            <div class="article-context-links">
+              <a href="/about">About Ryan McComb</a>
+              <a href="/experience">Experience</a>
+              <a href="/racecalls">VoteHub race calls</a>
+              <a href="/press">Press</a>
+            </div>
+          </section>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 Ryan McComb &middot; Evanston, IL &middot; <a href="mailto:rymccomb1@icloud.com">rymccomb1@icloud.com</a>
+  </footer>
+
+  <script src="/js/site-data.js"></script>
+  <script src="/js/nav.js"></script>
+  <script src="/js/animations.js"></script>
+  <script src="/js/effects.js"></script>
+  <script src="/js/cmdk.js"></script>
+  <script src="/js/article.js"></script>
+  <script src="/js/footer.js"></script>
+</body>
+</html>
