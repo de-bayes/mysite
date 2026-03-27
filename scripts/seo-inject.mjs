@@ -137,7 +137,7 @@ function injectHtml(file) {
   const fp = path.join(root, file);
   if (!fs.existsSync(fp)) return;
   const canonical = originNoSlash + PAGE_PATHS[file];
-  const ogImage = `${originNoSlash}/portrait.jpg`;
+  const ogImage = `${originNoSlash}/images/portrait.jpg`;
   let s = fs.readFileSync(fp, 'utf8');
   const title = getTitle(s);
   const description = getDescription(s);
