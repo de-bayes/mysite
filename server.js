@@ -53,7 +53,7 @@ function writeJSON(filePath, data) {
 }
 
 const CALLER_DESKS = ['ap', 'nyt', 'ddhq', 'votehub'];
-const CANONICAL_TOP_LEVEL_PATHS = new Set(['/about', '/experience', '/writing', '/press', '/now', '/racecalls', '/resume', '/admin']);
+const CANONICAL_TOP_LEVEL_PATHS = new Set(['/about', '/experience', '/writing', '/press', '/racecalls', '/resume', '/admin']);
 
 function getWritingPages() {
     if (!fs.existsSync(WRITING_DIR)) return new Map();
@@ -320,6 +320,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get('/now', (_req, res) => res.redirect(301, '/'));
+
 app.get(['/writing', '/writing/'], (_req, res) => {
     res.sendFile(path.join(__dirname, 'writing.html'));
 });
@@ -330,6 +332,13 @@ app.get(/^\/writing\/([^/]+)\/?$/, (req, res, next) => {
     if (!pagePath) return next();
     return res.sendFile(pagePath);
 });
+
+app.get('/sitemap.xml', (_req, res) => res.sendFile(path.join(__dirname, 'sitemap.xml')));
+app.get('/robots.txt', (_req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
+
+app.get('/now', (_req, res) => res.redirect(301, '/'));
+app.get('/sitemap.xml', (_req, res) => res.sendFile(path.join(__dirname, 'sitemap.xml')));
+app.get('/robots.txt', (_req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
 
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
