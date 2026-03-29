@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://www.ryanjmccomb.com/sitemap.xml
+Sitemap: https://mccomb.ca/sitemap.xml
