@@ -6,7 +6,6 @@
     { href: '/experience', label: 'Experience', desc: 'Professional experience and education', keys: 'timeline resume work' },
     { href: '/writing', label: 'Writing', desc: 'Essays and articles', keys: 'blog' },
     { href: '/press', label: 'Press', desc: 'Press coverage and features', keys: 'media news' },
-    { href: '/now', label: 'Now', desc: "What I'm up to right now", keys: '' },
     { href: '/resume', label: 'Resume', desc: 'Printable resume and CV', keys: 'cv pdf' },
     { href: '/racecalls', label: 'Race Calls', desc: 'Election race call record and accuracy', keys: 'decision desk predictions' }
   ];
