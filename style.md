@@ -2,7 +2,7 @@
 
 ## Em dashes
 
-**Do not use the em dash** (—, Unicode U+2014, HTML `&mdash;`, or the long dash character from some keyboards).
+**Do not use the em dash** (Unicode U+2014, never `&mdash;` in HTML, and never the long dash character from some keyboards).
 
 Use one of these instead:
 
