@@ -30,16 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Nav HTML is inlined in each page — no innerHTML needed.
 
-  // Highlight current page
-  const path = window.location.pathname;
-  const page = path === '/' ? '/' : path.replace(/\.html$/, '').replace(/\/$/, '');
-  nav.querySelectorAll('.nav-links a').forEach(a => {
-    const href = a.getAttribute('href').replace(/\.html$/, '').replace(/\/$/, '');
-    if (href === page || (href !== '/' && page.startsWith(href + '/')) || (page === '' && href === '/')) {
-      a.classList.add('active');
-    }
-  });
-
   // Mobile hamburger toggle (accessible disclosure pattern)
   const hamburger = nav.querySelector('.nav-hamburger');
   const links = nav.querySelector('.nav-links');
