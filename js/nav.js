@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ${navItems.map(item => `<a href="${item.href}">${item.label}</a>`).join('')}
     </div>
   `;
+  requestAnimationFrame(() => nav.classList.add('nav-ready'));
 
   // Highlight current page
   const path = window.location.pathname;
