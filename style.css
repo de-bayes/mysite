@@ -118,20 +118,10 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   align-items: center;
   z-index: 100;
   transition: background 0.5s, border-color 0.5s, box-shadow 0.5s;
-  opacity: 0;
 
   background: rgba(21, 21, 21, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-}
-
-.site-nav.nav-ready {
-  animation: navEnter 0.3s cubic-bezier(0, 0, 0.2, 1) both;
-}
-
-@keyframes navEnter {
-  from { opacity: 0; transform: scale(0.988) translateY(-3px); }
-  to   { opacity: 1; transform: none; }
 }
 
 .site-nav::before { display: none; }
@@ -1684,7 +1674,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   .page-exit .site-nav,
   .page-enter main,
   .page-enter .site-footer,
-  .site-nav.nav-ready {
+  .page-enter .site-nav {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
