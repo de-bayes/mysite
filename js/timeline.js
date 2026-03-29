@@ -1,4 +1,4 @@
-// Experience timeline — scroll animations + expand/collapse
+// Experience timeline: scroll animations + expand/collapse
 document.addEventListener('DOMContentLoaded', () => {
   const entries = document.querySelectorAll('.timeline-entry');
 

@@ -105,7 +105,7 @@ h2 { font-size: 1.8rem; margin-bottom: 1rem; letter-spacing: -0.025em; }
 h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 /* ========================================
-   Navigation — Stained Glass
+   Navigation: Stained Glass
    ======================================== */
 
 .site-nav {
@@ -237,7 +237,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 }
 
 /* ========================================
-   Hero — Full-bleed painting + floating card
+   Hero: Full-bleed painting + floating card
    ======================================== */
 
 .hero {
@@ -521,7 +521,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 }
 
 /* ========================================
-   Page Layout — Subpages
+   Page Layout: Subpages
    ======================================== */
 
 .page-header {
@@ -579,7 +579,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   z-index: 1;
 }
 
-/* Page hero — title left, photo right */
+/* Page hero: title left, photo right */
 .page-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -770,7 +770,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 }
 
 /* ========================================
-   Experience — Timeline
+   Experience: Timeline
    ======================================== */
 
 .timeline-container {
@@ -1218,28 +1218,6 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   margin: 2.5rem 0 2rem;
   border: 0;
   border-top: 1px solid var(--border);
-}
-
-.article-context {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-}
-
-.article-context h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.75rem;
-}
-
-.article-context p {
-  color: var(--text-light);
-  margin-bottom: 1rem;
-}
-
-.article-context-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
 }
 
 /* ========================================
