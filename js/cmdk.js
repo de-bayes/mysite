@@ -560,29 +560,17 @@
       }
     });
 
-    // --- "Press ⌘K to search" hint (inside nav bar) ---
+    // --- "Press ⌘K to search" hint (inlined in nav HTML) ---
     var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent;
     var isMac = /Mac|iPhone|iPad|iPod/i.test(platform);
-    var shortcut = isMac ? '\u2318K' : 'Ctrl+K';
-    hint = document.createElement('button');
-    hint.className = 'cmdk-hint';
-    hint.innerHTML = '<kbd>' + shortcut + '</kbd> Search';
-    hint.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      open();
-    });
-
-    var navLinks = document.querySelector('.nav-links');
-    if (navLinks) {
-      navLinks.appendChild(hint);
-    } else {
-      document.body.appendChild(hint);
+    hint = document.getElementById('cmdk-hint');
+    if (hint) {
+      if (!isMac) hint.innerHTML = '<kbd>Ctrl+K</kbd> Search';
+      hint.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        open();
+      });
     }
-
-    // Fade in and stay visible
-    requestAnimationFrame(function () {
-      hint.classList.add('cmdk-hint-visible');
-    });
   });
 })();
