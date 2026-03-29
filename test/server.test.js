@@ -19,9 +19,9 @@ test('home page renders', async () => {
 test('about page includes branded bio and profile structured data', async () => {
   const response = await request(app).get('/about');
   assert.equal(response.status, 200);
-  assert.match(response.text, /About Ryan McComb \| VoteHub, Elections, and @ryanjmccomb/);
+  assert.match(response.text, /About Ryan McComb \| VoteHub, Elections, and @RyanJMcComb/);
   assert.match(response.text, /"@type": "ProfilePage"/);
-  assert.match(response.text, /https:\/\/x\.com\/ryanjmccomb/);
+  assert.match(response.text, /https:\/\/x\.com\/RyanJMcComb/);
 });
 
 test('writing index renders hosted essay links', async () => {
