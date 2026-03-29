@@ -333,7 +333,7 @@
       }
       if (found) continue;
 
-      // Try 3: edit-distance match — highlight the closest title word
+      // Try 3: edit-distance match; highlight the closest title word
       var maxDist = qw.length <= 3 ? 0 : qw.length <= 5 ? 1 : 2;
       if (maxDist === 0) continue;
       re = /[a-z0-9]+/g;

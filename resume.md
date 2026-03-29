@@ -21,8 +21,6 @@ Student, data, forecasting, elections.
 *VoteHub*
 
 - Contributed to the 2026 midterms forecasting model: Kalshi market-scoring pipeline (open interest, liquidity, percentile ranks, automatic weighting for the aggregate forecast).
-- Election briefings on primaries and special elections for client-facing decision-desk products.
-- Decision-desk race calls on primary night; election data pipelines and prediction market integration.
 
 **Founder & Data Scientist** · *Jan 2026 - Mar 2026*  
 *IL9Cast*
