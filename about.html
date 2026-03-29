@@ -176,7 +176,7 @@
   <script src="js/effects.js"></script>
   <script src="js/cmdk.js"></script>
   <script>
-    fetch('/api/racecalls')
+    fetch('/data/racecalls.json')
       .then(function(r) { return r.json(); })
       .then(function(calls) {
         var correct = calls.filter(function(c) { return c.result === 'correct'; }).length;
