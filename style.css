@@ -136,10 +136,16 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   align-items: center;
   z-index: 100;
   transition: background 0.5s, border-color 0.5s, box-shadow 0.5s;
+  view-transition-name: site-nav;
 
   background: rgba(21, 21, 21, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+}
+
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) {
+  animation: none;
 }
 
 .site-nav::before { display: none; }
