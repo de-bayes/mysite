@@ -2,7 +2,7 @@
 /**
  * Syncs canonical, Open Graph, and Twitter image URLs from site-origin.json
  * into HTML files, and regenerates robots.txt + sitemap.xml.
- * Idempotent — safe to run multiple times.
+ * Idempotent; safe to run multiple times.
  *
  * Run: node scripts/seo-inject.mjs   or   npm run seo:inject
  */

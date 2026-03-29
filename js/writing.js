@@ -1,4 +1,4 @@
-// Writing page — filter and card navigation
+// Writing page: filter and card navigation
 document.addEventListener('DOMContentLoaded', () => {
   const getGrid = () => document.getElementById('writing-grid');
   const grid = getGrid();
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
         if (card.dataset.url) {
-          showHostedEssay(card.dataset.url);
+          window.location.assign(card.dataset.url);
         }
       };
       card.addEventListener('click', onActivate);
@@ -147,125 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
           onActivate();
         }
       });
-
-      const link = card.querySelector('.writing-card-link');
-      if (link && !link.dataset.bound) {
-        link.dataset.bound = '1';
-        link.addEventListener('click', (event) => {
-          const isModifier = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
-          if (card.dataset.url && !isModifier) {
-            event.preventDefault();
-            event.stopPropagation();
-            showHostedEssay(card.dataset.url);
-          } else {
-            event.stopPropagation();
-          }
-        });
-      }
     });
-  }
-
-  let progressBar = null;
-  let progressHandler = null;
-
-  function addProgressBar() {
-    removeProgressBar();
-    progressBar = document.createElement('div');
-    progressBar.className = 'reading-progress';
-    document.body.appendChild(progressBar);
-
-    progressHandler = () => {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      if (scrollable <= 0) {
-        progressBar.style.width = '100%';
-        return;
-      }
-      const pct = Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100));
-      progressBar.style.width = pct + '%';
-    };
-
-    window.addEventListener('scroll', progressHandler, { passive: true });
-    progressHandler();
-  }
-
-  function removeProgressBar() {
-    if (progressHandler) {
-      window.removeEventListener('scroll', progressHandler);
-      progressHandler = null;
-    }
-    if (progressBar) {
-      progressBar.remove();
-      progressBar = null;
-    }
-  }
-
-  function performTransition(callback) {
-    if (document.startViewTransition) {
-      document.startViewTransition(callback);
-    } else {
-      callback();
-    }
-  }
-
-  async function showHostedEssay(url) {
-    const main = document.querySelector('.writing-page');
-    if (!main) {
-      window.location.href = url;
-      return;
-    }
-
-    const prevHTML = main.innerHTML;
-
-    try {
-      const response = await fetch(url, { credentials: 'same-origin' });
-      if (!response.ok) throw new Error('Failed to load hosted essay');
-      const html = await response.text();
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const articleView = doc.querySelector('.article-view');
-      if (!articleView) throw new Error('Hosted essay markup missing');
-
-      performTransition(() => {
-        main.innerHTML = articleView.outerHTML;
-
-        const backLink = main.querySelector('.back-link');
-        if (backLink) {
-          backLink.setAttribute('href', '/writing');
-          backLink.addEventListener('click', (event) => {
-            event.preventDefault();
-            performTransition(() => {
-              removeProgressBar();
-              main.innerHTML = prevHTML;
-              rebindEvents();
-              window.scrollTo({ top: 0 });
-            });
-          });
-        }
-
-        window.scrollTo({ top: 0 });
-        addProgressBar();
-      });
-    } catch (_error) {
-      window.location.href = url;
-    }
-  }
-
-  function rebindEvents() {
-    const gridEl = getGrid();
-    const tabs = document.querySelectorAll('.filter-tab');
-    const tagSelectEl = document.getElementById('tag-filter');
-    const publicationSelectEl = document.getElementById('publication-filter');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        applyFilters();
-      });
-    });
-    if (tagSelectEl) tagSelectEl.addEventListener('change', applyFilters);
-    if (publicationSelectEl) publicationSelectEl.addEventListener('change', applyFilters);
-    if (gridEl) {
-      gridEl.querySelectorAll('.writing-card').forEach(card => delete card.dataset.bound);
-    }
-    bindCardClicks();
   }
 });

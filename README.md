@@ -1,4 +1,4 @@
-# Ryan McComb — personal site
+# Ryan McComb: personal site
 
 Static HTML/CSS/vanilla JS pages served by a small **Express** app. The server adds JSON APIs (race calls, resume editing), rate limiting, and Helmet; everything else is flat files.
 
@@ -15,7 +15,7 @@ npm start
 
 Default port is **3000**. Override with `PORT=1000 npm start` (or any port).
 
-Open `http://localhost:3000/` — extensionless URLs work (e.g. `/about`) because static middleware uses `extensions: ['html']`.
+Open `http://localhost:3000/`. Extensionless URLs work (e.g. `/about`) because static middleware uses `extensions: ['html']`.
 
 ---
 
