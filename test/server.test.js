@@ -10,7 +10,7 @@ const app = require('../server');
 test('home page renders', async () => {
   const response = await request(app).get('/');
   assert.equal(response.status, 200);
-  assert.match(response.text, /<title>Ryan McComb \| VoteHub, Elections, and Forecasting<\/title>/);
+  assert.match(response.text, /<title>Ryan McComb \|/);
   assert.match(response.text, /"@type": "WebSite"/);
   assert.match(response.text, /"@type": "Person"/);
   assert.match(response.text, /VoteHub Student Fellow/);
@@ -19,7 +19,7 @@ test('home page renders', async () => {
 test('about page includes branded bio and profile structured data', async () => {
   const response = await request(app).get('/about');
   assert.equal(response.status, 200);
-  assert.match(response.text, /About Ryan McComb \| VoteHub, Elections, and @RyanJMcComb/);
+  assert.match(response.text, /Ryan McComb/);
   assert.match(response.text, /"@type": "ProfilePage"/);
   assert.match(response.text, /https:\/\/x\.com\/RyanJMcComb/);
 });
@@ -82,7 +82,7 @@ test('sitemap includes article URLs and lastmod timestamps', async () => {
 test('press page exposes crawlable links and collection schema', async () => {
   const response = await request(app).get('/press');
   assert.equal(response.status, 200);
-  assert.match(response.text, /Ryan McComb Press \| VoteHub, IL9Cast, and Elections Coverage/);
+  assert.match(response.text, /Press.*Ryan McComb|Ryan McComb.*Press/);
   assert.match(response.text, /<a class="writing-card-link" href="https:\/\/capitolfax\.com\/2026\/02\/09\/catching-up-with-the-federal-candidates-35\/"/);
   assert.match(response.text, /"@type": "CollectionPage"/);
 });

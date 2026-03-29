@@ -14,7 +14,7 @@ if (NODE_ENV === 'production') {
 }
 const PORT = process.env.PORT || 3000;
 const CLOUD_PASSWORD = process.env.CLOUD_PASSWORD;
-const DATA_DIR = fs.existsSync('/data') ? '/data' : path.join(__dirname, 'data');
+const DATA_DIR = fs.existsSync('/data') ? '/data' : process.env.VERCEL ? '/tmp/data' : path.join(__dirname, 'data');
 const RACECALLS_FILE = path.join(DATA_DIR, 'racecalls.json');
 const WRITING_DIR = path.join(__dirname, 'writing');
 
