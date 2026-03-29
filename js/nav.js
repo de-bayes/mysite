@@ -28,14 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.insertBefore(skipLink, document.body.firstChild);
   }
 
-  nav.innerHTML = `
-    <a href="/" class="nav-name"><span class="brace">{</span><span class="ni">R</span><span class="nx nx1">yan</span><span class="nx nx2"> </span><span class="ni">J</span><span class="nx nx3">.</span><span class="nx nx4"> </span><span class="ni">M</span><span class="nx nx5">c</span><span class="ni">C</span><span class="nx nx6">omb</span><span class="brace">}</span></a>
-    <button type="button" class="nav-hamburger" aria-label="Open menu" aria-controls="nav-menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <div class="nav-links" id="nav-menu" role="navigation" aria-label="Site">
-      ${navItems.map(item => `<a href="${item.href}">${item.label}</a>`).join('')}
-    </div>
-  `;
-  requestAnimationFrame(() => nav.classList.add('nav-ready'));
+  // Nav HTML is inlined in each page — no innerHTML needed.
 
   // Highlight current page
   const path = window.location.pathname;
