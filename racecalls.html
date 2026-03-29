@@ -383,7 +383,7 @@
       });
 
       // Fetch data
-      fetch('/api/racecalls')
+      fetch('/data/racecalls.json')
         .then(function(r) { return r.json(); })
         .then(function(calls) {
           allCalls = calls;

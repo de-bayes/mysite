@@ -1,0 +1,24 @@
+[
+  {
+    "id": "m7x8k1a2b3",
+    "race": "IL-09 Dem Primary",
+    "date": "2026-03-17T00:00:00.000Z",
+    "calledFor": "Daniel Biss",
+    "result": "correct",
+    "notes": "",
+    "raceType": "house",
+    "isPrimary": true,
+    "state": "IL",
+    "margin": null,
+    "callers": {
+      "ap": true,
+      "nyt": true,
+      "ddhq": true,
+      "votehub": false
+    },
+    "firstCaller": "ap",
+    "sourceUrl": "",
+    "primaryParty": "",
+    "created": "2026-03-17T00:00:00.000Z"
+  }
+]
