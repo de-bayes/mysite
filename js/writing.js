@@ -14,6 +14,37 @@ document.addEventListener('DOMContentLoaded', () => {
   updateFilterCounts();
   populatePublicationOptions();
 
+  // Restore filters from URL
+  restoreFiltersFromURL();
+
+  function pushFiltersToURL() {
+    const activeTab = document.querySelector('.filter-tab.active');
+    const category = activeTab ? activeTab.dataset.category : 'all';
+    const tag = tagSelect ? tagSelect.value : 'all';
+    const publication = publicationSelect ? publicationSelect.value : 'all';
+    const params = new URLSearchParams();
+    if (category !== 'all') params.set('category', category);
+    if (tag !== 'all') params.set('tag', tag);
+    if (publication !== 'all') params.set('publication', publication);
+    const qs = params.toString();
+    history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  }
+
+  function restoreFiltersFromURL() {
+    const params = new URLSearchParams(location.search);
+    const category = params.get('category');
+    const tag = params.get('tag');
+    const publication = params.get('publication');
+    if (category) {
+      filterTabs.forEach(t => {
+        t.classList.toggle('active', t.dataset.category === category);
+      });
+    }
+    if (tag && tagSelect) tagSelect.value = tag;
+    if (publication && publicationSelect) publicationSelect.value = publication;
+    applyFilters();
+  }
+
   function applyFilters() {
     const activeTab = document.querySelector('.filter-tab.active');
     const category = (activeTab && activeTab.dataset.category) ? activeTab.dataset.category : 'all';
@@ -33,6 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const publicationMatch = publication === 'all' || cardPublication === publication;
       outline.style.display = categoryMatch && tagMatch && publicationMatch ? '' : 'none';
     });
+
+    const visibleCount = document.querySelectorAll('.writing-card-outline[style=""],.writing-card-outline:not([style])').length
+      - document.querySelectorAll('.writing-card-outline[style*="none"]').length;
+    let empty = document.querySelector('.writing-empty');
+    const allHidden = Array.from(document.querySelectorAll('.writing-card-outline')).every(o => o.style.display === 'none');
+    if (allHidden) {
+      if (!empty) {
+        empty = document.createElement('p');
+        empty.className = 'writing-empty';
+        empty.textContent = 'No articles match these filters.';
+        grid.appendChild(empty);
+      }
+      empty.style.display = '';
+    } else if (empty) {
+      empty.style.display = 'none';
+    }
   }
 
   filterTabs.forEach(tab => {
@@ -40,15 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
       filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       applyFilters();
+      pushFiltersToURL();
     });
   });
 
   if (tagSelect) {
-    tagSelect.addEventListener('change', applyFilters);
+    tagSelect.addEventListener('change', () => { applyFilters(); pushFiltersToURL(); });
   }
 
   if (publicationSelect) {
-    publicationSelect.addEventListener('change', applyFilters);
+    publicationSelect.addEventListener('change', () => { applyFilters(); pushFiltersToURL(); });
   }
 
   // Bind click handlers on static cards
