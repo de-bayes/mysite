@@ -7,6 +7,7 @@
   <url><loc>https://mccomb.ca/press</loc><priority>0.7</priority></url>
   <url><loc>https://mccomb.ca/resume</loc><priority>0.7</priority></url>
   <url><loc>https://mccomb.ca/racecalls</loc><priority>0.6</priority></url>
+  <url><loc>https://mccomb.ca/colophon</loc><priority>0.4</priority></url>
   <url><loc>https://mccomb.ca/writing/il9cast-postmortem/</loc><priority>0.7</priority></url>
   <url><loc>https://mccomb.ca/writing/median-voter-theory/</loc><priority>0.6</priority></url>
   <url><loc>https://mccomb.ca/writing/nsa-surveillance/</loc><priority>0.6</priority></url>

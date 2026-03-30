@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colophon | Ryan McComb</title>
+  <meta name="description" content="How this site is built: tech stack, tools, design decisions, and gear.">
+  <link rel="canonical" href="https://mccomb.ca/colophon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="author" content="Ryan McComb">
+  <meta property="og:title" content="Colophon | Ryan McComb">
+  <meta property="og:description" content="How this site is built: tech stack, tools, design decisions, and gear.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mccomb.ca/colophon">
+  <meta property="og:image" content="https://mccomb.ca/images/portrait.jpg">
+  <meta property="og:site_name" content="Ryan McComb">
+</head>
+<body>
+
+  <nav class="site-nav" id="site-nav"><a href="/" class="nav-name"><span class="brace">{</span><span class="ni">R</span><span class="nx nx1">yan</span><span class="nx nx2"> </span><span class="ni">J</span><span class="nx nx3">.</span><span class="nx nx4"> </span><span class="ni">M</span><span class="nx nx5">c</span><span class="ni">C</span><span class="nx nx6">omb</span><span class="brace">}</span></a><button type="button" class="nav-hamburger" aria-label="Open menu" aria-controls="nav-menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="nav-links" id="nav-menu" role="navigation" aria-label="Site"><a href="/about">About</a><a href="/experience">Experience</a><a href="/writing">Writing</a><a href="/press">Press</a><button class="cmdk-hint cmdk-hint-visible" id="cmdk-hint"><kbd>⌘K</kbd> Search</button></div></nav>
+
+  <main>
+    <div class="colophon-page">
+      <header class="colophon-header">
+        <h1>Colophon</h1>
+        <p>How this site is built, and the tools I use.</p>
+      </header>
+
+      <div class="colophon-body">
+        <section class="colophon-section">
+          <h2>This Site</h2>
+          <div class="colophon-grid">
+            <div class="colophon-item">
+              <span class="colophon-label">Stack</span>
+              <span class="colophon-value">HTML, CSS, vanilla JS. No frameworks.</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Hosting</span>
+              <span class="colophon-value">Vercel Edge Network. Every page is a static file served directly from CDN cache at the nearest edge location. No server-side rendering, no functions to spin up.</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Source</span>
+              <span class="colophon-value"><a href="https://github.com/de-bayes/mysite" target="_blank" rel="noopener">github.com/de-bayes/mysite</a></span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Typefaces</span>
+              <span class="colophon-value"><a href="https://rsms.me/inter/" target="_blank" rel="noopener">Inter</a> for body, <a href="https://fonts.google.com/specimen/DM+Sans" target="_blank" rel="noopener">DM Sans</a> for nav logo</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Analytics</span>
+              <span class="colophon-value">Vercel Web Analytics. No cookies, no tracking pixels.</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Search</span>
+              <span class="colophon-value">Custom command palette with fuzzy matching and typo tolerance</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="colophon-section">
+          <h2>Editor & Dev</h2>
+          <div class="colophon-grid">
+            <div class="colophon-item">
+              <span class="colophon-label">Editor</span>
+              <span class="colophon-value">Cursor</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">AI</span>
+              <span class="colophon-value">Claude Code for pair programming</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Version control</span>
+              <span class="colophon-value">Git + GitHub</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Runtime</span>
+              <span class="colophon-value">Node.js 24</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="colophon-section">
+          <h2>Hardware & Software</h2>
+          <div class="colophon-grid">
+            <div class="colophon-item">
+              <span class="colophon-label">Desktop</span>
+              <span class="colophon-value">Mac Mini M4</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Laptop</span>
+              <span class="colophon-value">MacBook Pro</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Browser</span>
+              <span class="colophon-value">Arc (~75%), Chrome (~25%)</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Notes</span>
+              <span class="colophon-value">Notion</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Terminal</span>
+              <span class="colophon-value">Apple Terminal</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="colophon-section">
+          <h2>Photography & Video</h2>
+          <div class="colophon-grid">
+            <div class="colophon-item">
+              <span class="colophon-label">Camera</span>
+              <span class="colophon-value">Canon EOS R8</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Lenses</span>
+              <span class="colophon-value">RF 35mm f/1.8, RF 50mm f/1.8, EF 85mm f/1.8, EF 70-300mm L</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Stills</span>
+              <span class="colophon-value">CR3 raw, edited in Lightroom and Photoshop</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Video</span>
+              <span class="colophon-value">4K 24fps, shot on Canon Log cinema gamut, graded in DaVinci Resolve</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="colophon-section">
+          <h2>Infrastructure</h2>
+          <div class="colophon-grid">
+            <div class="colophon-item">
+              <span class="colophon-label">Servers</span>
+              <span class="colophon-value">Railway</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Backend</span>
+              <span class="colophon-value">Node.js + Express</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Deployment</span>
+              <span class="colophon-value">Vercel for static, Railway for services</span>
+            </div>
+            <div class="colophon-item">
+              <span class="colophon-label">Domain</span>
+              <span class="colophon-value">Namecheap</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+  <p class="footer-copy">Ryan McComb &middot; Evanston, IL &middot; <a href="https://mccomb.ca" class="footer-link">mccomb.ca</a></p>
+</footer>
+
+  <script src="js/site-data.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/cmdk.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

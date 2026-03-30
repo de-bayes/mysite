@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page not found | Ryan McComb</title>
-  <meta name="description" content="Page not found. Bayes' rule toy: is Ryan a good programmer? Move the sliders to update the posterior.">
+  <title>404 | Ryan McComb</title>
+  <meta name="description" content="Page not found. Here's a Bayes' rule calculator instead.">
   <link rel="canonical" href="https://mccomb.ca/">
   <meta name="robots" content="noindex, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,65 +16,49 @@
   <link rel="icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="author" content="Ryan McComb">
-  <meta property="og:title" content="Page not found | Ryan McComb">
-  <meta property="og:description" content="Bayes theorem toy with sliders.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mccomb.ca/">
-  <meta property="og:image" content="https://mccomb.ca/images/portrait.jpg">
-  <meta property="og:site_name" content="Ryan McComb">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Page not found | Ryan McComb">
-  <meta name="twitter:description" content="Page not found. Bayes' rule toy: is Ryan a good programmer? Move the sliders to update the posterior.">
-  <meta name="twitter:creator" content="@RyanJMcComb">
-  <meta name="twitter:site" content="@RyanJMcComb">
-  <meta name="twitter:image" content="https://mccomb.ca/images/portrait.jpg">
 </head>
 <body>
 
   <nav class="site-nav" id="site-nav"><a href="/" class="nav-name"><span class="brace">{</span><span class="ni">R</span><span class="nx nx1">yan</span><span class="nx nx2"> </span><span class="ni">J</span><span class="nx nx3">.</span><span class="nx nx4"> </span><span class="ni">M</span><span class="nx nx5">c</span><span class="ni">C</span><span class="nx nx6">omb</span><span class="brace">}</span></a><button type="button" class="nav-hamburger" aria-label="Open menu" aria-controls="nav-menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="nav-links" id="nav-menu" role="navigation" aria-label="Site"><a href="/about">About</a><a href="/experience">Experience</a><a href="/writing">Writing</a><a href="/press">Press</a><button class="cmdk-hint cmdk-hint-visible" id="cmdk-hint"><kbd>⌘K</kbd> Search</button></div></nav>
 
-  <main class="not-found bayes-404-page" id="main-content">
-    <header class="bayes-404-header">
-      <p class="bayes-404-code" aria-hidden="true">404</p>
+  <main class="not-found error-404" id="main-content">
+    <header class="error-404-header">
+      <p class="error-404-code" aria-hidden="true">404</p>
       <h1>Page not found</h1>
-      <p class="bayes-404-lead">That URL is not on this site. Here is a small <strong>Bayes</strong> calculator instead.</p>
+      <p class="error-404-sub">That URL doesn't exist. Here's a Bayes calculator instead.</p>
     </header>
 
-    <section class="bayes-404" aria-labelledby="bayes-heading">
+    <section class="error-404-game" aria-labelledby="bayes-heading">
       <h2 id="bayes-heading">Is Ryan a good programmer?</h2>
-      <p class="bayes-404-copy">
-        Let <strong>G</strong> mean &ldquo;Ryan is a good programmer,&rdquo; and <strong>E</strong> the evidence (you opened this 404). Bayes&rsquo; rule maps your <em>prior</em> on <strong>G</strong> to a <em>posterior</em> after <strong>E</strong>:
-      </p>
-      <p class="bayes-formula" lang="en">
-        <span class="bayes-formula-main"><i>P</i>(<i>G</i> | <i>E</i>) = <i>P</i>(<i>E</i> | <i>G</i>) · <i>P</i>(<i>G</i>) / <i>P</i>(<i>E</i>)</span><br>
-        <span class="bayes-formula-sub">with <i>P</i>(<i>E</i>) = <i>P</i>(<i>E</i> | <i>G</i>)<i>P</i>(<i>G</i>) + <i>P</i>(<i>E</i> | ¬<i>G</i>)(1 − <i>P</i>(<i>G</i>))</span>
-      </p>
-      <p class="bayes-404-copy">
-        Each slider is 0 to 100%. The posterior and <i>P</i>(<i>E</i>) update as you move them.
-      </p>
+      <p class="error-404-game-desc">You just hit a 404. Use Bayes' rule to update your belief about whether that's evidence of bad programming.</p>
 
-      <div class="bayes-sliders">
+      <div class="bayes-compact">
         <div class="bayes-field">
-          <label for="bayes-prior">Prior <i>P</i>(<i>G</i>): how likely is it, before this page, that Ryan is a good programmer?</label>
-          <input type="range" id="bayes-prior" name="prior" min="0" max="100" value="30" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" aria-valuetext="30%">
+          <label for="bayes-prior">Prior belief Ryan is good <span class="bayes-val" id="val-prior">30%</span></label>
+          <input type="range" id="bayes-prior" min="0" max="100" value="30">
         </div>
         <div class="bayes-field">
-          <label for="bayes-peg">Likelihood <i>P</i>(<i>E</i> | <i>G</i>): if Ryan is a good programmer, how plausible is this 404?</label>
-          <input type="range" id="bayes-peg" name="peg" min="0" max="100" value="40" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-valuetext="40%">
+          <label for="bayes-peg">P(404 | good programmer) <span class="bayes-val" id="val-peg">40%</span></label>
+          <input type="range" id="bayes-peg" min="0" max="100" value="40">
         </div>
         <div class="bayes-field">
-          <label for="bayes-peng">Likelihood <i>P</i>(<i>E</i> | ¬<i>G</i>): if Ryan is not a good programmer, how plausible is this evidence?</label>
-          <input type="range" id="bayes-peng" name="peng" min="0" max="100" value="15" aria-valuemin="0" aria-valuemax="100" aria-valuenow="15" aria-valuetext="15%">
+          <label for="bayes-peng">P(404 | bad programmer) <span class="bayes-val" id="val-peng">15%</span></label>
+          <input type="range" id="bayes-peng" min="0" max="100" value="15">
         </div>
       </div>
 
-      <div class="bayes-results">
-        <p class="bayes-result-line"><strong>Posterior <i>P</i>(<i>G</i> | <i>E</i>):</strong> <span id="bayes-posterior">…</span></p>
-        <p class="bayes-result-line"><strong>Marginal <i>P</i>(<i>E</i>):</strong> <span id="bayes-pe">…</span></p>
-        <p id="bayes-live" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+      <div class="bayes-result-card">
+        <div class="bayes-result-row">
+          <span class="bayes-result-label">Posterior</span>
+          <span class="bayes-result-number" id="bayes-posterior">--</span>
+        </div>
+        <div class="bayes-result-row">
+          <span class="bayes-result-label">P(evidence)</span>
+          <span class="bayes-result-number bayes-result-secondary" id="bayes-pe">--</span>
+        </div>
       </div>
 
-      <p class="bayes-404-cta"><a href="/">Back to home</a></p>
+      <p class="error-404-cta"><a href="/">Back to home</a></p>
     </section>
   </main>
 
