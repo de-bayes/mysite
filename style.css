@@ -291,7 +291,8 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   width: calc(100% - 2rem);
   max-width: calc(100% - 2rem);
   margin: 0 auto;
-  height: 100vh;
+  height: calc(100vh - 4.25rem);
+  margin-top: 4.25rem;
   max-height: 820px;
   overflow: hidden;
   border-radius: 12px;
@@ -2135,7 +2136,6 @@ main, .site-footer { position: relative; z-index: 2; }
     height: calc(100svh - 4.25rem);
     width: calc(100% - 1rem);
     max-width: calc(100% - 1rem);
-    margin-top: 4.25rem;
   }
 
   .hero-img {
