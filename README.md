@@ -122,3 +122,4 @@ From [`package.json`](package.json): **express**, **express-rate-limit**, **helm
 
 - **Full stack:** run `node server.js` (or `npm start`) with persistent storage for `data/` or `/data` if you rely on race calls or resume edits from the live APIs.
 - **Static-only:** you can host the HTML/CSS/JS/assets on any static host, but **`/api/*`**, dynamic 404 routing, and admin/racecall/resume writes need the Node server (or a replacement that implements the same APIs).
+
