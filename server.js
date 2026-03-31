@@ -12,7 +12,7 @@ const app = express();
 if (NODE_ENV === 'production') {
     app.set('trust proxy', 1);
 }
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5001;
 const CLOUD_PASSWORD = process.env.CLOUD_PASSWORD;
 const DATA_DIR = fs.existsSync('/data') ? '/data' : process.env.VERCEL ? '/tmp/data' : path.join(__dirname, 'data');
 const RACECALLS_FILE = path.join(DATA_DIR, 'racecalls.json');
