@@ -1,5 +1,19 @@
-/* Fonts load via <link> in HTML (preconnect + stylesheet) for better performance */
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@1,300;1,600&display=swap');
+/* Self-hosted fonts to avoid network-dependent font swaps */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: block;
+  src: url('fonts/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: block;
+  src: url('fonts/dm-sans-latin.woff2') format('woff2');
+}
 
 /* Metric-adjusted fallbacks — match Inter/DM Sans dimensions so font swap causes zero layout shift */
 @font-face {
@@ -283,6 +297,13 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   border-radius: 12px;
 }
 
+/* Force rounding on all visible hero layers */
+.hero picture,
+.hero-img,
+.hero::after {
+  border-radius: inherit;
+}
+
 .hero-img {
   position: absolute;
   inset: 0;
@@ -445,7 +466,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .about-hero {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.05fr 0.95fr;
   gap: 3rem;
   align-items: end;
   padding: 6rem 0 0;
@@ -475,6 +496,12 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   position: relative;
 }
 
+.about-hero-photo picture {
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
 .about-hero-photo::before {
   content: '';
   position: absolute;
@@ -484,11 +511,13 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   pointer-events: none;
 }
 
-.about-hero-photo img {
+.about-hero-photo picture > img {
   width: 100%;
-  max-height: 560px;
+  max-height: 620px;
   object-fit: cover;
   object-position: center top;
+  transform: translateY(-24%) scale(1.80);
+  transform-origin: center top;
   border-radius: 10px;
   display: block;
   position: relative;
@@ -597,6 +626,13 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   position: relative;
 }
 
+.page-header-photo picture,
+.page-hero-photo picture {
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
 .page-header-photo::before {
   content: '';
   position: absolute;
@@ -610,7 +646,9 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   width: 100%;
   max-height: 480px;
   object-fit: cover;
-  object-position: center 25%;
+  object-position: center 20%;
+  transform: scale(1.12);
+  transform-origin: center top;
   border-radius: 10px;
   display: block;
   position: relative;
@@ -1695,7 +1733,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
    Premium Effects
    ======================================== */
 
-main, .site-nav, .site-footer { position: relative; z-index: 2; }
+main, .site-footer { position: relative; z-index: 2; }
 
 .char-reveal {
   display: inline-block;
@@ -2078,7 +2116,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
     top: 100%;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 120;
     background: rgba(26, 26, 29, 0.98);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
@@ -2094,13 +2132,15 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   h1 { font-size: 2rem; }
 
   .hero {
-    height: 100svh;
+    height: calc(100svh - 4.25rem);
     width: calc(100% - 1rem);
     max-width: calc(100% - 1rem);
+    margin-top: 4.25rem;
   }
 
   .hero-img {
-    object-position: 44% center;
+    /* Mobile framing tweak */
+    object-position: 38% center;
   }
 
   .hero-card {
