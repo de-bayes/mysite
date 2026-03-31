@@ -1695,7 +1695,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
    Premium Effects
    ======================================== */
 
-main, .site-nav, .site-footer { position: relative; z-index: 2; }
+main, .site-footer { position: relative; z-index: 2; }
 
 .char-reveal {
   display: inline-block;
@@ -2100,7 +2100,7 @@ main, .site-nav, .site-footer { position: relative; z-index: 2; }
   }
 
   .hero-img {
-    object-position: 60% center;
+    object-position: 72% center;
   }
 
   .hero-card {
