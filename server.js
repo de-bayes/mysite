@@ -53,6 +53,7 @@ function writeJSON(filePath, data) {
 }
 
 const CALLER_DESKS = ['ap', 'nyt', 'ddhq', 'votehub'];
+const VALID_RACE_TYPES = ['presidential', 'senate', 'house', 'governor', 'state_senate', 'state_house', 'other'];
 const CANONICAL_TOP_LEVEL_PATHS = new Set(['/about', '/experience', '/writing', '/press', '/racecalls', '/resume', '/admin']);
 
 function getWritingPages() {
@@ -194,8 +195,7 @@ app.post('/api/racecalls', apiWriteLimiter, requireAuth, (req, res) => {
     if (!['correct', 'incorrect', 'pending'].includes(result)) return res.status(400).json({ error: 'Result must be correct, incorrect, or pending' });
 
     // New fields
-    const validRaceTypes = ['presidential', 'senate', 'house', 'governor', 'state_senate', 'state_house', 'other'];
-    const raceType = validRaceTypes.includes(req.body.raceType) ? req.body.raceType : 'other';
+    const raceType = VALID_RACE_TYPES.includes(req.body.raceType) ? req.body.raceType : 'other';
     const rawParty = String(req.body.primaryParty || '').trim().toLowerCase();
     const primaryParty = rawParty === 'dem' || rawParty === 'rep' ? rawParty : '';
     const isPrimary = !!req.body.isPrimary || primaryParty !== '';
@@ -231,8 +231,7 @@ app.put('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
     if (req.body.notes !== undefined) calls[idx].notes = String(req.body.notes).trim().slice(0, 500);
 
     // New fields
-    const validRaceTypes = ['presidential', 'senate', 'house', 'governor', 'state_senate', 'state_house', 'other'];
-    if (req.body.raceType !== undefined && validRaceTypes.includes(req.body.raceType)) {
+    if (req.body.raceType !== undefined && VALID_RACE_TYPES.includes(req.body.raceType)) {
         calls[idx].raceType = req.body.raceType;
     }
     if (req.body.isPrimary !== undefined) calls[idx].isPrimary = !!req.body.isPrimary;
@@ -333,10 +332,6 @@ app.get(/^\/writing\/([^/]+)\/?$/, (req, res, next) => {
     return res.sendFile(pagePath);
 });
 
-app.get('/sitemap.xml', (_req, res) => res.sendFile(path.join(__dirname, 'sitemap.xml')));
-app.get('/robots.txt', (_req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
-
-app.get('/now', (_req, res) => res.redirect(301, '/'));
 app.get('/sitemap.xml', (_req, res) => res.sendFile(path.join(__dirname, 'sitemap.xml')));
 app.get('/robots.txt', (_req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
 
