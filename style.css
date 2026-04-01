@@ -3,7 +3,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 300 700;
-  font-display: block;
+  font-display: swap;
   src: url('fonts/inter-latin.woff2') format('woff2');
 }
 
@@ -11,7 +11,7 @@
   font-family: 'DM Sans';
   font-style: normal;
   font-weight: 300 700;
-  font-display: block;
+  font-display: swap;
   src: url('fonts/dm-sans-latin.woff2') format('woff2');
 }
 
@@ -61,6 +61,10 @@
   --fs-body-lg: 1.05rem;
   --max-width: 1100px;
   --radius: 8px;
+  --accent-orange: #e06b1f;
+  --shadow-sm: 0 4px 20px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.25);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
 }
 
 /* ========================================
@@ -69,8 +73,8 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-::selection { background: #e06b1f; color: #fff; }
-::-moz-selection { background: #e06b1f; color: #fff; }
+::selection { background: var(--accent-orange); color: #fff; }
+::-moz-selection { background: var(--accent-orange); color: #fff; }
 
 html { scroll-behavior: smooth; }
 
@@ -420,7 +424,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 .topic-link-card:hover {
   text-decoration: none;
   border-color: var(--border-hover);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
@@ -757,6 +761,8 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
    Animations
    ======================================== */
 
+/* fadeSlideUp: larger entrance (20px) for scroll-in reveals
+   fadeIn:      subtler entrance (8px) for lighter transitions */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -889,7 +895,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .timeline-card:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
 }
 
@@ -988,7 +994,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .edu-card:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+  box-shadow: var(--shadow-lg);
 }
 
 .education-joke {
@@ -1162,7 +1168,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .writing-card-outline:hover .writing-card {
   border-color: var(--border-hover);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
@@ -1297,7 +1303,7 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .contact-item:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-3px);
   text-decoration: none;
 }
@@ -1334,31 +1340,19 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 
 .copied-toast.show { opacity: 1; }
 
-/* Contact cards: brand primary colour washes in on hover */
-.contact-item--twitter,
-.contact-item--linkedin,
-.contact-item--manifold {
+/* Contact cards: brand primary colour washes in on hover.
+   Each modifier sets --contact-brand; shared rules use :is() to avoid repetition. */
+:is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold) {
   position: relative;
   overflow: hidden;
   isolation: isolate;
 }
 
-.contact-item--twitter {
-  --contact-brand: #1da1f2;
-}
+.contact-item--twitter  { --contact-brand: #1da1f2; }
+.contact-item--linkedin { --contact-brand: #0a66c2; }
+.contact-item--manifold { --contact-brand: #7032e2; }
 
-.contact-item--linkedin {
-  --contact-brand: #0a66c2;
-}
-
-/* Manifold card wash (brand purple) */
-.contact-item--manifold {
-  --contact-brand: #7032e2;
-}
-
-.contact-item--twitter::before,
-.contact-item--linkedin::before,
-.contact-item--manifold::before {
+:is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold)::before {
   content: '';
   position: absolute;
   top: -5%;
@@ -1373,79 +1367,42 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
   pointer-events: none;
 }
 
-.contact-item--twitter .contact-label,
-.contact-item--twitter .contact-value,
-.contact-item--linkedin .contact-label,
-.contact-item--linkedin .contact-value,
-.contact-item--manifold .contact-label,
-.contact-item--manifold .contact-value {
+:is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold) :is(.contact-label, .contact-value) {
   position: relative;
   z-index: 1;
   transition: color 0.35s ease 0.12s;
 }
 
-.contact-item--twitter:hover,
-.contact-item--twitter:focus-visible,
-.contact-item--linkedin:hover,
-.contact-item--linkedin:focus-visible,
-.contact-item--manifold:hover,
-.contact-item--manifold:focus-visible {
+:is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold):is(:hover, :focus-visible) {
   border-color: var(--border-hover);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.28);
   transform: translateY(-3px);
   text-decoration: none;
 }
 
-.contact-item--twitter:hover::before,
-.contact-item--twitter:focus-visible::before,
-.contact-item--linkedin:hover::before,
-.contact-item--linkedin:focus-visible::before,
-.contact-item--manifold:hover::before,
-.contact-item--manifold:focus-visible::before {
+:is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold):is(:hover, :focus-visible)::before {
   transform: translate3d(0, 0, 0) skewX(-14deg);
 }
 
-.contact-item--twitter:hover .contact-label,
-.contact-item--twitter:focus-visible .contact-label,
-.contact-item--linkedin:hover .contact-label,
-.contact-item--linkedin:focus-visible .contact-label,
-.contact-item--manifold:hover .contact-label,
-.contact-item--manifold:focus-visible .contact-label {
+:is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold):is(:hover, :focus-visible) .contact-label {
   color: rgba(255, 255, 255, 0.85);
 }
 
-.contact-item--twitter:hover .contact-value,
-.contact-item--twitter:focus-visible .contact-value,
-.contact-item--linkedin:hover .contact-value,
-.contact-item--linkedin:focus-visible .contact-value,
-.contact-item--manifold:hover .contact-value,
-.contact-item--manifold:focus-visible .contact-value {
+:is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold):is(:hover, :focus-visible) .contact-value {
   color: #fff;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-item--twitter::before,
-  .contact-item--linkedin::before,
-  .contact-item--manifold::before {
+  :is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold)::before {
     transition: none;
     transform: translate3d(-100%, 0, 0) skewX(-14deg);
   }
 
-  .contact-item--twitter:hover::before,
-  .contact-item--twitter:focus-visible::before,
-  .contact-item--linkedin:hover::before,
-  .contact-item--linkedin:focus-visible::before,
-  .contact-item--manifold:hover::before,
-  .contact-item--manifold:focus-visible::before {
+  :is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold):is(:hover, :focus-visible)::before {
     transform: translate3d(0, 0, 0) skewX(-14deg);
   }
 
-  .contact-item--twitter .contact-label,
-  .contact-item--twitter .contact-value,
-  .contact-item--linkedin .contact-label,
-  .contact-item--linkedin .contact-value,
-  .contact-item--manifold .contact-label,
-  .contact-item--manifold .contact-value {
+  :is(.contact-item--twitter, .contact-item--linkedin, .contact-item--manifold) :is(.contact-label, .contact-value) {
     transition: none;
   }
 }
@@ -1545,12 +1502,12 @@ h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
 .bayes-field input[type="range"] {
   width: 100%;
   height: 0.5rem;
-  accent-color: #e06b1f;
+  accent-color: var(--accent-orange);
   cursor: pointer;
 }
 
 .bayes-field input[type="range"]:focus-visible {
-  outline: 2px solid #e06b1f;
+  outline: 2px solid var(--accent-orange);
   outline-offset: 3px;
 }
 
@@ -2264,7 +2221,7 @@ main, .site-footer { position: relative; z-index: 2; }
   .hero-img { position: static; height: auto; }
   .hero-card { position: static; max-width: none; opacity: 1; }
   .hero::after { display: none; }
-  .timeline-entry { opacity: 1 !important; transform: none !important; }
+  .timeline-entry { opacity: 1; transform: none; }
   a { color: #333; }
   a::after { content: ' (' attr(href) ')'; font-size: 0.8em; color: #666; }
 }
@@ -2373,12 +2330,7 @@ main, .site-footer { position: relative; z-index: 2; }
 
 .now-card-outline {
   opacity: 0;
-  animation: nowCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes nowCardIn {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .now-card-inner {
@@ -2396,7 +2348,7 @@ main, .site-footer { position: relative; z-index: 2; }
 
 .now-card-outline:hover .now-card-inner {
   border-color: var(--border-hover);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
 }
 
@@ -2447,7 +2399,7 @@ main, .site-footer { position: relative; z-index: 2; }
 
 .tweet-card:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
   text-decoration: none;
   background-image: none;
@@ -2749,7 +2701,7 @@ main, .site-footer { position: relative; z-index: 2; }
 
 .rc-call-card:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
 }
 
@@ -2967,7 +2919,7 @@ main, .site-footer { position: relative; z-index: 2; }
 
 .rc-preview:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
   text-decoration: none;
 }
@@ -3144,7 +3096,7 @@ main, .site-footer { position: relative; z-index: 2; }
 .resume-inner .resume-header {
   margin-bottom: 1.35rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(224, 107, 31, 0.65);
+  border-bottom: 2px solid rgba(224, 107, 31, 0.65); /* --accent-orange at 65% opacity */
 }
 
 .resume-inner .resume-name {
@@ -3287,7 +3239,7 @@ main, .site-footer { position: relative; z-index: 2; }
   .site-footer,
   .resume-page-header,
   .flag-footer {
-    display: none !important;
+    display: none;
   }
 
   .resume-main {
@@ -3296,7 +3248,7 @@ main, .site-footer { position: relative; z-index: 2; }
   }
 
   body {
-    background: #fff !important;
+    background: #fff;
   }
 
   .resume-paper {
@@ -3312,25 +3264,25 @@ main, .site-footer { position: relative; z-index: 2; }
   .resume-inner .edu-details,
   .resume-inner .activities-list,
   .resume-inner .resume-skills dd {
-    color: #222 !important;
+    color: #222;
   }
 
   .resume-inner .resume-name,
   .resume-inner .resume-item-title {
-    color: #111 !important;
+    color: #111;
   }
 
   .resume-inner .resume-section-title {
-    color: #333 !important;
-    border-bottom-color: #ccc !important;
+    color: #333;
+    border-bottom-color: #ccc;
   }
 
   .resume-inner .resume-header {
-    border-bottom-color: #e06b1f !important;
+    border-bottom-color: var(--accent-orange);
   }
 
   .resume-inner a {
-    color: #111 !important;
-    text-decoration: none !important;
+    color: #111;
+    text-decoration: none;
   }
 }

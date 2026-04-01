@@ -1,8 +1,10 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
+const crypto = require('crypto');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const fsp = fs.promises;
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
@@ -20,20 +22,34 @@ const WRITING_DIR = path.join(__dirname, 'writing');
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
-function readJSON(filePath, fallback) {
+function readJSONSync(filePath, fallback) {
     try {
         if (fs.existsSync(filePath)) return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch { /* corrupted file, return fallback */ }
+    } catch (err) { console.error(`Failed to read/parse JSON file ${filePath}:`, err); }
     return fallback;
 }
 
-function writeJSON(filePath, data) {
+function writeJSONSync(filePath, data) {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+async function readJSON(filePath, fallback) {
+    try {
+        const data = await fsp.readFile(filePath, 'utf8');
+        return JSON.parse(data);
+    } catch (err) {
+        if (err.code !== 'ENOENT') console.error(`Failed to read/parse JSON file ${filePath}:`, err);
+    }
+    return fallback;
+}
+
+async function writeJSON(filePath, data) {
+    await fsp.writeFile(filePath, JSON.stringify(data, null, 2));
 }
 
 // Seed race calls if file doesn't exist
 if (!fs.existsSync(RACECALLS_FILE)) {
-    writeJSON(RACECALLS_FILE, [{
+    writeJSONSync(RACECALLS_FILE, [{
         id: 'm7x8k1a2b3',
         race: 'IL-09 Dem Primary',
         date: '2026-03-17T00:00:00.000Z',
@@ -90,14 +106,32 @@ function requireAuth(req, res, next) {
         return res.status(503).json({ error: 'Cloud storage not configured' });
     }
     const auth = req.headers.authorization;
-    if (!auth || !auth.startsWith('Bearer ') || auth.slice(7) !== CLOUD_PASSWORD) {
+    if (!auth || !auth.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const token = auth.slice(7);
+    if (token.length !== CLOUD_PASSWORD.length ||
+        !crypto.timingSafeEqual(Buffer.from(token), Buffer.from(CLOUD_PASSWORD))) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
     next();
 }
 
 app.use(helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            imgSrc: ["'self'"],
+            fontSrc: ["'self'"],
+            connectSrc: ["'self'"],
+            objectSrc: ["'none'"],
+            frameAncestors: ["'none'"],
+            baseUri: ["'self'"],
+            formAction: ["'self'"]
+        }
+    },
     crossOriginEmbedderPolicy: false
 }));
 
@@ -135,7 +169,9 @@ app.post('/api/auth', authLimiter, (req, res) => {
     if (!CLOUD_PASSWORD) {
         return res.status(503).json({ error: 'Cloud storage not configured' });
     }
-    if (req.body.password === CLOUD_PASSWORD) {
+    const submitted = String(req.body.password || '');
+    if (submitted.length === CLOUD_PASSWORD.length &&
+        crypto.timingSafeEqual(Buffer.from(submitted), Buffer.from(CLOUD_PASSWORD))) {
         return res.json({ ok: true });
     }
     return res.status(401).json({ error: 'Wrong password' });
@@ -146,9 +182,9 @@ app.post('/api/auth', authLimiter, (req, res) => {
 // =============================================
 const RESUME_FILE = path.join(__dirname, 'resume.html');
 
-app.get('/api/resume', requireAuth, (req, res) => {
+app.get('/api/resume', requireAuth, async (req, res) => {
     try {
-        const html = fs.readFileSync(RESUME_FILE, 'utf8');
+        const html = await fsp.readFile(RESUME_FILE, 'utf8');
         // Extract just the resume-inner content
         // resume-inner closes, then resume-paper + resume-shell; optional </main> before flag-footer (site chrome)
         const resumeInnerEnd = /<div class="resume-inner">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>\s*(?:<\/main>\s*)?<div class="flag-footer">/;
@@ -157,21 +193,23 @@ app.get('/api/resume', requireAuth, (req, res) => {
             return res.json({ content: match[1].trim() });
         }
         return res.json({ content: '' });
-    } catch {
+    } catch (err) {
+        console.error('Failed to read resume:', err);
         return res.status(500).json({ error: 'Failed to read resume' });
     }
 });
 
-app.put('/api/resume', apiWriteLimiter, requireAuth, (req, res) => {
+app.put('/api/resume', apiWriteLimiter, requireAuth, async (req, res) => {
     const content = String(req.body.content || '').trim();
     if (!content) return res.status(400).json({ error: 'Content required' });
     try {
-        let html = fs.readFileSync(RESUME_FILE, 'utf8');
+        let html = await fsp.readFile(RESUME_FILE, 'utf8');
         const resumePutRe = /(<div class="resume-inner">)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>\s*(?:<\/main>\s*)?<div class="flag-footer">)/;
         html = html.replace(resumePutRe, '$1\n' + content + '\n            $3');
-        fs.writeFileSync(RESUME_FILE, html);
+        await fsp.writeFile(RESUME_FILE, html);
         return res.json({ ok: true });
     } catch (err) {
+        console.error('Failed to save resume:', err);
         return res.status(500).json({ error: 'Failed to save resume' });
     }
 });
@@ -179,12 +217,12 @@ app.put('/api/resume', apiWriteLimiter, requireAuth, (req, res) => {
 // =============================================
 // RACE CALL RECORDS
 // =============================================
-app.get('/api/racecalls', (req, res) => {
-    const calls = readJSON(RACECALLS_FILE, []);
+app.get('/api/racecalls', async (req, res) => {
+    const calls = await readJSON(RACECALLS_FILE, []);
     return res.json(calls);
 });
 
-app.post('/api/racecalls', apiWriteLimiter, requireAuth, (req, res) => {
+app.post('/api/racecalls', apiWriteLimiter, requireAuth, async (req, res) => {
     const race = String(req.body.race || '').trim().slice(0, 200);
     const date = String(req.body.date || '').trim();
     const calledFor = String(req.body.calledFor || '').trim().slice(0, 100);
@@ -206,21 +244,21 @@ app.post('/api/racecalls', apiWriteLimiter, requireAuth, (req, res) => {
     const callers = callersFromFirstCaller(firstCaller);
     const sourceUrl = String(req.body.sourceUrl || '').trim().slice(0, 500);
 
-    const calls = readJSON(RACECALLS_FILE, []);
+    const calls = await readJSON(RACECALLS_FILE, []);
     calls.unshift({
-        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        id: crypto.randomUUID(),
         race, date, calledFor, result, notes,
         raceType, isPrimary, primaryParty, state, margin, callers, firstCaller,
         sourceUrl,
         created: new Date().toISOString()
     });
     calls.sort((a, b) => new Date(b.date) - new Date(a.date));
-    writeJSON(RACECALLS_FILE, calls);
+    await writeJSON(RACECALLS_FILE, calls);
     return res.json({ ok: true });
 });
 
-app.put('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
-    const calls = readJSON(RACECALLS_FILE, []);
+app.put('/api/racecalls/:id', apiWriteLimiter, requireAuth, async (req, res) => {
+    const calls = await readJSON(RACECALLS_FILE, []);
     const idx = calls.findIndex(c => c.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
 
@@ -255,15 +293,15 @@ app.put('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
         calls[idx].sourceUrl = String(req.body.sourceUrl || '').trim().slice(0, 500);
     }
 
-    writeJSON(RACECALLS_FILE, calls);
+    await writeJSON(RACECALLS_FILE, calls);
     return res.json({ ok: true });
 });
 
-app.delete('/api/racecalls/:id', apiWriteLimiter, requireAuth, (req, res) => {
-    const calls = readJSON(RACECALLS_FILE, []);
+app.delete('/api/racecalls/:id', apiWriteLimiter, requireAuth, async (req, res) => {
+    const calls = await readJSON(RACECALLS_FILE, []);
     const filtered = calls.filter(c => c.id !== req.params.id);
     if (filtered.length === calls.length) return res.status(404).json({ error: 'Not found' });
-    writeJSON(RACECALLS_FILE, filtered);
+    await writeJSON(RACECALLS_FILE, filtered);
     return res.json({ ok: true });
 });
 
