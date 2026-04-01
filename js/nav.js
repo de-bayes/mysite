@@ -95,10 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Scroll shadow on nav
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 10);
-  }, { passive: true });
+  // Scroll shadow on nav (skip on home page where nav is not fixed)
+  if (!document.body.classList.contains('home')) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+  }
 
   // Smooth scroll for anchor links on same page
   nav.querySelectorAll('a[href^="/#"]').forEach(a => {
