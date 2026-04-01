@@ -20,6 +20,17 @@ const WRITING_DIR = path.join(__dirname, 'writing');
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
+function readJSON(filePath, fallback) {
+    try {
+        if (fs.existsSync(filePath)) return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch { /* corrupted file, return fallback */ }
+    return fallback;
+}
+
+function writeJSON(filePath, data) {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
 // Seed race calls if file doesn't exist
 if (!fs.existsSync(RACECALLS_FILE)) {
     writeJSON(RACECALLS_FILE, [{
@@ -39,17 +50,6 @@ if (!fs.existsSync(RACECALLS_FILE)) {
         primaryParty: '',
         created: '2026-03-17T00:00:00.000Z'
     }]);
-}
-
-function readJSON(filePath, fallback) {
-    try {
-        if (fs.existsSync(filePath)) return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch { /* corrupted file, return fallback */ }
-    return fallback;
-}
-
-function writeJSON(filePath, data) {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
 const CALLER_DESKS = ['ap', 'nyt', 'ddhq', 'votehub'];

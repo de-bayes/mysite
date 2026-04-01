@@ -3,7 +3,6 @@
   'use strict';
   const isMobile = window.matchMedia('(hover: none)').matches;
 
-
   // ===== NUMBER COUNTER: Animate data-count values on scroll =====
   function initCounters() {
     const els = document.querySelectorAll('[data-count]');

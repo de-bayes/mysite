@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Bind click handlers on static cards
   bindCardClicks();
 
-
   function parseCardDate(str) {
     if (!str) return new Date(0);
     if (/^\d{4}-\d{2}$/.test(str)) str = str + '-01';
