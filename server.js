@@ -437,11 +437,20 @@ app.get('/api/og', apiLimiter, async (req, res) => {
 let _embeddings = null;
 async function getEmbeddings() {
     if (_embeddings) return _embeddings;
-    // Read from repo-committed static file, not ephemeral DATA_DIR
     const embFile = path.join(__dirname, 'data', 'embeddings.json');
     _embeddings = await readJSON(embFile, null);
     return _embeddings;
 }
+
+let _embeddingPipeline = null;
+async function getEmbeddingPipeline() {
+    if (_embeddingPipeline) return _embeddingPipeline;
+    const { pipeline } = await import('@huggingface/transformers');
+    _embeddingPipeline = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', { dtype: 'q8' });
+    return _embeddingPipeline;
+}
+// Warm up in background so first search isn't slow
+getEmbeddingPipeline().catch(() => {});
 
 function cosineSimilarity(a, b) {
     let dot = 0, normA = 0, normB = 0;
@@ -457,21 +466,13 @@ app.get('/api/search', apiLimiter, async (req, res) => {
     const q = String(req.query.q || '').slice(0, 200).trim();
     if (!q) return res.json([]);
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) return res.json([]);
-
     const embeddings = await getEmbeddings();
     if (!embeddings || !embeddings.items || !embeddings.items.length) return res.json([]);
 
     try {
-        const embResp = await fetch('https://api.openai.com/v1/embeddings', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ model: 'text-embedding-3-small', input: q, dimensions: 512 })
-        });
-        if (!embResp.ok) return res.json([]);
-        const embData = await embResp.json();
-        const queryVec = embData.data[0].embedding;
+        const model = await getEmbeddingPipeline();
+        const out = await model(q, { pooling: 'mean', normalize: true });
+        const queryVec = Array.from(out.data);
 
         const scored = embeddings.items.map(item => ({
             ...item,

@@ -14,18 +14,6 @@ import { dirname, join } from 'path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
-if (process.env.NODE_ENV !== 'production') {
-    try {
-        const { config } = await import('dotenv');
-        config({ path: join(ROOT, '.env') });
-    } catch {}
-}
-
-const API_KEY = process.env.OPENAI_API_KEY;
-if (!API_KEY) {
-    console.error('Error: OPENAI_API_KEY is not set.');
-    process.exit(1);
-}
 
 // All searchable content (mirrors cmdk.js INDEX, minus pre-computed _text fields)
 const siteDataPath = join(ROOT, 'js', 'site-data.js');
@@ -69,44 +57,32 @@ const ITEMS = [
 // Build embed texts
 const texts = ITEMS.map(item => [item.title, item.desc, item.keys].filter(Boolean).join(' '));
 
+console.log('Loading embedding model (first run downloads ~23MB)...');
+const { pipeline } = await import('@huggingface/transformers');
+const extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', { dtype: 'q8' });
+
 console.log(`Embedding ${texts.length} items...`);
-
-const resp = await fetch('https://api.openai.com/v1/embeddings', {
-    method: 'POST',
-    headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        model: 'text-embedding-3-small',
-        input: texts,
-        dimensions: 512,
-    }),
-});
-
-if (!resp.ok) {
-    const err = await resp.text();
-    console.error('OpenAI API error:', resp.status, err);
-    process.exit(1);
+const itemEmbeddings = [];
+for (let i = 0; i < texts.length; i++) {
+    const out = await extractor(texts[i], { pooling: 'mean', normalize: true });
+    itemEmbeddings.push(Array.from(out.data));
+    process.stdout.write(`  ${i + 1}/${texts.length}\r`);
 }
-
-const data = await resp.json();
-const embeddings = data.data; // [{index, embedding}]
+console.log('');
 
 const output = {
-    model: 'text-embedding-3-small',
-    dimensions: 512,
+    model: 'Xenova/all-MiniLM-L6-v2',
+    dimensions: 384,
     generated: new Date().toISOString(),
     items: ITEMS.map((item, i) => ({
         title: item.title,
         desc: item.desc,
         url: item.url,
         type: item.type,
-        embedding: embeddings[i].embedding,
+        embedding: itemEmbeddings[i],
     })),
 };
 
 const outPath = join(ROOT, 'data', 'embeddings.json');
 writeFileSync(outPath, JSON.stringify(output));
 console.log(`Wrote ${output.items.length} embeddings to ${outPath}`);
-console.log(`Usage: ${data.usage.total_tokens} tokens`);
