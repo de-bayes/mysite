@@ -433,64 +433,6 @@ app.get('/api/og', apiLimiter, async (req, res) => {
     }
 });
 
-// ── Semantic Search ───────────────────────────────────────────────────────────
-let _embeddings = null;
-async function getEmbeddings() {
-    if (_embeddings) return _embeddings;
-    const embFile = path.join(__dirname, 'data', 'embeddings.json');
-    _embeddings = await readJSON(embFile, null);
-    return _embeddings;
-}
-
-let _embeddingPipeline = null;
-async function getEmbeddingPipeline() {
-    if (_embeddingPipeline) return _embeddingPipeline;
-    const { pipeline } = await import('@huggingface/transformers');
-    _embeddingPipeline = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', { dtype: 'q8' });
-    return _embeddingPipeline;
-}
-// Warm up in background so first search isn't slow
-getEmbeddingPipeline().catch(() => {});
-
-function cosineSimilarity(a, b) {
-    let dot = 0, normA = 0, normB = 0;
-    for (let i = 0; i < a.length; i++) {
-        dot += a[i] * b[i];
-        normA += a[i] * a[i];
-        normB += b[i] * b[i];
-    }
-    return dot / (Math.sqrt(normA) * Math.sqrt(normB));
-}
-
-app.get('/api/search', apiLimiter, async (req, res) => {
-    const q = String(req.query.q || '').slice(0, 200).trim();
-    if (!q) return res.json([]);
-
-    const embeddings = await getEmbeddings();
-    if (!embeddings || !embeddings.items || !embeddings.items.length) return res.json([]);
-
-    try {
-        const model = await getEmbeddingPipeline();
-        const out = await model(q, { pooling: 'mean', normalize: true });
-        const queryVec = Array.from(out.data);
-
-        const scored = embeddings.items.map(item => ({
-            ...item,
-            score: cosineSimilarity(queryVec, item.embedding)
-        }));
-        scored.sort((a, b) => b.score - a.score);
-
-        const results = scored
-            .filter(r => r.score > 0.30)
-            .slice(0, 8)
-            .map(({ title, desc, url, type, score }) => ({ title, desc, url, type, score }));
-
-        return res.json(results);
-    } catch (err) {
-        console.error('Search error:', err);
-        return res.json([]);
-    }
-});
 
 const BLOCKED_FILES = new Set(['server.js', 'package.json', 'package-lock.json', 'resume.md', 'style.md', '.env']);
 app.use((req, res, next) => {

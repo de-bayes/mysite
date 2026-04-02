@@ -1948,13 +1948,6 @@ main, .site-footer { position: relative; z-index: 2; }
   text-overflow: ellipsis;
 }
 
-.cmdk-ai-badge {
-  font-size: 0.6em;
-  color: rgba(255, 255, 255, 0.3);
-  margin-left: 0.35em;
-  vertical-align: middle;
-}
-
 .cmdk-item-desc {
   font-size: var(--fs-sm);
   color: rgba(255, 255, 255, 0.35);

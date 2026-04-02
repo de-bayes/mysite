@@ -4,11 +4,9 @@
   "scripts": {
     "start": "node server.js",
     "seo:inject": "node scripts/seo-inject.mjs",
-    "gen-embeddings": "node scripts/gen-embeddings.mjs",
     "test": "node --test"
   },
   "dependencies": {
-    "@huggingface/transformers": "^3.6.0",
     "@resvg/resvg-js": "^2.6.2",
     "express": "^4.21.0",
     "express-rate-limit": "^8.3.1",

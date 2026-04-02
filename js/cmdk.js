@@ -226,6 +226,51 @@
     return { score: score };
   }
 
+  var SYNONYMS = {
+    'vote': ['election', 'ballot', 'primary', 'race'],
+    'voting': ['election', 'ballot', 'primary', 'race'],
+    'elect': ['vote', 'ballot', 'primary', 'race'],
+    'election': ['vote', 'ballot', 'primary', 'race'],
+    'elections': ['vote', 'ballot', 'primary', 'race'],
+    'predict': ['forecast', 'probability', 'projection'],
+    'prediction': ['forecast', 'probability', 'markets'],
+    'predictions': ['forecast', 'probability', 'markets'],
+    'forecast': ['predict', 'probability', 'projection'],
+    'forecasting': ['predict', 'probability', 'markets'],
+    'market': ['kalshi', 'manifold', 'prediction', 'forecast', 'betting'],
+    'markets': ['kalshi', 'manifold', 'prediction', 'forecast', 'betting'],
+    'il9': ['illinois', '9th', 'congressional', 'district'],
+    'illinois': ['il9', 'congressional', 'district'],
+    'primary': ['election', 'vote', 'democrat', 'democratic'],
+    'democrat': ['democratic', 'primary', 'election'],
+    'democratic': ['democrat', 'primary', 'election'],
+    'age': ['generational', 'young', 'youth', 'generation'],
+    'generational': ['age', 'young', 'youth'],
+    'data': ['science', 'analysis', 'statistics'],
+    'photo': ['photography', 'photographer', 'sports'],
+    'photography': ['photo', 'photographer', 'sports'],
+    'sports': ['photography', 'ultimate', 'frisbee'],
+    'podcast': ['project', '2028', 'politics'],
+    'student': ['eths', 'evanston', 'school', 'fellow'],
+    'eths': ['evanston', 'school', 'student'],
+    'evanston': ['eths', 'school', 'student'],
+    'write': ['essay', 'article', 'writing'],
+    'writing': ['essay', 'article'],
+    'essay': ['writing', 'article'],
+  };
+
+  function expandQueryWords(query) {
+    var words = query.toLowerCase().split(/\s+/).filter(Boolean);
+    var extra = [];
+    words.forEach(function (w) {
+      var syns = SYNONYMS[w];
+      if (syns) syns.forEach(function (s) {
+        if (words.indexOf(s) === -1 && extra.indexOf(s) === -1) extra.push(s);
+      });
+    });
+    return extra.length ? query + ' ' + extra.join(' ') : query;
+  }
+
   function search(query) {
     if (!query) {
       var recent = getRecent();
@@ -248,10 +293,22 @@
       return INDEX.filter(function (e) { return e.type === 'Pages'; });
     }
 
+    var expandedQuery = expandQueryWords(query);
+    var seen = {};
     var results = [];
     for (var i = 0; i < INDEX.length; i++) {
       var m = scoreEntry(query, INDEX[i]);
-      if (m) results.push({ entry: INDEX[i], score: m.score });
+      if (m) {
+        seen[INDEX[i].url] = true;
+        results.push({ entry: INDEX[i], score: m.score });
+      }
+    }
+    if (expandedQuery !== query) {
+      for (var i = 0; i < INDEX.length; i++) {
+        if (seen[INDEX[i].url]) continue;
+        var me = scoreEntry(expandedQuery, INDEX[i]);
+        if (me) results.push({ entry: INDEX[i], score: me.score * 0.35 });
+      }
     }
 
     results.sort(function (a, b) { return b.score - a.score; });
@@ -334,50 +391,6 @@
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  // --- Semantic search (augments keyword results asynchronously) ---
-  var semanticTimer = null;
-  var semanticResults = [];
-  var keywordScoredResults = [];
-
-  function fetchSemantic(query) {
-    fetch('/api/search?q=' + encodeURIComponent(query))
-      .then(function (r) { return r.ok ? r.json() : []; })
-      .then(function (results) {
-        if (query !== currentQuery || !isOpen) return; // stale or closed
-        if (!results.length) return;
-
-        // Build lookup maps
-        var semByUrl = {};
-        results.forEach(function (s) { semByUrl[s.url] = s; });
-
-        var maxKeyScore = 0;
-        keywordScoredResults.forEach(function (r) { if (r.score > maxKeyScore) maxKeyScore = r.score; });
-        if (!maxKeyScore) maxKeyScore = 1;
-
-        // Keyword results with optional semantic boost
-        var merged = keywordScoredResults.map(function (r) {
-          var sem = semByUrl[r.entry.url];
-          var normKey = r.score / maxKeyScore;
-          return { entry: r.entry, combined: normKey * 0.6 + (sem ? sem.score * 0.4 : 0) };
-        });
-
-        // Novel semantic-only results (AI surfaced, not in keyword index)
-        var keyUrls = new Set(keywordScoredResults.map(function (r) { return r.entry.url; }));
-        results.forEach(function (s) {
-          if (!keyUrls.has(s.url)) {
-            merged.push({
-              entry: { type: s.type || 'Related', title: s.title, desc: s.desc || '', url: s.url, _aiResult: true },
-              combined: s.score * 0.4
-            });
-          }
-        });
-
-        merged.sort(function (a, b) { return b.combined - a.combined; });
-        render(merged.map(function (r) { return r.entry; }));
-      })
-      .catch(function () {});
-  }
-
   // --- Render ---
   var activeIndex = 0;
   var currentItems = [];
@@ -417,7 +430,7 @@
           + (isExternal ? ' target="_blank" rel="noopener"' : '')
           + '>';
         html += '<div class="cmdk-item-main">';
-        html += '<span class="cmdk-item-title">' + highlightTitle(e.title, currentQuery) + (e._aiResult ? '<span class="cmdk-ai-badge">✦</span>' : '') + '</span>';
+        html += '<span class="cmdk-item-title">' + highlightTitle(e.title, currentQuery) + '</span>';
         html += '<span class="cmdk-item-desc">' + escapeHtml(e.desc) + '</span>';
         html += '</div>';
         if (isExternal) {
@@ -479,9 +492,6 @@
     overlay.classList.remove('cmdk-open');
     document.body.classList.remove('cmdk-body-lock');
     if (hint) hint.classList.add('cmdk-hint-visible');
-    clearTimeout(semanticTimer);
-    semanticResults = [];
-    keywordScoredResults = [];
   }
 
   function toggle() {
@@ -534,22 +544,7 @@
     input.addEventListener('input', function () {
       currentQuery = input.value.trim();
       activeIndex = 0;
-      semanticResults = [];
-      // Store scored keyword results for hybrid re-ranking when semantic returns
-      keywordScoredResults = [];
-      if (currentQuery) {
-        for (var ki = 0; ki < INDEX.length; ki++) {
-          var km = scoreEntry(currentQuery, INDEX[ki]);
-          if (km) keywordScoredResults.push({ entry: INDEX[ki], score: km.score });
-        }
-        keywordScoredResults.sort(function (a, b) { return b.score - a.score; });
-      }
       render(search(currentQuery));
-      // Augment with semantic results after short debounce
-      clearTimeout(semanticTimer);
-      if (currentQuery.length >= 3) {
-        semanticTimer = setTimeout(function () { fetchSemantic(currentQuery); }, 350);
-      }
     });
 
     // Keyboard within dialog
