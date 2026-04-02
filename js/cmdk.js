@@ -334,6 +334,26 @@
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  // --- Semantic search (augments keyword results asynchronously) ---
+  var semanticTimer = null;
+  var semanticResults = [];
+
+  function fetchSemantic(query) {
+    fetch('/api/search?q=' + encodeURIComponent(query))
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (results) {
+        if (query !== currentQuery || !isOpen) return; // stale or closed
+        var knownUrls = new Set(INDEX.map(function (e) { return e.url; }));
+        var novel = results
+          .filter(function (r) { return !knownUrls.has(r.url); })
+          .map(function (r) { return { type: 'Related', title: r.title, desc: r.desc || '', url: r.url }; });
+        if (novel.length === 0) return;
+        semanticResults = novel;
+        render(search(currentQuery).concat(semanticResults));
+      })
+      .catch(function () {});
+  }
+
   // --- Render ---
   var activeIndex = 0;
   var currentItems = [];
@@ -435,6 +455,8 @@
     overlay.classList.remove('cmdk-open');
     document.body.classList.remove('cmdk-body-lock');
     if (hint) hint.classList.add('cmdk-hint-visible');
+    clearTimeout(semanticTimer);
+    semanticResults = [];
   }
 
   function toggle() {
@@ -487,7 +509,13 @@
     input.addEventListener('input', function () {
       currentQuery = input.value.trim();
       activeIndex = 0;
+      semanticResults = [];
       render(search(currentQuery));
+      // Augment with semantic results after short debounce
+      clearTimeout(semanticTimer);
+      if (currentQuery.length >= 3) {
+        semanticTimer = setTimeout(function () { fetchSemantic(currentQuery); }, 350);
+      }
     });
 
     // Keyboard within dialog

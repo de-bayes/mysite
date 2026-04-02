@@ -305,6 +305,192 @@ app.delete('/api/racecalls/:id', apiWriteLimiter, requireAuth, async (req, res) 
     return res.json({ ok: true });
 });
 
+// ── OG Image Generation ──────────────────────────────────────────────────────
+let _ogDeps = null;
+async function getOGDeps() {
+    if (_ogDeps) return _ogDeps;
+    const [{ default: satori }, { Resvg }] = await Promise.all([
+        import('satori'),
+        import('@resvg/resvg-js')
+    ]);
+    const [interFont400, interFont700] = await Promise.all([
+        fsp.readFile(path.join(__dirname, 'fonts', 'inter-latin-400.woff')),
+        fsp.readFile(path.join(__dirname, 'fonts', 'inter-latin-700.woff')),
+    ]);
+    _ogDeps = { satori, Resvg, interFont400, interFont700 };
+    return _ogDeps;
+}
+
+const ogRenderCache = new Map();
+const OG_CACHE_MAX = 100;
+
+app.get('/api/og', apiLimiter, async (req, res) => {
+    try {
+        const title = String(req.query.title || '').slice(0, 140).trim();
+        const desc = String(req.query.desc || '').slice(0, 220).trim();
+        const type = String(req.query.type || 'article').slice(0, 20).trim();
+        if (!title) return res.status(400).send('Missing title');
+
+        const cacheKey = `${title}||${desc}||${type}`;
+        if (ogRenderCache.has(cacheKey)) {
+            res.set('Content-Type', 'image/png');
+            res.set('Cache-Control', 'public, max-age=31536000, immutable');
+            return res.send(ogRenderCache.get(cacheKey));
+        }
+
+        const { satori, Resvg, interFont400, interFont700 } = await getOGDeps();
+        const label = type === 'article' ? 'Essay' : type.charAt(0).toUpperCase() + type.slice(1);
+        const titleSize = title.length > 70 ? 44 : title.length > 50 ? 48 : 54;
+
+        const element = {
+            type: 'div',
+            props: {
+                style: {
+                    display: 'flex', flexDirection: 'column',
+                    width: '100%', height: '100%',
+                    backgroundColor: '#151515', fontFamily: 'Inter',
+                },
+                children: [
+                    {
+                        type: 'div',
+                        props: {
+                            style: {
+                                display: 'flex', flexDirection: 'column', flex: 1,
+                                padding: '56px 72px 44px 72px',
+                                justifyContent: 'space-between',
+                            },
+                            children: [
+                                {
+                                    type: 'div',
+                                    props: {
+                                        style: { display: 'flex', color: '#555', fontSize: 17, letterSpacing: 3, textTransform: 'uppercase', fontWeight: 400 },
+                                        children: 'mccomb.ca',
+                                    }
+                                },
+                                {
+                                    type: 'div',
+                                    props: {
+                                        style: { display: 'flex', color: '#e8e8e8', fontSize: titleSize, fontWeight: 700, lineHeight: 1.2, maxWidth: '1040px' },
+                                        children: title,
+                                    }
+                                },
+                                {
+                                    type: 'div',
+                                    props: {
+                                        style: { display: 'flex', flexDirection: 'column' },
+                                        children: [
+                                            ...(desc ? [{
+                                                type: 'div',
+                                                props: {
+                                                    style: { display: 'flex', color: '#777', fontSize: 21, lineHeight: 1.5, maxWidth: '940px', marginBottom: 18 },
+                                                    children: desc,
+                                                }
+                                            }] : []),
+                                            {
+                                                type: 'div',
+                                                props: {
+                                                    style: { display: 'flex', color: '#e06b1f', fontSize: 14, fontWeight: 600, letterSpacing: 3, textTransform: 'uppercase' },
+                                                    children: label,
+                                                }
+                                            }
+                                        ],
+                                    }
+                                }
+                            ],
+                        }
+                    },
+                    {
+                        type: 'div',
+                        props: {
+                            style: { display: 'flex', height: 5, backgroundColor: '#e06b1f', width: '100%' },
+                            children: '',
+                        }
+                    }
+                ],
+            }
+        };
+
+        const svg = await satori(element, {
+            width: 1200, height: 630,
+            fonts: [
+                { name: 'Inter', data: interFont400, weight: 400, style: 'normal' },
+                { name: 'Inter', data: interFont700, weight: 700, style: 'normal' },
+            ]
+        });
+
+        const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
+        const png = Buffer.from(resvg.render().asPng());
+
+        if (ogRenderCache.size >= OG_CACHE_MAX) ogRenderCache.delete(ogRenderCache.keys().next().value);
+        ogRenderCache.set(cacheKey, png);
+
+        res.set('Content-Type', 'image/png');
+        res.set('Cache-Control', 'public, max-age=31536000, immutable');
+        return res.send(png);
+    } catch (err) {
+        console.error('OG image generation error:', err);
+        return res.status(500).send('Failed to generate image');
+    }
+});
+
+// ── Semantic Search ───────────────────────────────────────────────────────────
+let _embeddings = null;
+async function getEmbeddings() {
+    if (_embeddings) return _embeddings;
+    // Read from repo-committed static file, not ephemeral DATA_DIR
+    const embFile = path.join(__dirname, 'data', 'embeddings.json');
+    _embeddings = await readJSON(embFile, null);
+    return _embeddings;
+}
+
+function cosineSimilarity(a, b) {
+    let dot = 0, normA = 0, normB = 0;
+    for (let i = 0; i < a.length; i++) {
+        dot += a[i] * b[i];
+        normA += a[i] * a[i];
+        normB += b[i] * b[i];
+    }
+    return dot / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+
+app.get('/api/search', apiLimiter, async (req, res) => {
+    const q = String(req.query.q || '').slice(0, 200).trim();
+    if (!q) return res.json([]);
+
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) return res.json([]);
+
+    const embeddings = await getEmbeddings();
+    if (!embeddings || !embeddings.items || !embeddings.items.length) return res.json([]);
+
+    try {
+        const embResp = await fetch('https://api.openai.com/v1/embeddings', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ model: 'text-embedding-3-small', input: q, dimensions: 512 })
+        });
+        if (!embResp.ok) return res.json([]);
+        const embData = await embResp.json();
+        const queryVec = embData.data[0].embedding;
+
+        const scored = embeddings.items.map(item => ({
+            ...item,
+            score: cosineSimilarity(queryVec, item.embedding)
+        }));
+        scored.sort((a, b) => b.score - a.score);
+
+        const results = scored
+            .filter(r => r.score > 0.35)
+            .slice(0, 6)
+            .map(({ title, desc, url, type, score }) => ({ title, desc, url, type, score }));
+
+        return res.json(results);
+    } catch (err) {
+        console.error('Search error:', err);
+        return res.json([]);
+    }
+});
+
 const BLOCKED_FILES = new Set(['server.js', 'package.json', 'package-lock.json', 'resume.md', 'style.md', '.env']);
 app.use((req, res, next) => {
     const base = req.path.replace(/^\//, '').split('/')[0];
