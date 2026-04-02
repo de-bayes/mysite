@@ -480,8 +480,8 @@ app.get('/api/search', apiLimiter, async (req, res) => {
         scored.sort((a, b) => b.score - a.score);
 
         const results = scored
-            .filter(r => r.score > 0.35)
-            .slice(0, 6)
+            .filter(r => r.score > 0.30)
+            .slice(0, 8)
             .map(({ title, desc, url, type, score }) => ({ title, desc, url, type, score }));
 
         return res.json(results);

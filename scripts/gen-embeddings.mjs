@@ -44,6 +44,7 @@ const ITEMS = [
     ...hostedEssays.map(e => ({ type: 'Articles', title: e.title, desc: e.desc, url: e.url, keys: e.keys || 'essays' })),
 
     // Articles (external)
+    { type: 'Articles', title: 'IL-09: An Election for the Ages', desc: 'VoteHub', url: 'https://votehub.com/2026/04/01/il-09-an-election-for-the-ages/', keys: 'elections il9 primary age generational divide democratic politics biss' },
     { type: 'Articles', title: 'March 17th Preview: Illinois Primary', desc: 'VoteHub', url: 'https://votehub.com/2026/03/17/march-17th-preview-illinois-primary/', keys: 'elections illinois primary' },
     { type: 'Articles', title: 'Guest Post: ETHS Student on the IL-9 Election', desc: 'FOIAgras', url: 'https://foiagras.com/p/il9-org-guest-post', keys: 'elections il9 prediction markets' },
     { type: 'Articles', title: 'ETHS Students Reflect on Casting First Ballots', desc: 'The Daily Northwestern', url: 'https://dailynorthwestern.com/2026/03/11/top-stories/eths-students-reflect-on-casting-first-ballots-in-congressional-primary/', keys: 'elections voting' },
