@@ -744,8 +744,8 @@ body.home .hero {
 
 .site-footer {
   max-width: var(--max-width);
-  margin: 5rem auto 0;
-  padding: 2rem 3rem 2.5rem;
+  margin: 2.25rem auto 0;
+  padding: 1.25rem 3rem 2.25rem;
 }
 
 .footer-copy {
@@ -767,7 +767,7 @@ body.home .hero {
 
 @media (max-width: 600px) {
   .site-footer {
-    padding: 2rem 1.5rem 2.5rem;
+    padding: 1.25rem 1.5rem 2rem;
   }
 }
 
@@ -1132,7 +1132,7 @@ body.home .hero {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
   padding: 10px;
-  margin-bottom: 8rem;
+  margin-bottom: 2.5rem;
 }
 
 .writing-empty {
