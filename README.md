@@ -24,9 +24,16 @@ Override the port with `PORT=3000 npm start`. Extensionless URLs work (e.g. `/ab
 mysite/
   index.html, about.html, ...   11 HTML pages (flat files in root)
   style.css                     Single stylesheet (3,300 lines, all pages)
-  js/                           Client-side scripts
+  js/
+    shared/                     Scripts loaded on every page (site-data, nav, animations, effects, cmdk, footer)
+    pages/                      Page-specific scripts (timeline, writing, article, bayes-404)
   fonts/                        Self-hosted Inter + DM Sans (woff2)
-  images/                       All photos, art, favicons (WebP + JPG)
+  images/
+    heroes/                     Page hero images with responsive variants (char-swiss, experience-hero, writing-hero)
+    portraits/                  Portrait photos (about-portrait, portrait, portrait-press)
+    og/                         Social media OG images (og-home)
+    art/                        Museum artwork (SK-A-*, SK-C-*)
+    logos/                      Logos and signatures (votehub_logo, sig, signature)
   writing/                      Hosted essay subpages (each is a folder with index.html)
   data/                         Persisted JSON (race calls)
   scripts/                      Build/maintenance scripts
@@ -68,33 +75,33 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 
 | File | Purpose |
 |------|---------|
-| `js/site-data.js` | **Single source of truth** for nav links and hosted essay metadata. Exposes `window.SITE_DATA` (consumed by nav, cmdk, footer). |
-| `js/nav.js` | Site navigation: mobile hamburger menu with focus trap and escape-to-close, scroll shadow on nav, smooth anchor scrolling, page transition animations (fade out/in for browsers without cross-document View Transitions). Injects a skip-to-content link for accessibility. |
-| `js/animations.js` | Scroll-triggered `.animate-in` and `.stagger-children` reveal via IntersectionObserver. Respects `prefers-reduced-motion`. |
-| `js/effects.js` | Animated number counters for `[data-count]` elements. Eases in with a quartic curve over 1.4s. Respects reduced motion. |
-| `js/cmdk.js` | Command palette (Cmd+K / Ctrl+K). Searches pages, articles, projects, press, experience. Features: fuzzy matching with Damerau-Levenshtein edit distance, prefix matching, typo tolerance, title highlighting, recent items via localStorage, keyboard navigation. |
-| `js/footer.js` | Renders the site footer from `SITE_DATA.navLinks` with social links. |
+| `js/shared/site-data.js` | **Single source of truth** for nav links and hosted essay metadata. Exposes `window.SITE_DATA` (consumed by nav, cmdk, footer). |
+| `js/shared/nav.js` | Site navigation: mobile hamburger menu with focus trap and escape-to-close, scroll shadow on nav, smooth anchor scrolling, page transition animations (fade out/in for browsers without cross-document View Transitions). Injects a skip-to-content link for accessibility. |
+| `js/shared/animations.js` | Scroll-triggered `.animate-in` and `.stagger-children` reveal via IntersectionObserver. Respects `prefers-reduced-motion`. |
+| `js/shared/effects.js` | Animated number counters for `[data-count]` elements. Eases in with a quartic curve over 1.4s. Respects reduced motion. |
+| `js/shared/cmdk.js` | Command palette (Cmd+K / Ctrl+K). Searches pages, articles, projects, press, experience. Features: fuzzy matching with Damerau-Levenshtein edit distance, prefix matching, typo tolerance, title highlighting, recent items via localStorage, keyboard navigation. |
+| `js/shared/footer.js` | Renders the site footer from `SITE_DATA.navLinks` with social links. |
 
 ### Page-specific
 
 | File | Used on | Purpose |
 |------|---------|---------|
-| `js/timeline.js` | `/experience` | Timeline entry scroll-reveal with staggered delays, click-to-expand cards, animated vertical line. |
-| `js/writing.js` | `/writing` | Article filtering (category tabs, tag dropdown, publication dropdown), URL state persistence, newest-first sort, card click handlers. |
-| `js/article.js` | `/writing/*` essays | Reading progress bar (thin orange line at top of viewport, tracks scroll position). |
-| `js/bayes-404.js` | `404.html` | Interactive Bayes' theorem calculator with three sliders (prior, P(E|G), P(E|not G)) and live posterior/P(E) output. |
+| `js/pages/timeline.js` | `/experience` | Timeline entry scroll-reveal with staggered delays, click-to-expand cards, animated vertical line. |
+| `js/pages/writing.js` | `/writing` | Article filtering (category tabs, tag dropdown, publication dropdown), URL state persistence, newest-first sort, card click handlers. |
+| `js/pages/article.js` | `/writing/*` essays | Reading progress bar (thin orange line at top of viewport, tracks scroll position). |
+| `js/pages/bayes-404.js` | `404.html` | Interactive Bayes' theorem calculator with three sliders (prior, P(E|G), P(E|not G)) and live posterior/P(E) output. |
 
 ### Script load order
 
 `site-data.js` must load before `nav.js`, `cmdk.js`, and `footer.js` since they read `window.SITE_DATA`. The HTML files load them in this order:
 
 ```html
-<script src="js/site-data.js"></script>
-<script src="js/nav.js"></script>
-<script src="js/animations.js"></script>
-<script src="js/effects.js"></script>
-<script src="js/cmdk.js"></script>
-<script src="js/footer.js"></script>
+<script src="js/shared/site-data.js"></script>
+<script src="js/shared/nav.js"></script>
+<script src="js/shared/animations.js"></script>
+<script src="js/shared/effects.js"></script>
+<script src="js/shared/cmdk.js"></script>
+<script src="js/shared/footer.js"></script>
 ```
 
 ---
@@ -238,14 +245,17 @@ Builds a multi-resolution `.ico` file from PNG inputs (PNG-embedded ICO format, 
 
 All hero/page images have responsive WebP variants (600w, 1200w) with JPG fallbacks, served via `<picture>` and `<source srcset>`:
 
-| Image set | Used on | Subject |
-|-----------|---------|---------|
-| `char-swiss.*` | Home hero | Ryan on airplane, working on laptop (La Chaux-de-Fonds) |
-| `about-portrait-*` | About hero | Portrait photo |
-| `experience-hero.*` | Experience header | Hero photo |
-| `writing-hero.*` | Writing header | Hero photo |
-| `portrait-press.*` | Press, Race calls | Interview photo |
-| `SK-A-1892.*`, `SK-A-5003.*`, `SK-C-165.*` | Art/museum pieces | High-res art (WebP versions served; JPGs are compressed source files) |
+| Image set | Directory | Used on | Subject |
+|-----------|-----------|---------|---------|
+| `char-swiss.*` | `images/heroes/` | Home hero | Ryan on airplane, working on laptop (La Chaux-de-Fonds) |
+| `about-portrait-*` | `images/portraits/` | About hero | Portrait photo |
+| `experience-hero.*` | `images/heroes/` | Experience header | Hero photo |
+| `writing-hero.*` | `images/heroes/` | Writing header | Hero photo |
+| `portrait-press.*` | `images/portraits/` | Press, Race calls | Interview photo |
+| `portrait.*` | `images/portraits/` | OG meta tags (default) | Portrait photo |
+| `og-home.*` | `images/og/` | Home OG meta tag | Social preview image |
+| `SK-A-1892.*`, `SK-A-5003.*`, `SK-C-165.*` | `images/art/` | Art/museum pieces | High-res art (WebP versions served; JPGs are compressed source files) |
+| `votehub_logo.*`, `sig.*`, `signature.*` | `images/logos/` | Experience, misc | Logos and signature assets |
 
 ### Favicons
 
