@@ -11,8 +11,9 @@
   font-family: 'DM Sans';
   font-style: normal;
   font-weight: 300 700;
+  font-optical-sizing: auto;
   font-display: swap;
-  src: url('fonts/dm-sans-latin.woff2') format('woff2');
+  src: url('fonts/dm-sans-latin.woff2') format('woff2-variations');
 }
 
 /* Metric-adjusted fallbacks — match Inter/DM Sans dimensions so font swap causes zero layout shift */
@@ -196,6 +197,7 @@ body.home .hero {
   font-family: 'DM Sans', 'DM Sans Fallback', sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
+  font-optical-sizing: auto;
   color: #fff;
   display: inline-flex;
   align-items: baseline;
