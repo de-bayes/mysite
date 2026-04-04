@@ -3,14 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const entries = document.querySelectorAll('.timeline-entry');
 
   // Intersection Observer for scroll-reveal
-  const observer = new IntersectionObserver((items) => {
-    items.forEach(item => {
-      if (item.isIntersecting) {
-        item.target.classList.add('visible');
-        observer.unobserve(item.target);
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  const observer = new IntersectionObserver(
+    (items) => {
+      items.forEach((item) => {
+        if (item.isIntersecting) {
+          item.target.classList.add('visible');
+          observer.unobserve(item.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+  );
 
   entries.forEach((entry, i) => {
     entry.style.transitionDelay = `${i * 0.08}s`;
@@ -18,12 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Click to expand/collapse detail text
-  document.querySelectorAll('.timeline-card').forEach(card => {
+  document.querySelectorAll('.timeline-card').forEach((card) => {
     card.addEventListener('click', () => {
       card.classList.toggle('expanded');
       const hint = card.querySelector('.expand-hint');
       if (hint) {
-        hint.textContent = card.classList.contains('expanded') ? 'Click to collapse' : 'Click to expand';
+        hint.textContent = card.classList.contains('expanded')
+          ? 'Click to collapse'
+          : 'Click to expand';
       }
     });
   });
@@ -38,6 +43,5 @@ document.addEventListener('DOMContentLoaded', () => {
       line.style.transform = 'scaleY(1)';
     });
   }
-
 });
 // [data-count] animation is handled by effects.js to avoid duplicate observers

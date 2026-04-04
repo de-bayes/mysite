@@ -1,4 +1,3 @@
-// Writing page: filter and card navigation
 document.addEventListener('DOMContentLoaded', () => {
   const getGrid = () => document.getElementById('writing-grid');
   const grid = getGrid();
@@ -7,14 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const publicationSelect = document.getElementById('publication-filter');
   if (!grid || !filterTabs.length) return;
 
-  // Sort cards newest-first on load
   sortCardsNewest();
-
-  // Count items per category and update tab labels
   updateFilterCounts();
   populatePublicationOptions();
-
-  // Restore filters from URL
   restoreFiltersFromURL();
 
   function pushFiltersToURL() {
@@ -27,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tag !== 'all') params.set('tag', tag);
     if (publication !== 'all') params.set('publication', publication);
     const qs = params.toString();
+    // replaceState keeps the URL shareable without a new history entry per tweak.
     history.replaceState(null, '', qs ? '?' + qs : location.pathname);
   }
 
@@ -36,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tag = params.get('tag');
     const publication = params.get('publication');
     if (category) {
-      filterTabs.forEach(t => {
+      filterTabs.forEach((t) => {
         t.classList.toggle('active', t.dataset.category === category);
       });
     }
@@ -47,17 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function applyFilters() {
     const activeTab = document.querySelector('.filter-tab.active');
-    const category = (activeTab && activeTab.dataset.category) ? activeTab.dataset.category : 'all';
-    const currentTagSelect = document.getElementById('tag-filter');
-    const currentPublicationSelect = document.getElementById('publication-filter');
-    const tag = currentTagSelect && currentTagSelect.value ? currentTagSelect.value : 'all';
-    const publication = currentPublicationSelect && currentPublicationSelect.value ? currentPublicationSelect.value : 'all';
+    const category = activeTab && activeTab.dataset.category ? activeTab.dataset.category : 'all';
+    const tag = tagSelect && tagSelect.value ? tagSelect.value : 'all';
+    const publication =
+      publicationSelect && publicationSelect.value ? publicationSelect.value : 'all';
 
-    document.querySelectorAll('.writing-card-outline').forEach(outline => {
+    document.querySelectorAll('.writing-card-outline').forEach((outline) => {
       const card = outline.querySelector('.writing-card');
       if (!card) return;
       const cardCategory = (card.dataset.category || '').trim();
-      const cardTags = (card.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+      const cardTags = (card.dataset.tags || '')
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean);
       const cardPublication = (card.dataset.publication || '').trim();
       const categoryMatch = category === 'all' || cardCategory === category;
       const tagMatch = tag === 'all' || cardTags.includes(tag);
@@ -65,10 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
       outline.style.display = categoryMatch && tagMatch && publicationMatch ? '' : 'none';
     });
 
-    const visibleCount = document.querySelectorAll('.writing-card-outline[style=""],.writing-card-outline:not([style])').length
-      - document.querySelectorAll('.writing-card-outline[style*="none"]').length;
     let empty = document.querySelector('.writing-empty');
-    const allHidden = Array.from(document.querySelectorAll('.writing-card-outline')).every(o => o.style.display === 'none');
+    const allHidden = Array.from(document.querySelectorAll('.writing-card-outline')).every(
+      (o) => o.style.display === 'none'
+    );
     if (allHidden) {
       if (!empty) {
         empty = document.createElement('p');
@@ -82,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  filterTabs.forEach(tab => {
+  filterTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      filterTabs.forEach(t => t.classList.remove('active'));
+      filterTabs.forEach((t) => t.classList.remove('active'));
       tab.classList.add('active');
       applyFilters();
       pushFiltersToURL();
@@ -92,18 +89,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (tagSelect) {
-    tagSelect.addEventListener('change', () => { applyFilters(); pushFiltersToURL(); });
+    tagSelect.addEventListener('change', () => {
+      applyFilters();
+      pushFiltersToURL();
+    });
   }
 
   if (publicationSelect) {
-    publicationSelect.addEventListener('change', () => { applyFilters(); pushFiltersToURL(); });
+    publicationSelect.addEventListener('change', () => {
+      applyFilters();
+      pushFiltersToURL();
+    });
   }
 
-  // Bind click handlers on static cards
   bindCardClicks();
 
   function parseCardDate(str) {
     if (!str) return new Date(0);
+    // YYYY-MM: normalize to -01 so sort order is stable across engines.
     if (/^\d{4}-\d{2}$/.test(str)) str = str + '-01';
     return new Date(str);
   }
@@ -119,19 +122,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const db = parseCardDate(cardB && cardB.dataset.date);
       return db - da;
     });
-    outlines.forEach(outline => gridEl.appendChild(outline));
+    outlines.forEach((outline) => gridEl.appendChild(outline));
   }
 
   function updateFilterCounts() {
     const cards = Array.from(document.querySelectorAll('.writing-card'));
     const categoryCounts = { all: cards.length };
-    cards.forEach(card => {
+    cards.forEach((card) => {
       const cat = (card.dataset.category || '').trim();
       if (cat) categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
     });
 
     const labels = { all: 'All', essays: 'Essays', articles: 'Articles' };
-    document.querySelectorAll('.filter-tab').forEach(tab => {
+    filterTabs.forEach((tab) => {
       const category = tab.dataset.category;
       const label = labels[category] || category;
       const count = categoryCounts[category] ?? 0;
@@ -140,12 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function populatePublicationOptions() {
-    const select = document.getElementById('publication-filter');
-    if (!select) return;
+    if (!publicationSelect) return;
 
-    const currentValue = select.value || 'all';
+    const currentValue = publicationSelect.value || 'all';
     const publications = Array.from(document.querySelectorAll('.writing-card'))
-      .map(card => (card.dataset.publication || '').trim())
+      .map((card) => (card.dataset.publication || '').trim())
       .filter(Boolean);
 
     const uniquePublications = Array.from(new Set(publications)).sort((a, b) => {
@@ -154,22 +156,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return a.localeCompare(b);
     });
 
-    select.innerHTML = '<option value="all">All publications</option>';
-    uniquePublications.forEach(publication => {
+    publicationSelect.innerHTML = '<option value="all">All publications</option>';
+    uniquePublications.forEach((publication) => {
       const option = document.createElement('option');
       option.value = publication;
       option.textContent = publication;
-      select.appendChild(option);
+      publicationSelect.appendChild(option);
     });
 
-    select.value = uniquePublications.includes(currentValue) ? currentValue : 'all';
+    publicationSelect.value = uniquePublications.includes(currentValue) ? currentValue : 'all';
   }
 
   function bindCardClicks() {
     const gridEl = getGrid();
     if (!gridEl) return;
 
-    gridEl.querySelectorAll('.writing-card').forEach(card => {
+    gridEl.querySelectorAll('.writing-card').forEach((card) => {
       if (card.dataset.bound) return;
       card.dataset.bound = '1';
       if (!card.querySelector('.writing-card-link')) {

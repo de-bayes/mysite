@@ -8,14 +8,18 @@
   var outPE = document.getElementById('bayes-pe');
   if (!prior || !peg || !peng || !outPost) return;
 
-  function pct(el) { return parseInt(el.value, 10) / 100; }
+  function pct(el) {
+    return parseInt(el.value, 10) / 100;
+  }
 
   function update() {
     document.getElementById('val-prior').textContent = prior.value + '%';
     document.getElementById('val-peg').textContent = peg.value + '%';
     document.getElementById('val-peng').textContent = peng.value + '%';
 
-    var g = pct(prior), eg = pct(peg), eng = pct(peng);
+    var g = pct(prior),
+      eg = pct(peg),
+      eng = pct(peng);
     var pe = eg * g + eng * (1 - g);
     if (pe <= 0) {
       outPost.textContent = 'n/a';
@@ -27,6 +31,8 @@
     if (outPE) outPE.textContent = (pe * 100).toFixed(1) + '%';
   }
 
-  [prior, peg, peng].forEach(function (el) { el.addEventListener('input', update); });
+  [prior, peg, peng].forEach(function (el) {
+    el.addEventListener('input', update);
+  });
   update();
 })();

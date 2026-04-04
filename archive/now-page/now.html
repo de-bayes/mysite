@@ -9,6 +9,7 @@
   <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <script src="/js/shared/nav-name-paint-hint.js"></script>
   <link rel="icon" type="image/png" sizes="512x512" href="/favicons/favicon-512x512.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicons/favicon-48x48.png">
@@ -109,14 +110,13 @@
 
       </div>
 
-      <!-- Race Call Preview -->
+      <!-- VoteHub race call summary: source site-data/racecalls-summary.json; public URL /racecalls-summary.json -->
       <div style="margin-bottom:4rem">
-        <a href="/racecalls" class="rc-preview" id="rc-preview-now">
-          <span class="rc-preview-label">Race Call Record</span>
+        <div class="rc-preview rc-preview--static" id="rc-preview-now" role="status" aria-live="polite">
+          <span class="rc-preview-label">VoteHub race calls</span>
           <span class="rc-preview-record" id="rc-now-record">--/-- correct</span>
           <span class="rc-preview-pct" id="rc-now-pct"></span>
-          <span class="rc-preview-link">View full record &rarr;</span>
-        </a>
+        </div>
       </div>
 
       <div class="now-footer-note">
@@ -135,18 +135,13 @@
 
   <script>
     (function() {
-      fetch('/api/racecalls')
+      fetch('/racecalls-summary.json')
         .then(function(r) { return r.json(); })
-        .then(function(calls) {
-          var correct = calls.filter(function(c) { return c.result === 'correct'; }).length;
-          var incorrect = calls.filter(function(c) { return c.result === 'incorrect'; }).length;
-          var decided = correct + incorrect;
-          var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
-
-          document.getElementById('rc-now-record').textContent = correct + '/' + calls.length + ' calls correct';
-          if (decided > 0) {
-            document.getElementById('rc-now-pct').textContent = pct + '% accuracy';
-          }
+        .then(function(d) {
+          var rec = document.getElementById('rc-now-record');
+          var pct = document.getElementById('rc-now-pct');
+          if (rec && d.nowRecord != null) rec.textContent = d.nowRecord;
+          if (pct) pct.textContent = d.nowAccuracy || '';
         })
         .catch(function() {});
     })();

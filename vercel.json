@@ -4,7 +4,15 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/now", "destination": "/", "permanent": true }
+    { "source": "/now", "destination": "/", "permanent": true },
+    { "source": "/now/", "destination": "/", "permanent": true },
+    { "source": "/now.html", "destination": "/", "permanent": true },
+    { "source": "/racecalls", "destination": "/", "permanent": true },
+    { "source": "/racecalls/", "destination": "/", "permanent": true },
+    { "source": "/racecalls.html", "destination": "/", "permanent": true },
+    { "source": "/admin", "destination": "/", "permanent": true },
+    { "source": "/admin/", "destination": "/", "permanent": true },
+    { "source": "/admin.html", "destination": "/", "permanent": true }
   ],
   "headers": [
     {
@@ -22,10 +30,6 @@
     {
       "source": "/style.css",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
-    },
-    {
-      "source": "/data/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
     }
   ]
 }

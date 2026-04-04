@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateProgress = () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    // No scroll range: show 100% instead of a stuck 0% bar.
     if (scrollable <= 0) {
       progressBar.style.width = '100%';
       return;
@@ -20,5 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  window.addEventListener('load', updateProgress, { once: true });
+  // Fonts and image decode can change article height after DOMContentLoaded.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(updateProgress).catch(() => {});
+  }
+  requestAnimationFrame(() => {
+    requestAnimationFrame(updateProgress);
+  });
   updateProgress();
 });

@@ -9,6 +9,7 @@
   <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <script src="/js/shared/nav-name-paint-hint.js"></script>
   <link rel="icon" type="image/png" sizes="512x512" href="/favicons/favicon-512x512.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicons/favicon-48x48.png">
@@ -24,7 +25,7 @@
   <meta property="og:site_name" content="Ryan McComb">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="About | Ryan McComb">
-  <meta name="twitter:description" content="About Ryan McComb: Evanston, Illinois ETHS student, VoteHub Student Fellow, elections writer and forecaster.">
+  <meta name="twitter:description" content="About Ryan McComb: Evanston, Illinois student (ETHS), VoteHub Student Fellow, elections writer and forecaster on decision desks, prediction markets, and campaign politics.">
   <meta name="twitter:creator" content="@RyanJMcComb">
   <meta name="twitter:site" content="@RyanJMcComb">
   <meta name="twitter:image" content="https://mccomb.ca/images/portraits/portrait.jpg">
@@ -89,9 +90,10 @@
         </div>
         <div class="about-hero-photo">
           <picture>
-            <img src="images/portraits/about-portrait-orig.jpg"
+            <source srcset="images/portraits/about-portrait-5097-600.webp 600w, images/portraits/about-portrait-5097-1200.webp 1200w, images/portraits/about-portrait-5097.webp 1920w" sizes="(max-width: 768px) 100vw, (max-width: 1100px) 48vw, 520px" type="image/webp">
+            <img src="images/portraits/about-portrait-5097.jpg"
                  alt="Ryan McComb in La Chaux-de-Fonds, Switzerland"
-                 width="1800" height="1200"
+                 width="1920" height="1280"
                  fetchpriority="high" loading="eager">
           </picture>
         </div>
@@ -176,18 +178,18 @@
   <script src="js/shared/effects.js"></script>
   <script src="js/shared/cmdk.js"></script>
   <script>
-    fetch('/data/racecalls.json')
-      .then(function(r) { return r.json(); })
-      .then(function(calls) {
-        var correct = calls.filter(function(c) { return c.result === 'correct'; }).length;
-        var incorrect = calls.filter(function(c) { return c.result === 'incorrect'; }).length;
-        var decided = correct + incorrect;
-        var pct = decided > 0 ? Math.round((correct / decided) * 100) : 0;
-        if (decided > 0) {
-          document.getElementById('rc-about-contact-value').textContent = correct + '/' + calls.length + ' correct (' + pct + '%)';
+    fetch('/racecalls-summary.json')
+      .then(function (response) {
+        if (!response.ok) throw new Error('Failed to load race-call summary');
+        return response.json();
+      })
+      .then(function (summary) {
+        var value = document.getElementById('rc-about-contact-value');
+        if (value && summary && typeof summary.aboutContactValue === 'string') {
+          value.textContent = summary.aboutContactValue;
         }
       })
-      .catch(function() {});
+      .catch(function () {});
   </script>
   <script>
     document.querySelectorAll('[data-copy]').forEach(el => {

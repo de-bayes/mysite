@@ -2,11 +2,11 @@
  * Build a multi-resolution .ico from PNG files (PNG-embedded ICO, Windows Vista+).
  * Usage: node scripts/pngs-to-ico.mjs out.ico a.png b.png ...
  */
-import fs from "node:fs";
+import fs from 'node:fs';
 
 function pngDimensions(buf) {
-  if (buf.length < 24 || buf.toString("ascii", 1, 4) !== "PNG") {
-    throw new Error("Not a PNG buffer");
+  if (buf.length < 24 || buf.toString('ascii', 1, 4) !== 'PNG') {
+    throw new Error('Not a PNG buffer');
   }
   return {
     width: buf.readUInt32BE(16),
@@ -27,6 +27,7 @@ function buildIco(pngBuffers) {
   for (const png of pngBuffers) {
     const { width, height } = pngDimensions(png);
     const entry = Buffer.alloc(16);
+    // Width/height: one byte each; 0 encodes 256.
     entry[0] = width >= 256 ? 0 : width;
     entry[1] = height >= 256 ? 0 : height;
     entry[2] = 0;
@@ -44,7 +45,7 @@ function buildIco(pngBuffers) {
 
 const [, , outPath, ...inputs] = process.argv;
 if (!outPath || inputs.length === 0) {
-  console.error("Usage: node scripts/pngs-to-ico.mjs out.ico a.png [b.png ...]");
+  console.error('Usage: node scripts/pngs-to-ico.mjs out.ico a.png [b.png ...]');
   process.exit(1);
 }
 

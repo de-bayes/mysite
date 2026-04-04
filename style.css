@@ -213,7 +213,11 @@ body.home .hero {
   transition: color 0.3s;
 }
 
-.nav-name:hover .brace { color: rgba(255,255,255,0.45); }
+.nav-name:hover .brace,
+.nav-name.nav-name--sticky-open .brace,
+html[data-nav-name-sticky] #site-nav a.nav-name .brace {
+  color: rgba(255,255,255,0.45);
+}
 
 .nav-name .ni { display: inline; }
 
@@ -228,13 +232,59 @@ body.home .hero {
               opacity 0.3s ease;
 }
 
-.nav-name:hover .nx { opacity: 1; }
-.nav-name:hover .nx1 { max-width: 2em;  transition-delay: 0s; }
-.nav-name:hover .nx2 { max-width: 0.4em; transition-delay: 0.03s; }
-.nav-name:hover .nx3 { max-width: 0.5em; transition-delay: 0.05s; }
-.nav-name:hover .nx4 { max-width: 0.4em; transition-delay: 0.07s; }
-.nav-name:hover .nx5 { max-width: 0.6em; transition-delay: 0.09s; }
-.nav-name:hover .nx6 { max-width: 2.5em; transition-delay: 0.1s; }
+.nav-name:hover .nx,
+.nav-name.nav-name--sticky-open .nx,
+html[data-nav-name-sticky] #site-nav a.nav-name .nx {
+  opacity: 1;
+}
+.nav-name:hover .nx1,
+.nav-name.nav-name--sticky-open .nx1,
+html[data-nav-name-sticky] #site-nav a.nav-name .nx1 {
+  max-width: 2em;
+  transition-delay: 0s;
+}
+.nav-name:hover .nx2,
+.nav-name.nav-name--sticky-open .nx2,
+html[data-nav-name-sticky] #site-nav a.nav-name .nx2 {
+  max-width: 0.4em;
+  transition-delay: 0.03s;
+}
+.nav-name:hover .nx3,
+.nav-name.nav-name--sticky-open .nx3,
+html[data-nav-name-sticky] #site-nav a.nav-name .nx3 {
+  max-width: 0.5em;
+  transition-delay: 0.05s;
+}
+.nav-name:hover .nx4,
+.nav-name.nav-name--sticky-open .nx4,
+html[data-nav-name-sticky] #site-nav a.nav-name .nx4 {
+  max-width: 0.4em;
+  transition-delay: 0.07s;
+}
+.nav-name:hover .nx5,
+.nav-name.nav-name--sticky-open .nx5,
+html[data-nav-name-sticky] #site-nav a.nav-name .nx5 {
+  max-width: 0.6em;
+  transition-delay: 0.09s;
+}
+.nav-name:hover .nx6,
+.nav-name.nav-name--sticky-open .nx6,
+html[data-nav-name-sticky] #site-nav a.nav-name .nx6 {
+  max-width: 2.5em;
+  transition-delay: 0.1s;
+}
+
+/* No width or opacity transition on first paint: avoids a collapsed flash then ~0.4s grow */
+html[data-nav-name-sticky] #site-nav a.nav-name .nx,
+html[data-nav-name-sticky] #site-nav a.nav-name .brace {
+  transition: none;
+}
+
+/* Same after JS moves from html hint to class: otherwise max-width animates ~0.4s again */
+.nav-name.nav-name--sticky-open .nx,
+.nav-name.nav-name--sticky-open .brace {
+  transition: none;
+}
 
 .nav-links { display: flex; gap: 0.5rem; align-items: center; }
 
@@ -532,11 +582,11 @@ body.home .hero {
 
 .about-hero-photo picture > img {
   width: 100%;
-  max-height: 620px;
+  max-height: 640px;
   object-fit: cover;
-  object-position: center top;
-  transform: translateY(-24%) scale(1.80);
-  transform-origin: center top;
+  object-position: center 42%;
+  transform: scale(1.12);
+  transform-origin: center 42%;
   border-radius: 10px;
   display: block;
   position: relative;
@@ -597,13 +647,6 @@ body.home .hero {
   margin-bottom: 1.35rem;
   font-size: 1.35rem;
   letter-spacing: -0.02em;
-}
-
-.about-racecalls {
-  margin-top: 2.5rem;
-  padding-top: 2.5rem;
-  border-top: 1px solid var(--border);
-  padding-bottom: 4rem;
 }
 
 /* ========================================
@@ -1052,69 +1095,110 @@ body.home .hero {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 3rem;
+  /* Align filter bar and card grid so tabs and selects sit inside the same horizontal band as the grey rule */
+  --writing-rail-padding: 12px;
 }
 
 .writing-filters {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   gap: 1rem 1.5rem;
   margin-bottom: 3rem;
   border-bottom: 1px solid var(--border);
   padding-bottom: 1.25rem;
+  padding-inline: var(--writing-rail-padding);
 }
 
 .filter-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
-  margin-bottom: -1px;
+  align-content: flex-end;
+  transform: translateY(-0.15rem);
 }
 
 .filter-selects {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.75rem;
   margin-left: auto;
 }
 
 .tag-filter-wrap {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
 .tag-filter-label {
-  font-size: var(--fs-body-sm);
+  font-size: var(--fs-xs);
   color: var(--text-muted);
-  font-weight: 400;
+  font-weight: 500;
+  letter-spacing: 0.05em;
 }
 
 .tag-filter-select {
+  --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  box-sizing: border-box;
   font-family: var(--font-main);
   font-size: var(--fs-body-sm);
+  line-height: 1.35;
+  font-weight: 450;
   color: var(--text);
-  background: var(--surface);
+  color-scheme: dark;
+  background-color: var(--surface);
+  background-image: var(--select-chevron);
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 1rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.35rem 0.6rem;
+  border-radius: 10px;
+  padding: 0.5rem 2.35rem 0.5rem 0.85rem;
   cursor: pointer;
-  min-width: 8rem;
+  min-width: 9.5rem;
+  max-width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), background-color var(--dur-fast),
+    transform var(--dur-fast);
+}
+
+.tag-filter-wrap:nth-child(2) .tag-filter-select {
+  min-width: 12.5rem;
+}
+
+.tag-filter-select:hover {
+  border-color: var(--border-hover);
+  background-color: #1e1e1e;
+}
+
+.tag-filter-select:focus {
+  outline: none;
+}
+
+.tag-filter-select:focus-visible {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
 }
 
 .filter-tab {
+  box-sizing: border-box;
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px solid transparent;
   padding: 0.5rem 0;
   font-family: var(--font-main);
   font-size: var(--fs-body-sm);
+  line-height: 1.35;
   color: var(--text-muted);
   cursor: pointer;
   transition: color var(--dur-fast), border-color var(--dur-fast);
   font-weight: 400;
   letter-spacing: 0.01em;
-  margin-bottom: -1px;
 }
 
 .filter-tab:hover {
@@ -1131,7 +1215,7 @@ body.home .hero {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
-  padding: 10px;
+  padding: var(--writing-rail-padding);
   margin-bottom: 2.5rem;
 }
 
@@ -1739,10 +1823,9 @@ main, .site-footer { position: relative; z-index: 2; }
   from { opacity: 0; }
 }
 
-/* JS fallback transition classes */
+/* JS fallback transition classes (nav stays visible so the logo/title does not glitch) */
 .page-exit main,
-.page-exit .site-footer,
-.page-exit .site-nav {
+.page-exit .site-footer {
   transition: opacity 0.15s ease, transform 0.15s ease;
   opacity: 0;
   transform: translateY(-4px);
@@ -1765,10 +1848,8 @@ main, .site-footer { position: relative; z-index: 2; }
 
   .page-exit main,
   .page-exit .site-footer,
-  .page-exit .site-nav,
   .page-enter main,
-  .page-enter .site-footer,
-  .page-enter .site-nav {
+  .page-enter .site-footer {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -2159,12 +2240,6 @@ main, .site-footer { position: relative; z-index: 2; }
     padding: 2.25rem 0 1.5rem;
   }
 
-  .about-racecalls {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-  }
-
   .about-contact {
     padding-bottom: 0;
   }
@@ -2220,6 +2295,14 @@ main, .site-footer { position: relative; z-index: 2; }
   .filter-selects {
     width: 100%;
     margin-left: 0;
+  }
+
+  .tag-filter-wrap:nth-child(2) .tag-filter-select {
+    min-width: 0;
+  }
+
+  .tag-filter-select {
+    width: 100%;
   }
 
   .cmdk-hint { display: none; }
@@ -2489,441 +2572,7 @@ main, .site-footer { position: relative; z-index: 2; }
   }
 }
 
-/* ========================================
-   Race Calls Page
-   ======================================== */
-
-.racecalls-page {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 3rem 6rem;
-}
-
-.racecalls-header {
-  padding: 10rem 0 3rem;
-}
-
-.racecalls-title {
-  font-size: 4.5rem;
-  font-weight: 700;
-  letter-spacing: -0.05em;
-  line-height: 0.95;
-  margin-bottom: 1.5rem;
-}
-
-.racecalls-subtitle {
-  font-size: 1rem;
-  color: var(--text-light);
-  max-width: 420px;
-}
-
-/* Hero stats */
-.rc-hero-stats {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.rc-ring-wrap {
-  position: relative;
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
-}
-
-.rc-ring {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.rc-ring-bg {
-  fill: none;
-  stroke: rgba(255,255,255,0.06);
-  stroke-width: 6;
-}
-
-.rc-ring-fill {
-  fill: none;
-  stroke: #4ade80;
-  stroke-width: 6;
-  stroke-linecap: round;
-  stroke-dasharray: 213.6;
-  stroke-dashoffset: 213.6;
-  transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.rc-ring-label {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #fff;
-}
-
-.rc-stat-text {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  margin-right: 0.5rem;
-}
-
-.rc-stat-value {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-}
-
-.rc-stat-label {
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.rc-stat-strip {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: auto;
-}
-
-.rc-stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.rc-stat-item-value {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-.rc-stat-item-value.rc-stat-correct {
-  color: #4ade80;
-}
-
-.rc-stat-item-value.rc-stat-pending {
-  color: var(--text-muted);
-}
-
-.rc-stat-item-value.rc-stat-first {
-  color: #eab308;
-}
-
-.rc-stat-item-label {
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.rc-stat-divider {
-  width: 1px;
-  height: 28px;
-  background: var(--border);
-  flex-shrink: 0;
-}
-
-/* Merged filter row */
-.rc-filter-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.25rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 1rem;
-}
-
-.rc-filter-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--border-hover);
-  flex-shrink: 0;
-  margin: 0 0.25rem;
-}
-
-.rc-filters {
-  display: flex;
-  gap: 0.35rem;
-}
-
-.rc-type-filters {
-  /* no extra overrides needed */
-}
-
-.rc-filter-btn {
-  background: none;
-  border: none;
-  font-family: var(--font-main);
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0.35rem 0.85rem;
-  border-radius: 6px;
-  transition: color 0.2s, background 0.2s;
-  font-weight: 400;
-}
-
-.rc-filter-btn:hover {
-  color: var(--text-light);
-  background: rgba(255,255,255,0.04);
-}
-
-.rc-filter-btn.active {
-  color: #fff;
-  background: rgba(255,255,255,0.08);
-  font-weight: 500;
-}
-
-/* Type breakdown (compact inline text) */
-.rc-type-summary {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-bottom: 2rem;
-}
-
-/* Call cards */
-.rc-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.rc-call-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-  opacity: 0;
-  animation: rcCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.rc-call-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
-}
-
-@keyframes rcCardIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.rc-call-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.rc-call-info {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.rc-call-race {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.15rem;
-}
-
-.rc-call-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.rc-call-meta strong {
-  color: var(--text-light);
-}
-
-.rc-call-result {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-.rc-result-correct {
-  color: #4ade80;
-  background: rgba(74,222,128,0.1);
-}
-
-.rc-result-incorrect {
-  color: #f87171;
-  background: rgba(248,113,113,0.1);
-}
-
-.rc-result-pending {
-  color: var(--text-muted);
-  background: rgba(255,255,255,0.05);
-}
-
-.rc-call-card {
-  cursor: pointer;
-}
-
-.rc-call-card--compact {
-  cursor: default;
-}
-
-.rc-call-details {
-  display: none;
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
-}
-
-.rc-call-card.expanded .rc-call-details {
-  display: block;
-}
-
-.rc-detail-row {
-  font-size: 0.8rem;
-  color: var(--text-light);
-  padding: 0.2rem 0;
-}
-
-.rc-detail-row strong {
-  color: #fff;
-}
-
-.rc-detail-label {
-  display: inline-block;
-  width: 100px;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.rc-source-link {
-  color: var(--text-light);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.rc-source-link:hover {
-  color: #fff;
-}
-
-.rc-empty {
-  text-align: center;
-  padding: 3rem 0;
-}
-
-.rc-empty p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-
-/* Date group headers */
-.rc-date-group {
-  margin-bottom: 1.5rem;
-}
-
-.rc-date-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  margin-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.rc-date-label {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #fff;
-}
-
-.rc-date-count {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.rc-date-group .rc-call-card {
-  margin-bottom: 0.75rem;
-}
-
-/* First call badge */
-.rc-first-call-badge {
-  display: inline-block;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #92400e;
-  background: #fbbf24;
-  padding: 0.12rem 0.5rem;
-  border-radius: 4px;
-  margin-left: 0.5rem;
-  vertical-align: middle;
-}
-
-/* Race type / state pills on cards (inline with race name) */
-.rc-pill {
-  display: inline-block;
-  font-size: 0.62rem;
-  color: var(--text-muted);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 0.1rem 0.4rem;
-  font-weight: 500;
-  vertical-align: middle;
-  margin-left: 0.15rem;
-}
-
-/* Margin display */
-.rc-margin {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-weight: 400;
-}
-
-/* Footnote */
-.rc-footnote {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-}
-
-.rc-footnote p {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-style: italic;
-}
-
-/* Race Call Preview Widget (About & Now pages) */
+/* Race call summary (Now page) + contact line (About) */
 .rc-preview {
   display: block;
   background: var(--surface);
@@ -2940,6 +2589,14 @@ main, .site-footer { position: relative; z-index: 2; }
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
   text-decoration: none;
+}
+
+.rc-preview--static {
+  cursor: default;
+}
+
+.rc-preview--static:hover {
+  transform: none;
 }
 
 .rc-preview-label {
@@ -2965,58 +2622,6 @@ main, .site-footer { position: relative; z-index: 2; }
   font-size: 0.85rem;
   color: #4ade80;
   font-weight: 500;
-}
-
-.rc-preview-link {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 0.75rem;
-  transition: color 0.2s;
-}
-
-.rc-preview:hover .rc-preview-link {
-  color: var(--text-light);
-}
-
-@media (max-width: 768px) {
-  .racecalls-page {
-    padding: 0 1.5rem 4rem;
-  }
-
-  .racecalls-header {
-    padding: 7rem 0 2rem;
-  }
-
-  .racecalls-title {
-    font-size: 3rem;
-  }
-
-  .rc-hero-stats {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .rc-stat-strip {
-    margin-left: 0;
-    width: 100%;
-    justify-content: space-around;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .rc-filter-row {
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-
-  .rc-filter-divider {
-    display: none;
-  }
-
-  .rc-filters {
-    overflow-x: auto;
-  }
 }
 
 /* ========================================

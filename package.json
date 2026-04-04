@@ -4,7 +4,12 @@
   "scripts": {
     "start": "node server.js",
     "seo:inject": "node scripts/seo-inject.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "lint": "eslint server.js test scripts js/shared js/pages eslint.config.mjs",
+    "lint:fix": "eslint server.js test scripts js/shared js/pages eslint.config.mjs --fix",
+    "format": "prettier --write \"**/*.{js,mjs,cjs,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,mjs,cjs,json,md}\"",
+    "verify": "npm run lint && npm run format:check && npm test"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
@@ -17,7 +22,13 @@
     "node": "24.x"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "dotenv": "^17.3.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
+    "sharp": "^0.34.5",
     "supertest": "^7.2.2"
   }
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Syncs canonical, Open Graph, and Twitter image URLs from site-origin.json
+ * Syncs canonical, Open Graph, and Twitter image URLs from site-data/site-origin.json
  * into HTML files, and regenerates robots.txt + sitemap.xml.
  * Idempotent; safe to run multiple times.
  *
@@ -12,24 +12,27 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
-const configPath = path.join(root, 'site-origin.json');
+const configPath = path.join(root, 'site-data', 'site-origin.json');
 const { origin } = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 if (!origin || typeof origin !== 'string' || !origin.startsWith('http')) {
-  console.error('site-origin.json must contain a string "origin" like https://example.com');
+  console.error(
+    'site-data/site-origin.json must contain a string "origin" like https://example.com'
+  );
   process.exit(1);
 }
 const originNoSlash = origin.replace(/\/$/, '');
 const SITE_NAME = 'Ryan McComb';
-const TWITTER_HANDLE = '@bayes_pr';
+const TWITTER_HANDLE = '@RyanJMcComb';
 const writingDir = path.join(root, 'writing');
 
 function getEssayPaths() {
   if (!fs.existsSync(writingDir)) return [];
-  return fs.readdirSync(writingDir, { withFileTypes: true })
+  return fs
+    .readdirSync(writingDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => ({
       file: `writing/${entry.name}/index.html`,
-      publicPath: `/writing/${entry.name}/`
+      publicPath: `/writing/${entry.name}/`,
     }))
     .filter((entry) => fs.existsSync(path.join(root, entry.file)));
 }
@@ -42,17 +45,18 @@ const PAGE_PATHS = {
   'experience.html': '/experience',
   'writing.html': '/writing',
   'press.html': '/press',
-  'now.html': '/now',
-  'racecalls.html': '/racecalls',
-  'admin.html': '/admin',
+  'colophon.html': '/colophon',
   'resume.html': '/resume',
   '404.html': '/',
-  ...Object.fromEntries(essayPages.map((entry) => [entry.file, entry.publicPath]))
+  ...Object.fromEntries(essayPages.map((entry) => [entry.file, entry.publicPath])),
 };
 
 function ensureCanonical(html, canonical) {
   if (/<link rel="canonical"/.test(html)) {
-    return html.replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${canonical}">`);
+    return html.replace(
+      /<link rel="canonical" href="[^"]*">/,
+      `<link rel="canonical" href="${canonical}">`
+    );
   }
   if (/<meta name="description"/.test(html)) {
     return html.replace(
@@ -60,10 +64,7 @@ function ensureCanonical(html, canonical) {
       `$1\n  <link rel="canonical" href="${canonical}">`
     );
   }
-  return html.replace(
-    /(<\/title>\s*\n)/,
-    `$1  <link rel="canonical" href="${canonical}">\n`
-  );
+  return html.replace(/(<\/title>\s*\n)/, `$1  <link rel="canonical" href="${canonical}">\n`);
 }
 
 function ensureOgUrl(html, canonical) {
@@ -123,6 +124,13 @@ function ensureMetaByProperty(html, property, content, anchorPattern) {
   return html.replace(anchorPattern, `$1\n  <meta property="${property}" content="${content}">`);
 }
 
+function ensureJsonLdStringField(html, field, content) {
+  const escapedField = field.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const fieldRe = new RegExp(`("${escapedField}"\\s*:\\s*")[^"]*(")`);
+  if (!fieldRe.test(html)) return html;
+  return html.replace(fieldRe, `$1${content}$2`);
+}
+
 function getTitle(html) {
   const match = html.match(/<title>([^<]*)<\/title>/);
   return match ? match[1] : SITE_NAME;
@@ -144,13 +152,26 @@ function injectHtml(file) {
   s = ensureCanonical(s, canonical);
   s = ensureOgUrl(s, canonical);
   s = ensureOgImage(s, ogImage);
+  s = ensureMetaByName(
+    s,
+    'twitter:card',
+    'summary_large_image',
+    /(<meta property="og:site_name"[^>]*>)/
+  );
   s = ensureTwitterImage(s, ogImage);
   s = ensureMetaByProperty(s, 'og:site_name', SITE_NAME, /(<meta property="og:image"[^>]*>)/);
   s = ensureMetaByName(s, 'twitter:title', title, /(<meta name="twitter:card"[^>]*>)/);
   s = ensureMetaByName(s, 'twitter:description', description, /(<meta name="twitter:title"[^>]*>)/);
-  s = ensureMetaByName(s, 'twitter:creator', TWITTER_HANDLE, /(<meta name="twitter:description"[^>]*>)/);
+  s = ensureMetaByName(
+    s,
+    'twitter:creator',
+    TWITTER_HANDLE,
+    /(<meta name="twitter:description"[^>]*>)/
+  );
   s = ensureMetaByName(s, 'twitter:site', TWITTER_HANDLE, /(<meta name="twitter:creator"[^>]*>)/);
   s = ensureMetaByName(s, 'author', SITE_NAME, /(<link rel="apple-touch-icon"[^>]*>)/);
+  // Keep structured data image URLs aligned with OG/Twitter tags so share previews and JSON-LD do not drift.
+  s = ensureJsonLdStringField(s, 'image', ogImage);
   fs.writeFileSync(fp, s);
 }
 
@@ -164,10 +185,9 @@ const publicPaths = [
   '/experience',
   '/writing',
   '/press',
-  '/now',
-  '/racecalls',
+  '/colophon',
   '/resume',
-  ...essayPages.map((entry) => entry.publicPath)
+  ...essayPages.map((entry) => entry.publicPath),
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -175,12 +195,12 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${publicPaths
   .map((p) => {
     const loc = p === '/' ? `${originNoSlash}/` : `${originNoSlash}${p}`;
-    const filePath = p === '/'
-      ? path.join(root, 'index.html')
-      : path.join(root, p.replace(/^\//, ''), 'index.html');
-    const fallbackPath = p === '/'
-      ? path.join(root, 'index.html')
-      : path.join(root, p.replace(/^\//, '') + '.html');
+    const filePath =
+      p === '/'
+        ? path.join(root, 'index.html')
+        : path.join(root, p.replace(/^\//, ''), 'index.html');
+    const fallbackPath =
+      p === '/' ? path.join(root, 'index.html') : path.join(root, p.replace(/^\//, '') + '.html');
     const statPath = fs.existsSync(filePath) ? filePath : fallbackPath;
     const lastmod = fs.statSync(statPath).mtime.toISOString().slice(0, 10);
     return `  <url>
@@ -195,10 +215,11 @@ ${publicPaths
 
 fs.writeFileSync(path.join(root, 'sitemap.xml'), sitemap.trim() + '\n');
 
+// User-agent: * is the usual wildcard for any bot that obeys robots.txt.
 const robots = `User-agent: *
 Allow: /
 
-Disallow: /admin
+Disallow: /api/
 
 Sitemap: ${originNoSlash}/sitemap.xml
 `;
