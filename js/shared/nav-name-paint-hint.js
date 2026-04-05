@@ -1,5 +1,7 @@
 /* Runs in <head> without defer so the hint exists before the body paints. Keep key in sync with nav.js. */
 (function () {
+  document.documentElement.setAttribute('data-js', '');
+
   function normalizeNavPath(pathname) {
     if (!pathname || pathname === '/index.html') return '/';
     if (pathname.length > 1 && pathname.endsWith('/')) return pathname.slice(0, -1);

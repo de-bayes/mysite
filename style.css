@@ -835,39 +835,39 @@ html[data-nav-name-sticky] #site-nav a.nav-name .brace {
   to { opacity: 1; }
 }
 
-.animate-in {
+html[data-js] .animate-in {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.animate-in.visible {
+html[data-js] .animate-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* Staggered children */
-.stagger-children > * {
+html[data-js] .stagger-children > * {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
-.stagger-children.visible > *:nth-child(2) { transition-delay: 0.06s; }
-.stagger-children.visible > *:nth-child(3) { transition-delay: 0.12s; }
-.stagger-children.visible > *:nth-child(4) { transition-delay: 0.18s; }
-.stagger-children.visible > *:nth-child(5) { transition-delay: 0.24s; }
-.stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
-.stagger-children.visible > *:nth-child(7) { transition-delay: 0.36s; }
-.stagger-children.visible > *:nth-child(8) { transition-delay: 0.42s; }
-.stagger-children.visible > *:nth-child(9) { transition-delay: 0.48s; }
-.stagger-children.visible > *:nth-child(10) { transition-delay: 0.54s; }
-.stagger-children.visible > *:nth-child(11) { transition-delay: 0.6s; }
+html[data-js] .stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+html[data-js] .stagger-children.visible > *:nth-child(2) { transition-delay: 0.06s; }
+html[data-js] .stagger-children.visible > *:nth-child(3) { transition-delay: 0.12s; }
+html[data-js] .stagger-children.visible > *:nth-child(4) { transition-delay: 0.18s; }
+html[data-js] .stagger-children.visible > *:nth-child(5) { transition-delay: 0.24s; }
+html[data-js] .stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
+html[data-js] .stagger-children.visible > *:nth-child(7) { transition-delay: 0.36s; }
+html[data-js] .stagger-children.visible > *:nth-child(8) { transition-delay: 0.42s; }
+html[data-js] .stagger-children.visible > *:nth-child(9) { transition-delay: 0.48s; }
+html[data-js] .stagger-children.visible > *:nth-child(10) { transition-delay: 0.54s; }
+html[data-js] .stagger-children.visible > *:nth-child(11) { transition-delay: 0.6s; }
 
-.stagger-children.visible > * {
+html[data-js] .stagger-children.visible > * {
   opacity: 1;
   transform: translateY(0);
 }
@@ -894,7 +894,7 @@ html[data-nav-name-sticky] #site-nav a.nav-name .brace {
   opacity: 0.2;
 }
 
-.timeline-entry {
+html[data-js] .timeline-entry {
   display: flex;
   align-items: flex-start;
   margin-bottom: 3.5rem;
@@ -905,7 +905,7 @@ html[data-nav-name-sticky] #site-nav a.nav-name .brace {
               transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.timeline-entry.visible {
+html[data-js] .timeline-entry.visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -992,7 +992,7 @@ html[data-nav-name-sticky] #site-nav a.nav-name .brace {
   margin-bottom: 0.5rem;
 }
 
-.timeline-card .detail {
+html[data-js] .timeline-card .detail {
   font-size: var(--fs-body-sm);
   color: var(--text-light);
   line-height: 1.7;
@@ -1003,18 +1003,23 @@ html[data-nav-name-sticky] #site-nav a.nav-name .brace {
   opacity: 0;
 }
 
-.timeline-card.expanded .detail {
+html[data-js] .timeline-card.expanded .detail {
   max-height: 800px;
   opacity: 1;
 }
 
 .timeline-card .expand-hint {
+  display: none;
   font-size: var(--fs-sm);
   color: var(--text-muted);
   margin-top: 0.5rem;
   transition: opacity 0.2s;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+html[data-js] .timeline-card .expand-hint {
+  display: block;
 }
 
 .timeline-section-label {
@@ -2163,7 +2168,7 @@ main, .site-footer { position: relative; z-index: 2; }
     overflow: visible;
   }
 
-  .nav-links {
+  html[data-js] .nav-links {
     display: none;
     position: absolute;
     top: 100%;
@@ -2179,8 +2184,8 @@ main, .site-footer { position: relative; z-index: 2; }
     border-bottom: 1px solid var(--border);
   }
 
-  .nav-links.open { display: flex; }
-  .nav-hamburger { display: block; }
+  html[data-js] .nav-links.open { display: flex; }
+  html[data-js] .nav-hamburger { display: block; }
 
   h1 { font-size: 2rem; }
 

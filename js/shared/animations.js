@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  if (typeof window.IntersectionObserver !== 'function') {
+    els.forEach((el) => el.classList.add('visible'));
+    return;
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {

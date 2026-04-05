@@ -23,7 +23,8 @@ test('about page includes branded bio and profile structured data', async () => 
   assert.match(response.text, /"@type": "ProfilePage"/);
   assert.match(response.text, /https:\/\/x\.com\/RyanJMcComb/);
   assert.match(response.text, /id="rc-about-contact-value"/);
-  assert.match(response.text, /fetch\('\/racecalls-summary\.json'\)/);
+  assert.match(response.text, /<script src="js\/pages\/about\.js"><\/script>/);
+  assert.doesNotMatch(response.text, /href="\/racecalls"/);
 });
 
 test('writing index renders hosted essay links', async () => {

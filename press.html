@@ -132,17 +132,7 @@
   <script src="js/shared/animations.js"></script>
   <script src="js/shared/effects.js"></script>
   <script src="js/shared/cmdk.js"></script>
-  <script>
-    document.querySelectorAll('.writing-card-outline').forEach(outline => {
-      const card = outline.querySelector('.press-card[data-href]');
-      if (!card) return;
-      outline.style.cursor = 'pointer';
-      outline.addEventListener('click', (event) => {
-        if (event.target.closest('.writing-card-link')) return;
-        window.open(card.dataset.href, '_blank', 'noopener');
-      });
-    });
-  </script>
+  <script src="js/pages/press.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 </body>

@@ -157,10 +157,10 @@
             <span class="contact-value">@JeromeHPowell</span>
           </a>
 
-          <a href="/racecalls" class="contact-item">
+          <div class="contact-item">
             <span class="contact-label">VoteHub Race Calls</span>
             <span class="contact-value" id="rc-about-contact-value">Decision desk record</span>
-          </a>
+          </div>
 
         </div>
       </section>
@@ -177,37 +177,7 @@
   <script src="js/shared/animations.js"></script>
   <script src="js/shared/effects.js"></script>
   <script src="js/shared/cmdk.js"></script>
-  <script>
-    fetch('/racecalls-summary.json')
-      .then(function (response) {
-        if (!response.ok) throw new Error('Failed to load race-call summary');
-        return response.json();
-      })
-      .then(function (summary) {
-        var value = document.getElementById('rc-about-contact-value');
-        if (value && summary && typeof summary.aboutContactValue === 'string') {
-          value.textContent = summary.aboutContactValue;
-        }
-      })
-      .catch(function () {});
-  </script>
-  <script>
-    document.querySelectorAll('[data-copy]').forEach(el => {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        const text = el.dataset.copy;
-        navigator.clipboard.writeText(text).then(() => {
-          const toast = el.querySelector('.copied-toast');
-          if (toast) {
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 1500);
-          }
-        }).catch(() => {
-          window.location.href = 'mailto:' + text;
-        });
-      });
-    });
-  </script>
+  <script src="js/pages/about.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
