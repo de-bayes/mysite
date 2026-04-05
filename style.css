@@ -584,9 +584,9 @@ html[data-nav-name-sticky] #site-nav a.nav-name .brace {
   width: 100%;
   max-height: 640px;
   object-fit: cover;
-  object-position: center 42%;
+  object-position: center top;
   transform: scale(1.12);
-  transform-origin: center 42%;
+  transform-origin: center top;
   border-radius: 10px;
   display: block;
   position: relative;
