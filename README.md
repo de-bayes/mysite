@@ -34,7 +34,7 @@ Override the port with `PORT=3000 npm start`. Extensionless URLs work (e.g. `/ab
 ```
 mysite/
   index.html, about.html, ...   root HTML pages (no public `/now`; see `archive/now-page/`)
-  style.css                     Single stylesheet (3,300 lines, all pages)
+  style.css                     Single stylesheet (~2,900 lines, all pages)
   js/
     shared/                     Scripts loaded on most pages (site-data, nav, animations, effects, cmdk)
     pages/                      Page-specific scripts (timeline, writing, article, bayes-404)
@@ -43,8 +43,8 @@ mysite/
     heroes/                     Page hero images with responsive variants (char-swiss, experience-hero, writing-hero)
     portraits/                  Portrait photos (about-portrait, portrait, portrait-press)
     og/                         Social media OG images (og-home)
-    art/                        Museum artwork (SK-A-*, SK-C-*)
-    logos/                      Logos and signatures (votehub_logo, sig, signature)
+    logos/                      Active logos (votehub-logo)
+    _unused/                    Deprecated assets (art, heroes, logos, portraits)
   writing/                      Hosted essay subpages (each is a folder with index.html)
   site-data/                    Site config JSON (canonical origin, race-call summary for About); not browsable at `/site-data/*`
   archive/                      Retired site code not served in production (see `archive/now-page/README.md`)
@@ -85,13 +85,14 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 
 ### Shared (loaded on every page)
 
-| File                      | Purpose                                                                                                                                                                                                                                                                     |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `js/shared/site-data.js`  | **Single source of truth** for nav links and hosted essay metadata. Exposes `window.SITE_DATA` (consumed by nav and cmdk).                                                                                                                                                  |
-| `js/shared/nav.js`        | Site navigation: mobile hamburger menu with focus trap and escape-to-close, scroll shadow on nav, smooth anchor scrolling, page transition animations (fade out/in for browsers without cross-document View Transitions). Injects a skip-to-content link for accessibility. |
-| `js/shared/animations.js` | Scroll-triggered `.animate-in` and `.stagger-children` reveal via IntersectionObserver. Respects `prefers-reduced-motion`.                                                                                                                                                  |
-| `js/shared/effects.js`    | Animated number counters for `[data-count]` elements. Eases in with a quartic curve over 1.4s. Respects reduced motion.                                                                                                                                                     |
-| `js/shared/cmdk.js`       | Command palette (Cmd+K / Ctrl+K). Searches pages, articles, projects, press, experience. Features: fuzzy matching with Damerau-Levenshtein edit distance, prefix matching, typo tolerance, title highlighting, recent items via localStorage, keyboard navigation.          |
+| File                               | Purpose                                                                                                                                                                                                                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `js/shared/nav-name-paint-hint.js` | **Loaded in `<head>` (no defer).** Reads `sessionStorage` and sets `data-nav-name-sticky` on `<html>` before first paint, preventing nav-name animation flash on same-page navigation.                                                                                      |
+| `js/shared/site-data.js`           | **Single source of truth** for nav links and hosted essay metadata. Exposes `window.SITE_DATA` (consumed by nav and cmdk).                                                                                                                                                  |
+| `js/shared/nav.js`                 | Site navigation: mobile hamburger menu with focus trap and escape-to-close, scroll shadow on nav, smooth anchor scrolling, page transition animations (fade out/in for browsers without cross-document View Transitions). Injects a skip-to-content link for accessibility. |
+| `js/shared/animations.js`          | Scroll-triggered `.animate-in` and `.stagger-children` reveal via IntersectionObserver. Respects `prefers-reduced-motion`.                                                                                                                                                  |
+| `js/shared/effects.js`             | Animated number counters for `[data-count]` elements. Eases in with a quartic curve over 1.4s. Respects reduced motion.                                                                                                                                                     |
+| `js/shared/cmdk.js`                | Command palette (Cmd+K / Ctrl+K). Searches pages, articles, projects, press, experience. Features: fuzzy matching with Damerau-Levenshtein edit distance, prefix matching, typo tolerance, title highlighting, recent items via localStorage, keyboard navigation.          |
 
 ### Page-specific
 
@@ -104,9 +105,13 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 
 ### Script load order
 
-`site-data.js` must load before `nav.js` and `cmdk.js` since they read `window.SITE_DATA`. The HTML files load them in this order:
+`nav-name-paint-hint.js` loads in `<head>` (no defer) so it runs before first paint. `site-data.js` must load before `nav.js` and `cmdk.js` since they read `window.SITE_DATA`. The HTML files load them in this order:
 
 ```html
+<!-- In <head>, no defer: -->
+<script src="/js/shared/nav-name-paint-hint.js"></script>
+
+<!-- At end of <body>: -->
 <script src="js/shared/site-data.js"></script>
 <script src="js/shared/nav.js"></script>
 <script src="js/shared/animations.js"></script>
@@ -118,28 +123,30 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 
 ## CSS architecture
 
-`style.css` is a single 3,300-line file organized into named sections:
+`style.css` is a single ~2,900-line file organized into named sections:
 
 ```
-Fonts           @font-face declarations + metric-adjusted fallbacks
-Tokens          CSS custom properties in :root (colors, spacing, typography, shadows)
-Reset           Box-sizing, smooth scrolling, selection color, focus styles
-Typography      Base type scale, heading sizes, link styles
-Navigation      Fixed nav, scroll shadow, mobile hamburger menu, page transitions
-Hero            Full-bleed hero image, gradient overlay, floating card
-About           About page hero, contact grid, race-call preview
-Page headers    Shared header pattern for experience/writing/press pages
-Articles        Writing cards, filter tabs, hosted essay layout, reading progress
-Experience      Timeline, expandable cards, data counters
-Resume          Printable resume layout with @media print
-Press           Press card grid
-Now             Now page cards
-404             Error page, Bayes calculator
-Colophon        Colophon page layout
-Command palette Cmd+K dialog, search results, keyboard hints
-Premium effects Scroll animations, character reveal, stagger children
-Responsive      @media (max-width: 768px) overrides
-Print           @media print overrides
+Fonts                @font-face declarations + metric-adjusted fallbacks (top of file, no header)
+Tokens               CSS custom properties in :root (colors, spacing, typography, shadows)
+Reset & Base         Box-sizing, base typography, smooth scrolling, focus styles
+Navigation           Fixed nav, scroll shadow, mobile hamburger menu, page transitions
+Hero                 Full-bleed hero image, gradient overlay, floating card
+About Page           About page hero, contact grid, race-call preview
+Page Layout          Shared header pattern for experience/writing/press pages
+Animations           Scroll-triggered reveal keyframes and classes
+Experience: Timeline Timeline layout, expandable cards, data counters
+Writing Page         Writing cards, filter tabs, press cards, hosted essay layout
+Contact Section      Contact grid used in About page
+404 Page             Error page, Bayes calculator
+Colophon Page        Colophon page layout
+Premium Effects      Scroll animations, character reveal, stagger children
+Command Palette      Cmd+K dialog, search results, keyboard hints
+Reading Progress Bar Thin progress bar for essay pages
+Responsive           @media (max-width: 768px) overrides
+Print                @media print overrides
+Now Page             Archived now-page styles (page retired; styles retained for archive reference)
+Tweet Cards          Tweet card styles (archived with now page)
+Resume Page          Printable resume layout with @media print
 ```
 
 ### Design tokens (`:root`)
@@ -247,21 +254,22 @@ Builds a multi-resolution `.ico` file from PNG inputs (PNG-embedded ICO format, 
 
 All hero/page images have responsive WebP variants (600w, 1200w) with JPG fallbacks, served via `<picture>` and `<source srcset>`:
 
-| Image set                                  | Directory           | Used on                | Subject                                                               |
-| ------------------------------------------ | ------------------- | ---------------------- | --------------------------------------------------------------------- |
-| `char-swiss.*`                             | `images/heroes/`    | Home hero              | Ryan on airplane, working on laptop (La Chaux-de-Fonds)               |
-| `about-portrait-*`                         | `images/portraits/` | About hero             | Portrait photo                                                        |
-| `experience-hero.*`                        | `images/heroes/`    | Experience header      | Hero photo                                                            |
-| `writing-hero.*`                           | `images/heroes/`    | Writing header         | Hero photo                                                            |
-| `portrait-press.*`                         | `images/portraits/` | Press                  | Interview photo                                                       |
-| `portrait.*`                               | `images/portraits/` | OG meta tags (default) | Portrait photo                                                        |
-| `og-home.*`                                | `images/og/`        | Home OG meta tag       | Social preview image                                                  |
-| `SK-A-1892.*`, `SK-A-5003.*`, `SK-C-165.*` | `images/art/`       | Art/museum pieces      | High-res art (WebP versions served; JPGs are compressed source files) |
-| `votehub_logo.*`, `sig.*`, `signature.*`   | `images/logos/`     | Experience, misc       | Logos and signature assets                                            |
+| Image set                                  | Directory               | Used on                    | Subject                                                 |
+| ------------------------------------------ | ----------------------- | -------------------------- | ------------------------------------------------------- |
+| `char-swiss.*`                             | `images/heroes/`        | Home hero                  | Ryan on airplane, working on laptop (La Chaux-de-Fonds) |
+| `about-portrait-*`                         | `images/portraits/`     | About hero                 | Portrait photo                                          |
+| `experience-hero.*`                        | `images/heroes/`        | Experience header          | Hero photo                                              |
+| `writing-hero.*`                           | `images/heroes/`        | Writing header             | Hero photo                                              |
+| `portrait-press.*`                         | `images/portraits/`     | Press                      | Interview photo                                         |
+| `portrait.*`                               | `images/portraits/`     | OG meta tags (default)     | Portrait photo                                          |
+| `og-home.*`                                | `images/og/`            | Home OG meta tag           | Social preview image                                    |
+| `votehub-logo.jpeg`                        | `images/logos/`         | Experience                 | VoteHub logo                                            |
+| `SK-A-1892.*`, `SK-A-5003.*`, `SK-C-165.*` | `images/_unused/art/`   | (unused) Art/museum pieces | High-res art archived for reference                     |
+| `sig.*`, `signature.*`                     | `images/_unused/logos/` | (unused) Logos             | Signature assets archived for reference                 |
 
 ### Favicons
 
-Multi-size PNG favicons (16, 32, 48, 64, 128, 192, 256, 512) plus `favicon.ico` and `apple-touch-icon.png`. All pages include `<link rel="icon">` tags for the key sizes.
+Active PNG favicons (16, 32, 48, 192, 512) plus `favicon.ico` and `apple-touch-icon.png`. All pages include `<link rel="icon">` tags for the key sizes. Sizes 64, 128, and 256 are in `favicons/_unused/`.
 
 ---
 
