@@ -1,6 +1,6 @@
 /**
  * Build data/embeddings.json for semantic search (commit the output).
- * Run: node scripts/gen-embeddings.mjs (downloads model on first run).
+ * Run: node scripts/generate-embeddings.mjs (downloads model on first run).
  */
 
 import { readFileSync, writeFileSync } from 'fs';

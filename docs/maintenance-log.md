@@ -22,16 +22,17 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 
 ## Timeline
 
-| When (approx.) | Focus                                                                                                                                                                                          |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2026-04**    | Code cleanup passes aimed at **no accidental UI drift** during non-UI refactors (no pixel or layout churn on purpose).                                                                         |
-| **2026-04**    | Tooling pass: ESLint, Prettier, GitHub Actions `verify`, `.editorconfig`.                                                                                                                      |
-| **2026-04**    | README updates: Vercel production, env vars in dashboard, CI vs deploy split.                                                                                                                  |
-| **2026-04**    | This document added under `docs/`.                                                                                                                                                             |
-| **2026-04-03** | **Site simplification:** removed race-calls API and admin UI; public race stats are static JSON; trimmed `/api/auth`. See **Session 4**.                                                       |
-| **2026-04-04** | **Repo layout:** `racecalls-summary.json` and `site-origin.json` moved under **`site-data/`**; public URL **`/racecalls-summary.json`** unchanged; **`/site-data/*`** blocked in `server.js`.  |
-| **2026-04-05** | **Docs pass:** corrected README inaccuracies -- CSS line count, image/favicon path table, CSS section list, added `nav-name-paint-hint.js` to JS table and script load order. No code changes. |
-| **2026-04-06** | **Org pass:** verified lint, format, and all 19 tests pass. Created missing `.cursor/rules/no-em-dash.mdc` (referenced in AGENTS.md and docs/README.md but absent). No code or visible-site changes. |
+| When (approx.) | Focus                                                                                                                                                                                                                                                                                                                                        |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2026-04**    | Code cleanup passes aimed at **no accidental UI drift** during non-UI refactors (no pixel or layout churn on purpose).                                                                                                                                                                                                                       |
+| **2026-04**    | Tooling pass: ESLint, Prettier, GitHub Actions `verify`, `.editorconfig`.                                                                                                                                                                                                                                                                    |
+| **2026-04**    | README updates: Vercel production, env vars in dashboard, CI vs deploy split.                                                                                                                                                                                                                                                                |
+| **2026-04**    | This document added under `docs/`.                                                                                                                                                                                                                                                                                                           |
+| **2026-04-03** | **Site simplification:** removed race-calls API and admin UI; public race stats are static JSON; trimmed `/api/auth`. See **Session 4**.                                                                                                                                                                                                     |
+| **2026-04-04** | **Repo layout:** `racecalls-summary.json` and `site-origin.json` moved under **`site-data/`**; public URL **`/racecalls-summary.json`** unchanged; **`/site-data/*`** blocked in `server.js`.                                                                                                                                                |
+| **2026-04-05** | **Docs pass:** corrected README inaccuracies -- CSS line count, image/favicon path table, CSS section list, added `nav-name-paint-hint.js` to JS table and script load order. No code changes.                                                                                                                                               |
+| **2026-04-06** | **Org pass:** verified lint, format, and all 19 tests pass. Created missing `.cursor/rules/no-em-dash.mdc` (referenced in AGENTS.md and docs/README.md but absent). No code or visible-site changes.                                                                                                                                         |
+| **2026-04-07** | **Org pass:** renamed `scripts/gen-embeddings.mjs` to `scripts/generate-embeddings.mjs` for naming consistency; updated 3 references (file header, `js/shared/site-data.js` comment, maintenance-log). Re-created missing `.cursor/rules/no-em-dash.mdc` (`.cursor/` is gitignored so it does not persist). No code or visible-site changes. |
 
 Update the table when you complete another maintenance milestone.
 
@@ -62,7 +63,7 @@ Update the table when you complete another maintenance milestone.
 - **`server.js`:** removed unused `readJSONSync`. Added small internal helpers later (`cloudAuthGate`, `sendOgPng`, etc.) without changing HTTP contract. (`callersObjectFromBody` and other race-only helpers were removed in Session 4.)
 - **`js/shared/effects.js`:** removed unused `isMobile` binding.
 - **`js/pages/writing.js`:** removed unused `visibleCount`; reused in-scope DOM references instead of repeated `getElementById` where equivalent.
-- **`scripts/gen-embeddings.mjs`:** removed unused `evalCtx`; fixed `site-data.js` path to `js/shared/site-data.js` so the script can read the real file.
+- **`scripts/generate-embeddings.mjs`:** removed unused `evalCtx`; fixed `site-data.js` path to `js/shared/site-data.js` so the script can read the real file.
 - **`style.css`:** removed an **empty** ruleset (`.rc-type-filters` with no declarations). No visual effect.
 - **`index.html`:** removed an empty HTML comment. No visual effect.
 - **`js/shared/cmdk.js`:** optional `catch` binding where errors were ignored.
@@ -198,4 +199,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-06 (org pass; amend when you change this file).
+**Last updated:** 2026-04-07 (org pass; amend when you change this file).
