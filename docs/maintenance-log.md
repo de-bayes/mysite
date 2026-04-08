@@ -22,17 +22,18 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 
 ## Timeline
 
-| When (approx.) | Focus                                                                                                                                                                                                                                                                                                                                        |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2026-04**    | Code cleanup passes aimed at **no accidental UI drift** during non-UI refactors (no pixel or layout churn on purpose).                                                                                                                                                                                                                       |
-| **2026-04**    | Tooling pass: ESLint, Prettier, GitHub Actions `verify`, `.editorconfig`.                                                                                                                                                                                                                                                                    |
-| **2026-04**    | README updates: Vercel production, env vars in dashboard, CI vs deploy split.                                                                                                                                                                                                                                                                |
-| **2026-04**    | This document added under `docs/`.                                                                                                                                                                                                                                                                                                           |
-| **2026-04-03** | **Site simplification:** removed race-calls API and admin UI; public race stats are static JSON; trimmed `/api/auth`. See **Session 4**.                                                                                                                                                                                                     |
-| **2026-04-04** | **Repo layout:** `racecalls-summary.json` and `site-origin.json` moved under **`site-data/`**; public URL **`/racecalls-summary.json`** unchanged; **`/site-data/*`** blocked in `server.js`.                                                                                                                                                |
-| **2026-04-05** | **Docs pass:** corrected README inaccuracies -- CSS line count, image/favicon path table, CSS section list, added `nav-name-paint-hint.js` to JS table and script load order. No code changes.                                                                                                                                               |
-| **2026-04-06** | **Org pass:** verified lint, format, and all 19 tests pass. Created missing `.cursor/rules/no-em-dash.mdc` (referenced in AGENTS.md and docs/README.md but absent). No code or visible-site changes.                                                                                                                                         |
-| **2026-04-07** | **Org pass:** renamed `scripts/gen-embeddings.mjs` to `scripts/generate-embeddings.mjs` for naming consistency; updated 3 references (file header, `js/shared/site-data.js` comment, maintenance-log). Re-created missing `.cursor/rules/no-em-dash.mdc` (`.cursor/` is gitignored so it does not persist). No code or visible-site changes. |
+| When (approx.) | Focus                                                                                                                                                                                                                                                                                                                                                                       |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2026-04**    | Code cleanup passes aimed at **no accidental UI drift** during non-UI refactors (no pixel or layout churn on purpose).                                                                                                                                                                                                                                                      |
+| **2026-04**    | Tooling pass: ESLint, Prettier, GitHub Actions `verify`, `.editorconfig`.                                                                                                                                                                                                                                                                                                   |
+| **2026-04**    | README updates: Vercel production, env vars in dashboard, CI vs deploy split.                                                                                                                                                                                                                                                                                               |
+| **2026-04**    | This document added under `docs/`.                                                                                                                                                                                                                                                                                                                                          |
+| **2026-04-03** | **Site simplification:** removed race-calls API and admin UI; public race stats are static JSON; trimmed `/api/auth`. See **Session 4**.                                                                                                                                                                                                                                    |
+| **2026-04-04** | **Repo layout:** `racecalls-summary.json` and `site-origin.json` moved under **`site-data/`**; public URL **`/racecalls-summary.json`** unchanged; **`/site-data/*`** blocked in `server.js`.                                                                                                                                                                               |
+| **2026-04-05** | **Docs pass:** corrected README inaccuracies -- CSS line count, image/favicon path table, CSS section list, added `nav-name-paint-hint.js` to JS table and script load order. No code changes.                                                                                                                                                                              |
+| **2026-04-06** | **Org pass:** verified lint, format, and all 19 tests pass. Created missing `.cursor/rules/no-em-dash.mdc` (referenced in AGENTS.md and docs/README.md but absent). No code or visible-site changes.                                                                                                                                                                        |
+| **2026-04-07** | **Org pass:** renamed `scripts/gen-embeddings.mjs` to `scripts/generate-embeddings.mjs` for naming consistency; updated 3 references (file header, `js/shared/site-data.js` comment, maintenance-log). Re-created missing `.cursor/rules/no-em-dash.mdc` (`.cursor/` is gitignored so it does not persist). No code or visible-site changes.                                |
+| **2026-04-08** | **Docs pass:** added `js/pages/about.js` and `js/pages/press.js` (existing, unlisted) to README page-specific JS table; documented `generate-about-portrait.mjs` and `generate-embeddings.mjs` in README build scripts section; added `@huggingface/transformers` install note and alignment reminder to `generate-embeddings.mjs` header. No code or visible-site changes. |
 
 Update the table when you complete another maintenance milestone.
 
@@ -167,6 +168,24 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 5: documentation org pass (2026-04-08)
+
+**Goals:** close documentation gaps found during a full codebase audit; no functional or visible-site changes.
+
+**Findings and fixes:**
+
+- **README page-specific JS table** was missing `js/pages/about.js` and `js/pages/press.js`. Both files exist and are loaded by their respective pages. Added both rows with accurate purpose descriptions.
+- **README build scripts section** listed only `seo-inject.mjs` and `pngs-to-ico.mjs`. Added entries for `generate-about-portrait.mjs` (sharp-based portrait resizer) and `generate-embeddings.mjs` (semantic search data builder).
+- **`scripts/generate-embeddings.mjs` header** did not mention that `@huggingface/transformers` (used on line 153) is absent from `package.json`. Added install note and a reminder that `ITEMS` should stay aligned with `INDEX` in `js/shared/cmdk.js`.
+
+**Not changed (intentional):**
+
+- CSS "Now Page" and "Tweet Cards" sections: deliberately retained for archive reference per Session 4 notes.
+- `generate-embeddings.mjs` ITEMS list vs `cmdk.js` INDEX: they have drifted (embeddings has one article not in cmdk; cmdk has many articles not in embeddings). Syncing is a content task; left for a future explicit update.
+- All JS, HTML, server, and test files: no changes.
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -199,4 +218,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-07 (org pass; amend when you change this file).
+**Last updated:** 2026-04-08 (docs org pass; amend when you change this file).
