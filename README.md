@@ -102,6 +102,8 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 | `js/pages/writing.js`   | `/writing`          | Article filtering (category tabs, tag dropdown, publication dropdown), URL state persistence, newest-first sort, card click handlers. |
 | `js/pages/article.js`   | `/writing/*` essays | Reading progress bar (thin orange line at top of viewport, tracks scroll position).                                                   |
 | `js/pages/bayes-404.js` | `404.html`          | Interactive Bayes' theorem calculator: three sliders (prior and likelihoods) and live posterior output.                               |
+| `js/pages/about.js`     | `/about`            | Fetches `racecalls-summary.json` to populate the VoteHub contact line; handles email copy-to-clipboard with toast feedback.           |
+| `js/pages/press.js`     | `/press`            | Click-to-open handler for press cards (opens external links in a new tab).                                                            |
 
 ### Script load order
 
@@ -245,6 +247,14 @@ Run after changing the origin URL or adding new pages.
 ### `node scripts/pngs-to-ico.mjs <out.ico> <png...>`
 
 Builds a multi-resolution `.ico` file from PNG inputs (PNG-embedded ICO format, Windows Vista+). Used to generate `favicon.ico` from the sized PNG favicons.
+
+### `node scripts/generate-about-portrait.mjs <input-image>`
+
+Generates responsive WebP variants (600w, 1200w, 1920w) and a full-width JPEG for the About page hero from a source image. Outputs to `images/portraits/` using the `about-portrait-5097` naming convention. Requires `sharp` (already a dev dependency).
+
+### `node scripts/generate-embeddings.mjs`
+
+Generates `data/embeddings.json` for semantic search from the site content index. Mirrors the items in `js/shared/cmdk.js`. Requires `@huggingface/transformers` (not in `package.json`; install separately before running: `npm install @huggingface/transformers`). Downloads a ~23MB model on first run. Output is not currently served by the site.
 
 ---
 

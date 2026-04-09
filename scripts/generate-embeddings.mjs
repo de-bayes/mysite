@@ -1,6 +1,12 @@
 /**
  * Build data/embeddings.json for semantic search (commit the output).
- * Run: node scripts/gen-embeddings.mjs (downloads model on first run).
+ * Run: node scripts/generate-embeddings.mjs (downloads model on first run).
+ *
+ * Requires @huggingface/transformers (not in package.json; install before running):
+ *   npm install @huggingface/transformers
+ *
+ * The ITEMS list below should stay aligned with the INDEX in js/shared/cmdk.js
+ * so that Cmd+K search and any future semantic search surface the same content.
  */
 
 import { readFileSync, writeFileSync } from 'fs';
