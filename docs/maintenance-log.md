@@ -34,6 +34,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-06** | **Org pass:** verified lint, format, and all 19 tests pass. Created missing `.cursor/rules/no-em-dash.mdc` (referenced in AGENTS.md and docs/README.md but absent). No code or visible-site changes.                                                                                                                                                                        |
 | **2026-04-07** | **Org pass:** renamed `scripts/gen-embeddings.mjs` to `scripts/generate-embeddings.mjs` for naming consistency; updated 3 references (file header, `js/shared/site-data.js` comment, maintenance-log). Re-created missing `.cursor/rules/no-em-dash.mdc` (`.cursor/` is gitignored so it does not persist). No code or visible-site changes.                                |
 | **2026-04-08** | **Docs pass:** added `js/pages/about.js` and `js/pages/press.js` (existing, unlisted) to README page-specific JS table; documented `generate-about-portrait.mjs` and `generate-embeddings.mjs` in README build scripts section; added `@huggingface/transformers` install note and alignment reminder to `generate-embeddings.mjs` header. No code or visible-site changes. |
+| **2026-04-09** | **Docs fix:** corrected README middleware stack order (static was listed before API routes; actual order is API routes then static); added missing `express.json()` and 500 error handler entries. No code or visible-site changes.                                                                                                                                         |
 
 Update the table when you complete another maintenance milestone.
 
@@ -186,6 +187,21 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 6: docs accuracy fix (2026-04-09)
+
+**Goals:** correct the one inaccuracy found during a full codebase read; no code or visible-site changes.
+
+**Findings and fixes:**
+
+- **README middleware stack section** listed `Express static` at position 3, before API routes. In `server.js` the actual order is: Helmet → `express.json()` → rate limiter → API routes → file-blocking/redirect middleware → `express.static` → 500 handler → 404 handler. Fixed the list to match; added the previously omitted `express.json()` and 500 handler entries.
+
+**Not changed (intentional):**
+
+- `generate-embeddings.mjs` ITEMS list vs `cmdk.js` INDEX content drift: left as a deferred content task per Session 5 notes.
+- All JS, HTML, server, and test files: no changes.
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -218,4 +234,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-08 (docs org pass; amend when you change this file).
+**Last updated:** 2026-04-09 (middleware stack fix; amend when you change this file).

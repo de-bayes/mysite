@@ -200,10 +200,13 @@ Express app with three responsibilities: static file serving, JSON APIs, and sec
 ### Middleware stack (in order)
 
 1. **Helmet** with CSP, HSTS, and other security headers
-2. **Rate limiters**: general cap on `/api/*` (see `server.js` for window and max)
-3. **Express static** with `extensions: ['html']` for clean URLs
+2. **`express.json()`** for parsing request bodies
+3. **Rate limiters**: general cap on `/api/*` (see `server.js` for window and max)
 4. **API routes** (see below)
-5. **404 handler** serving `404.html`
+5. **File-blocking and redirect middleware**: blocks repo-internal paths, normalizes URLs (strips `.html`, trailing slashes)
+6. **Express static** with `extensions: ['html']` for clean URLs
+7. **500 error handler**
+8. **404 handler** serving `404.html`
 
 ### API routes
 
