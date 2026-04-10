@@ -321,13 +321,18 @@ Editorial rules for all site copy are in [`style.md`](style.md). Key rule: **no 
 
 ## Dependencies
 
-| Package              | Purpose                            |
-| -------------------- | ---------------------------------- |
-| `express`            | HTTP server, static files, routing |
-| `express-rate-limit` | API rate limiting                  |
-| `helmet`             | Security headers (CSP, HSTS, etc.) |
-| `dotenv` (dev)       | Load `.env` in development         |
-| `supertest` (dev)    | HTTP assertions in tests           |
+| Package              | Purpose                                                 |
+| -------------------- | ------------------------------------------------------- |
+| `express`            | HTTP server, static files, routing                      |
+| `express-rate-limit` | API rate limiting                                       |
+| `helmet`             | Security headers (CSP, HSTS, etc.)                      |
+| `satori`             | SVG generation for dynamic OG images (`/api/og`)        |
+| `@resvg/resvg-js`    | SVG-to-PNG rendering for OG images                      |
+| `dotenv` (dev)       | Load `.env` in development                              |
+| `eslint` (dev)       | Static analysis (see `eslint.config.mjs`)               |
+| `prettier` (dev)     | Code formatting (see `.prettierrc.json`)                |
+| `sharp` (dev)        | Portrait image resizing (`generate-about-portrait.mjs`) |
+| `supertest` (dev)    | HTTP assertions in tests                                |
 
 Requires **Node 24.x** (set in `engines`).
 

@@ -35,6 +35,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-07** | **Org pass:** renamed `scripts/gen-embeddings.mjs` to `scripts/generate-embeddings.mjs` for naming consistency; updated 3 references (file header, `js/shared/site-data.js` comment, maintenance-log). Re-created missing `.cursor/rules/no-em-dash.mdc` (`.cursor/` is gitignored so it does not persist). No code or visible-site changes.                                |
 | **2026-04-08** | **Docs pass:** added `js/pages/about.js` and `js/pages/press.js` (existing, unlisted) to README page-specific JS table; documented `generate-about-portrait.mjs` and `generate-embeddings.mjs` in README build scripts section; added `@huggingface/transformers` install note and alignment reminder to `generate-embeddings.mjs` header. No code or visible-site changes. |
 | **2026-04-09** | **Docs fix:** corrected README middleware stack order (static was listed before API routes; actual order is API routes then static); added missing `express.json()` and 500 error handler entries. No code or visible-site changes.                                                                                                                                         |
+| **2026-04-10** | **Org pass:** re-created missing `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); added `satori`, `@resvg/resvg-js`, `eslint`, `prettier`, and `sharp` to README dependencies table (production OG-image deps were absent). No code or visible-site changes.                                                                                     |
 
 Update the table when you complete another maintenance milestone.
 
@@ -202,6 +203,23 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 7: org pass (2026-04-10)
+
+**Goals:** recreate missing Cursor rule file; close documentation gap in README dependencies table.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; this file must be recreated each session). Recreated with the same content as Sessions 6 and 7.
+- **README dependencies table** listed only `express`, `express-rate-limit`, `helmet`, `dotenv`, and `supertest`. Missing production deps `satori` and `@resvg/resvg-js` (used by `GET /api/og` for OG image generation) were not documented. Added both, plus dev deps `eslint`, `prettier`, and `sharp` for completeness.
+- Confirmed all 19 tests pass and `npm run verify` succeeds with a fresh `npm install`.
+
+**Not changed (intentional):**
+
+- `generate-embeddings.mjs` ITEMS drift vs `cmdk.js` INDEX: still deferred as a content task per Session 5 notes.
+- All JS, HTML, server, test, and CSS files: no changes.
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -234,4 +252,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-09 (middleware stack fix; amend when you change this file).
+**Last updated:** 2026-04-10 (org pass: no-em-dash.mdc recreated, README deps table completed).
