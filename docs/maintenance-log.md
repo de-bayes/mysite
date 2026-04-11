@@ -36,6 +36,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-08** | **Docs pass:** added `js/pages/about.js` and `js/pages/press.js` (existing, unlisted) to README page-specific JS table; documented `generate-about-portrait.mjs` and `generate-embeddings.mjs` in README build scripts section; added `@huggingface/transformers` install note and alignment reminder to `generate-embeddings.mjs` header. No code or visible-site changes. |
 | **2026-04-09** | **Docs fix:** corrected README middleware stack order (static was listed before API routes; actual order is API routes then static); added missing `express.json()` and 500 error handler entries. No code or visible-site changes.                                                                                                                                         |
 | **2026-04-10** | **Org pass:** re-created missing `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); added `satori`, `@resvg/resvg-js`, `eslint`, `prettier`, and `sharp` to README dependencies table (production OG-image deps were absent). No code or visible-site changes.                                                                                     |
+| **2026-04-11** | **CSS org pass:** moved misplaced `.cmdk-dialog` mobile responsive rule out of the archived "Tweet Cards (now page)" section into the active "Responsive" section; corrected stale `rc-preview` comment (About no longer uses those styles; archived now page only). All 19 tests pass.                                                                                     |
 
 Update the table when you complete another maintenance milestone.
 
@@ -220,6 +221,25 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 8: CSS org pass (2026-04-11)
+
+**Goals:** correct a CSS organizational error found during a full codebase audit; no functional, visible-site, or behavior changes.
+
+**Findings and fixes:**
+
+- **`.cmdk-dialog` mobile responsive rule** (`max-width: calc(100% - 2rem); max-height: 70vh`) was located inside the archived "Tweet Cards (now page)" `@media (max-width: 768px)` block (around line 2574 before this edit). This is an active, live rule that the command palette (`cmdk.js`) depends on for mobile sizing. Moved it into the "Responsive" section's `@media (max-width: 768px)` block alongside `.cmdk-hint { display: none; }` where it logically belongs.
+- **Stale `rc-preview` CSS comment:** the line read "Race call summary (Now page) + contact line (About)". The About page no longer uses `.rc-preview` styles (it uses `contact-value` / `rc-about-contact-value`); those styles are only referenced by `archive/now-page/now.html`. Updated comment to "Race call summary widget (archived now page only)".
+
+**Not changed (intentional):**
+
+- The archived "Now Page" and "Tweet Cards" CSS sections themselves: still retained per Session 4/5 notes.
+- The `.rc-preview` styles: still present for the archived now page widget.
+- All JS, HTML, server, and test files: no changes.
+
+**Verification:** all 19 tests pass; `npm run verify` succeeds (lint + format:check + tests).
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -252,4 +272,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-10 (org pass: no-em-dash.mdc recreated, README deps table completed).
+**Last updated:** 2026-04-11 (CSS org pass: `.cmdk-dialog` moved to Responsive section, stale `rc-preview` comment corrected).
