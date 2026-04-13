@@ -38,6 +38,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-10** | **Org pass:** re-created missing `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); added `satori`, `@resvg/resvg-js`, `eslint`, `prettier`, and `sharp` to README dependencies table (production OG-image deps were absent). No code or visible-site changes.                                                                                     |
 | **2026-04-11** | **CSS org pass:** moved misplaced `.cmdk-dialog` mobile responsive rule out of the archived "Tweet Cards (now page)" section into the active "Responsive" section; corrected stale `rc-preview` comment (About no longer uses those styles; archived now page only). All 19 tests pass.                                                                                     |
 | **2026-04-12** | **Org pass:** re-created missing `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session). No code or visible-site changes.                                                                                                                                                                                                                               |
+| **2026-04-13** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; fixed two README inaccuracies (cache headers bullet listed JS/CSS as `immutable` -- actual is `no-cache, must-revalidate`; project structure `js/pages/` comment omitted `about.js` and `press.js`). No code or visible-site changes.                                                                              |
 
 Update the table when you complete another maintenance milestone.
 
@@ -256,6 +257,23 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 10: org pass (2026-04-13)
+
+**Goals:** re-create missing Cursor rule file; fix README inaccuracies found during audit.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README cache headers bullet** (Deployment section) read "images, JS, and CSS get `max-age=31536000, immutable`". Actual `vercel.json`: images/fonts/favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`. Fixed to match.
+- **README project structure** `js/pages/` comment listed `(timeline, writing, article, bayes-404)`, omitting `about.js` and `press.js` (added to the JS table in Session 5 but the structure blurb was not updated). Fixed.
+
+**Not changed (intentional):**
+
+- All JS, CSS, HTML, server, and test files: no changes.
+- `generate-embeddings.mjs` ITEMS vs `cmdk.js` INDEX content drift: still deferred as a content task per Session 5 notes.
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -288,4 +306,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-12 (org pass: no-em-dash.mdc recreated; Session 9 logged).
+**Last updated:** 2026-04-13 (org pass: no-em-dash.mdc recreated; two README inaccuracies fixed; Session 10 logged).

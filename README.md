@@ -37,7 +37,7 @@ mysite/
   style.css                     Single stylesheet (~2,900 lines, all pages)
   js/
     shared/                     Scripts loaded on most pages (site-data, nav, animations, effects, cmdk)
-    pages/                      Page-specific scripts (timeline, writing, article, bayes-404)
+    pages/                      Page-specific scripts (timeline, writing, article, bayes-404, about, press)
   fonts/                        Self-hosted Inter + DM Sans (woff2)
   images/
     heroes/                     Page hero images with responsive variants (char-swiss, experience-hero, writing-hero)
@@ -294,7 +294,7 @@ Configured in `vercel.json`:
 - **Clean URLs** enabled (extensionless)
 - **No trailing slash**
 - **Redirects**: `/now` and `/now.html` **301** to **`/`** (matches `server.js`; legacy `/racecalls` **301** to **`/`** in `server.js` when the Node server runs)
-- **Cache headers**: images, JS, and CSS get `max-age=31536000, immutable`.
+- **Cache headers**: images, fonts, and favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`.
 
 **Env and secrets:** set `CLOUD_PASSWORD`, `NODE_ENV`, `TRUST_LOCALHOST_AUTH`, and any other variables in **Vercel → Project → Settings → Environment Variables** for Production / Preview as needed. Local `.env` is for development only.
 
