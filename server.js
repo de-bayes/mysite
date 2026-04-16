@@ -40,6 +40,9 @@ function getWritingPages() {
 
 const WRITING_PAGES = getWritingPages();
 
+// =============================================
+// Auth
+// =============================================
 function isLocalhost(req) {
   const host = req.hostname || req.headers.host || '';
   return (
@@ -84,6 +87,9 @@ function requireAuth(req, res, next) {
   next();
 }
 
+// =============================================
+// Middleware
+// =============================================
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -161,7 +167,9 @@ app.put('/api/resume', apiWriteLimiter, requireAuth, async (req, res) => {
   }
 });
 
-// OG images (satori + resvg)
+// =============================================
+// OG image API
+// =============================================
 let _ogDeps = null;
 async function getOGDeps() {
   if (_ogDeps) return _ogDeps;
@@ -335,6 +343,9 @@ app.get('/api/og', apiLimiter, async (req, res) => {
   }
 });
 
+// =============================================
+// Request normalization
+// =============================================
 const BLOCKED_FILES = new Set([
   'server.js',
   'package.json',
@@ -400,6 +411,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// =============================================
+// Routes
+// =============================================
 app.get(['/now', '/now/', '/now.html'], (_req, res) => res.redirect(301, '/'));
 
 app.get(['/writing', '/writing/'], (_req, res) => {
@@ -423,6 +437,9 @@ app.get('/racecalls-summary.json', (_req, res) =>
 app.get(['/racecalls', '/racecalls/', '/racecalls.html'], (_req, res) => res.redirect(301, '/'));
 app.get(['/admin', '/admin/', '/admin.html'], (_req, res) => res.redirect(301, '/'));
 
+// =============================================
+// Static files & error handling
+// =============================================
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
 app.use((err, req, res, next) => {
