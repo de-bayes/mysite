@@ -37,6 +37,13 @@
     ...hostedEssayEntries,
     {
       type: 'Articles',
+      title: 'IL-09: An Election for the Ages',
+      desc: 'VoteHub',
+      url: 'https://votehub.com/2026/04/01/il-09-an-election-for-the-ages/',
+      keys: 'elections il9 primary age generational divide democratic politics biss',
+    },
+    {
+      type: 'Articles',
       title: 'March 17th Preview: Illinois Primary',
       desc: 'VoteHub',
       url: 'https://votehub.com/2026/03/17/march-17th-preview-illinois-primary/',

@@ -39,6 +39,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-11** | **CSS org pass:** moved misplaced `.cmdk-dialog` mobile responsive rule out of the archived "Tweet Cards (now page)" section into the active "Responsive" section; corrected stale `rc-preview` comment (About no longer uses those styles; archived now page only). All 19 tests pass.                                                                                     |
 | **2026-04-12** | **Org pass:** re-created missing `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session). No code or visible-site changes.                                                                                                                                                                                                                               |
 | **2026-04-13** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; fixed two README inaccuracies (cache headers bullet listed JS/CSS as `immutable` -- actual is `no-cache, must-revalidate`; project structure `js/pages/` comment omitted `about.js` and `press.js`). No code or visible-site changes.                                                                              |
+| **2026-04-17** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; added `CLAUDE.md` (one-liner pointing to `AGENTS.md` for Claude Code); added missing "IL-09: An Election for the Ages" (VoteHub) to `cmdk.js` INDEX; synced `generate-embeddings.mjs` ITEMS to fully match `cmdk.js` (9 articles, 2 projects, 3 experience entries added). All 19 tests pass.                      |
 
 Update the table when you complete another maintenance milestone.
 
@@ -274,6 +275,26 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 11: org pass (2026-04-17)
+
+**Goals:** re-create missing Cursor rule file; add CLAUDE.md entry point for Claude Code; close the long-deferred cmdk.js / generate-embeddings.mjs content drift.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **`CLAUDE.md`** did not exist. Claude Code reads `CLAUDE.md` by default (equivalent to `AGENTS.md` for other tools). Added a one-liner that points to `AGENTS.md` so both entry points are covered.
+- **`js/shared/cmdk.js` INDEX** was missing "IL-09: An Election for the Ages" (VoteHub, 2026-04-01), which was already present in `generate-embeddings.mjs`. Added it as the first external article entry (most recent).
+- **`scripts/generate-embeddings.mjs` ITEMS** was significantly behind `cmdk.js`. Added 9 missing articles (all Evanstonian pieces added after the last embeddings sync), 2 missing projects (ManiFed Markets, Political Science & Policy Project), and 3 missing experience entries (Volunteer Finance Lead, ManiFed Markets experience, Founder & Host / Project 2028). The two lists are now fully aligned.
+
+**Not changed (intentional):**
+
+- All HTML, CSS, server, and test files: no changes.
+- `generate-embeddings.mjs` still requires a separate `npm install @huggingface/transformers` before running; no `data/embeddings.json` is committed.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -306,4 +327,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-13 (org pass: no-em-dash.mdc recreated; two README inaccuracies fixed; Session 10 logged).
+**Last updated:** 2026-04-17 (org pass: no-em-dash.mdc recreated; CLAUDE.md added; cmdk.js/generate-embeddings.mjs drift resolved; Session 11 logged).

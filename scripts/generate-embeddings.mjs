@@ -87,6 +87,69 @@ const ITEMS = [
     url: 'https://www.evanstonian.net/news/2025/08/15/top-4-candidates-in-illinois-9th-congressional-district-race/',
     keys: 'elections',
   },
+  {
+    type: 'Articles',
+    title: 'Students Reflect on Casting First Ballots in Congressional Primary',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/news/2026/03/11/students-reflect-on-casting-first-ballots-in-congressional-primary/',
+    keys: 'elections voting',
+  },
+  {
+    type: 'Articles',
+    title: 'D202 Board Confronts Deficit, Improves Sustainability',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/news/2026/02/27/school-board-confronts-4-2-million-deficit-while-advancing-sustainability-initiatives/',
+    keys: 'education',
+  },
+  {
+    type: 'Articles',
+    title: 'District 65 Board Remains at Impasse Over Salem Replacement',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/news/2026/01/23/district-65-board-remains-at-impasse-over-salem-replacement/',
+    keys: 'education',
+  },
+  {
+    type: 'Articles',
+    title: 'Finals Return with Familiar 10% Weight',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/news/2025/12/12/finals-return-with-familiar-10-weight/',
+    keys: 'education',
+  },
+  {
+    type: 'Articles',
+    title: 'Kits on the Rise: Field Hockey and Swim & Dive Eye State Success',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/sports/2025/10/24/kits-on-the-rise-field-hockey-and-swim-dive-eye-state-success/',
+    keys: 'sports swimming',
+  },
+  {
+    type: 'Articles',
+    title: 'Equity or Exclusion? District 65 Draws a Federal Eye',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/opinion/2025/09/19/equity-or-exclusion-district-65-draws-a-federal-eye/',
+    keys: 'education',
+  },
+  {
+    type: 'Articles',
+    title: 'Contentious Races Decided in Evanston',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/news/2025/04/17/contentious-races-decided-in-evanston/',
+    keys: 'elections',
+  },
+  {
+    type: 'Articles',
+    title: '$2.5 Million Donation Added to the Auditorium Renovations',
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/news/2025/03/14/2-5-million-dollar-donation-added-to-the-auditorium-renovations/',
+    keys: 'education',
+  },
+  {
+    type: 'Articles',
+    title: "Evanston's Mayoral Race: Biss vs. Boarini",
+    desc: 'The Evanstonian',
+    url: 'https://www.evanstonian.net/news/2025/02/14/evanston-mayoral-race/',
+    keys: 'elections',
+  },
 
   // Press
   {
@@ -126,6 +189,20 @@ const ITEMS = [
     url: 'https://podcasts.apple.com/us/podcast/project-2028/id1753137875',
     keys: 'podcast politics',
   },
+  {
+    type: 'Projects',
+    title: 'ManiFed Markets & Manifold Trading',
+    desc: 'Play-money peer-to-peer lending platform with trading bots',
+    url: 'https://manifold.markets/JeromeHPowell',
+    keys: 'prediction markets trading kelly criterion',
+  },
+  {
+    type: 'Projects',
+    title: 'Political Science & Policy Project',
+    desc: 'Blog covering game theory, constitutional law, and voting theory',
+    url: '/experience',
+    keys: 'blog pspp',
+  },
 
   // Experience
   {
@@ -144,10 +221,31 @@ const ITEMS = [
   },
   {
     type: 'Experience',
+    title: 'Volunteer Finance Lead',
+    desc: 'Daniel Biss for Congress (IL-9)',
+    url: '/experience',
+    keys: 'campaign finance',
+  },
+  {
+    type: 'Experience',
     title: 'Sports Photographer',
     desc: 'Chicago Union (UFA)',
     url: '/experience',
     keys: 'photography ultimate frisbee canon',
+  },
+  {
+    type: 'Experience',
+    title: 'ManiFed Markets & Manifold Trading',
+    desc: 'Play-money lending platform with trading bots',
+    url: '/experience',
+    keys: 'prediction markets trading kelly criterion',
+  },
+  {
+    type: 'Experience',
+    title: 'Founder & Host',
+    desc: 'Project 2028 Podcast',
+    url: '/experience',
+    keys: 'podcast politics',
   },
 ];
 
