@@ -40,6 +40,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-12** | **Org pass:** re-created missing `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session). No code or visible-site changes.                                                                                                                                                                                                                               |
 | **2026-04-13** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; fixed two README inaccuracies (cache headers bullet listed JS/CSS as `immutable` -- actual is `no-cache, must-revalidate`; project structure `js/pages/` comment omitted `about.js` and `press.js`). No code or visible-site changes.                                                                              |
 | **2026-04-17** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; added `CLAUDE.md` (one-liner pointing to `AGENTS.md` for Claude Code); added missing "IL-09: An Election for the Ages" (VoteHub) to `cmdk.js` INDEX; synced `generate-embeddings.mjs` ITEMS to fully match `cmdk.js` (9 articles, 2 projects, 3 experience entries added). All 19 tests pass.                      |
+| **2026-04-18** | **Org pass:** full codebase audit (no issues found); re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session). All 19 tests pass. |
 
 Update the table when you complete another maintenance milestone.
 
@@ -295,6 +296,22 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 12: org pass (2026-04-18)
+
+**Goals:** full codebase audit; re-create missing Cursor rule file.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- Full read of all JS files (`js/shared/`, `js/pages/`), `server.js`, `style.css`, `README.md`, `docs/`, and directory structure confirmed no new organizational issues. Code is clean: no TODO/FIXME comments, no dead code, no `var` declarations, no `console.log` calls.
+- All 19 tests pass; `npm run verify` clean.
+
+**Not changed (intentional):**
+
+- All JS, CSS, HTML, server, and test files: no changes.
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -327,4 +344,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-17 (org pass: no-em-dash.mdc recreated; CLAUDE.md added; cmdk.js/generate-embeddings.mjs drift resolved; Session 11 logged).
+**Last updated:** 2026-04-18 (org pass: full audit, no-em-dash.mdc recreated; Session 12 logged).
