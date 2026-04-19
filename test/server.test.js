@@ -22,7 +22,6 @@ test('about page includes branded bio and profile structured data', async () => 
   assert.match(response.text, /Ryan McComb/);
   assert.match(response.text, /"@type": "ProfilePage"/);
   assert.match(response.text, /https:\/\/x\.com\/RyanJMcComb/);
-  assert.match(response.text, /id="rc-about-contact-value"/);
   assert.match(response.text, /<script src="js\/pages\/about\.js"><\/script>/);
   assert.doesNotMatch(response.text, /href="\/racecalls"/);
 });
@@ -145,7 +144,7 @@ test('sitemap includes article URLs', async () => {
   const response = await request(app).get('/sitemap.xml');
   assert.equal(response.status, 200);
   assert.ok(!response.text.includes('mccomb.ca/now'));
-  assert.match(response.text, /https:\/\/mccomb\.ca\/colophon/);
+  assert.ok(!response.text.includes('mccomb.ca/colophon'));
   assert.match(response.text, /https:\/\/mccomb\.ca\/writing\/il9cast-postmortem\//);
   assert.match(response.text, /https:\/\/mccomb\.ca\/writing\/peoples-edict\//);
 });

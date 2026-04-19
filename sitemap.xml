@@ -16,17 +16,22 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://mccomb.ca/projects</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://mccomb.ca/writing</loc>
     <lastmod>2026-04-04</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://mccomb.ca/press</loc>
-    <lastmod>2026-04-04</lastmod>
+    <loc>https://mccomb.ca/photos</loc>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://mccomb.ca/colophon</loc>
+    <loc>https://mccomb.ca/press</loc>
     <lastmod>2026-04-04</lastmod>
     <changefreq>monthly</changefreq>
   </url>

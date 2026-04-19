@@ -33,8 +33,8 @@ Override the port with `PORT=3000 npm start`. Extensionless URLs work (e.g. `/ab
 
 ```
 mysite/
-  index.html, about.html, ...   root HTML pages (no public `/now`; see `archive/now-page/`)
-  style.css                     Single stylesheet (~2,900 lines, all pages)
+  index.html, about.html, ...   root HTML pages
+  style.css                     Single stylesheet (~2,700 lines, all pages)
   js/
     shared/                     Scripts loaded on most pages (site-data, nav, animations, effects, cmdk)
     pages/                      Page-specific scripts (timeline, writing, article, bayes-404, about, press)
@@ -46,8 +46,7 @@ mysite/
     logos/                      Active logos (votehub-logo)
     _unused/                    Deprecated assets (art, heroes, logos, portraits)
   writing/                      Hosted essay subpages (each is a folder with index.html)
-  site-data/                    Site config JSON (canonical origin, race-call summary for About); not browsable at `/site-data/*`
-  archive/                      Retired site code not served in production (see `archive/now-page/README.md`)
+  site-data/                    Site config JSON (canonical origin, race-call summary); not browsable at `/site-data/*`
   scripts/                      Build/maintenance scripts
   test/                         Node.js test runner tests
   AGENTS.md                     Short pointer for coding agents (see docs/README.md)
@@ -72,10 +71,9 @@ mysite/
 | `/writing`       | `writing.html`         | Article index with category/tag/publication filters. Cards link to hosted essays or external URLs.                                       |
 | `/writing/:slug` | `writing/*/index.html` | Individual hosted essays with reading progress bar. Currently: il9cast-postmortem, peoples-edict, median-voter-theory, nsa-surveillance. |
 | `/press`         | `press.html`           | Press coverage and media features.                                                                                                       |
-| `/colophon`      | `colophon.html`        | How the site is built: stack, tools, design decisions.                                                                                   |
 | `*`              | `404.html`             | Custom 404 with an interactive Bayes' theorem calculator.                                                                                |
 
-**Retired URLs:** `GET /now`, `/now/`, `/now.html`, and legacy `/racecalls` respond with **301** to **`/`**. The old Now page HTML lives in **`archive/now-page/`** (blocked from static serving).
+**Retired URLs:** `GET /now`, `/now/`, `/now.html`, `/racecalls`, and `/admin` respond with **301** to **`/`**.
 
 ---
 
@@ -102,7 +100,7 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 | `js/pages/writing.js`   | `/writing`          | Article filtering (category tabs, tag dropdown, publication dropdown), URL state persistence, newest-first sort, card click handlers. |
 | `js/pages/article.js`   | `/writing/*` essays | Reading progress bar (thin orange line at top of viewport, tracks scroll position).                                                   |
 | `js/pages/bayes-404.js` | `404.html`          | Interactive Bayes' theorem calculator: three sliders (prior and likelihoods) and live posterior output.                               |
-| `js/pages/about.js`     | `/about`            | Fetches `racecalls-summary.json` to populate the VoteHub contact line; handles email copy-to-clipboard with toast feedback.           |
+| `js/pages/about.js`     | `/about`            | Email copy-to-clipboard with toast feedback.                                                                                          |
 | `js/pages/press.js`     | `/press`            | Click-to-open handler for press cards (opens external links in a new tab).                                                            |
 
 ### Script load order
@@ -224,7 +222,7 @@ Express app with three responsibilities: static file serving, JSON APIs, and sec
 
 ### Data persistence
 
-The About contact line for VoteHub race calls comes from `site-data/racecalls-summary.json`, still served at **`GET /racecalls-summary.json`** (`aboutContactValue`). Legacy fields `nowRecord` / `nowAccuracy` remain for reference or archived content only. Legacy `/racecalls` URLs **301** to **`/`**. Resume edits write directly to `resume.html` via regex replacement of the inner content div. Resume route file I/O uses `fs.promises`.
+`site-data/racecalls-summary.json` is still served at **`GET /racecalls-summary.json`** for external consumers (`aboutContactValue`, `nowRecord`, `nowAccuracy`). No page on the site currently reads it. Legacy `/racecalls` URLs **301** to **`/`**. Resume edits write directly to `resume.html` via regex replacement of the inner content div. Resume route file I/O uses `fs.promises`.
 
 ### Writing page discovery
 
@@ -246,18 +244,6 @@ Reads `site-data/site-origin.json` and injects/updates across all HTML pages:
 - Regenerates `robots.txt` (disallows `/api/`)
 
 Run after changing the origin URL or adding new pages.
-
-### `node scripts/pngs-to-ico.mjs <out.ico> <png...>`
-
-Builds a multi-resolution `.ico` file from PNG inputs (PNG-embedded ICO format, Windows Vista+). Used to generate `favicon.ico` from the sized PNG favicons.
-
-### `node scripts/generate-about-portrait.mjs <input-image>`
-
-Generates responsive WebP variants (600w, 1200w, 1920w) and a full-width JPEG for the About page hero from a source image. Outputs to `images/portraits/` using the `about-portrait-5097` naming convention. Requires `sharp` (already a dev dependency).
-
-### `node scripts/generate-embeddings.mjs`
-
-Generates `data/embeddings.json` for semantic search from the site content index. Mirrors the items in `js/shared/cmdk.js`. Requires `@huggingface/transformers` (not in `package.json`; install separately before running: `npm install @huggingface/transformers`). Downloads a ~23MB model on first run. Output is not currently served by the site.
 
 ---
 
@@ -321,18 +307,17 @@ Editorial rules for all site copy are in [`style.md`](style.md). Key rule: **no 
 
 ## Dependencies
 
-| Package              | Purpose                                                 |
-| -------------------- | ------------------------------------------------------- |
-| `express`            | HTTP server, static files, routing                      |
-| `express-rate-limit` | API rate limiting                                       |
-| `helmet`             | Security headers (CSP, HSTS, etc.)                      |
-| `satori`             | SVG generation for dynamic OG images (`/api/og`)        |
-| `@resvg/resvg-js`    | SVG-to-PNG rendering for OG images                      |
-| `dotenv` (dev)       | Load `.env` in development                              |
-| `eslint` (dev)       | Static analysis (see `eslint.config.mjs`)               |
-| `prettier` (dev)     | Code formatting (see `.prettierrc.json`)                |
-| `sharp` (dev)        | Portrait image resizing (`generate-about-portrait.mjs`) |
-| `supertest` (dev)    | HTTP assertions in tests                                |
+| Package              | Purpose                                          |
+| -------------------- | ------------------------------------------------ |
+| `express`            | HTTP server, static files, routing               |
+| `express-rate-limit` | API rate limiting                                |
+| `helmet`             | Security headers (CSP, HSTS, etc.)               |
+| `satori`             | SVG generation for dynamic OG images (`/api/og`) |
+| `@resvg/resvg-js`    | SVG-to-PNG rendering for OG images               |
+| `dotenv` (dev)       | Load `.env` in development                       |
+| `eslint` (dev)       | Static analysis (see `eslint.config.mjs`)        |
+| `prettier` (dev)     | Code formatting (see `.prettierrc.json`)         |
+| `supertest` (dev)    | HTTP assertions in tests                         |
 
 Requires **Node 24.x** (set in `engines`).
 

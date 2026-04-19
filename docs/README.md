@@ -35,13 +35,12 @@ Work through this list in order when you pick up the repo cold:
 
 ## Common agent tasks
 
-| Goal                                                | Where to act                                                  | Check                                                      |
-| --------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------- |
-| Update VoteHub race-call line on About              | Edit `site-data/racecalls-summary.json` (`aboutContactValue`) | ID `rc-about-contact-value` in `about.html`                |
-| Change nav, command palette entries, essay metadata | `js/shared/site-data.js`                                      | Pages that consume `window.SITE_DATA`                      |
-| New page or canonical URL / OG tags                 | Add HTML, then `npm run seo:inject`                           | `site-data/site-origin.json` unchanged unless origin moves |
-| Resume API automation                               | `PUT /api/resume` with `Authorization: Bearer …`              | `CLOUD_PASSWORD`; no `/api/auth`                           |
-| Server or API behavior                              | `server.js`, `test/server.test.js`                            | `npm run verify`                                           |
+| Goal                                                | Where to act                                     | Check                                                      |
+| --------------------------------------------------- | ------------------------------------------------ | ---------------------------------------------------------- |
+| Change nav, command palette entries, essay metadata | `js/shared/site-data.js`                         | Pages that consume `window.SITE_DATA`                      |
+| New page or canonical URL / OG tags                 | Add HTML, then `npm run seo:inject`              | `site-data/site-origin.json` unchanged unless origin moves |
+| Resume API automation                               | `PUT /api/resume` with `Authorization: Bearer …` | `CLOUD_PASSWORD`; no `/api/auth`                           |
+| Server or API behavior                              | `server.js`, `test/server.test.js`               | `npm run verify`                                           |
 
 ---
 

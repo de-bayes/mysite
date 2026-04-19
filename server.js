@@ -22,7 +22,9 @@ const WRITING_DIR = path.join(__dirname, 'writing');
 const CANONICAL_TOP_LEVEL_PATHS = new Set([
   '/about',
   '/experience',
+  '/projects',
   '/writing',
+  '/photos',
   '/press',
   '/resume',
 ]);

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photos | Ryan McComb</title>
+  <meta name="description" content="Photography by Ryan McComb, shot on a Canon R8 with 35mm, 50mm, and 85mm prime lenses.">
+  <link rel="canonical" href="https://mccomb.ca/photos">
+  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="/js/shared/nav-name-paint-hint.js"></script>
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicons/favicon-512x512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicons/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png">
+  <meta name="author" content="Ryan McComb">
+  <meta property="og:title" content="Photos | Ryan McComb">
+  <meta property="og:description" content="Photography by Ryan McComb, shot on a Canon R8 with 35mm, 50mm, and 85mm primes.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mccomb.ca/photos">
+  <meta property="og:image" content="https://mccomb.ca/images/portraits/portrait.jpg">
+  <meta property="og:site_name" content="Ryan McComb">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Photos | Ryan McComb">
+  <meta name="twitter:description" content="Photography by Ryan McComb, shot on a Canon R8 with 35mm, 50mm, and 85mm primes.">
+  <meta name="twitter:creator" content="@RyanJMcComb">
+  <meta name="twitter:site" content="@RyanJMcComb">
+  <meta name="twitter:image" content="https://mccomb.ca/images/portraits/portrait.jpg">
+</head>
+<body>
+
+  <nav class="site-nav" id="site-nav"><a href="/" class="nav-name"><span class="brace">{</span><span class="ni">R</span><span class="nx nx1">yan</span><span class="nx nx2"> </span><span class="ni">J</span><span class="nx nx3">.</span><span class="nx nx4"> </span><span class="ni">M</span><span class="nx nx5">c</span><span class="ni">C</span><span class="nx nx6">omb</span><span class="brace">}</span></a><button type="button" class="nav-hamburger" aria-label="Open menu" aria-controls="nav-menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="nav-links" id="nav-menu" role="navigation" aria-label="Site"><a href="/about">About</a><a href="/experience">Experience</a><a href="/projects">Projects</a><a href="/writing">Writing</a><a href="/photos" class="active">Photos</a><a href="/press">Press</a></div></nav>
+
+  <main>
+    <header class="page-header">
+      <h1>Photos</h1>
+      <p>Shot on a Canon R8 with 35mm, 50mm, and 85mm primes. Swipe, click, or use the arrow keys.</p>
+    </header>
+
+    <section class="photo-deck" aria-roledescription="carousel" aria-label="Photo gallery">
+      <button type="button" class="photo-deck-arrow photo-deck-arrow--prev" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <div class="photo-deck-stage" id="photo-stage">
+        <figure class="photo-card photo-card--a" data-index="0"></figure>
+        <figure class="photo-card photo-card--b" data-index="1"></figure>
+        <figure class="photo-card photo-card--c" data-index="2"></figure>
+        <figure class="photo-card photo-card--d" data-index="3"></figure>
+        <figure class="photo-card photo-card--e" data-index="4"></figure>
+        <figure class="photo-card photo-card--f" data-index="5"></figure>
+      </div>
+
+      <button type="button" class="photo-deck-arrow photo-deck-arrow--next" aria-label="Next photo">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/></svg>
+      </button>
+
+      <div class="photo-deck-counter" id="photo-counter" aria-live="polite">1 / 6</div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+  <p class="footer-copy">Ryan McComb &middot; Evanston, IL &middot; <a href="https://mccomb.ca" class="footer-link">mccomb.ca</a></p>
+</footer>
+
+
+  <script src="js/shared/site-data.js"></script>
+  <script src="js/shared/nav.js"></script>
+  <script src="js/shared/animations.js"></script>
+  <script src="js/shared/effects.js"></script>
+  <script src="js/pages/photos.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

@@ -1,17 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  fetch('/racecalls-summary.json')
-    .then((response) => {
-      if (!response.ok) throw new Error('Failed to load race-call summary');
-      return response.json();
-    })
-    .then((summary) => {
-      const value = document.getElementById('rc-about-contact-value');
-      if (value && summary && typeof summary.aboutContactValue === 'string') {
-        value.textContent = summary.aboutContactValue;
-      }
-    })
-    .catch(() => {});
-
   document.querySelectorAll('[data-copy]').forEach((el) => {
     el.addEventListener('click', (event) => {
       event.preventDefault();
