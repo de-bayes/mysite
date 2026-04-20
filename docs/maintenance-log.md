@@ -41,6 +41,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-13** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; fixed two README inaccuracies (cache headers bullet listed JS/CSS as `immutable` -- actual is `no-cache, must-revalidate`; project structure `js/pages/` comment omitted `about.js` and `press.js`). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | **2026-04-17** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; added `CLAUDE.md` (one-liner pointing to `AGENTS.md` for Claude Code); added missing "IL-09: An Election for the Ages" (VoteHub) to `cmdk.js` INDEX; synced `generate-embeddings.mjs` ITEMS to fully match `cmdk.js` (9 articles, 2 projects, 3 experience entries added). All 19 tests pass.                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | **2026-04-18** | **About redesign + cleanup + semantic cmdk pass:** rewrote about-page body in less self-demeaning voice; removed VoteHub race-calls tile from contact grid; added brand-wash + shine-sweep hover to all contact tiles (new `contact-item--email` and `contact-item--github` modifiers); email tile spans full row. Deleted `archive/now-page/`, `colophon.html`, and the Now-page + Colophon CSS blocks in `style.css`. Deleted orphan scripts `generate-about-portrait.mjs`, `pngs-to-ico.mjs` (none wired up). Removed `fetch('/racecalls-summary.json')` from `js/pages/about.js`; updated `test/server.test.js` accordingly. Upgraded `cmdk.js` to client-side semantic search via transformers.js with keyword-first progressive enhancement. See **Session 13**. |
+| **2026-04-20** | **Docs org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored); corrected README post-Session-13 drift: removed deleted `cmdk.js` from shared JS table and script load order, removed 4 deleted CSS sections (Colophon Page, Command Palette, Now Page, Tweet Cards), fixed CSS section names to match actual headers, updated line count (~2,500), added Photos page (deck) section. Added undocumented pages `photos.html` and `projects.html` to Pages table; added `js/pages/photos.js` to page-specific JS table. No code or visible-site changes.                                                                                                                                                                                                     |
 
 Update the table when you complete another maintenance milestone.
 
@@ -341,6 +342,28 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 14: docs org pass (2026-04-20)
+
+**Goals:** close documentation drift introduced by Session 13; recreate missing Cursor rule file; document previously undocumented pages.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README `js/shared` table** still listed the deleted `cmdk.js` entry. Removed it. Also updated `site-data.js` description to drop the stale "and cmdk" reference.
+- **README project structure comment** still listed "cmdk" in the shared scripts note. Removed it.
+- **README script load order** section still referenced `cmdk.js` in prose and in the code block. Both removed.
+- **README CSS architecture section** listed 4 sections deleted in Session 13 (Colophon Page, Command Palette, Now Page, Tweet Cards). Removed all four. Added the new "Photos page (deck)" section. Corrected section names to match actual `style.css` headers (e.g. "Navigation: Stained Glass", "Hero", "Page Layout: Subpages"). Updated line count from ~2,900 to ~2,500.
+- **README Pages table** was missing `photos.html` (`/photos`) and `projects.html` (`/projects`). Added both rows.
+- **README page-specific JS table** was missing `js/pages/photos.js`. Added it.
+
+**Not changed (intentional):**
+
+- All JS, CSS, HTML, server, and test files: no changes.
+
+**Verification:** `npm run verify` clean (lint + format:check + tests).
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -373,4 +396,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-18 (about redesign + cleanup + semantic cmdk; Session 13 logged).
+**Last updated:** 2026-04-20 (docs org pass; Session 14 logged).

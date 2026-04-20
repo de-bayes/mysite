@@ -36,7 +36,7 @@ mysite/
   index.html, about.html, ...   root HTML pages
   style.css                     Single stylesheet (~2,700 lines, all pages)
   js/
-    shared/                     Scripts loaded on most pages (site-data, nav, animations, effects, cmdk)
+    shared/                     Scripts loaded on most pages (site-data, nav, animations, effects)
     pages/                      Page-specific scripts (timeline, writing, article, bayes-404, about, press)
   fonts/                        Self-hosted Inter + DM Sans (woff2)
   images/
@@ -71,6 +71,8 @@ mysite/
 | `/writing`       | `writing.html`         | Article index with category/tag/publication filters. Cards link to hosted essays or external URLs.                                       |
 | `/writing/:slug` | `writing/*/index.html` | Individual hosted essays with reading progress bar. Currently: il9cast-postmortem, peoples-edict, median-voter-theory, nsa-surveillance. |
 | `/press`         | `press.html`           | Press coverage and media features.                                                                                                       |
+| `/photos`        | `photos.html`          | Photography portfolio: 6 photos (Canon R8, prime lenses), navigable by swipe, click arrows, or keyboard.                                 |
+| `/projects`      | `projects.html`        | Projects index: Bayes64, IL9Cast, and Project 2028.                                                                                      |
 | `*`              | `404.html`             | Custom 404 with an interactive Bayes' theorem calculator.                                                                                |
 
 **Retired URLs:** `GET /now`, `/now/`, `/now.html`, `/racecalls`, and `/admin` respond with **301** to **`/`**.
@@ -86,11 +88,10 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 | File                               | Purpose                                                                                                                                                                                                                                                                     |
 | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `js/shared/nav-name-paint-hint.js` | **Loaded in `<head>` (no defer).** Reads `sessionStorage` and sets `data-nav-name-sticky` on `<html>` before first paint, preventing nav-name animation flash on same-page navigation.                                                                                      |
-| `js/shared/site-data.js`           | **Single source of truth** for nav links and hosted essay metadata. Exposes `window.SITE_DATA` (consumed by nav and cmdk).                                                                                                                                                  |
+| `js/shared/site-data.js`           | **Single source of truth** for nav links and hosted essay metadata. Exposes `window.SITE_DATA` (consumed by nav).                                                                                                                                                           |
 | `js/shared/nav.js`                 | Site navigation: mobile hamburger menu with focus trap and escape-to-close, scroll shadow on nav, smooth anchor scrolling, page transition animations (fade out/in for browsers without cross-document View Transitions). Injects a skip-to-content link for accessibility. |
 | `js/shared/animations.js`          | Scroll-triggered `.animate-in` and `.stagger-children` reveal via IntersectionObserver. Respects `prefers-reduced-motion`.                                                                                                                                                  |
 | `js/shared/effects.js`             | Animated number counters for `[data-count]` elements. Eases in with a quartic curve over 1.4s. Respects reduced motion.                                                                                                                                                     |
-| `js/shared/cmdk.js`                | Command palette (Cmd+K / Ctrl+K). Searches pages, articles, projects, press, experience. Features: fuzzy matching with Damerau-Levenshtein edit distance, prefix matching, typo tolerance, title highlighting, recent items via localStorage, keyboard navigation.          |
 
 ### Page-specific
 
@@ -102,10 +103,11 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 | `js/pages/bayes-404.js` | `404.html`          | Interactive Bayes' theorem calculator: three sliders (prior and likelihoods) and live posterior output.                               |
 | `js/pages/about.js`     | `/about`            | Email copy-to-clipboard with toast feedback.                                                                                          |
 | `js/pages/press.js`     | `/press`            | Click-to-open handler for press cards (opens external links in a new tab).                                                            |
+| `js/pages/photos.js`    | `/photos`           | Photo deck carousel: swipe, click-arrow, and keyboard-arrow navigation across 6 photo cards with CSS transform transitions.           |
 
 ### Script load order
 
-`nav-name-paint-hint.js` loads in `<head>` (no defer) so it runs before first paint. `site-data.js` must load before `nav.js` and `cmdk.js` since they read `window.SITE_DATA`. The HTML files load them in this order:
+`nav-name-paint-hint.js` loads in `<head>` (no defer) so it runs before first paint. `site-data.js` must load before `nav.js` since it reads `window.SITE_DATA`. The HTML files load them in this order:
 
 ```html
 <!-- In <head>, no defer: -->
@@ -116,37 +118,33 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 <script src="js/shared/nav.js"></script>
 <script src="js/shared/animations.js"></script>
 <script src="js/shared/effects.js"></script>
-<script src="js/shared/cmdk.js"></script>
 ```
 
 ---
 
 ## CSS architecture
 
-`style.css` is a single ~2,900-line file organized into named sections:
+`style.css` is a single ~2,500-line file organized into named sections:
 
 ```
-Fonts                @font-face declarations + metric-adjusted fallbacks (top of file, no header)
-Tokens               CSS custom properties in :root (colors, spacing, typography, shadows)
-Reset & Base         Box-sizing, base typography, smooth scrolling, focus styles
-Navigation           Fixed nav, scroll shadow, mobile hamburger menu, page transitions
-Hero                 Full-bleed hero image, gradient overlay, floating card
-About Page           About page hero, contact grid, race-call preview
-Page Layout          Shared header pattern for experience/writing/press pages
-Animations           Scroll-triggered reveal keyframes and classes
-Experience: Timeline Timeline layout, expandable cards, data counters
-Writing Page         Writing cards, filter tabs, press cards, hosted essay layout
-Contact Section      Contact grid used in About page
-404 Page             Error page, Bayes calculator
-Colophon Page        Colophon page layout
-Premium Effects      Scroll animations, character reveal, stagger children
-Command Palette      Cmd+K dialog, search results, keyboard hints
-Reading Progress Bar Thin progress bar for essay pages
-Responsive           @media (max-width: 768px) overrides
-Print                @media print overrides
-Now Page             Archived now-page styles (page retired; styles retained for archive reference)
-Tweet Cards          Tweet card styles (archived with now page)
-Resume Page          Printable resume layout with @media print
+Fonts                    @font-face declarations + metric-adjusted fallbacks (top of file, no header)
+Tokens                   CSS custom properties in :root (colors, spacing, typography, shadows)
+Reset & Base             Box-sizing, base typography, smooth scrolling, focus styles
+Navigation: Stained Glass Fixed nav, scroll shadow, mobile hamburger menu, page transitions
+Hero                     Full-bleed hero image, gradient overlay, floating card
+About Page               About page hero, contact grid
+Page Layout: Subpages    Shared header pattern for experience/writing/press pages
+Animations               Scroll-triggered reveal keyframes and classes
+Experience: Timeline     Timeline layout, expandable cards, data counters
+Writing Page             Writing cards, filter tabs, press cards, hosted essay layout
+Photos page (deck)       Photo deck carousel layout and transitions
+Contact Section          Contact grid used in About page
+404 Page                 Error page, Bayes calculator
+Premium Effects          Scroll animations, character reveal, stagger children
+Reading Progress Bar     Thin progress bar for essay pages
+Responsive               @media (max-width: 768px) overrides
+Print                    @media print overrides
+Resume page              Printable resume layout with @media print
 ```
 
 ### Design tokens (`:root`)
