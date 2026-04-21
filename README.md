@@ -181,12 +181,10 @@ Self-hosted Inter and DM Sans (woff2) with `font-display: swap` and metric-adjus
 
 All animations respect `prefers-reduced-motion: reduce` (CSS and JS).
 
-| Animation     | Used for                                               |
-| ------------- | ------------------------------------------------------ |
-| `fadeSlideUp` | Scroll-reveal: 20px translate + fade (larger elements) |
-| `fadeIn`      | Scroll-reveal: 8px translate + fade (subtler)          |
-| `cardIn`      | Card entrance: 30px translate + fade (staggered)       |
-| `imgReveal`   | Hero image: 1.04x scale down + fade                    |
+| Animation   | Used for                                         |
+| ----------- | ------------------------------------------------ |
+| `cardIn`    | Card entrance: 30px translate + fade (staggered) |
+| `imgReveal` | Hero image: 1.04x scale down + fade              |
 
 ---
 
