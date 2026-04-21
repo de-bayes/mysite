@@ -42,6 +42,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-17** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; added `CLAUDE.md` (one-liner pointing to `AGENTS.md` for Claude Code); added missing "IL-09: An Election for the Ages" (VoteHub) to `cmdk.js` INDEX; synced `generate-embeddings.mjs` ITEMS to fully match `cmdk.js` (9 articles, 2 projects, 3 experience entries added). All 19 tests pass.                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | **2026-04-18** | **About redesign + cleanup + semantic cmdk pass:** rewrote about-page body in less self-demeaning voice; removed VoteHub race-calls tile from contact grid; added brand-wash + shine-sweep hover to all contact tiles (new `contact-item--email` and `contact-item--github` modifiers); email tile spans full row. Deleted `archive/now-page/`, `colophon.html`, and the Now-page + Colophon CSS blocks in `style.css`. Deleted orphan scripts `generate-about-portrait.mjs`, `pngs-to-ico.mjs` (none wired up). Removed `fetch('/racecalls-summary.json')` from `js/pages/about.js`; updated `test/server.test.js` accordingly. Upgraded `cmdk.js` to client-side semantic search via transformers.js with keyword-first progressive enhancement. See **Session 13**. |
 | **2026-04-20** | **Docs org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored); corrected README post-Session-13 drift: removed deleted `cmdk.js` from shared JS table and script load order, removed 4 deleted CSS sections (Colophon Page, Command Palette, Now Page, Tweet Cards), fixed CSS section names to match actual headers, updated line count (~2,500), added Photos page (deck) section. Added undocumented pages `photos.html` and `projects.html` to Pages table; added `js/pages/photos.js` to page-specific JS table. No code or visible-site changes.                                                                                                                                                                                                     |
+| **2026-04-21** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed stale comment in `js/shared/site-data.js` (still referenced deleted `cmdk.js` and `generate-embeddings.mjs`); added `photos.html` and `projects.html` to `scripts/seo-inject.mjs` PAGE_PATHS and publicPaths (they were in `sitemap.xml` but absent from the script, so a future `seo:inject` run would have dropped them). All 19 tests pass. No visible-site changes.                                                                                                                                                                                                                                                                                     |
 
 Update the table when you complete another maintenance milestone.
 
@@ -364,6 +365,25 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 15: org pass (2026-04-21)
+
+**Goals:** re-create missing Cursor rule file; fix stale comment in `js/shared/site-data.js`; close seo-inject drift for photos and projects pages.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **`js/shared/site-data.js` comment (line 1)** still read "CmdK and scripts/generate-embeddings.mjs consume this" -- both files were deleted in Session 13. Updated to reflect the actual consumer: `nav.js` via `window.SITE_DATA`.
+- **`scripts/seo-inject.mjs` PAGE_PATHS** was missing `photos.html` and `projects.html`. Both pages exist, are in `sitemap.xml`, and have correct OG/Twitter tags -- but they were absent from the script's page list and from `publicPaths`. A future `npm run seo:inject` run would have silently dropped `/photos` and `/projects` from the regenerated sitemap. Added both entries to PAGE_PATHS and publicPaths in document order.
+
+**Not changed (intentional):**
+
+- All HTML, CSS, server, and test files: no changes.
+- Sitemap: already correct; seo-inject fix prevents future regressions.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -396,4 +416,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-20 (docs org pass; Session 14 logged).
+**Last updated:** 2026-04-21 (org pass; Session 15 logged).

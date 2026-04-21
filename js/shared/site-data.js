@@ -1,4 +1,4 @@
-// CmdK and scripts/generate-embeddings.mjs consume this; add nav items and hosted essays here first.
+// Single source of truth for nav links and hosted essays; consumed by nav.js via window.SITE_DATA.
 const SITE_NAV_LINKS = [
   { href: '/about', label: 'About', desc: 'About Ryan McComb', keys: '' },
   {
