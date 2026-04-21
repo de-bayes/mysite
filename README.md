@@ -187,7 +187,6 @@ All animations respect `prefers-reduced-motion: reduce` (CSS and JS).
 | `fadeIn`      | Scroll-reveal: 8px translate + fade (subtler)          |
 | `cardIn`      | Card entrance: 30px translate + fade (staggered)       |
 | `imgReveal`   | Hero image: 1.04x scale down + fade                    |
-| `charReveal`  | Character-by-character text reveal (about page name)   |
 
 ---
 

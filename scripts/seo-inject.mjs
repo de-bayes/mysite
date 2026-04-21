@@ -43,7 +43,9 @@ const PAGE_PATHS = {
   'index.html': '/',
   'about.html': '/about',
   'experience.html': '/experience',
+  'projects.html': '/projects',
   'writing.html': '/writing',
+  'photos.html': '/photos',
   'press.html': '/press',
   'resume.html': '/resume',
   '404.html': '/',
@@ -151,6 +153,13 @@ function injectHtml(file) {
   s = ensureCanonical(s, canonical);
   s = ensureOgUrl(s, canonical);
   s = ensureOgImage(s, ogImage);
+  s = ensureMetaByProperty(
+    s,
+    'og:image:width',
+    '1200',
+    /(<meta property="og:image" content="[^"]*">)/
+  );
+  s = ensureMetaByProperty(s, 'og:image:height', '630', /(<meta property="og:image:width"[^>]*>)/);
   s = ensureMetaByName(
     s,
     'twitter:card',
@@ -182,7 +191,9 @@ const publicPaths = [
   '/',
   '/about',
   '/experience',
+  '/projects',
   '/writing',
+  '/photos',
   '/press',
   '/resume',
   ...essayPages.map((entry) => entry.publicPath),
