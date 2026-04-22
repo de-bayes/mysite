@@ -34,7 +34,7 @@ Override the port with `PORT=3000 npm start`. Extensionless URLs work (e.g. `/ab
 ```
 mysite/
   index.html, about.html, ...   root HTML pages
-  style.css                     Single stylesheet (~2,700 lines, all pages)
+  style.css                     Single stylesheet (~2,500 lines, all pages)
   js/
     shared/                     Scripts loaded on most pages (site-data, nav, animations, effects)
     pages/                      Page-specific scripts (timeline, writing, article, bayes-404, about, press)
