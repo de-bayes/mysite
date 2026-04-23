@@ -44,6 +44,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-20** | **Docs org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored); corrected README post-Session-13 drift: removed deleted `cmdk.js` from shared JS table and script load order, removed 4 deleted CSS sections (Colophon Page, Command Palette, Now Page, Tweet Cards), fixed CSS section names to match actual headers, updated line count (~2,500), added Photos page (deck) section. Added undocumented pages `photos.html` and `projects.html` to Pages table; added `js/pages/photos.js` to page-specific JS table. No code or visible-site changes.                                                                                                                                                                                                     |
 | **2026-04-21** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed stale comment in `js/shared/site-data.js` (still referenced deleted `cmdk.js` and `generate-embeddings.mjs`); added `photos.html` and `projects.html` to `scripts/seo-inject.mjs` PAGE_PATHS and publicPaths (they were in `sitemap.xml` but absent from the script, so a future `seo:inject` run would have dropped them). All 19 tests pass. No visible-site changes.                                                                                                                                                                                                                                                                                     |
 | **2026-04-22** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure CSS line count (`~2,700` → `~2,500`, matching CSS architecture section and actual file); removed stale Session 13 "For future agents" bullets that still referenced deleted `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json`. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                     |
+| **2026-04-23** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); removed accidental duplicate Session 14 and Session 15 entries from maintenance-log.md. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 Update the table when you complete another maintenance milestone.
 
@@ -399,42 +400,18 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
-## Session 14: docs org pass (2026-04-20)
+## Session 17: org pass (2026-04-23)
 
-**Goals:** close documentation drift introduced by Session 13; recreate missing Cursor rule file; document previously undocumented pages.
-
-**Findings and fixes:**
-
-- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
-- **README `js/shared` table** still listed the deleted `cmdk.js` entry. Removed it. Also updated `site-data.js` description to drop the stale "and cmdk" reference.
-- **README project structure comment** still listed "cmdk" in the shared scripts note. Removed it.
-- **README script load order** section still referenced `cmdk.js` in prose and in the code block. Both removed.
-- **README CSS architecture section** listed 4 sections deleted in Session 13 (Colophon Page, Command Palette, Now Page, Tweet Cards). Removed all four. Added the new "Photos page (deck)" section. Corrected section names to match actual `style.css` headers (e.g. "Navigation: Stained Glass", "Hero", "Page Layout: Subpages"). Updated line count from ~2,900 to ~2,500.
-- **README Pages table** was missing `photos.html` (`/photos`) and `projects.html` (`/projects`). Added both rows.
-- **README page-specific JS table** was missing `js/pages/photos.js`. Added it.
-
-**Not changed (intentional):**
-
-- All JS, CSS, HTML, server, and test files: no changes.
-
-**Verification:** `npm run verify` clean (lint + format:check + tests).
-
----
-
-## Session 15: org pass (2026-04-21)
-
-**Goals:** re-create missing Cursor rule file; fix stale comment in `js/shared/site-data.js`; close seo-inject drift for photos and projects pages.
+**Goals:** re-create missing Cursor rule file; remove accidental duplicate session entries from maintenance-log.md.
 
 **Findings and fixes:**
 
 - **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
-- **`js/shared/site-data.js` comment (line 1)** still read "CmdK and scripts/generate-embeddings.mjs consume this" -- both files were deleted in Session 13. Updated to reflect the actual consumer: `nav.js` via `window.SITE_DATA`.
-- **`scripts/seo-inject.mjs` PAGE_PATHS** was missing `photos.html` and `projects.html`. Both pages exist, are in `sitemap.xml`, and have correct OG/Twitter tags -- but they were absent from the script's page list and from `publicPaths`. A future `npm run seo:inject` run would have silently dropped `/photos` and `/projects` from the regenerated sitemap. Added both entries to PAGE_PATHS and publicPaths in document order.
+- **`docs/maintenance-log.md`** contained duplicate Session 14 and Session 15 entries appended after Session 16 (Sessions 14 and 15 already appear correctly in their original positions). Removed the duplicates.
 
 **Not changed (intentional):**
 
-- All HTML, CSS, server, and test files: no changes.
-- Sitemap: already correct; seo-inject fix prevents future regressions.
+- All HTML, CSS, JS, server, and test files: no changes.
 
 **Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
 
@@ -472,4 +449,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-22 (org pass; Session 16 logged).
+**Last updated:** 2026-04-23 (org pass; Session 17 logged).
