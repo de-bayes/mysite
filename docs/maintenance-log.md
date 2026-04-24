@@ -10,7 +10,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | ------------------------------------------------------------------- | ----------------------------------------------- |
 | [Timeline](#timeline)                                               | You need a chronological map of major work      |
 | [Visible site and refactors](#visible-site-and-refactors)           | You need the UI policy and safe-refactor habits |
-| [Sessions 1 to 4](#session-1-cleanup-behavior-neutral)              | You need detail on a past change set            |
+| [Sessions 1 to 17](#session-1-cleanup-behavior-neutral)             | You need detail on a past change set            |
 | [Verification commands](#verification-commands-for-agents)          | You want the exact CI-equivalent commands       |
 | [Project facts agents often need](#project-facts-agents-often-need) | You need hosting, Node, secrets, style pointers |
 
@@ -45,6 +45,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-21** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed stale comment in `js/shared/site-data.js` (still referenced deleted `cmdk.js` and `generate-embeddings.mjs`); added `photos.html` and `projects.html` to `scripts/seo-inject.mjs` PAGE_PATHS and publicPaths (they were in `sitemap.xml` but absent from the script, so a future `seo:inject` run would have dropped them). All 19 tests pass. No visible-site changes.                                                                                                                                                                                                                                                                                     |
 | **2026-04-22** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure CSS line count (`~2,700` → `~2,500`, matching CSS architecture section and actual file); removed stale Session 13 "For future agents" bullets that still referenced deleted `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json`. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                     |
 | **2026-04-23** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); removed accidental duplicate Session 14 and Session 15 entries from maintenance-log.md. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| **2026-04-24** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure `js/pages/` comment (omitted `photos`); fixed maintenance-log "On this page" table (still read "Sessions 1 to 4", now reflects Session 17). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 Update the table when you complete another maintenance milestone.
 
@@ -417,6 +418,24 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 18: org pass (2026-04-24)
+
+**Goals:** re-create missing Cursor rule file; fix two minor README / maintenance-log inaccuracies.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README project structure** `js/pages/` comment listed `(timeline, writing, article, bayes-404, about, press)`, omitting `photos`. The JS table was corrected in Session 14 but the project structure blurb was not. Fixed to include `photos`.
+- **Maintenance-log "On this page" table** still read "Sessions 1 to 4" as the row label for past session detail. Updated to "Sessions 1 to 17" to reflect the current session count.
+
+**Not changed (intentional):**
+
+- All JS, CSS, HTML, server, and test files: no changes.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -449,4 +468,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-23 (org pass; Session 17 logged).
+**Last updated:** 2026-04-24 (org pass; Session 18 logged).

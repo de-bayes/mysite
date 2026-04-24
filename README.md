@@ -37,7 +37,7 @@ mysite/
   style.css                     Single stylesheet (~2,500 lines, all pages)
   js/
     shared/                     Scripts loaded on most pages (site-data, nav, animations, effects)
-    pages/                      Page-specific scripts (timeline, writing, article, bayes-404, about, press)
+    pages/                      Page-specific scripts (timeline, writing, article, bayes-404, about, press, photos)
   fonts/                        Self-hosted Inter + DM Sans (woff2)
   images/
     heroes/                     Page hero images with responsive variants (char-swiss, experience-hero, writing-hero)
