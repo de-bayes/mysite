@@ -6,15 +6,13 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 
 ## On this page
 
-
 | Section                                                             | Use it when                                     |
 | ------------------------------------------------------------------- | ----------------------------------------------- |
 | [Timeline](#timeline)                                               | You need a chronological map of major work      |
 | [Visible site and refactors](#visible-site-and-refactors)           | You need the UI policy and safe-refactor habits |
-| [Sessions 1 to 4](#session-1-cleanup-behavior-neutral)              | You need detail on a past change set            |
+| [Sessions 1 to 17](#session-1-cleanup-behavior-neutral)             | You need detail on a past change set            |
 | [Verification commands](#verification-commands-for-agents)          | You want the exact CI-equivalent commands       |
 | [Project facts agents often need](#project-facts-agents-often-need) | You need hosting, Node, secrets, style pointers |
-
 
 **How to use:** skim **Timeline** and **Session 4** first. Run `npm run verify` after substantive JS or server edits. For exact commit timestamps, use `git log`; this file records **intent and scope**, not a full history.
 
@@ -24,7 +22,6 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 
 ## Timeline
 
-
 | When (approx.) | Focus                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **2026-04**    | Code cleanup passes aimed at **no accidental UI drift** during non-UI refactors (no pixel or layout churn on purpose).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
@@ -32,7 +29,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04**    | README updates: Vercel production, env vars in dashboard, CI vs deploy split.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | **2026-04**    | This document added under `docs/`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | **2026-04-03** | **Site simplification:** removed race-calls API and admin UI; public race stats are static JSON; trimmed `/api/auth`. See **Session 4**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| **2026-04-04** | **Repo layout:** `racecalls-summary.json` and `site-origin.json` moved under `**site-data/`**; public URL `**/racecalls-summary.json**` unchanged; `**/site-data/***` blocked in `server.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| **2026-04-04** | **Repo layout:** `racecalls-summary.json` and `site-origin.json` moved under `**site-data/`**; public URL `**/racecalls-summary.json**`unchanged;`**/site-data/\*\*\*`blocked in`server.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | **2026-04-05** | **Docs pass:** corrected README inaccuracies -- CSS line count, image/favicon path table, CSS section list, added `nav-name-paint-hint.js` to JS table and script load order. No code changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | **2026-04-06** | **Org pass:** verified lint, format, and all 19 tests pass. Created missing `.cursor/rules/no-em-dash.mdc` (referenced in AGENTS.md and docs/README.md but absent). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | **2026-04-07** | **Org pass:** renamed `scripts/gen-embeddings.mjs` to `scripts/generate-embeddings.mjs` for naming consistency; updated 3 references (file header, `js/shared/site-data.js` comment, maintenance-log). Re-created missing `.cursor/rules/no-em-dash.mdc` (`.cursor/` is gitignored so it does not persist). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                           |
@@ -44,7 +41,11 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-13** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; fixed two README inaccuracies (cache headers bullet listed JS/CSS as `immutable` -- actual is `no-cache, must-revalidate`; project structure `js/pages/` comment omitted `about.js` and `press.js`). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | **2026-04-17** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; added `CLAUDE.md` (one-liner pointing to `AGENTS.md` for Claude Code); added missing "IL-09: An Election for the Ages" (VoteHub) to `cmdk.js` INDEX; synced `generate-embeddings.mjs` ITEMS to fully match `cmdk.js` (9 articles, 2 projects, 3 experience entries added). All 19 tests pass.                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | **2026-04-18** | **About redesign + cleanup + semantic cmdk pass:** rewrote about-page body in less self-demeaning voice; removed VoteHub race-calls tile from contact grid; added brand-wash + shine-sweep hover to all contact tiles (new `contact-item--email` and `contact-item--github` modifiers); email tile spans full row. Deleted `archive/now-page/`, `colophon.html`, and the Now-page + Colophon CSS blocks in `style.css`. Deleted orphan scripts `generate-about-portrait.mjs`, `pngs-to-ico.mjs` (none wired up). Removed `fetch('/racecalls-summary.json')` from `js/pages/about.js`; updated `test/server.test.js` accordingly. Upgraded `cmdk.js` to client-side semantic search via transformers.js with keyword-first progressive enhancement. See **Session 13**. |
-
+| **2026-04-20** | **Docs org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored); corrected README post-Session-13 drift: removed deleted `cmdk.js` from shared JS table and script load order, removed 4 deleted CSS sections (Colophon Page, Command Palette, Now Page, Tweet Cards), fixed CSS section names to match actual headers, updated line count (~2,500), added Photos page (deck) section. Added undocumented pages `photos.html` and `projects.html` to Pages table; added `js/pages/photos.js` to page-specific JS table. No code or visible-site changes.                                                                                                                                                                                                     |
+| **2026-04-21** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed stale comment in `js/shared/site-data.js` (still referenced deleted `cmdk.js` and `generate-embeddings.mjs`); added `photos.html` and `projects.html` to `scripts/seo-inject.mjs` PAGE_PATHS and publicPaths (they were in `sitemap.xml` but absent from the script, so a future `seo:inject` run would have dropped them). All 19 tests pass. No visible-site changes.                                                                                                                                                                                                                                                                                     |
+| **2026-04-22** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure CSS line count (`~2,700` → `~2,500`, matching CSS architecture section and actual file); removed stale Session 13 "For future agents" bullets that still referenced deleted `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json`. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                     |
+| **2026-04-23** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); removed accidental duplicate Session 14 and Session 15 entries from maintenance-log.md. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| **2026-04-24** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure `js/pages/` comment (omitted `photos`); fixed maintenance-log "On this page" table (still read "Sessions 1 to 4", now reflects Session 17). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 Update the table when you complete another maintenance milestone.
 
@@ -72,16 +73,16 @@ Update the table when you complete another maintenance milestone.
 
 **Notable edits:**
 
-- `**server.js`:** removed unused `readJSONSync`. Added small internal helpers later (`cloudAuthGate`, `sendOgPng`, etc.) without changing HTTP contract. (`callersObjectFromBody` and other race-only helpers were removed in Session 4.)
-- `**js/shared/effects.js`:** removed unused `isMobile` binding.
-- `**js/pages/writing.js`:** removed unused `visibleCount`; reused in-scope DOM references instead of repeated `getElementById` where equivalent.
-- `**scripts/generate-embeddings.mjs`:** removed unused `evalCtx`; fixed `site-data.js` path to `js/shared/site-data.js` so the script can read the real file.
-- `**style.css`:** removed an **empty** ruleset (`.rc-type-filters` with no declarations). No visual effect.
-- `**index.html`:** removed an empty HTML comment. No visual effect.
-- `**js/shared/cmdk.js`:** optional `catch` binding where errors were ignored.
-- `**js/shared/footer.js`:** **deleted**; it was never referenced by any HTML page (footers are static markup). README updated to match.
-- `**js/shared/site-data.js`:** single `SITE_NAV_LINKS` array feeding `SITE_DATA.navLinks` (later simplified; see Session 2).
-- `**test/server.test.js`:** expectations updated to `mccomb.ca` and sitemap shape; `assert.ok(Array.isArray(...))` style fix.
+- `**server.js`:\*\* removed unused `readJSONSync`. Added small internal helpers later (`cloudAuthGate`, `sendOgPng`, etc.) without changing HTTP contract. (`callersObjectFromBody` and other race-only helpers were removed in Session 4.)
+- `**js/shared/effects.js`:\*\* removed unused `isMobile` binding.
+- `**js/pages/writing.js`:\*\* removed unused `visibleCount`; reused in-scope DOM references instead of repeated `getElementById` where equivalent.
+- `**scripts/generate-embeddings.mjs`:\*\* removed unused `evalCtx`; fixed `site-data.js` path to `js/shared/site-data.js` so the script can read the real file.
+- `**style.css`:** removed an **empty\*\* ruleset (`.rc-type-filters` with no declarations). No visual effect.
+- `**index.html`:\*\* removed an empty HTML comment. No visual effect.
+- `**js/shared/cmdk.js`:\*\* optional `catch` binding where errors were ignored.
+- `**js/shared/footer.js`:\*\* **deleted**; it was never referenced by any HTML page (footers are static markup). README updated to match.
+- `**js/shared/site-data.js`:\*\* single `SITE_NAV_LINKS` array feeding `SITE_DATA.navLinks` (later simplified; see Session 2).
+- `**test/server.test.js`:\*\* expectations updated to `mccomb.ca` and sitemap shape; `assert.ok(Array.isArray(...))` style fix.
 
 **Deferred (intentional):** large deduplication in `seo-inject.mjs`, heavy `cmdk.js` style rewrite.
 
@@ -95,17 +96,17 @@ Update the table when you complete another maintenance milestone.
 
 **Added:**
 
-- `**eslint.config.mjs`:** ESLint flat config; `eslint-config-prettier`; separate browser vs Node globals; ignores `node_modules`, `data`, `.cursor`, `.claude`.
-- `**.prettierrc.json`**, `**.prettierignore`:** Prettier on `js`, `mjs`, `json`, `md`; **excludes** `*.html`, `style.css`, assets, `.vscode`, `data`.
-- `**.editorconfig`:** UTF-8, LF, trim whitespace, 2-space indent (Markdown trailing space preserved).
-- `**package.json` scripts:** `lint`, `lint:fix`, `format`, `format:check`, `verify` (`lint` + `format:check` + `test`).
-- `**.github/workflows/ci.yml`:** runs `npm ci` and `npm run verify` on push and PR (comment notes Vercel owns deploys).
+- `**eslint.config.mjs`:\*\* ESLint flat config; `eslint-config-prettier`; separate browser vs Node globals; ignores `node_modules`, `data`, `.cursor`, `.claude`.
+- `**.prettierrc.json`**, `**.prettierignore`:** Prettier on `js`, `mjs`, `json`, `md`; **excludes** `\*.html`, `style.css`, assets, `.vscode`, `data`.
+- `**.editorconfig`:\*\* UTF-8, LF, trim whitespace, 2-space indent (Markdown trailing space preserved).
+- `**package.json` scripts:\*\* `lint`, `lint:fix`, `format`, `format:check`, `verify` (`lint` + `format:check` + `test`).
+- `**.github/workflows/ci.yml`:\*\* runs `npm ci` and `npm run verify` on push and PR (comment notes Vercel owns deploys).
 
 **Code fixes driven by lint:**
 
-- `**js/shared/cmdk.js`:** `let` / `const` in tight loops to fix `no-redeclare`; non-empty `catch` for `localStorage.setItem` (`void 0` body).
-- `**js/shared/nav.js`:** removed unused `navItems` / `SITE_DATA` reads (nav chrome is static HTML; script only handles interactions).
-- `**js/shared/site-data.js`:** removed `window.SITE_NAV_FALLBACK_LINKS` after nav stopped consuming it.
+- `**js/shared/cmdk.js`:\*\* `let` / `const` in tight loops to fix `no-redeclare`; non-empty `catch` for `localStorage.setItem` (`void 0` body).
+- `**js/shared/nav.js`:\*\* removed unused `navItems` / `SITE_DATA` reads (nav chrome is static HTML; script only handles interactions).
+- `**js/shared/site-data.js`:\*\* removed `window.SITE_NAV_FALLBACK_LINKS` after nav stopped consuming it.
 - **Prettier:** applied to allowed extensions (large whitespace-only diffs possible in `server.js`, `test/`, `scripts/`, some `js/`, `README.md`).
 
 ---
@@ -120,7 +121,7 @@ Update the table when you complete another maintenance milestone.
 - Deployment section: env/secrets in Vercel UI; CI complements GitHub, not a replacement for Vercel Git integration.
 - `PORT` row notes Vercel sets it in production.
 
-`**.github/workflows/ci.yml`:** top comment clarifies deploy target (Vercel).
+`**.github/workflows/ci.yml`:\*\* top comment clarifies deploy target (Vercel).
 
 ---
 
@@ -132,16 +133,13 @@ Update the table when you complete another maintenance milestone.
 
 ### Removed (files)
 
-
 | Path                  | Notes                                                              |
 | --------------------- | ------------------------------------------------------------------ |
 | `racecalls.html`      | Dedicated public race-call page (filters, cards, large CSS block). |
 | `admin.html`          | Password UI for CRUD on race calls.                                |
 | `data/racecalls.json` | Server-seeded / API-backed store (no longer used).                 |
 
-
 ### Removed (HTTP / server)
-
 
 | Piece                                                                                                 | Notes                                                                                                                                                           |
 | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -153,34 +151,31 @@ Update the table when you complete another maintenance milestone.
 | Race seed block                                                                                       | No auto-create of `racecalls.json`.                                                                                                                             |
 | `CALLER_DESKS`, `VALID_RACE_TYPES`, `callersFromFirstCaller`, `callersObjectFromBody`, `explicitTrue` | Only used by race handlers.                                                                                                                                     |
 | `/racecalls` from `CANONICAL_TOP_LEVEL_PATHS`                                                         | Trailing-slash canonicalization no longer treats it as a top-level page.                                                                                        |
-| Large **racecalls page** CSS in `style.css`                                                           | Kept `**.rc-preview`** / `**.rc-preview--static**` for the Now-page widget.                                                                                     |
+| Large **racecalls page** CSS in `style.css`                                                           | Kept `**.rc-preview`** / `**.rc-preview--static\*\*` for the Now-page widget.                                                                                   |
 | `.about-racecalls` rules                                                                              | Unused; removed earlier in the same effort.                                                                                                                     |
-
 
 ### Added / kept (behavior)
 
-
-| Piece                                                                                  | Notes                                                                                                                                                                                 |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `**site-data/racecalls-summary.json**`                                                 | `aboutContactValue` drives the About contact row; `nowRecord` / `nowAccuracy` kept for reference (archived Now page). Served at `**GET /racecalls-summary.json**` via explicit route. |
-| `**about.html**`                                                                       | `fetch('/racecalls-summary.json')` for the VoteHub contact line.                                                                                                                      |
-| `**archive/now-page/**`                                                                | Retired `**now.html**` snapshot; **not** served (`archive` blocked in `server.js`).                                                                                                   |
-| **301** `GET /racecalls`, `/racecalls.html`, `/now`, `/now/`, `/now.html` → `/`        | Legacy URLs collapse to home.                                                                                                                                                         |
-| **301** `GET /admin`, `/admin.html` → `/`                                              | Old bookmarks do not 404.                                                                                                                                                             |
-| `**GET/PUT /api/resume`**, `**GET /api/og**`, `**requireAuth**`, `**apiWriteLimiter**` | Unchanged role: resume editing for operators with Bearer secret; OG images public.                                                                                                    |
-
+| Piece                                                                                    | Notes                                                                                                                                                                                 |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `**site-data/racecalls-summary.json**`                                                   | `aboutContactValue` drives the About contact row; `nowRecord` / `nowAccuracy` kept for reference (archived Now page). Served at `**GET /racecalls-summary.json**` via explicit route. |
+| `**about.html**`                                                                         | `fetch('/racecalls-summary.json')` for the VoteHub contact line.                                                                                                                      |
+| `**archive/now-page/**`                                                                  | Retired `**now.html**` snapshot; **not** served (`archive` blocked in `server.js`).                                                                                                   |
+| **301** `GET /racecalls`, `/racecalls.html`, `/now`, `/now/`, `/now.html` → `/`          | Legacy URLs collapse to home.                                                                                                                                                         |
+| **301** `GET /admin`, `/admin.html` → `/`                                                | Old bookmarks do not 404.                                                                                                                                                             |
+| `**GET/PUT /api/resume`**, `**GET /api/og**`, `**requireAuth**`, `**apiWriteLimiter\*\*` | Unchanged role: resume editing for operators with Bearer secret; OG images public.                                                                                                    |
 
 ### Config and docs touched
 
-- `**README.md`:** API table, persistence section, env copy, Vercel cache bullets (removed obsolete `/data/` header row from `vercel.json`).
-- `**.env.example`:** Documents resume-only API.
+- `**README.md`:\*\* API table, persistence section, env copy, Vercel cache bullets (removed obsolete `/data/` header row from `vercel.json`).
+- `**.env.example`:\*\* Documents resume-only API.
 - `**robots.txt`** / `**scripts/seo-inject.mjs`:** Dropped `Disallow: /admin`; aligned on `Disallow: /api/`. Removed `admin.html` from SEO inject page list.
-- `**test/server.test.js`:** Dropped race API + `MYSITE_DATA_DIR` isolation; tests cover `/racecalls-summary.json`, `/racecalls` → `/`, `/now` → `/`, `/admin` → `/`, blocked `/archive/`, and blocked `/site-data/*`.
+- `**test/server.test.js`:\*_ Dropped race API + `MYSITE_DATA_DIR` isolation; tests cover `/racecalls-summary.json`, `/racecalls` → `/`, `/now` → `/`, `/admin` → `/`, blocked `/archive/`, and blocked `/site-data/_`.
 
 ### For future agents (quick map)
 
-1. **VoteHub race-call line on About:** edit `**site-data/racecalls-summary.json`** (`aboutContactValue`) unless you change `**rc-about-contact-value**` in `**about.html**`.
-2. **Resume automation:** use `**CLOUD_PASSWORD`** with `**Authorization: Bearer …**` on `**GET`/`PUT /api/resume**`. There is **no** `/api/auth` endpoint.
+1. **VoteHub race-call line on About:** edit `**site-data/racecalls-summary.json`** (`aboutContactValue`) unless you change `**rc-about-contact-value**`in`**about.html\*\*`.
+2. **Resume automation:** use `**CLOUD_PASSWORD`** with `**Authorization: Bearer …**`on`**GET`/`PUT /api/resume**`. There is **no\*\* `/api/auth` endpoint.
 3. **Do not bring back** `data/racecalls.json`, `/api/racecalls`, or the old admin UI without an explicit product decision; public stats are intentionally static JSON.
 
 ---
@@ -193,7 +188,7 @@ Update the table when you complete another maintenance milestone.
 
 - **README page-specific JS table** was missing `js/pages/about.js` and `js/pages/press.js`. Both files exist and are loaded by their respective pages. Added both rows with accurate purpose descriptions.
 - **README build scripts section** listed only `seo-inject.mjs` and `pngs-to-ico.mjs`. Added entries for `generate-about-portrait.mjs` (sharp-based portrait resizer) and `generate-embeddings.mjs` (semantic search data builder).
-- `**scripts/generate-embeddings.mjs` header** did not mention that `@huggingface/transformers` (used on line 153) is absent from `package.json`. Added install note and a reminder that `ITEMS` should stay aligned with `INDEX` in `js/shared/cmdk.js`.
+- `**scripts/generate-embeddings.mjs` header\*\* did not mention that `@huggingface/transformers` (used on line 153) is absent from `package.json`. Added install note and a reminder that `ITEMS` should stay aligned with `INDEX` in `js/shared/cmdk.js`.
 
 **Not changed (intentional):**
 
@@ -224,7 +219,7 @@ Update the table when you complete another maintenance milestone.
 
 **Findings and fixes:**
 
-- `**.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; this file must be recreated each session). Recreated with the same content as Sessions 6 and 7.
+- `**.cursor/rules/no-em-dash.mdc`\*\* was absent again (`.cursor/` is gitignored; this file must be recreated each session). Recreated with the same content as Sessions 6 and 7.
 - **README dependencies table** listed only `express`, `express-rate-limit`, `helmet`, `dotenv`, and `supertest`. Missing production deps `satori` and `@resvg/resvg-js` (used by `GET /api/og` for OG image generation) were not documented. Added both, plus dev deps `eslint`, `prettier`, and `sharp` for completeness.
 - Confirmed all 19 tests pass and `npm run verify` succeeds with a fresh `npm install`.
 
@@ -241,7 +236,7 @@ Update the table when you complete another maintenance milestone.
 
 **Findings and fixes:**
 
-- `**.cmdk-dialog` mobile responsive rule** (`max-width: calc(100% - 2rem); max-height: 70vh`) was located inside the archived "Tweet Cards (now page)" `@media (max-width: 768px)` block (around line 2574 before this edit). This is an active, live rule that the command palette (`cmdk.js`) depends on for mobile sizing. Moved it into the "Responsive" section's `@media (max-width: 768px)` block alongside `.cmdk-hint { display: none; }` where it logically belongs.
+- `**.cmdk-dialog` mobile responsive rule\*\* (`max-width: calc(100% - 2rem); max-height: 70vh`) was located inside the archived "Tweet Cards (now page)" `@media (max-width: 768px)` block (around line 2574 before this edit). This is an active, live rule that the command palette (`cmdk.js`) depends on for mobile sizing. Moved it into the "Responsive" section's `@media (max-width: 768px)` block alongside `.cmdk-hint { display: none; }` where it logically belongs.
 - **Stale `rc-preview` CSS comment:** the line read "Race call summary (Now page) + contact line (About)". The About page no longer uses `.rc-preview` styles (it uses `contact-value` / `rc-about-contact-value`); those styles are only referenced by `archive/now-page/now.html`. Updated comment to "Race call summary widget (archived now page only)".
 
 **Not changed (intentional):**
@@ -260,7 +255,7 @@ Update the table when you complete another maintenance milestone.
 
 **Findings and fixes:**
 
-- `**.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with the same content as prior sessions.
+- `**.cursor/rules/no-em-dash.mdc`\*\* was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with the same content as prior sessions.
 - All 19 tests pass; `npm run verify` clean.
 
 **Not changed (intentional):**
@@ -275,7 +270,7 @@ Update the table when you complete another maintenance milestone.
 
 **Findings and fixes:**
 
-- `**.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- `**.cursor/rules/no-em-dash.mdc`\*\* was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
 - **README cache headers bullet** (Deployment section) read "images, JS, and CSS get `max-age=31536000, immutable`". Actual `vercel.json`: images/fonts/favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`. Fixed to match.
 - **README project structure** `js/pages/` comment listed `(timeline, writing, article, bayes-404)`, omitting `about.js` and `press.js` (added to the JS table in Session 5 but the structure blurb was not updated). Fixed.
 
@@ -292,10 +287,10 @@ Update the table when you complete another maintenance milestone.
 
 **Findings and fixes:**
 
-- `**.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- `**.cursor/rules/no-em-dash.mdc`\*\* was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
 - `**CLAUDE.md**` did not exist. Claude Code reads `CLAUDE.md` by default (equivalent to `AGENTS.md` for other tools). Added a one-liner that points to `AGENTS.md` so both entry points are covered.
-- `**js/shared/cmdk.js` INDEX** was missing "IL-09: An Election for the Ages" (VoteHub, 2026-04-01), which was already present in `generate-embeddings.mjs`. Added it as the first external article entry (most recent).
-- `**scripts/generate-embeddings.mjs` ITEMS** was significantly behind `cmdk.js`. Added 9 missing articles (all Evanstonian pieces added after the last embeddings sync), 2 missing projects (ManiFed Markets, Political Science & Policy Project), and 3 missing experience entries (Volunteer Finance Lead, ManiFed Markets experience, Founder & Host / Project 2028). The two lists are now fully aligned.
+- `**js/shared/cmdk.js` INDEX\*\* was missing "IL-09: An Election for the Ages" (VoteHub, 2026-04-01), which was already present in `generate-embeddings.mjs`. Added it as the first external article entry (most recent).
+- `**scripts/generate-embeddings.mjs` ITEMS\*\* was significantly behind `cmdk.js`. Added 9 missing articles (all Evanstonian pieces added after the last embeddings sync), 2 missing projects (ManiFed Markets, Political Science & Policy Project), and 3 missing experience entries (Volunteer Finance Lead, ManiFed Markets experience, Founder & Host / Project 2028). The two lists are now fully aligned.
 
 **Not changed (intentional):**
 
@@ -333,7 +328,7 @@ Update the table when you complete another maintenance milestone.
 - Deleted `js/shared/cmdk.js`, `scripts/generate-embeddings.mjs`, `data/embeddings.json`, `data/` directory.
 - Reverted `server.js` CSP back to `'self'`-only; removed `/embeddings.json` route.
 - Removed `@huggingface/transformers` from `package.json` (also cleared from lock).
-- Removed all `.cmdk-`* CSS blocks from `style.css` and the `cmdk-hint` / `cmdk-overlay` references in mobile + print media queries.
+- Removed all `.cmdk-`\* CSS blocks from `style.css` and the `cmdk-hint` / `cmdk-overlay` references in mobile + print media queries.
 - Replaced the `<button class="cmdk-hint">` element in every nav (11 HTML files) with `<img class="fivey-slot" src="/images/fivey.png">`, the 538 Fivey Fox mascot (`images/fivey.png`, 171KB). Peel-and-drag sticker behavior lives in `js/shared/fivey.js`: pointer-events drag with a live tilt that tracks horizontal velocity, then a spring-back transition (cubic-bezier overshoot) snaps Fivey to their nav home on release. Falls back to mouse + touch when pointer events are unavailable.
 - Also removed the cmdk script tag from all 11 pages; added `<script src=".../fivey.js">` in its place.
 
@@ -341,11 +336,101 @@ Update the table when you complete another maintenance milestone.
 
 - `body.home { overflow: hidden }` plus `body.home .site-footer { display: none }` so the homepage renders exactly one viewport with no scroll. The hero was already sized to `calc(100vh - 4.25rem)`; the footer below it was the only reason the page had extra height.
 
-**For future agents:**
+**For future agents:** `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json` were all deleted in this session. No search infrastructure remains; do not attempt to reference or recreate them without an explicit product decision.
 
-1. **When adding/removing articles or projects:** update `INDEX` in `js/shared/cmdk.js` **and** `ITEMS` in `scripts/generate-embeddings.mjs`, then re-run `node scripts/generate-embeddings.mjs` to regenerate `data/embeddings.json`. If the two drift, semantic search silently falls back to keyword-only for missing items.
-2. `**data/embeddings.json` is committed** so Vercel does not need to run the embedding script in CI. It is a binary-ish blob; do not hand-edit.
-3. **Quantization choice:** keep the model quantized (`q8`); the float32 full model is ~80MB and noticeably hurts mobile first-open latency.
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
+## Session 14: docs org pass (2026-04-20)
+
+**Goals:** close documentation drift introduced by Session 13; recreate missing Cursor rule file; document previously undocumented pages.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README `js/shared` table** still listed the deleted `cmdk.js` entry. Removed it. Also updated `site-data.js` description to drop the stale "and cmdk" reference.
+- **README project structure comment** still listed "cmdk" in the shared scripts note. Removed it.
+- **README script load order** section still referenced `cmdk.js` in prose and in the code block. Both removed.
+- **README CSS architecture section** listed 4 sections deleted in Session 13 (Colophon Page, Command Palette, Now Page, Tweet Cards). Removed all four. Added the new "Photos page (deck)" section. Corrected section names to match actual `style.css` headers (e.g. "Navigation: Stained Glass", "Hero", "Page Layout: Subpages"). Updated line count from ~2,900 to ~2,500.
+- **README Pages table** was missing `photos.html` (`/photos`) and `projects.html` (`/projects`). Added both rows.
+- **README page-specific JS table** was missing `js/pages/photos.js`. Added it.
+
+**Not changed (intentional):**
+
+- All JS, CSS, HTML, server, and test files: no changes.
+
+**Verification:** `npm run verify` clean (lint + format:check + tests).
+
+---
+
+## Session 15: org pass (2026-04-21)
+
+**Goals:** re-create missing Cursor rule file; fix stale comment in `js/shared/site-data.js`; close seo-inject drift for photos and projects pages.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **`js/shared/site-data.js` comment (line 1)** still read "CmdK and scripts/generate-embeddings.mjs consume this" -- both files were deleted in Session 13. Updated to reflect the actual consumer: `nav.js` via `window.SITE_DATA`.
+- **`scripts/seo-inject.mjs` PAGE_PATHS** was missing `photos.html` and `projects.html`. Both pages exist, are in `sitemap.xml`, and have correct OG/Twitter tags -- but they were absent from the script's page list and from `publicPaths`. A future `npm run seo:inject` run would have silently dropped `/photos` and `/projects` from the regenerated sitemap. Added both entries to PAGE_PATHS and publicPaths in document order.
+
+**Not changed (intentional):**
+
+- All HTML, CSS, server, and test files: no changes.
+- Sitemap: already correct; seo-inject fix prevents future regressions.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
+## Session 16: org pass (2026-04-22)
+
+**Goals:** re-create missing Cursor rule file; fix README inconsistency; remove stale Session 13 guidance.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README project structure** listed `style.css` as `~2,700 lines`. The CSS architecture section (correct) and the actual file (2,473 lines) both indicate ~2,500. Fixed to `~2,500 lines` for consistency.
+- **Session 13 "For future agents" bullets** still instructed agents to update `INDEX` in `js/shared/cmdk.js` and `ITEMS` in `scripts/generate-embeddings.mjs` -- both files were deleted in Session 13 itself. Replaced the three stale bullets with a single note clarifying that all search infrastructure was deleted and should not be recreated without an explicit product decision.
+
+**Not changed (intentional):**
+
+- All HTML, CSS, JS, server, and test files: no changes.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
+## Session 17: org pass (2026-04-23)
+
+**Goals:** re-create missing Cursor rule file; remove accidental duplicate session entries from maintenance-log.md.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **`docs/maintenance-log.md`** contained duplicate Session 14 and Session 15 entries appended after Session 16 (Sessions 14 and 15 already appear correctly in their original positions). Removed the duplicates.
+
+**Not changed (intentional):**
+
+- All HTML, CSS, JS, server, and test files: no changes.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
+## Session 18: org pass (2026-04-24)
+
+**Goals:** re-create missing Cursor rule file; fix two minor README / maintenance-log inaccuracies.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README project structure** `js/pages/` comment listed `(timeline, writing, article, bayes-404, about, press)`, omitting `photos`. The JS table was corrected in Session 14 but the project structure blurb was not. Fixed to include `photos`.
+- **Maintenance-log "On this page" table** still read "Sessions 1 to 4" as the row label for past session detail. Updated to "Sessions 1 to 17" to reflect the current session count.
+
+**Not changed (intentional):**
+
+- All JS, CSS, HTML, server, and test files: no changes.
 
 **Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
 
@@ -369,9 +454,9 @@ npm run verify        # lint + format:check + test (same as CI)
 - **Hosting:** Vercel. Static assets + Express-style server per project setup; `vercel.json` sets clean URLs, redirects, cache headers.
 - **Domains:** [mccomb.ca](https://mccomb.ca) (primary) and [ryanjmccomb.com](https://ryanjmccomb.com) (secondary) serve the same deployment; canonical origin is `site-data/site-origin.json`.
 - **Node:** `engines` specifies **24.x**. CI uses Node 24.
-- **Race-call public copy:** `site-data/racecalls-summary.json` (committed). Still exposed only at `**/racecalls-summary.json`**; not an API; edit the JSON when numbers change.
+- **Race-call public copy:** `site-data/racecalls-summary.json` (committed). Still exposed only at `**/racecalls-summary.json`\*\*; not an API; edit the JSON when numbers change.
 - `**data/`:** May still exist or be empty; it is **not** used for race calls anymore. ESLint ignores `data/`** if present.
-- **Secrets:** `CLOUD_PASSWORD`, optional `TRUST_LOCALHOST_AUTH`, `NODE_ENV`. Document in README env table; production values live in **Vercel** project settings. `**MYSITE_DATA_DIR` was removed** with the race API (tests no longer need a temp data dir).
+- **Secrets:** `CLOUD_PASSWORD`, optional `TRUST_LOCALHOST_AUTH`, `NODE_ENV`. Document in README env table; production values live in **Vercel** project settings. `**MYSITE_DATA_DIR` was removed\*\* with the race API (tests no longer need a temp data dir).
 - **House style:** `.cursor/rules/no-em-dash.mdc` and `style.md`: **no em dashes** in authored copy or first-party comments that read as copy.
 
 ---
@@ -383,4 +468,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-18 (about redesign + cleanup + semantic cmdk; Session 13 logged).
+**Last updated:** 2026-04-24 (org pass; Session 18 logged).
