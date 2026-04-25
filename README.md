@@ -22,7 +22,7 @@ Static HTML/CSS/vanilla JS pages served by a small **Express** app. The server a
 ```bash
 npm install
 cp .env.example .env    # then fill in CLOUD_PASSWORD if you need resume API access
-npm start               # http://localhost:5001
+npm start               # http://localhost:1123
 ```
 
 Override the port with `PORT=3000 npm start`. Extensionless URLs work (e.g. `/about`) because Express static middleware uses `extensions: ['html']`.
@@ -289,7 +289,7 @@ Configured in `vercel.json`:
 
 | Variable               | Default       | Purpose                                                                         |
 | ---------------------- | ------------- | ------------------------------------------------------------------------------- |
-| `PORT`                 | `5001`        | HTTP port (local dev; Vercel sets this automatically)                           |
+| `PORT`                 | `1123`        | HTTP port (local dev; Vercel sets this automatically)                           |
 | `NODE_ENV`             | `development` | Set `production` to enable `trust proxy` for rate limiting behind reverse proxy |
 | `CLOUD_PASSWORD`       | (unset)       | Bearer secret for authenticated `GET`/`PUT /api/resume`; `/api/og` stays public |
 | `TRUST_LOCALHOST_AUTH` | `false`       | Allow unauthenticated resume API access from localhost in production            |

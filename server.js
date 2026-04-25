@@ -15,7 +15,7 @@ if (NODE_ENV === 'production') {
   // Trust the first proxy hop so req.ip and rate limiters see the client (Vercel, etc.).
   app.set('trust proxy', 1);
 }
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 1123;
 const CLOUD_PASSWORD = process.env.CLOUD_PASSWORD;
 const WRITING_DIR = path.join(__dirname, 'writing');
 
@@ -455,8 +455,22 @@ app.use((req, res) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  const host = '0.0.0.0';
+  const server = app.listen(PORT, host, () => {
+    console.log(`Local site:  http://127.0.0.1:${PORT}/`);
+    if (process.env.PORT) {
+      console.log('(using PORT from environment; unset PORT to use the default in server.js)');
+    }
+  });
+  server.on('error', function (err) {
+    if (err && err.code === 'EADDRINUSE') {
+      console.error(
+        `Port ${PORT} is already in use. Stop the other process, or run: PORT=1124 npm start`
+      );
+    } else {
+      console.error(err);
+    }
+    process.exit(1);
   });
 }
 
