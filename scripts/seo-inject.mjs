@@ -153,6 +153,13 @@ function injectHtml(file) {
   s = ensureCanonical(s, canonical);
   s = ensureOgUrl(s, canonical);
   s = ensureOgImage(s, ogImage);
+  s = ensureMetaByProperty(
+    s,
+    'og:image:width',
+    '1200',
+    /(<meta property="og:image" content="[^"]*">)/
+  );
+  s = ensureMetaByProperty(s, 'og:image:height', '630', /(<meta property="og:image:width"[^>]*>)/);
   s = ensureMetaByName(
     s,
     'twitter:card',
