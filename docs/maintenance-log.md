@@ -10,7 +10,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | ------------------------------------------------------------------- | ----------------------------------------------- |
 | [Timeline](#timeline)                                               | You need a chronological map of major work      |
 | [Visible site and refactors](#visible-site-and-refactors)           | You need the UI policy and safe-refactor habits |
-| [Sessions 1 to 17](#session-1-cleanup-behavior-neutral)             | You need detail on a past change set            |
+| [Sessions 1 to 19](#session-1-cleanup-behavior-neutral)             | You need detail on a past change set            |
 | [Verification commands](#verification-commands-for-agents)          | You want the exact CI-equivalent commands       |
 | [Project facts agents often need](#project-facts-agents-often-need) | You need hosting, Node, secrets, style pointers |
 
@@ -46,6 +46,8 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-22** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure CSS line count (`~2,700` → `~2,500`, matching CSS architecture section and actual file); removed stale Session 13 "For future agents" bullets that still referenced deleted `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json`. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                     |
 | **2026-04-23** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); removed accidental duplicate Session 14 and Session 15 entries from maintenance-log.md. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | **2026-04-24** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure `js/pages/` comment (omitted `photos`); fixed maintenance-log "On this page" table (still read "Sessions 1 to 4", now reflects Session 17). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| **2026-04-25** | **Photos page redesign (PR #102):** replaced photos deck carousel with grid gallery + native `<dialog>` lightbox; added 6 photo sets (`images/photos/`) plus OG image (`images/og/og-photos.jpg`) and video asset (`videos/featured-film.mp4`); rewrote `photos.html`, `js/pages/photos.js`, and large portion of `style.css` (Photos section renamed from "Photos page (deck)" to "Photos page (grid gallery)"). Added `/videos/(.*)` immutable cache rule to `vercel.json`. See `e40385f` / PR #102.                                                                                                                                                                                                                                                                 |
+| **2026-04-26** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); corrected README drift from PR #102: CSS line count (~2,500 -> ~2,800), Photos section name and descriptions, project structure (added `videos/`, `images/photos/`), images table (added `og-photos`), vercel cache headers note (added videos). Fixed maintenance-log "On this page" table (still read "Sessions 1 to 17"). No code or visible-site changes.                                                                                                                                                                                                                                                                                                     |
 
 Update the table when you complete another maintenance milestone.
 
@@ -436,6 +438,31 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 19: org pass (2026-04-26)
+
+**Goals:** re-create missing Cursor rule file; fix README drift from PR #102 (photos page redesign); fix maintenance-log "On this page" table.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README project structure** was missing `videos/` (added with `featured-film.mp4` in PR #102) and `images/photos/` (photo gallery images). Added both entries; also added `og-photos` to the `images/og/` note.
+- **README CSS line count** read `~2,500 lines`; actual file is 2,810 lines after PR #102's large style additions. Updated to `~2,800 lines` (both in project structure and CSS architecture section).
+- **README CSS architecture** listed `Photos page (deck)  Photo deck carousel layout and transitions`. The PR renamed the CSS section to "Photos page (grid gallery)" and replaced the deck/carousel implementation with a grid + `<dialog>` lightbox. Fixed section name and description.
+- **README Pages table** photos entry described the old deck/carousel. Updated to describe the current grid gallery with lightbox.
+- **README page-specific JS table** `js/pages/photos.js` entry still described the deck carousel. Updated to describe the current lightbox-based gallery.
+- **README Vercel cache headers** bullet omitted `/videos/(.*)`. PR #102 added that rule to `vercel.json`. Updated bullet to include videos.
+- **README images table** was missing `og-photos.*` (added in PR #102 for the `/photos` OG tag). Added row.
+- **Maintenance-log "On this page" table** still read "Sessions 1 to 17". Updated to "Sessions 1 to 19".
+
+**Not changed (intentional):**
+
+- All HTML, CSS, JS, server, and test files: no changes.
+- `sharp` devDependency: still in `package.json` but unused since Session 13 deleted the scripts that needed it. Removing it is a separate task.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -468,4 +495,4 @@ npm run verify        # lint + format:check + test (same as CI)
 3. Update **Project facts agents often need** if hosting, env vars, or key files changed.
 4. Bump **Last updated** below.
 
-**Last updated:** 2026-04-24 (org pass; Session 18 logged).
+**Last updated:** 2026-04-26 (org pass; Session 19 logged).
