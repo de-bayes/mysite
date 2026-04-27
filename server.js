@@ -15,9 +15,16 @@ if (NODE_ENV === 'production') {
   // Trust the first proxy hop so req.ip and rate limiters see the client (Vercel, etc.).
   app.set('trust proxy', 1);
 }
-const PORT = process.env.PORT || 1123;
+const PORT = process.env.PORT || 2029;
 const CLOUD_PASSWORD = process.env.CLOUD_PASSWORD;
 const WRITING_DIR = path.join(__dirname, 'writing');
+
+const LOCAL_DEV_HOSTNAMES = new Set(
+  (process.env.LOCAL_DEV_HOSTS || '')
+    .split(',')
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean)
+);
 
 const CANONICAL_TOP_LEVEL_PATHS = new Set([
   '/about',
@@ -26,7 +33,6 @@ const CANONICAL_TOP_LEVEL_PATHS = new Set([
   '/writing',
   '/photos',
   '/press',
-  '/resume',
 ]);
 
 function getWritingPages() {
@@ -46,13 +52,10 @@ const WRITING_PAGES = getWritingPages();
 // Auth
 // =============================================
 function isLocalhost(req) {
-  const host = req.hostname || req.headers.host || '';
-  return (
-    host === 'localhost' ||
-    host === '127.0.0.1' ||
-    host.startsWith('localhost:') ||
-    host.startsWith('127.0.0.1:')
-  );
+  const raw = req.hostname || (req.headers.host || '').split(':')[0] || '';
+  const host = raw.toLowerCase();
+  if (LOCAL_DEV_HOSTNAMES.has(host)) return true;
+  return host === 'localhost' || host === '127.0.0.1';
 }
 
 /** In production, localhost-only auth bypass requires TRUST_LOCALHOST_AUTH=true */
@@ -132,9 +135,9 @@ const apiWriteLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 
 // =============================================
-// RESUME (read/write resume.html)
+// RESUME (read/write archived resume.html; public /resume 301s to /)
 // =============================================
-const RESUME_FILE = path.join(__dirname, 'resume.html');
+const RESUME_FILE = path.join(__dirname, 'archive', 'resume-2026', 'resume.html');
 
 app.get('/api/resume', requireAuth, async (req, res) => {
   try {
@@ -352,7 +355,6 @@ const BLOCKED_FILES = new Set([
   'server.js',
   'package.json',
   'package-lock.json',
-  'resume.md',
   'style.md',
   '.env',
   'node_modules',
@@ -438,6 +440,7 @@ app.get('/racecalls-summary.json', (_req, res) =>
 
 app.get(['/racecalls', '/racecalls/', '/racecalls.html'], (_req, res) => res.redirect(301, '/'));
 app.get(['/admin', '/admin/', '/admin.html'], (_req, res) => res.redirect(301, '/'));
+app.get(['/resume', '/resume/', '/resume.html'], (_req, res) => res.redirect(301, '/'));
 
 // =============================================
 // Static files & error handling
@@ -458,6 +461,10 @@ if (require.main === module) {
   const host = '0.0.0.0';
   const server = app.listen(PORT, host, () => {
     console.log(`Local site:  http://127.0.0.1:${PORT}/`);
+    console.log(`             http://localhost:${PORT}/`);
+    for (const h of LOCAL_DEV_HOSTNAMES) {
+      console.log(`             http://${h}:${PORT}/`);
+    }
     if (process.env.PORT) {
       console.log('(using PORT from environment; unset PORT to use the default in server.js)');
     }
@@ -465,7 +472,7 @@ if (require.main === module) {
   server.on('error', function (err) {
     if (err && err.code === 'EADDRINUSE') {
       console.error(
-        `Port ${PORT} is already in use. Stop the other process, or run: PORT=1124 npm start`
+        `Port ${PORT} is already in use. Stop the other process, or run: PORT=2030 npm start`
       );
     } else {
       console.error(err);

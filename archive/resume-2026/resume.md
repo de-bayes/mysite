@@ -1,6 +1,6 @@
 # Ryan McComb
 
-Evanston, IL | [ryanjmccomb.com](https://ryanjmccomb.com) | [rymccomb1@icloud.com](mailto:rymccomb1@icloud.com) | [GitHub](https://github.com/de-bayes) | [LinkedIn](https://www.linkedin.com/in/ryan-mccomb-30b029370)
+Evanston, IL | [ryanjmccomb.com](https://ryanjmccomb.com) | [rmccomb@votehub.com](mailto:rmccomb@votehub.com) | [GitHub](https://github.com/de-bayes) | [LinkedIn](https://www.linkedin.com/in/ryan-mccomb-30b029370)
 
 Student, data, forecasting, elections.
 
@@ -10,8 +10,8 @@ Student, data, forecasting, elections.
 
 **Evanston Township High School** · _Expected May 2028_
 
-- 3.98 unweighted GPA, 4.47 weighted GPA; National Freshman Honour Society
-- Chem/Phys (concurrent enrollment, 3 years); AP Government
+- 3.98 unweighted GPA, 4.47 weighted GPA; Honor Society each year to date; Student Ambassador; club and high school swim; _The Evanstonian_ (writing, photography; website editor next year)
+- Chem/Phys in progress. Planned senior math: one course in linear algebra and multivariable calculus, plus either Topics in Math or AP Statistics, depending on schedule. AP Government
 
 ---
 
@@ -61,10 +61,9 @@ _Chicago Union (UFA)_
 
 ## Activities & leadership
 
-- The Evanstonian: staff writer and photographer
-- Competitive swimming: ETHS swim team and Flying Fish Swim Club (7-9 sessions per week)
+- _The Evanstonian_: writing and photography; website editor next year
+- Competitive swimming: ETHS swim team and club team (Flying Fish)
 - Federalist Society member
-- ETHS student ambassador
 
 ---
 

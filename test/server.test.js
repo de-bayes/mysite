@@ -24,6 +24,7 @@ test('about page includes branded bio and profile structured data', async () => 
   assert.match(response.text, /https:\/\/x\.com\/RyanJMcComb/);
   assert.match(response.text, /<script src="js\/pages\/about\.js"><\/script>/);
   assert.doesNotMatch(response.text, /href="\/racecalls"/);
+  assert.doesNotMatch(response.text, /href="\/resume"/);
 });
 
 test('writing index renders hosted essay links', async () => {
@@ -98,6 +99,18 @@ test('/admin redirects to home', async () => {
 
 test('/admin/ redirects to home', async () => {
   const response = await request(app).get('/admin/');
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.location, '/');
+});
+
+test('/resume redirects to home', async () => {
+  const response = await request(app).get('/resume');
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.location, '/');
+});
+
+test('/resume/ redirects to home', async () => {
+  const response = await request(app).get('/resume/');
   assert.equal(response.status, 301);
   assert.equal(response.headers.location, '/');
 });

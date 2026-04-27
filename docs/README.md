@@ -23,13 +23,13 @@ Work through this list in order when you pick up the repo cold:
 
 ## Document map
 
-| Document                                 | Audience            | Contents                                                          |
-| ---------------------------------------- | ------------------- | ----------------------------------------------------------------- |
-| [AGENTS.md](../AGENTS.md)                | Coding agents       | Short entry; links to this hub, maintenance log, style, verify    |
-| [README.md](../README.md)                | Everyone            | Quick start, structure, pages, JS/CSS, server, Vercel, env, tests |
-| [maintenance-log.md](maintenance-log.md) | Maintainers, agents | Timeline, session notes, verification commands, agent quick map   |
-| [style.md](../style.md)                  | Editors             | Punctuation, voice, post-edit checklist (`seo:inject`)            |
-| [resume.md](../resume.md)                | Content             | Resume source (Markdown); HTML output also used on `/resume`      |
+| Document                                              | Audience            | Contents                                                                              |
+| ----------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------- |
+| [AGENTS.md](../AGENTS.md)                             | Coding agents       | Short entry; links to this hub, maintenance log, style, verify                        |
+| [README.md](../README.md)                             | Everyone            | Quick start, structure, pages, JS/CSS, server, Vercel, env, tests                     |
+| [maintenance-log.md](maintenance-log.md)              | Maintainers, agents | Timeline, session notes, verification commands, agent quick map                       |
+| [style.md](../style.md)                               | Editors             | Punctuation, voice, post-edit checklist (`seo:inject`)                                |
+| [resume (archived)](../archive/resume-2026/resume.md) | Content             | Resume Markdown copy; HTML sibling is the target of `/api/resume` (not a public page) |
 
 ---
 

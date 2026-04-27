@@ -47,7 +47,6 @@ const PAGE_PATHS = {
   'writing.html': '/writing',
   'photos.html': '/photos',
   'press.html': '/press',
-  'resume.html': '/resume',
   '404.html': '/',
   ...Object.fromEntries(essayPages.map((entry) => [entry.file, entry.publicPath])),
 };
@@ -195,7 +194,6 @@ const publicPaths = [
   '/writing',
   '/photos',
   '/press',
-  '/resume',
   ...essayPages.map((entry) => entry.publicPath),
 ];
 

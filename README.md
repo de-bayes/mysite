@@ -22,10 +22,12 @@ Static HTML/CSS/vanilla JS pages served by a small **Express** app. The server a
 ```bash
 npm install
 cp .env.example .env    # then fill in CLOUD_PASSWORD if you need resume API access
-npm start               # http://localhost:1123
+npm start               # http://127.0.0.1:2029 and http://localhost:2029
 ```
 
-Override the port with `PORT=3000 npm start`. Extensionless URLs work (e.g. `/about`) because Express static middleware uses `extensions: ['html']`.
+Override the port with `PORT=3000 npm start` (default local port is `2029`). Extensionless URLs work (e.g. `/about`) because Express static middleware uses `extensions: ['html']`.
+
+**Local hosts file (optional):** to open the site at a custom hostname, add a line to `/etc/hosts` (or your OS equivalent), for example `127.0.0.1 local.mccomb.ca`, set `LOCAL_DEV_HOSTS=local.mccomb.ca` in `.env`, and browse `http://local.mccomb.ca:2029/`. That hostname is treated like localhost for resume API dev bypass (same as `TRUST_LOCALHOST_AUTH` when unset).
 
 ---
 
@@ -46,6 +48,7 @@ mysite/
     logos/                      Active logos (votehub-logo)
     _unused/                    Deprecated assets (art, heroes, logos, portraits)
   writing/                      Hosted essay subpages (each is a folder with index.html)
+  archive/                      Archived content (not linked; e.g. retired resume files)
   site-data/                    Site config JSON (canonical origin, race-call summary); not browsable at `/site-data/*`
   scripts/                      Build/maintenance scripts
   test/                         Node.js test runner tests
@@ -54,7 +57,6 @@ mysite/
   server.js                     Express app (APIs, static serving, Helmet, rate limiting)
   vercel.json                   Vercel deployment config
   style.md                      Writing and punctuation style guide
-  resume.md                     Resume source content (Markdown)
   .env.example                  Environment variable template
 ```
 
@@ -67,7 +69,6 @@ mysite/
 | `/`              | `index.html`           | Home. Full-bleed hero photo (airplane/Switzerland), floating name card, featured links.                                                  |
 | `/about`         | `about.html`           | Bio, portrait, contact grid (email, GitHub, LinkedIn, X/Twitter, Manifold).                                                              |
 | `/experience`    | `experience.html`      | Timeline layout with VoteHub, IL9Cast, campaigns, photography, podcast. Expandable cards.                                                |
-| `/resume`        | `resume.html`          | Printable resume. Editable via `/api/resume` when `CLOUD_PASSWORD` is set. Print stylesheet included.                                    |
 | `/writing`       | `writing.html`         | Article index with category/tag/publication filters. Cards link to hosted essays or external URLs.                                       |
 | `/writing/:slug` | `writing/*/index.html` | Individual hosted essays with reading progress bar. Currently: il9cast-postmortem, peoples-edict, median-voter-theory, nsa-surveillance. |
 | `/press`         | `press.html`           | Press coverage and media features.                                                                                                       |
@@ -75,7 +76,7 @@ mysite/
 | `/projects`      | `projects.html`        | Projects index: Bayes64, IL9Cast, and Project 2028.                                                                                      |
 | `*`              | `404.html`             | Custom 404 with an interactive Bayes' theorem calculator.                                                                                |
 
-**Retired URLs:** `GET /now`, `/now/`, `/now.html`, `/racecalls`, and `/admin` respond with **301** to **`/`**.
+**Retired URLs:** `GET /now`, `/now/`, `/now.html`, `/racecalls`, `/admin`, and **`/resume`** respond with **301** to **`/`** (and matching `.html` paths where applicable).
 
 ---
 
@@ -144,26 +145,28 @@ Premium Effects          Scroll animations, character reveal, stagger children
 Reading Progress Bar     Thin progress bar for essay pages
 Responsive               @media (max-width: 768px) overrides
 Print                    @media print overrides
-Resume page              Printable resume layout with @media print
+Print + archived resume      @media print and `.resume-*` styles (no public `/resume` page; source in `archive/resume-2026/`)
 ```
 
 ### Design tokens (`:root`)
 
-| Token                    | Value                    | Use                                               |
-| ------------------------ | ------------------------ | ------------------------------------------------- |
-| `--bg`                   | `#151515`                | Page background (charcoal dark)                   |
-| `--surface`              | `#191919`                | Card/panel backgrounds                            |
-| `--text`                 | `#e8e8e8`                | Primary text                                      |
-| `--text-light`           | `#b3b3b3`                | Secondary text                                    |
-| `--text-muted`           | `#888`                   | Tertiary/meta text                                |
-| `--accent`               | `#fff`                   | Links, emphasis                                   |
-| `--accent-orange`        | `#e06b1f`                | Selection highlight, progress bar, resume accents |
-| `--border`               | `rgba(255,255,255,0.08)` | Subtle borders                                    |
-| `--radius`               | `8px`                    | Standard corner radius                            |
-| `--shadow-sm/md/lg`      | Various                  | Elevation levels                                  |
-| `--font-main`            | Inter + fallbacks        | Primary typeface                                  |
-| `--fs-*`                 | `0.67rem` to `1.05rem`   | Font size scale                                   |
-| `--dur-fast/normal/slow` | `0.15s/0.3s/0.5s`        | Animation durations                               |
+| Token                                    | Value                    | Use                                                                  |
+| ---------------------------------------- | ------------------------ | -------------------------------------------------------------------- |
+| `--bg`                                   | `#151515`                | Page background (charcoal dark)                                      |
+| `--surface`                              | `#191919`                | Card/panel backgrounds                                               |
+| `--text`                                 | `#e8e8e8`                | Primary text                                                         |
+| `--text-light`                           | `#b3b3b3`                | Secondary text                                                       |
+| `--text-muted`                           | `#888`                   | Tertiary/meta text                                                   |
+| `--off-white`                            | `#f5f4f0`                | Headings, links, and scrapbook paper tints on dark (warm near-white) |
+| `--paper-warm-mid` / `--paper-warm-deep` | `#e6e3dc` / `#d0cbc1`    | Mid tones for scrap `paper` tiles and highlights                     |
+| `--accent`                               | `var(--off-white)`       | Links, emphasis                                                      |
+| `--accent-orange`                        | `#e06b1f`                | Selection highlight, progress bar, resume accents                    |
+| `--border`                               | `rgba(255,255,255,0.08)` | Subtle borders                                                       |
+| `--radius`                               | `8px`                    | Standard corner radius                                               |
+| `--shadow-sm/md/lg`                      | Various                  | Elevation levels                                                     |
+| `--font-main`                            | Inter + fallbacks        | Primary typeface                                                     |
+| `--fs-*`                                 | `0.67rem` to `1.05rem`   | Font size scale                                                      |
+| `--dur-fast/normal/slow`                 | `0.15s/0.3s/0.5s`        | Animation durations                                                  |
 
 ### Font strategy
 
@@ -212,12 +215,12 @@ Express app with three responsibilities: static file serving, JSON APIs, and sec
 ### Authentication
 
 - Bearer token checked against `CLOUD_PASSWORD` env var using `crypto.timingSafeEqual` (timing-safe comparison)
-- **Localhost bypass**: If `CLOUD_PASSWORD` is unset and host is `localhost`/`127.0.0.1`, mutating routes succeed without auth (development only). In production, requires `TRUST_LOCALHOST_AUTH=true`.
-- If `CLOUD_PASSWORD` is unset and host is not localhost, mutating routes return **503** ("Cloud storage not configured").
+- **Localhost bypass**: If `CLOUD_PASSWORD` is unset and host is `localhost`, `127.0.0.1`, or a name listed in `LOCAL_DEV_HOSTS`, mutating routes succeed without auth (development only). In production, requires `TRUST_LOCALHOST_AUTH=true`.
+- If `CLOUD_PASSWORD` is unset and host is not local, mutating routes return **503** ("Cloud storage not configured").
 
 ### Data persistence
 
-`site-data/racecalls-summary.json` is still served at **`GET /racecalls-summary.json`** for external consumers (`aboutContactValue`, `nowRecord`, `nowAccuracy`). No page on the site currently reads it. Legacy `/racecalls` URLs **301** to **`/`**. Resume edits write directly to `resume.html` via regex replacement of the inner content div. Resume route file I/O uses `fs.promises`.
+`site-data/racecalls-summary.json` is still served at **`GET /racecalls-summary.json`** for external consumers (`aboutContactValue`, `nowRecord`, `nowAccuracy`). No page on the site currently reads it. Legacy `/racecalls` URLs **301** to **`/`**. Resume HTML for **`GET`/`PUT /api/resume`** lives at **`archive/resume-2026/resume.html`** (no public page; **`/resume`** **301**s to **`/`**). Edits use regex replacement of the inner content div. File I/O uses `fs.promises`.
 
 ### Writing page discovery
 
@@ -274,7 +277,7 @@ Configured in `vercel.json`:
 - **No framework, no build command** (static site with Express server)
 - **Clean URLs** enabled (extensionless)
 - **No trailing slash**
-- **Redirects**: `/now` and `/now.html` **301** to **`/`** (matches `server.js`; legacy `/racecalls` **301** to **`/`** in `server.js` when the Node server runs)
+- **Redirects**: legacy `/now`, `/racecalls`, `/admin`, and **`/resume`** **301** to **`/`** (matches `server.js` when the Node server runs)
 - **Cache headers**: images, fonts, and favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`.
 
 **Env and secrets:** set `CLOUD_PASSWORD`, `NODE_ENV`, `TRUST_LOCALHOST_AUTH`, and any other variables in **Vercel → Project → Settings → Environment Variables** for Production / Preview as needed. Local `.env` is for development only.
@@ -285,12 +288,13 @@ Configured in `vercel.json`:
 
 ## Environment variables
 
-| Variable               | Default       | Purpose                                                                         |
-| ---------------------- | ------------- | ------------------------------------------------------------------------------- |
-| `PORT`                 | `1123`        | HTTP port (local dev; Vercel sets this automatically)                           |
-| `NODE_ENV`             | `development` | Set `production` to enable `trust proxy` for rate limiting behind reverse proxy |
-| `CLOUD_PASSWORD`       | (unset)       | Bearer secret for authenticated `GET`/`PUT /api/resume`; `/api/og` stays public |
-| `TRUST_LOCALHOST_AUTH` | `false`       | Allow unauthenticated resume API access from localhost in production            |
+| Variable               | Default       | Purpose                                                                            |
+| ---------------------- | ------------- | ---------------------------------------------------------------------------------- |
+| `PORT`                 | `2029`        | HTTP port (local dev; Vercel sets this automatically)                              |
+| `NODE_ENV`             | `development` | Set `production` to enable `trust proxy` for rate limiting behind reverse proxy    |
+| `CLOUD_PASSWORD`       | (unset)       | Bearer secret for authenticated `GET`/`PUT /api/resume`; `/api/og` stays public    |
+| `TRUST_LOCALHOST_AUTH` | `false`       | Allow unauthenticated resume API access from localhost in production               |
+| `LOCAL_DEV_HOSTS`      | (unset)       | Comma-separated hostnames (e.g. from `/etc/hosts`) treated as local for dev bypass |
 
 ---
 
