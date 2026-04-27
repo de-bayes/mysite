@@ -12,7 +12,10 @@
     { "source": "/racecalls.html", "destination": "/", "permanent": true },
     { "source": "/admin", "destination": "/", "permanent": true },
     { "source": "/admin/", "destination": "/", "permanent": true },
-    { "source": "/admin.html", "destination": "/", "permanent": true }
+    { "source": "/admin.html", "destination": "/", "permanent": true },
+    { "source": "/resume", "destination": "/", "permanent": true },
+    { "source": "/resume/", "destination": "/", "permanent": true },
+    { "source": "/resume.html", "destination": "/", "permanent": true }
   ],
   "headers": [
     {

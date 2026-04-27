@@ -5,7 +5,7 @@ const SITE_NAV_LINKS = [
     href: '/experience',
     label: 'Experience',
     desc: 'Professional experience and education',
-    keys: 'timeline resume work',
+    keys: 'timeline cv work',
   },
   { href: '/writing', label: 'Writing', desc: 'Essays and articles', keys: 'blog' },
   { href: '/press', label: 'Press', desc: 'Press coverage and features', keys: 'media news' },
