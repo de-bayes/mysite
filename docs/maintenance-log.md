@@ -10,7 +10,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | ------------------------------------------------------------------- | ----------------------------------------------- |
 | [Timeline](#timeline)                                               | You need a chronological map of major work      |
 | [Visible site and refactors](#visible-site-and-refactors)           | You need the UI policy and safe-refactor habits |
-| [Sessions 1 to 17](#session-1-cleanup-behavior-neutral)             | You need detail on a past change set            |
+| [Sessions 1 to 20](#session-1-cleanup-behavior-neutral)             | You need detail on a past change set            |
 | [Verification commands](#verification-commands-for-agents)          | You want the exact CI-equivalent commands       |
 | [Project facts agents often need](#project-facts-agents-often-need) | You need hosting, Node, secrets, style pointers |
 
@@ -41,6 +41,7 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-13** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; fixed two README inaccuracies (cache headers bullet listed JS/CSS as `immutable` -- actual is `no-cache, must-revalidate`; project structure `js/pages/` comment omitted `about.js` and `press.js`). No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | **2026-04-17** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; added `CLAUDE.md` (one-liner pointing to `AGENTS.md` for Claude Code); added missing "IL-09: An Election for the Ages" (VoteHub) to `cmdk.js` INDEX; synced `generate-embeddings.mjs` ITEMS to fully match `cmdk.js` (9 articles, 2 projects, 3 experience entries added). All 19 tests pass.                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | **2026-04-18** | **About redesign + cleanup + semantic cmdk pass:** rewrote about-page body in less self-demeaning voice; removed VoteHub race-calls tile from contact grid; added brand-wash + shine-sweep hover to all contact tiles (new `contact-item--email` and `contact-item--github` modifiers); email tile spans full row. Deleted `archive/now-page/`, `colophon.html`, and the Now-page + Colophon CSS blocks in `style.css`. Deleted orphan scripts `generate-about-portrait.mjs`, `pngs-to-ico.mjs` (none wired up). Removed `fetch('/racecalls-summary.json')` from `js/pages/about.js`; updated `test/server.test.js` accordingly. Upgraded `cmdk.js` to client-side semantic search via transformers.js with keyword-first progressive enhancement. See **Session 13**. |
+| **2026-04-19** | **Human commit -- projects/photos pages, drop Fivey (commit `6584c3f`):** added `projects.html` (Bayes64, IL9Cast, Project 2028) and `photos.html` (original Tinder-style deck/swipe carousel); dropped the Fivey Fox sticker (`js/shared/fivey.js`, `images/fivey.png`) that Session 13 had introduced; incorporated Session 13 cleanup (colophon deletion, now-page archive deletion, `cmdk.js` deletion, `generate-embeddings.mjs` deletion, dead scripts). Not a Claude session -- authored by human maintainer.                                                                                                                                                                                                                                                   |
 | **2026-04-20** | **Docs org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored); corrected README post-Session-13 drift: removed deleted `cmdk.js` from shared JS table and script load order, removed 4 deleted CSS sections (Colophon Page, Command Palette, Now Page, Tweet Cards), fixed CSS section names to match actual headers, updated line count (~2,500), added Photos page (deck) section. Added undocumented pages `photos.html` and `projects.html` to Pages table; added `js/pages/photos.js` to page-specific JS table. No code or visible-site changes.                                                                                                                                                                                                     |
 | **2026-04-21** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed stale comment in `js/shared/site-data.js` (still referenced deleted `cmdk.js` and `generate-embeddings.mjs`); added `photos.html` and `projects.html` to `scripts/seo-inject.mjs` PAGE_PATHS and publicPaths (they were in `sitemap.xml` but absent from the script, so a future `seo:inject` run would have dropped them). All 19 tests pass. No visible-site changes.                                                                                                                                                                                                                                                                                     |
 | **2026-04-22** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); fixed README project structure CSS line count (`~2,700` → `~2,500`, matching CSS architecture section and actual file); removed stale Session 13 "For future agents" bullets that still referenced deleted `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json`. No code or visible-site changes.                                                                                                                                                                                                                                                                                                                                                     |
@@ -50,6 +51,9 @@ Technical history and **handoff notes** for human maintainers, coding agents, an
 | **2026-04-27** | **Projects header CSS:** refined `h1.projects-scrap` under `.page-header--projects` only: ransom-note typography per letter, harmonized red/navy/paper fills, notebook ruling on paper tiles, cleaner tile shadows (removed stacked h1 drop-filter), stronger tears, one lifted letter for rhythm, subtitle separated with a light top border. `projects.html` unchanged.                                                                                                                                                                                                                                                                                                                                                                                              |
 | **2026-04-27** | **Resume page retired:** `resume.html` / `resume.md` moved to **`archive/resume-2026/`**; no nav or sitemap entry; **`/resume`** **301** to **`/`** in `server.js` and `vercel.json`. **`GET`/`PUT /api/resume`** still reads/writes the archived HTML. About page copy updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | **2026-04-27** | **CSS:** `:root` adds warm `--off-white` and paper tints; `--accent` and `--highlight` use them. About lead scrap panel blends with dark chrome; projects scrap paper tiles use the same token family. README design tokens updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **2026-04-25** | **Photos page redesign (PR #102):** replaced photos deck carousel with grid gallery + native `<dialog>` lightbox; added 6 photo sets (`images/photos/`) plus OG image (`images/og/og-photos.jpg`) and video asset (`videos/featured-film.mp4`); rewrote `photos.html`, `js/pages/photos.js`, and large portion of `style.css` (Photos section renamed from "Photos page (deck)" to "Photos page (grid gallery)"). Added `/videos/(.*)` immutable cache rule to `vercel.json`. See `e40385f` / PR #102.                                                                                                                                                                                                                                                                 |
+| **2026-04-26** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc` (gitignored, needs recreation each session); corrected README drift from PR #102: CSS line count (~2,500 -> ~2,800), Photos section name and descriptions, project structure (added `videos/`, `images/photos/`), images table (added `og-photos`), vercel cache headers note (added videos). Fixed maintenance-log "On this page" table (still read "Sessions 1 to 17"). No code or visible-site changes.                                                                                                                                                                                                                                                                                                     |
+| **2026-04-27** | **Org pass:** re-created `.cursor/rules/no-em-dash.mdc`; removed stale `sharp` devDependency (its scripts deleted in Session 13); restored missing Session 12 section from git history; added April 19 human commit to Timeline; annotated Session 13 "For future agents" re: Fivey drop. See **Session 20**.                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 Update the table when you complete another maintenance milestone.
 
@@ -305,6 +309,22 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 12: org pass (2026-04-18)
+
+**Goals:** full codebase audit; re-create missing Cursor rule file.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- Full read of all JS files (`js/shared/`, `js/pages/`), `server.js`, `style.css`, `README.md`, `docs/`, and directory structure confirmed no new organizational issues. Code is clean: no TODO/FIXME comments, no dead code, no `var` declarations, no `console.log` calls.
+- All 19 tests pass; `npm run verify` clean.
+
+**Not changed (intentional):**
+
+- All JS, CSS, HTML, server, and test files: no changes.
+
+---
+
 ## Session 13: about redesign, dead-code cleanup, semantic cmdk (2026-04-18)
 
 **Goals:** port less self-demeaning about-page copy + shine-sweep card hover from the local redesign onto the GitHub baseline; audit for dead code left over from prior AI agents; upgrade Cmd-K from keyword search to semantic search without paying a large load-time cost.
@@ -340,7 +360,7 @@ Update the table when you complete another maintenance milestone.
 
 - `body.home { overflow: hidden }` plus `body.home .site-footer { display: none }` so the homepage renders exactly one viewport with no scroll. The hero was already sized to `calc(100vh - 4.25rem)`; the footer below it was the only reason the page had extra height.
 
-**For future agents:** `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json` were all deleted in this session. No search infrastructure remains; do not attempt to reference or recreate them without an explicit product decision.
+**For future agents:** `cmdk.js`, `generate-embeddings.mjs`, and `data/embeddings.json` were all deleted in this session. No search infrastructure remains; do not attempt to reference or recreate them without an explicit product decision. The Fivey Fox sticker (`js/shared/fivey.js`, `images/fivey.png`) added in this session was dropped immediately after in the April 19 human commit (`6584c3f`); those files no longer exist in the repo.
 
 **Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
 
@@ -440,6 +460,49 @@ Update the table when you complete another maintenance milestone.
 
 ---
 
+## Session 19: org pass (2026-04-26)
+
+**Goals:** re-create missing Cursor rule file; fix README drift from PR #102 (photos page redesign); fix maintenance-log "On this page" table.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **README project structure** was missing `videos/` (added with `featured-film.mp4` in PR #102) and `images/photos/` (photo gallery images). Added both entries; also added `og-photos` to the `images/og/` note.
+- **README CSS line count** read `~2,500 lines`; actual file is 2,810 lines after PR #102's large style additions. Updated to `~2,800 lines` (both in project structure and CSS architecture section).
+- **README CSS architecture** listed `Photos page (deck)  Photo deck carousel layout and transitions`. The PR renamed the CSS section to "Photos page (grid gallery)" and replaced the deck/carousel implementation with a grid + `<dialog>` lightbox. Fixed section name and description.
+- **README Pages table** photos entry described the old deck/carousel. Updated to describe the current grid gallery with lightbox.
+- **README page-specific JS table** `js/pages/photos.js` entry still described the deck carousel. Updated to describe the current lightbox-based gallery.
+- **README Vercel cache headers** bullet omitted `/videos/(.*)`. PR #102 added that rule to `vercel.json`. Updated bullet to include videos.
+- **README images table** was missing `og-photos.*` (added in PR #102 for the `/photos` OG tag). Added row.
+- **Maintenance-log "On this page" table** still read "Sessions 1 to 17". Updated to "Sessions 1 to 19".
+
+**Not changed (intentional):**
+
+- All HTML, CSS, JS, server, and test files: no changes.
+- `sharp` devDependency: still in `package.json` but unused since Session 13 deleted the scripts that needed it. Removing it is a separate task.
+
+**Verification:** all 19 tests pass; `npm run verify` clean (lint + format:check + tests).
+
+---
+
+## Session 20: org pass (2026-04-27)
+
+**Goals:** re-create missing Cursor rule file; remove stale `sharp` devDependency; restore missing Session 12 section; document undocumented April 19 human commit.
+
+**Findings and fixes:**
+
+- **`.cursor/rules/no-em-dash.mdc`** was absent again (`.cursor/` is gitignored; must be recreated each session). Recreated with same content as prior sessions.
+- **`sharp` devDependency** still in `package.json` and `package-lock.json` despite its scripts (`generate-about-portrait.mjs`, `pngs-to-ico.mjs`) being deleted in Session 13. Explicitly flagged as deferred in Session 19 notes. Removed from `package.json`; `package-lock.json` regenerated via `npm install`.
+- **Session 12 section** was absent from `maintenance-log.md`. Git history (`7c4b4a7`) shows it was added on 2026-04-18 but overwritten by the April 19 human merge commit (`6584c3f`). Restored content from git.
+- **April 19 human commit** (`6584c3f`) was missing from the Timeline. This commit added `projects.html`/`photos.html` (original deck carousel) and dropped the Fivey Fox sticker Session 13 had introduced. Added Timeline entry and annotated Session 13 "For future agents" so future agents know fivey files do not exist.
+- All 19 tests pass; `npm run verify` clean.
+
+**Not changed (intentional):**
+
+- All HTML, CSS, JS, server, and test files: no changes.
+
+---
+
 ## Verification commands (for agents)
 
 ```bash
@@ -473,3 +536,4 @@ npm run verify        # lint + format:check + test (same as CI)
 4. Bump **Last updated** below.
 
 **Last updated:** 2026-04-27 (projects scrap header polish; off-white tokens; about scrap panel; default dev port 2029; contact email; `LOCAL_DEV_HOSTS`).
+**Last updated:** 2026-04-27 (org pass; Session 20 logged; Session 12 restored; April 19 commit documented; `sharp` removed).

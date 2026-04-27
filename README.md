@@ -36,7 +36,7 @@ Override the port with `PORT=3000 npm start` (default local port is `2029`). Ext
 ```
 mysite/
   index.html, about.html, ...   root HTML pages
-  style.css                     Single stylesheet (~2,500 lines, all pages)
+  style.css                     Single stylesheet (~2,800 lines, all pages)
   js/
     shared/                     Scripts loaded on most pages (site-data, nav, animations, effects)
     pages/                      Page-specific scripts (timeline, writing, article, bayes-404, about, press, photos)
@@ -44,9 +44,11 @@ mysite/
   images/
     heroes/                     Page hero images with responsive variants (char-swiss, experience-hero, writing-hero)
     portraits/                  Portrait photos (about-portrait, portrait, portrait-press)
-    og/                         Social media OG images (og-home)
+    photos/                     Photography portfolio images with responsive variants
+    og/                         Social media OG images (og-home, og-photos)
     logos/                      Active logos (votehub-logo)
     _unused/                    Deprecated assets (art, heroes, logos, portraits)
+  videos/                       Hosted video files (featured-film.mp4)
   writing/                      Hosted essay subpages (each is a folder with index.html)
   archive/                      Archived content (not linked; e.g. retired resume files)
   site-data/                    Site config JSON (canonical origin, race-call summary); not browsable at `/site-data/*`
@@ -75,6 +77,18 @@ mysite/
 | `/photos`        | `photos.html`          | Photography portfolio: 6 photos (Canon R8, prime lenses), navigable by swipe, click arrows, or keyboard.                                 |
 | `/projects`      | `projects.html`        | Projects index: Bayes64, IL9Cast, and Project 2028.                                                                                      |
 | `*`              | `404.html`             | Custom 404 with an interactive Bayes' theorem calculator.                                                                                |
+| Path             | File                   | Description                                                                                                                                                                      |
+| ---------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`              | `index.html`           | Home. Full-bleed hero photo (airplane/Switzerland), floating name card, featured links.                                                                                          |
+| `/about`         | `about.html`           | Bio, portrait, contact grid (email, GitHub, LinkedIn, X/Twitter, Manifold).                                                                                                      |
+| `/experience`    | `experience.html`      | Timeline layout with VoteHub, IL9Cast, campaigns, photography, podcast. Expandable cards.                                                                                        |
+| `/resume`        | `resume.html`          | Printable resume. Editable via `/api/resume` when `CLOUD_PASSWORD` is set. Print stylesheet included.                                                                            |
+| `/writing`       | `writing.html`         | Article index with category/tag/publication filters. Cards link to hosted essays or external URLs.                                                                               |
+| `/writing/:slug` | `writing/*/index.html` | Individual hosted essays with reading progress bar. Currently: il9cast-postmortem, peoples-edict, median-voter-theory, nsa-surveillance.                                         |
+| `/press`         | `press.html`           | Press coverage and media features.                                                                                                                                               |
+| `/photos`        | `photos.html`          | Photography portfolio: grid gallery of 6 photos (Chicago Union, travel, event photography). Click any photo to open a full-size lightbox with on-screen and keyboard navigation. |
+| `/projects`      | `projects.html`        | Projects index: Bayes64, IL9Cast, and Project 2028.                                                                                                                              |
+| `*`              | `404.html`             | Custom 404 with an interactive Bayes' theorem calculator.                                                                                                                        |
 
 **Retired URLs:** `GET /now`, `/now/`, `/now.html`, `/racecalls`, `/admin`, and **`/resume`** respond with **301** to **`/`** (and matching `.html` paths where applicable).
 
@@ -96,15 +110,15 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 
 ### Page-specific
 
-| File                    | Used on             | Purpose                                                                                                                               |
-| ----------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `js/pages/timeline.js`  | `/experience`       | Timeline entry scroll-reveal with staggered delays, click-to-expand cards, animated vertical line.                                    |
-| `js/pages/writing.js`   | `/writing`          | Article filtering (category tabs, tag dropdown, publication dropdown), URL state persistence, newest-first sort, card click handlers. |
-| `js/pages/article.js`   | `/writing/*` essays | Reading progress bar (thin orange line at top of viewport, tracks scroll position).                                                   |
-| `js/pages/bayes-404.js` | `404.html`          | Interactive Bayes' theorem calculator: three sliders (prior and likelihoods) and live posterior output.                               |
-| `js/pages/about.js`     | `/about`            | Email copy-to-clipboard with toast feedback.                                                                                          |
-| `js/pages/press.js`     | `/press`            | Click-to-open handler for press cards (opens external links in a new tab).                                                            |
-| `js/pages/photos.js`    | `/photos`           | Photo deck carousel: swipe, click-arrow, and keyboard-arrow navigation across 6 photo cards with CSS transform transitions.           |
+| File                    | Used on             | Purpose                                                                                                                                            |
+| ----------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `js/pages/timeline.js`  | `/experience`       | Timeline entry scroll-reveal with staggered delays, click-to-expand cards, animated vertical line.                                                 |
+| `js/pages/writing.js`   | `/writing`          | Article filtering (category tabs, tag dropdown, publication dropdown), URL state persistence, newest-first sort, card click handlers.              |
+| `js/pages/article.js`   | `/writing/*` essays | Reading progress bar (thin orange line at top of viewport, tracks scroll position).                                                                |
+| `js/pages/bayes-404.js` | `404.html`          | Interactive Bayes' theorem calculator: three sliders (prior and likelihoods) and live posterior output.                                            |
+| `js/pages/about.js`     | `/about`            | Email copy-to-clipboard with toast feedback.                                                                                                       |
+| `js/pages/press.js`     | `/press`            | Click-to-open handler for press cards (opens external links in a new tab).                                                                         |
+| `js/pages/photos.js`    | `/photos`           | Photo gallery grid with lightbox dialog: click a tile to open full-size image, prev/next navigation via on-screen controls or keyboard arrow keys. |
 
 ### Script load order
 
@@ -125,7 +139,7 @@ All scripts are vanilla JS with no build step or bundler. They load via `<script
 
 ## CSS architecture
 
-`style.css` is a single ~2,500-line file organized into named sections:
+`style.css` is a single ~2,800-line file organized into named sections:
 
 ```
 Fonts                    @font-face declarations + metric-adjusted fallbacks (top of file, no header)
@@ -138,7 +152,7 @@ Page Layout: Subpages    Shared header pattern for experience/writing/press page
 Animations               Scroll-triggered reveal keyframes and classes
 Experience: Timeline     Timeline layout, expandable cards, data counters
 Writing Page             Writing cards, filter tabs, press cards, hosted essay layout
-Photos page (deck)       Photo deck carousel layout and transitions
+Photos page (grid gallery)  Photo gallery grid layout and lightbox dialog styles
 Contact Section          Contact grid used in About page
 404 Page                 Error page, Bayes calculator
 Premium Effects          Scroll animations, character reveal, stagger children
@@ -260,6 +274,7 @@ All hero/page images have responsive WebP variants (600w, 1200w) with JPG fallba
 | `portrait-press.*`                         | `images/portraits/`     | Press                      | Interview photo                                         |
 | `portrait.*`                               | `images/portraits/`     | OG meta tags (default)     | Portrait photo                                          |
 | `og-home.*`                                | `images/og/`            | Home OG meta tag           | Social preview image                                    |
+| `og-photos.*`                              | `images/og/`            | Photos OG meta tag         | Social preview image for /photos                        |
 | `votehub-logo.jpeg`                        | `images/logos/`         | Experience                 | VoteHub logo                                            |
 | `SK-A-1892.*`, `SK-A-5003.*`, `SK-C-165.*` | `images/_unused/art/`   | (unused) Art/museum pieces | High-res art archived for reference                     |
 | `sig.*`, `signature.*`                     | `images/_unused/logos/` | (unused) Logos             | Signature assets archived for reference                 |
@@ -279,6 +294,8 @@ Configured in `vercel.json`:
 - **No trailing slash**
 - **Redirects**: legacy `/now`, `/racecalls`, `/admin`, and **`/resume`** **301** to **`/`** (matches `server.js` when the Node server runs)
 - **Cache headers**: images, fonts, and favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`.
+- **Redirects**: `/now` and `/now.html` **301** to **`/`** (matches `server.js`; legacy `/racecalls` **301** to **`/`** in `server.js` when the Node server runs)
+- **Cache headers**: images, videos, fonts, and favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`.
 
 **Env and secrets:** set `CLOUD_PASSWORD`, `NODE_ENV`, `TRUST_LOCALHOST_AUTH`, and any other variables in **Vercel → Project → Settings → Environment Variables** for Production / Preview as needed. Local `.env` is for development only.
 
