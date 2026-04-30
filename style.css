@@ -1569,9 +1569,19 @@ body.page-projects .project-tile .writing-card-outline:hover .writing-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.9rem;
-  align-items: start;
+  align-items: stretch;
   grid-auto-rows: auto;
   min-height: 0;
+}
+
+.photo-gallery__open--v {
+  grid-column: 2;
+  grid-row: span 2;
+}
+
+.photo-gallery__open--v .photo-gallery__inner {
+  aspect-ratio: auto;
+  height: 100%;
 }
 
 .photo-gallery__open {
@@ -1680,10 +1690,8 @@ body.page-projects .project-tile .writing-card-outline:hover .writing-card {
   }
 }
 
-/* Wide: uniform three-column grid (chronological rows) */
 @media (min-width: 1000px) {
   .photo-gallery {
-    grid-template-columns: repeat(3, 1fr);
     gap: 1.1rem;
   }
 }
