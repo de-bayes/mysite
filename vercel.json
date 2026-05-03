@@ -2,7 +2,7 @@
   "framework": null,
   "buildCommand": "",
   "cleanUrls": true,
-  "trailingSlash": false,
+  "skipTrailingSlashRedirect": true,
   "redirects": [
     { "source": "/now", "destination": "/", "permanent": true },
     { "source": "/now/", "destination": "/", "permanent": true },
@@ -17,6 +17,7 @@
     { "source": "/resume/", "destination": "/", "permanent": true },
     { "source": "/resume.html", "destination": "/", "permanent": true }
   ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
   "headers": [
     {
       "source": "/favicons/(.*)",

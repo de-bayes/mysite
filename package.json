@@ -5,8 +5,8 @@
     "start": "node server.js",
     "seo:inject": "node scripts/seo-inject.mjs",
     "test": "node --test",
-    "lint": "eslint server.js test scripts js/shared js/pages eslint.config.mjs",
-    "lint:fix": "eslint server.js test scripts js/shared js/pages eslint.config.mjs --fix",
+    "lint": "eslint server.js api test scripts js/shared js/pages eslint.config.mjs",
+    "lint:fix": "eslint server.js api test scripts js/shared js/pages eslint.config.mjs --fix",
     "format": "prettier --write \"**/*.{js,mjs,cjs,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,mjs,cjs,json,md}\"",
     "verify": "npm run lint && npm run format:check && npm test"

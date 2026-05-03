@@ -1,4 +1,6 @@
 // Scroll-triggered animations
+document.documentElement.setAttribute('data-animations-ready', '');
+
 document.addEventListener('DOMContentLoaded', () => {
   const els = document.querySelectorAll('.animate-in, .stagger-children');
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

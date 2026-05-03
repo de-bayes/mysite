@@ -53,6 +53,7 @@ mysite/
   archive/                      Archived content (not linked; e.g. retired resume files)
   site-data/                    Site config JSON (canonical origin, race-call summary); not browsable at `/site-data/*`
   scripts/                      Build/maintenance scripts
+  api/                          Vercel serverless entrypoint that re-exports the Express app
   test/                         Node.js test runner tests
   AGENTS.md                     Short pointer for coding agents (see docs/README.md)
   docs/                         docs/README.md (hub) + maintenance-log.md for agents and maintainers
@@ -66,23 +67,11 @@ mysite/
 
 ## Pages
 
-| Path             | File                   | Description                                                                                                                              |
-| ---------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `/`              | `index.html`           | Home. Full-bleed hero photo (airplane/Switzerland), floating name card, featured links.                                                  |
-| `/about`         | `about.html`           | Bio, portrait, contact grid (email, GitHub, LinkedIn, X/Twitter, Manifold).                                                              |
-| `/experience`    | `experience.html`      | Timeline layout with VoteHub, IL9Cast, campaigns, photography, podcast. Expandable cards.                                                |
-| `/writing`       | `writing.html`         | Article index with category/tag/publication filters. Cards link to hosted essays or external URLs.                                       |
-| `/writing/:slug` | `writing/*/index.html` | Individual hosted essays with reading progress bar. Currently: il9cast-postmortem, peoples-edict, median-voter-theory, nsa-surveillance. |
-| `/press`         | `press.html`           | Press coverage and media features.                                                                                                       |
-| `/photos`        | `photos.html`          | Photography portfolio: 6 photos (Canon R8, prime lenses), navigable by swipe, click arrows, or keyboard.                                 |
-| `/projects`      | `projects.html`        | Projects index: Bayes64, IL9Cast, and Project 2028.                                                                                      |
-| `*`              | `404.html`             | Custom 404 with an interactive Bayes' theorem calculator.                                                                                |
 | Path             | File                   | Description                                                                                                                                                                      |
 | ---------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/`              | `index.html`           | Home. Full-bleed hero photo (airplane/Switzerland), floating name card, featured links.                                                                                          |
 | `/about`         | `about.html`           | Bio, portrait, contact grid (email, GitHub, LinkedIn, X/Twitter, Manifold).                                                                                                      |
 | `/experience`    | `experience.html`      | Timeline layout with VoteHub, IL9Cast, campaigns, photography, podcast. Expandable cards.                                                                                        |
-| `/resume`        | `resume.html`          | Printable resume. Editable via `/api/resume` when `CLOUD_PASSWORD` is set. Print stylesheet included.                                                                            |
 | `/writing`       | `writing.html`         | Article index with category/tag/publication filters. Cards link to hosted essays or external URLs.                                                                               |
 | `/writing/:slug` | `writing/*/index.html` | Individual hosted essays with reading progress bar. Currently: il9cast-postmortem, peoples-edict, median-voter-theory, nsa-surveillance.                                         |
 | `/press`         | `press.html`           | Press coverage and media features.                                                                                                                                               |
@@ -291,10 +280,9 @@ Configured in `vercel.json`:
 
 - **No framework, no build command** (static site with Express server)
 - **Clean URLs** enabled (extensionless)
-- **No trailing slash**
+- **Express runtime**: `api/index.js` re-exports `server.js`; catch-all rewrites route production traffic through the same app CI tests.
+- **Slash policy**: Vercel's global trailing-slash redirect is skipped so `server.js` owns mixed canonical behaviour (top-level pages no slash; essay pages slash).
 - **Redirects**: legacy `/now`, `/racecalls`, `/admin`, and **`/resume`** **301** to **`/`** (matches `server.js` when the Node server runs)
-- **Cache headers**: images, fonts, and favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`.
-- **Redirects**: `/now` and `/now.html` **301** to **`/`** (matches `server.js`; legacy `/racecalls` **301** to **`/`** in `server.js` when the Node server runs)
 - **Cache headers**: images, videos, fonts, and favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`.
 
 **Env and secrets:** set `CLOUD_PASSWORD`, `NODE_ENV`, `TRUST_LOCALHOST_AUTH`, and any other variables in **Vercel → Project → Settings → Environment Variables** for Production / Preview as needed. Local `.env` is for development only.

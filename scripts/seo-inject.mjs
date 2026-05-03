@@ -24,6 +24,9 @@ const originNoSlash = origin.replace(/\/$/, '');
 const SITE_NAME = 'Ryan McComb';
 const TWITTER_HANDLE = '@RyanJMcComb';
 const writingDir = path.join(root, 'writing');
+const PAGE_OG_IMAGES = {
+  'photos.html': '/images/og/og-photos.jpg',
+};
 
 function getEssayPaths() {
   if (!fs.existsSync(writingDir)) return [];
@@ -145,7 +148,7 @@ function injectHtml(file) {
   const fp = path.join(root, file);
   if (!fs.existsSync(fp)) return;
   const canonical = originNoSlash + PAGE_PATHS[file];
-  const ogImage = `${originNoSlash}/images/portraits/portrait.jpg`;
+  const ogImage = originNoSlash + (PAGE_OG_IMAGES[file] || '/images/portraits/portrait.jpg');
   let s = fs.readFileSync(fp, 'utf8');
   const title = getTitle(s);
   const description = getDescription(s);

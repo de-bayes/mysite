@@ -1,6 +1,8 @@
 const NAV_NAME_STICKY_KEY = 'nav-name-sticky-open';
 const NAV_NAME_STICKY_MAX_AGE_MS = 10000;
 
+document.documentElement.setAttribute('data-nav-ready', '');
+
 function normalizeNavPath(pathname) {
   if (!pathname || pathname === '/index.html') return '/';
   if (pathname.length > 1 && pathname.endsWith('/')) return pathname.slice(0, -1);

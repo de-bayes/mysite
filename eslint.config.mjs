@@ -19,7 +19,7 @@ export default [
   eslintConfigPrettier,
   {
     ...sharedJs,
-    files: ['server.js', 'test/**/*.js'],
+    files: ['server.js', 'api/**/*.js', 'test/**/*.js'],
     languageOptions: {
       ...sharedJs.languageOptions,
       globals: globals.node,

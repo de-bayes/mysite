@@ -357,6 +357,7 @@ const BLOCKED_FILES = new Set([
   'package-lock.json',
   'style.md',
   '.env',
+  'api',
   'node_modules',
   'data',
   'site-data',
@@ -445,7 +446,18 @@ app.get(['/resume', '/resume/', '/resume.html'], (_req, res) => res.redirect(301
 // =============================================
 // Static files & error handling
 // =============================================
-app.use(express.static(__dirname, { extensions: ['html'] }));
+function setStaticCacheHeaders(res, filePath) {
+  const relPath = path.relative(__dirname, filePath).split(path.sep).join('/');
+  if (/^(favicons|fonts|images|videos)\//.test(relPath) || relPath === 'favicon.ico') {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    return;
+  }
+  if (relPath === 'style.css' || relPath.startsWith('js/')) {
+    res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  }
+}
+
+app.use(express.static(__dirname, { extensions: ['html'], setHeaders: setStaticCacheHeaders }));
 
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);

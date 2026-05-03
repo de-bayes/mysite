@@ -934,39 +934,39 @@ html[data-nav-name-sticky] #site-nav a.nav-name .brace {
    Animations
    ======================================== */
 
-html[data-js] .animate-in {
+html[data-animations-ready] .animate-in {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html[data-js] .animate-in.visible {
+html[data-animations-ready] .animate-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* Staggered children */
-html[data-js] .stagger-children > * {
+html[data-animations-ready] .stagger-children > * {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html[data-js] .stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
-html[data-js] .stagger-children.visible > *:nth-child(2) { transition-delay: 0.06s; }
-html[data-js] .stagger-children.visible > *:nth-child(3) { transition-delay: 0.12s; }
-html[data-js] .stagger-children.visible > *:nth-child(4) { transition-delay: 0.18s; }
-html[data-js] .stagger-children.visible > *:nth-child(5) { transition-delay: 0.24s; }
-html[data-js] .stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
-html[data-js] .stagger-children.visible > *:nth-child(7) { transition-delay: 0.36s; }
-html[data-js] .stagger-children.visible > *:nth-child(8) { transition-delay: 0.42s; }
-html[data-js] .stagger-children.visible > *:nth-child(9) { transition-delay: 0.48s; }
-html[data-js] .stagger-children.visible > *:nth-child(10) { transition-delay: 0.54s; }
-html[data-js] .stagger-children.visible > *:nth-child(11) { transition-delay: 0.6s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(2) { transition-delay: 0.06s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(3) { transition-delay: 0.12s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(4) { transition-delay: 0.18s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(5) { transition-delay: 0.24s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(7) { transition-delay: 0.36s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(8) { transition-delay: 0.42s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(9) { transition-delay: 0.48s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(10) { transition-delay: 0.54s; }
+html[data-animations-ready] .stagger-children.visible > *:nth-child(11) { transition-delay: 0.6s; }
 
-html[data-js] .stagger-children.visible > * {
+html[data-animations-ready] .stagger-children.visible > * {
   opacity: 1;
   transform: translateY(0);
 }
@@ -993,7 +993,7 @@ html[data-js] .stagger-children.visible > * {
   opacity: 0.2;
 }
 
-html[data-js] .timeline-entry {
+html[data-timeline-ready] .timeline-entry {
   display: flex;
   align-items: flex-start;
   margin-bottom: 3.5rem;
@@ -1004,7 +1004,7 @@ html[data-js] .timeline-entry {
               transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html[data-js] .timeline-entry.visible {
+html[data-timeline-ready] .timeline-entry.visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -1091,7 +1091,7 @@ html[data-js] .timeline-entry.visible {
   margin-bottom: 0.5rem;
 }
 
-html[data-js] .timeline-card .detail {
+html[data-timeline-ready] .timeline-card .detail {
   font-size: var(--fs-body-sm);
   color: var(--text-light);
   line-height: 1.7;
@@ -1104,7 +1104,7 @@ html[data-js] .timeline-card .detail {
   transform: translateY(-0.35rem);
 }
 
-html[data-js] .timeline-card.expanded .detail {
+html[data-timeline-ready] .timeline-card.expanded .detail {
   max-height: 18rem;
   opacity: 1;
   transform: translateY(0);
@@ -1123,7 +1123,7 @@ html[data-js] .timeline-card.expanded .detail {
   text-transform: uppercase;
 }
 
-html[data-js] .timeline-card .expand-hint {
+html[data-timeline-ready] .timeline-card .expand-hint {
   display: block;
 }
 
@@ -2408,7 +2408,7 @@ main, .site-footer { position: relative; z-index: 2; }
     overflow: visible;
   }
 
-  html[data-js] .nav-links {
+  html[data-nav-ready] .nav-links {
     display: none;
     position: absolute;
     top: 100%;
@@ -2424,8 +2424,8 @@ main, .site-footer { position: relative; z-index: 2; }
     border-bottom: 1px solid var(--border);
   }
 
-  html[data-js] .nav-links.open { display: flex; }
-  html[data-js] .nav-hamburger { display: block; }
+  html[data-nav-ready] .nav-links.open { display: flex; }
+  html[data-nav-ready] .nav-hamburger { display: block; }
 
   h1 { font-size: 2rem; }
 
