@@ -281,7 +281,7 @@ Configured in `vercel.json`:
 - **No framework, no build command** (static site with Express server)
 - **Clean URLs** enabled (extensionless)
 - **Express runtime**: `api/index.js` re-exports `server.js`; catch-all rewrites route production traffic through the same app CI tests.
-- **Slash policy**: Vercel's global trailing-slash redirect is skipped so `server.js` owns mixed canonical behaviour (top-level pages no slash; essay pages slash).
+- **Slash policy**: `trailingSlash` is omitted so Vercel does not impose a global slash redirect; `server.js` owns mixed canonical behaviour (top-level pages no slash; essay pages slash).
 - **Redirects**: legacy `/now`, `/racecalls`, `/admin`, and **`/resume`** **301** to **`/`** (matches `server.js` when the Node server runs)
 - **Cache headers**: images, videos, fonts, and favicons get `public, max-age=31536000, immutable`; JS and CSS get `no-cache, must-revalidate`.
 

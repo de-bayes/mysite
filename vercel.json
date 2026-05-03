@@ -2,7 +2,6 @@
   "framework": null,
   "buildCommand": "",
   "cleanUrls": true,
-  "skipTrailingSlashRedirect": true,
   "redirects": [
     { "source": "/now", "destination": "/", "permanent": true },
     { "source": "/now/", "destination": "/", "permanent": true },

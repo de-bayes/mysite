@@ -237,7 +237,7 @@ test('photos page keeps its dedicated social preview image', async () => {
 
 test('vercel routes production traffic through the Express app', () => {
   const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'vercel.json'), 'utf8'));
-  assert.equal(config.skipTrailingSlashRedirect, true);
+  assert.equal('trailingSlash' in config, false);
   assert.deepEqual(config.rewrites, [{ source: '/(.*)', destination: '/api' }]);
   assert.ok(fs.existsSync(path.join(ROOT, 'api', 'index.js')));
 });
