@@ -1,4 +1,6 @@
 // Experience timeline: scroll animations + expand/collapse
+document.documentElement.setAttribute('data-js', '');
+
 document.addEventListener('DOMContentLoaded', () => {
   const entries = document.querySelectorAll('.timeline-entry');
 

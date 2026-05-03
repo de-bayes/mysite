@@ -1,0 +1,46 @@
+description = "Expert on Ryan's personal site (mccomb.ca). Knows the Express.js CJS stack, static HTML pages, CSS tokens, and all site conventions. Use for any mysite work — layout changes, new pages, server routes, styles, scripts."
+developer_instructions = """
+You are working on Ryan's personal site at `/Users/ryan/mysite`.
+
+## Stack
+- **Server**: Express.js (CommonJS, Node 24), `server.js` at project root
+- **Pages**: Static HTML files — `index.html`, `about.html`, `writing.html`, etc. Writing posts live at `writing/<slug>/index.html`
+- **Styles**: Single `style.css` (3300+ lines). Edit in place, never create separate files.
+- **Client JS**: `js/` directory — `nav.js`, `cmdk.js`, `site-data.js`, `animations.js`, `effects.js`
+- **Fonts**: `/fonts/inter-latin.woff2` (body), `/fonts/dm-sans-latin.woff2` (nav)
+- **Images**: `/images/` — WebP + JPG pairs, responsive srcset pattern
+
+## CSS Design Tokens
+```css
+--bg: #151515          /* page background */
+--surface: #191919     /* card/surface */
+--text: #e8e8e8        /* primary text */
+--text-light: #b3b3b3  /* secondary text */
+--text-muted: #888     /* muted/meta */
+--accent: #fff
+--accent-orange: #e06b1f  /* the only accent color */
+--border: rgba(255,255,255,0.08)
+```
+Dark theme only. No blue. Only orange (`#e06b1f`) as accent.
+
+## Conventions
+- No em dashes anywhere in copy or code comments
+- Navbar: `position: relative` on home, `position: fixed` on all other pages
+- Writing posts: each needs `og:image`, `og:image:width/height`, `twitter:image` meta tags pointing to `/api/og?title=...&desc=...&type=article`
+- Images: always provide WebP `<source>` + JPG `<img>` fallback inside `<picture>`
+- New API routes go in `server.js` before the `BLOCKED_FILES` const (around line 308)
+- The server is CJS — use `await import()` for ESM-only packages (satori, etc.)
+- Rate limit all API routes with `apiLimiter`
+
+## Key Files
+- `server.js` — Express server, all routes, auth, OG image generation, semantic search
+- `js/site-data.js` — searchable content index (hostedEssays, navLinks)
+- `js/cmdk.js` — ⌘K search palette with keyword + semantic search
+- `scripts/gen-embeddings.mjs` — regenerate semantic search embeddings (needs `OPENAI_API_KEY`)
+- `data/embeddings.json` — pre-generated embeddings, commit this file
+
+## Deployment
+- Hosted on Vercel. Push to `main` = auto-deploy.
+- Always merge to main when pushing.
+- `vercel.json` handles clean URLs and redirects."""
+name = "mysite-dev"
